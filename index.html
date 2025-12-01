@@ -24,7 +24,6 @@
                 <li><a href="#event">交流会</a></li>
                 <li><a href="#members">メンバー検索</a></li>
                 <li><a href="#connect">つながる</a></li>
-                <li><a href="#preview">プレビュー</a></li>
                 <li id="authButtons">
                     <button class="nav-btn nav-login" onclick="openLoginModal()">ログイン</button>
                     <button class="nav-btn nav-cta" onclick="openRegisterModal()">会員登録</button>
@@ -553,40 +552,6 @@
                 <div class="loading-spinner">
                     <div class="spinner"></div>
                     <p>読み込み中...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- プレビューセクション -->
-    <section class="preview-section" id="preview">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">AI Developer Preview</span>
-                <h2 class="section-title">サイトプレビュー</h2>
-                <p class="section-subtitle">開発中のサイトをリアルタイムで確認</p>
-            </div>
-            
-            <div class="preview-container">
-                <div class="preview-controls">
-                    <button class="preview-btn active" data-device="desktop" onclick="setPreviewDevice('desktop')">
-                        <i class="fas fa-desktop"></i> デスクトップ
-                    </button>
-                    <button class="preview-btn" data-device="tablet" onclick="setPreviewDevice('tablet')">
-                        <i class="fas fa-tablet-alt"></i> タブレット
-                    </button>
-                    <button class="preview-btn" data-device="mobile" onclick="setPreviewDevice('mobile')">
-                        <i class="fas fa-mobile-alt"></i> スマートフォン
-                    </button>
-                    <button class="preview-btn" onclick="refreshPreview()">
-                        <i class="fas fa-sync-alt"></i> リロード
-                    </button>
-                </div>
-                
-                <div class="preview-frame-wrapper">
-                    <div class="preview-frame desktop" id="previewFrame">
-                        <iframe id="previewIframe" src="/" frameborder="0"></iframe>
-                    </div>
                 </div>
             </div>
         </div>

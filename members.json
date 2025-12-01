@@ -173,7 +173,8 @@
         "イベント企画"
       ],
       "joinDate": "2023-01-01",
-      "isPublic": true
+      "isPublic": true,
+      "isAdmin": true
     }
   ],
   "sessions": {
