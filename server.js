@@ -50,34 +50,23 @@ function initializeData() {
     let data = loadData();
     
     // events配列がなければ追加
-    if (!data.events) {
+    if (!data.events || data.events.length === 0) {
         data.events = [
             {
                 id: uuidv4(),
-                title: '第37回 みんなのWA 異業種交流会',
-                date: '2024-12-14',
-                time: '14:00〜17:00',
-                location: '彦根市民会館 2F 会議室A',
-                description: '月例異業種交流会。名刺交換、事業PRコーナー、グループディスカッション、懇親会を予定しています。',
-                capacity: 30,
+                title: '第22回 みんなのWA 彦根交流会',
+                date: '2024-12-03',
+                time: '12:00〜15:00',
+                location: '彦根市高宮町1410 ハウスセレクション内 デスミさん展示場',
+                description: '年内最後の交流会です！\n\nフリートーク式での人脈作り、参加者同士の名刺・連絡先交換、それぞれの事業の説明や体験会を行います。\n\n12:30〜（希望者のみ、当日参加OK）\n1分自己紹介（2回目の方は30秒）で、名前、やってること、どんな人と出会いたいか、想いなどを紹介する場を設けます。\n\n体験ブース・出店も可能です！（出店費用：交流会代金＋1,000円）\n\n【目指せ1000人！🤍🤝】みんなで成し遂げましょう！',
+                capacity: 100,
                 attendees: [],
-                fee: 1000,
+                fee: 3000,
+                feeOptions: '3,000円＋持ち寄り一品 または 4,000円\n\n持ち寄り一品例：お菓子、マクドのポテトやナゲット、手作り料理、からあげ、アイス、自社商品など（人数分でなくてもOK👌）\n\n🌟本交流会のご新規お連れ様1人につき、500円キャッシュバック！（上限人数なし）\n\n体験会のみ参加の方は、参加費不要',
                 status: 'upcoming',
-                image: 'https://www.genspark.ai/api/files/s/kWkiHqdx?cache_control=3600',
-                createdAt: new Date().toISOString()
-            },
-            {
-                id: uuidv4(),
-                title: '第38回 みんなのWA 新年交流会',
-                date: '2025-01-11',
-                time: '14:00〜17:00',
-                location: '彦根市民会館 2F 会議室A',
-                description: '新年最初の交流会。今年の抱負を語り合い、新しいつながりを作りましょう。',
-                capacity: 40,
-                attendees: [],
-                fee: 1500,
-                status: 'upcoming',
-                image: 'https://www.genspark.ai/api/files/s/dMGDYLAr?cache_control=3600',
+                image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1600&q=80',
+                formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform',
+                notes: '⚠️12:00〜搬入可能、16:00完全撤収\n\n体験ブース・出店希望の方は、名前・店舗名・内容・店舗ロゴか商品などの写真を大倉までご連絡ください💡',
                 createdAt: new Date().toISOString()
             }
         ];
