@@ -1,0 +1,295 @@
+{
+  "members": [
+    {
+      "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
+      "email": "tanaka@example.com",
+      "password": "$2b$10$Uf4vBf4hTOdc3xkG2ElWk.V52mQksgolLiqW3Efi/vFBNhVDTQzTu",
+      "name": "田中 美香",
+      "furigana": "たなか みか",
+      "phone": "090-1234-5678",
+      "business": "手作り石鹸職人",
+      "businessCategory": "製造・クラフト",
+      "introduction": "彦根市で手作り石鹸を製造・販売しています。地元の素材を使った自然派石鹸が人気です。ワークショップも開催中！",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80",
+      "location": "彦根市",
+      "website": "https://example.com",
+      "sns": {
+        "twitter": "@tanaka_soap",
+        "instagram": "tanaka_handmade"
+      },
+      "skills": [
+        "石鹸づくり",
+        "ワークショップ運営",
+        "商品開発"
+      ],
+      "joinDate": "2024-01-15",
+      "isPublic": true,
+      "isAdmin": false
+    },
+    {
+      "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
+      "email": "suzuki@example.com",
+      "password": "$2b$10$iBLpd02A5Go/ij9ncj0Qm.3cEGM7jIyk86ILAUFVyoAQSxE.CgoPa",
+      "name": "鈴木 健太",
+      "furigana": "すずき けんた",
+      "phone": "090-2345-6789",
+      "business": "ITコンサルタント",
+      "businessCategory": "IT・デジタル",
+      "introduction": "地域のDX推進をサポートしています。伝統産業のデジタル化や、小規模事業者のIT導入支援が専門です。",
+      "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&q=80",
+      "location": "彦根市",
+      "website": "https://example.com",
+      "sns": {
+        "twitter": "@suzuki_it",
+        "facebook": "suzuki.kenta"
+      },
+      "skills": [
+        "DX推進",
+        "Web制作",
+        "システム開発",
+        "IT研修"
+      ],
+      "joinDate": "2024-02-20",
+      "isPublic": true,
+      "isAdmin": false
+    },
+    {
+      "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
+      "email": "sato@example.com",
+      "password": "$2b$10$U0LQd4rMBuYKYfe1EqdoE.rtgJTOq0m8ekPd7YeA6V79PpZCSnWXi",
+      "name": "佐藤 和也",
+      "furigana": "さとう かずや",
+      "phone": "090-3456-7890",
+      "business": "和菓子職人",
+      "businessCategory": "飲食・食品",
+      "introduction": "創業80年の和菓子店の3代目。季節を感じる和菓子づくりを心がけています。地元産の素材にこだわっています。",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80",
+      "location": "彦根市",
+      "website": "",
+      "sns": {
+        "instagram": "sato_wagashi"
+      },
+      "skills": [
+        "和菓子製造",
+        "伝統技術",
+        "商品企画"
+      ],
+      "joinDate": "2024-03-10",
+      "isPublic": true,
+      "isAdmin": false
+    },
+    {
+      "id": "d92d11d2-7fbf-4220-936b-04a155d9fa93",
+      "email": "yamada@example.com",
+      "password": "$2b$10$QhVt0kSG4wFDwq43PlyKYOK0CuUOt3MhqcLwk3ORM8.AWY3pF.RY2",
+      "name": "山田 花子",
+      "furigana": "やまだ はなこ",
+      "phone": "090-4567-8901",
+      "business": "イラストレーター",
+      "businessCategory": "デザイン・アート",
+      "introduction": "フリーのイラストレーターです。地域のイベントポスターや、お店のロゴデザインなどを手がけています。",
+      "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80",
+      "location": "米原市",
+      "website": "https://example.com",
+      "sns": {
+        "twitter": "@yamada_illust",
+        "instagram": "yamada_art"
+      },
+      "skills": [
+        "イラスト",
+        "ロゴデザイン",
+        "チラシ制作"
+      ],
+      "joinDate": "2024-04-05",
+      "isPublic": true,
+      "isAdmin": false
+    },
+    {
+      "id": "9955d037-e001-47c4-afb2-7a5a5adb34ac",
+      "email": "ito@example.com",
+      "password": "$2b$10$FAIiCvvQ1bXAiExT2ooVyO5lHOsBuWNSYHVaoDVmSdKJ/l2/d2GsS",
+      "name": "伊藤 大輔",
+      "furigana": "いとう だいすけ",
+      "phone": "090-5678-9012",
+      "business": "建築士",
+      "businessCategory": "建築・不動産",
+      "introduction": "地元の木材を使ったエコ住宅の設計を専門としています。自然と調和する住まいづくりをモットーに。",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80",
+      "location": "彦根市",
+      "website": "https://example.com",
+      "sns": {
+        "facebook": "ito.daisuke.arch"
+      },
+      "skills": [
+        "建築設計",
+        "エコ住宅",
+        "リノベーション"
+      ],
+      "joinDate": "2024-05-12",
+      "isPublic": true,
+      "isAdmin": false
+    },
+    {
+      "id": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
+      "email": "watanabe@example.com",
+      "password": "$2b$10$Eg67Rn/bcitdxdtUaZRmI.BrMw9VzK3KNujwrh666ad0r6oTw.jwC",
+      "name": "渡辺 真理",
+      "furigana": "わたなべ まり",
+      "phone": "090-6789-0123",
+      "business": "カフェオーナー",
+      "businessCategory": "飲食・食品",
+      "introduction": "地元食材を使ったオーガニックカフェを経営。コミュニティの交流の場として、イベントも定期開催しています。",
+      "avatar": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=200&q=80",
+      "location": "長浜市",
+      "website": "https://example.com",
+      "sns": {
+        "instagram": "watanabe_cafe",
+        "twitter": "@mari_cafe"
+      },
+      "skills": [
+        "カフェ経営",
+        "オーガニック料理",
+        "イベント企画"
+      ],
+      "joinDate": "2024-06-01",
+      "isPublic": true,
+      "isAdmin": false
+    },
+    {
+      "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+      "email": "admin@minanowa.com",
+      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
+      "name": "中村 誠一",
+      "furigana": "なかむら せいいち",
+      "phone": "090-7890-1234",
+      "business": "NPO法人代表",
+      "businessCategory": "NPO・地域活動",
+      "introduction": "みんなのWA代表理事。20年以上地域活性化に取り組んでいます。彦根の未来を担う人材育成に情熱を注いでいます。",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+      "location": "彦根市",
+      "website": "https://minanowa.com",
+      "sns": {
+        "twitter": "@nakamura_npo",
+        "facebook": "nakamura.seiichi"
+      },
+      "skills": [
+        "地域活性化",
+        "組織運営",
+        "人材育成",
+        "イベント企画"
+      ],
+      "joinDate": "2023-01-01",
+      "isPublic": true,
+      "isAdmin": true,
+      "lastLogin": "2025-11-30T07:48:42.034Z"
+    }
+  ],
+  "sessions": {
+    "3f5a70a1-de3a-40c3-8c1a-9a530afe6886": {
+      "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+      "createdAt": "2025-11-30T07:48:42.034Z"
+    }
+  },
+  "blogs": [
+    {
+      "id": "313bb485-f193-413e-bcb1-199dbd660f16",
+      "title": "新商品開発のお知らせ：地元柚子の石鹸",
+      "slug": "new-yuzu-soap-2024",
+      "content": "地元の柚子を使った新しい石鹸の開発に成功しました。\n\n香りと保湿効果にこだわって試行錯誤を重ねた結果、ついに納得のいく商品が完成しました。\n\n## 素材へのこだわり\n\n今回使用している柚子は、彦根市近郊の農家・佐藤さんの畑で無農薬栽培されたものです。シアバターとオリーブオイルをベースに、柚子の皮から抽出した天然エッセンスを配合しています。\n\n## 商品の特徴\n\n- 爽やかな柚子の香り\n- 保湿効果抜群\n- 敏感肌の方にも安心\n- 環境に優しい素材のみ使用\n\n## 発売イベント\n\n来週の土曜日に開催される彦根マルシェで初お披露目予定です。香りのサンプルも用意していますので、ぜひお立ち寄りください！",
+      "excerpt": "地元の柚子を使った新しい石鹸の開発に成功しました。香りと保湿効果にこだわって試行錯誤を重ねた結果...",
+      "authorId": null,
+      "authorName": "田中 美香",
+      "authorAvatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80",
+      "category": "商品開発",
+      "tags": [
+        "石鹸",
+        "新商品",
+        "柚子",
+        "ハンドメイド"
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&q=80",
+      "publishedAt": "2024-11-28T10:00:00Z",
+      "updatedAt": "2024-11-28T10:00:00Z",
+      "status": "published",
+      "views": 156,
+      "likes": 24
+    },
+    {
+      "id": "a47dd911-eac5-42b8-9c1a-4c9cb14612e6",
+      "title": "地域DX推進プロジェクト始動！",
+      "slug": "regional-dx-project-2024",
+      "content": "彦根の伝統産業をデジタル化する新プロジェクトが始動しました。\n\n## プロジェクトの背景\n\n地域の職人さんたちが持つ素晴らしい技術を、オンラインを通じて世界に発信したい。そんな思いから、このプロジェクトを立ち上げました。\n\n## 取り組み内容\n\n### 1. ECサイト構築支援\n伝統工芸品をオンラインで販売できるよう、ECサイトの構築をサポートします。\n\n### 2. SNS活用講座\nInstagram、TwitterなどのSNSを効果的に活用する方法をレクチャーします。\n\n### 3. 動画制作サポート\n職人の技を映像で記録し、YouTubeなどで発信するお手伝いをします。\n\n## 参加募集中\n\nデジタル化に興味のある事業者の方、ぜひお気軽にご連絡ください！",
+      "excerpt": "彦根の伝統産業をデジタル化する新プロジェクトが始動。職人の技をオンラインで世界に発信する取り組みです...",
+      "authorId": null,
+      "authorName": "鈴木 健太",
+      "authorAvatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&q=80",
+      "category": "地域DX",
+      "tags": [
+        "DX",
+        "デジタル化",
+        "伝統産業",
+        "IT支援"
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+      "publishedAt": "2024-11-27T14:00:00Z",
+      "updatedAt": "2024-11-27T14:00:00Z",
+      "status": "published",
+      "views": 203,
+      "likes": 31
+    },
+    {
+      "id": "d4d1c6c2-ead2-4470-8685-f56ea3c0fb3c",
+      "title": "季節の和菓子：初夏の彩り",
+      "slug": "seasonal-wagashi-summer-2024",
+      "content": "初夏を感じる新作和菓子の製作過程を公開します。\n\n## 今回のテーマ\n\n「初夏の彩り」をテーマに、琵琶湖の風景と紫陽花をモチーフにした和菓子を作りました。\n\n## 使用素材\n\n- 地元産抹茶（近江抹茶）\n- 国産小豆\n- 寒天\n- 和三盆\n\n## 製作のこだわり\n\n和菓子は見た目の美しさも大切です。琵琶湖の水面を表現するために、寒天の透明感を活かしました。また、紫陽花の花びらは、薄く伸ばした練り切りを一枚一枚丁寧に形作っています。\n\n## 店舗でお試しいただけます\n\n6月末まで店頭で販売しています。お茶とセットでお召し上がりいただくのがおすすめです。",
+      "excerpt": "初夏を感じる新作和菓子の製作過程を公開。地元産の抹茶を使用した贅沢な味わいをぜひご堪能ください...",
+      "authorId": null,
+      "authorName": "佐藤 和也",
+      "authorAvatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80",
+      "category": "伝統工芸",
+      "tags": [
+        "和菓子",
+        "伝統",
+        "季節",
+        "抹茶"
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&q=80",
+      "publishedAt": "2024-11-26T09:00:00Z",
+      "updatedAt": "2024-11-26T09:00:00Z",
+      "status": "published",
+      "views": 289,
+      "likes": 45
+    }
+  ],
+  "events": [
+    {
+      "id": "3d440797-e719-4ddf-a607-e23e79506f7c",
+      "title": "第37回 みんなのWA 異業種交流会",
+      "date": "2024-12-14",
+      "time": "14:00〜17:00",
+      "location": "彦根市民会館 2F 会議室A",
+      "description": "月例異業種交流会。名刺交換、事業PRコーナー、グループディスカッション、懇親会を予定しています。",
+      "capacity": 30,
+      "attendees": [],
+      "fee": 1000,
+      "status": "upcoming",
+      "image": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1600&q=80",
+      "createdAt": "2025-11-30T07:46:40.136Z"
+    },
+    {
+      "id": "7eccf6fa-6312-43f2-90ba-fb2c750014c2",
+      "title": "第38回 みんなのWA 新年交流会",
+      "date": "2025-01-11",
+      "time": "14:00〜17:00",
+      "location": "彦根市民会館 2F 会議室A",
+      "description": "新年最初の交流会。今年の抱負を語り合い、新しいつながりを作りましょう。",
+      "capacity": 40,
+      "attendees": [],
+      "fee": 1500,
+      "status": "upcoming",
+      "image": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1600&q=80",
+      "createdAt": "2025-11-30T07:46:40.137Z"
+    }
+  ],
+  "messages": []
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c44569;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Cherry blossom circle -->
+  <circle cx="20" cy="20" r="16" fill="url(#logoGrad)" opacity="0.9"/>
+  <!-- Petal shapes forming WA -->
+  <path d="M20 6 Q26 12 20 20 Q14 12 20 6" fill="white" opacity="0.9"/>
+  <path d="M20 34 Q26 28 20 20 Q14 28 20 34" fill="white" opacity="0.9"/>
+  <path d="M6 20 Q12 14 20 20 Q12 26 6 20" fill="white" opacity="0.9"/>
+  <path d="M34 20 Q28 14 20 20 Q28 26 34 20" fill="white" opacity="0.9"/>
+  <!-- Center dot -->
+  <circle cx="20" cy="20" r="4" fill="white"/>
+</svg>
