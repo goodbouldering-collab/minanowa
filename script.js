@@ -107,6 +107,12 @@ function updateEventDisplay(event) {
         const remaining = event.capacity - (event.attendees?.length || 0);
         eventCapacity.textContent = `定員 ${event.capacity}名（残り${remaining}席）`;
     }
+    
+    // 参加費情報を更新
+    const eventFee = document.getElementById('eventFee');
+    if (eventFee && event.fee) {
+        eventFee.textContent = `参加費 ${event.fee}`;
+    }
 }
 
 // 未読メッセージチェック
