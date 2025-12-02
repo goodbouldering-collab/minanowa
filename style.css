@@ -1359,11 +1359,8 @@ section {
 }
 
 .interview-content {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 50px;
-    align-items: start;
-    margin-top: 50px;
+    max-width: 900px;
+    margin: 50px auto 0;
 }
 
 .interview-video-wrapper {
@@ -4045,26 +4042,11 @@ section {
     }
     
     .interview-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
+        max-width: 100%;
     }
     
     .video-play-overlay i {
         font-size: 3.5rem;
-    }
-    
-    .interview-info {
-        padding: 25px;
-    }
-    
-    .highlight-item {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px 15px;
-    }
-    
-    .highlight-item i {
-        min-width: auto;
     }
     
     .hero-search-filters select {
