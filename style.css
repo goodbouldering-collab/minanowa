@@ -1194,37 +1194,197 @@ section {
     margin-top: 4px;
 }
 
-.about-intro-image,
-.about-intro-video {
-    position: relative;
-    border-radius: var(--radius-lg);
-    overflow: visible;
-    box-shadow: var(--shadow-xl);
-    min-height: 400px;
-    transition: transform 0.3s ease;
+/* About Content Wrapper */
+.about-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 60px;
 }
 
-.about-intro-image:hover,
-.about-intro-video:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+.about-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--primary), #1a4d1a);
+    color: var(--white);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(45, 90, 39, 0.3);
 }
 
-/* 動画タイトル */
-.video-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 20px;
+.about-main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-description {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.about-stat-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 0 5px;
+    gap: 15px;
+    padding: 20px;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
 }
 
-.video-title i {
+.about-stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: var(--white);
+    border-radius: var(--radius-md);
+    font-size: 1.5rem;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+/* About Visual */
+.about-visual {
+    position: relative;
+}
+
+.about-image-card {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-2xl);
+    transition: all 0.4s ease;
+}
+
+.about-image-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.about-image-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.about-image-card:hover img {
+    transform: scale(1.1);
+}
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+    display: flex;
+    align-items: flex-end;
+    padding: 30px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.about-image-card:hover .image-overlay {
+    opacity: 1;
+}
+
+.overlay-content {
+    color: var(--white);
+    text-align: center;
+    width: 100%;
+}
+
+.overlay-content i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
     color: var(--accent);
-    font-size: 1.3rem;
+}
+
+.overlay-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ============================================
+   Interview Section
+   ============================================ */
+.interview-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.interview-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 50px;
+    align-items: start;
+    margin-top: 50px;
+}
+
+.interview-video-wrapper {
+    position: relative;
+}
+
+.video-frame {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+.video-frame:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+}
+
+.video-frame:hover .video-play-overlay {
+    opacity: 0;
 }
 
 /* YouTube動画のレスポンシブコンテナ */
@@ -1234,8 +1394,7 @@ section {
     padding-bottom: 56.25%; /* 16:9 アスペクト比 */
     height: 0;
     overflow: hidden;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
+    background: #000;
 }
 
 .video-container iframe {
@@ -1244,7 +1403,84 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
+    border: none;
+}
+
+.video-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.video-play-overlay i {
+    font-size: 5rem;
+    color: var(--white);
+    opacity: 0.9;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.interview-info {
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+.interview-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.highlight-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #fff);
     border-radius: var(--radius-lg);
+    border-left: 4px solid var(--accent);
+    transition: all 0.3s ease;
+}
+
+.highlight-item:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.highlight-item i {
+    font-size: 2rem;
+    color: var(--accent);
+    min-width: 40px;
+}
+
+.highlight-text h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.highlight-text p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
 }
 
 .image-accent {
@@ -3794,17 +4030,41 @@ section {
         width: 100%;
     }
     
-    .about-intro-video {
-        min-height: 300px;
+    .about-content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
     }
     
-    .video-title {
-        font-size: 1.2rem;
-        margin-bottom: 15px;
+    .about-main-title {
+        font-size: 1.8rem;
     }
     
-    .video-container {
-        padding-bottom: 56.25%; /* 16:9 維持 */
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .interview-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .video-play-overlay i {
+        font-size: 3.5rem;
+    }
+    
+    .interview-info {
+        padding: 25px;
+    }
+    
+    .highlight-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 15px;
+    }
+    
+    .highlight-item i {
+        min-width: auto;
     }
     
     .hero-search-filters select {
