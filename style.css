@@ -1724,6 +1724,41 @@ section {
     width: 10px;
     height: 10px;
     background: var(--accent);
+}
+
+/* Event Extra Info */
+.event-extra-info {
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(10px);
+}
+
+.event-extra-info h5 {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.event-extra-info h5:first-child {
+    margin-top: 0;
+}
+
+.event-extra-info h5 i {
+    color: var(--accent);
+    font-size: 1.2rem;
+}
+
+.event-extra-info p {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    font-size: 0.95rem;
     border-radius: 50%;
 }
 
