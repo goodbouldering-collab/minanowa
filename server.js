@@ -546,6 +546,141 @@ app.put('/api/messages/:id/read', checkAuth, (req, res) => {
 });
 
 // ============================================
+// イベント管理API（管理者専用）
+// ============================================
+
+// 過去イベント一覧取得
+app.get('/api/past-events', (req, res) => {
+    appData = loadData();
+    const pastEvents = appData.pastEvents || [];
+    res.json({ success: true, events: pastEvents });
+});
+
+// イベント作成（管理者のみ）
+app.post('/api/admin/events', checkAuth, (req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ success: false, message: '管理者権限が必要です' });
+    }
+    
+    const { title, date, time, location, description, capacity, fee, feeDetails, cashback, freeEntry, image, formUrl, notes } = req.body;
+    
+    if (!title || !date) {
+        return res.status(400).json({ success: false, message: 'タイトルと日付は必須です' });
+    }
+    
+    appData = loadData();
+    
+    const newEvent = {
+        id: `event-${Date.now()}`,
+        title,
+        date,
+        time: time || '',
+        location: location || '',
+        description: description || '',
+        capacity: capacity || 50,
+        attendees: [],
+        fee: fee || '',
+        feeDetails: feeDetails || '',
+        cashback: cashback || '',
+        freeEntry: freeEntry || '',
+        status: 'upcoming',
+        image: image || '',
+        formUrl: formUrl || '',
+        notes: notes || '',
+        createdAt: new Date().toISOString()
+    };
+    
+    if (!appData.events) appData.events = [];
+    appData.events.push(newEvent);
+    saveData(appData);
+    
+    res.json({ success: true, message: 'イベントを作成しました', event: newEvent });
+});
+
+// イベント更新（管理者のみ）
+app.put('/api/admin/events/:id', checkAuth, (req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ success: false, message: '管理者権限が必要です' });
+    }
+    
+    const { id } = req.params;
+    const updates = req.body;
+    
+    appData = loadData();
+    
+    const eventIndex = (appData.events || []).findIndex(e => e.id === id);
+    if (eventIndex === -1) {
+        return res.status(404).json({ success: false, message: 'イベントが見つかりません' });
+    }
+    
+    // 更新可能なフィールドのみ更新
+    const allowedFields = ['title', 'date', 'time', 'location', 'description', 'capacity', 'fee', 'feeDetails', 'cashback', 'freeEntry', 'image', 'formUrl', 'notes', 'status'];
+    allowedFields.forEach(field => {
+        if (updates[field] !== undefined) {
+            appData.events[eventIndex][field] = updates[field];
+        }
+    });
+    
+    saveData(appData);
+    
+    res.json({ success: true, message: 'イベントを更新しました', event: appData.events[eventIndex] });
+});
+
+// イベントを過去イベントに移動（管理者のみ）
+app.post('/api/admin/events/:id/archive', checkAuth, (req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ success: false, message: '管理者権限が必要です' });
+    }
+    
+    const { id } = req.params;
+    const { participantCount, feedback } = req.body;
+    
+    appData = loadData();
+    
+    const eventIndex = (appData.events || []).findIndex(e => e.id === id);
+    if (eventIndex === -1) {
+        return res.status(404).json({ success: false, message: 'イベントが見つかりません' });
+    }
+    
+    const event = appData.events[eventIndex];
+    event.status = 'completed';
+    event.completedAt = new Date().toISOString();
+    event.participantCount = participantCount || event.attendees.length;
+    event.feedback = feedback || '';
+    
+    // 過去イベントに移動
+    if (!appData.pastEvents) appData.pastEvents = [];
+    appData.pastEvents.unshift(event);
+    
+    // 現在のイベントから削除
+    appData.events.splice(eventIndex, 1);
+    
+    saveData(appData);
+    
+    res.json({ success: true, message: 'イベントをアーカイブしました', event });
+});
+
+// イベント削除（管理者のみ）
+app.delete('/api/admin/events/:id', checkAuth, (req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ success: false, message: '管理者権限が必要です' });
+    }
+    
+    const { id } = req.params;
+    appData = loadData();
+    
+    const eventIndex = (appData.events || []).findIndex(e => e.id === id);
+    if (eventIndex === -1) {
+        return res.status(404).json({ success: false, message: 'イベントが見つかりません' });
+    }
+    
+    appData.events.splice(eventIndex, 1);
+    saveData(appData);
+    
+    res.json({ success: true, message: 'イベントを削除しました' });
+});
+
+// ============================================
 // ブログAPI
 // ============================================
 

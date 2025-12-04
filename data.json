@@ -322,6 +322,27 @@
   ],
   "events": [
     {
+      "id": "event-20250107",
+      "title": "第23回 みんなのWA 彦根交流会",
+      "date": "2026-01-07",
+      "time": "12:00〜15:00",
+      "location": "彦根市（詳細未定）",
+      "description": "新年最初の交流会です！\n\nフリートーク式での人脈作り、参加者同士の名刺・連絡先交換、それぞれの事業の説明や体験会を行います。\n\n詳細は後日発表いたします。",
+      "capacity": 50,
+      "attendees": [],
+      "fee": "未定",
+      "feeDetails": "",
+      "cashback": "",
+      "freeEntry": "",
+      "status": "upcoming",
+      "image": "https://www.genspark.ai/api/files/s/jC2gkpnW",
+      "formUrl": "",
+      "notes": "※時間、内容未定",
+      "createdAt": "2025-12-03T16:00:00.000Z"
+    }
+  ],
+  "pastEvents": [
+    {
       "id": "3d440797-e719-4ddf-a607-e23e79506f7c",
       "title": "第22回 みんなのWA 彦根交流会",
       "date": "2024-12-03",
@@ -334,11 +355,14 @@
       "feeDetails": "持ち寄り一品例：お菓子、マクドのポテトやナゲット、手作り料理、からあげ、アイス、自社商品など（人数分でなくてもOK👌）",
       "cashback": "🌟本交流会のご新規お連れ様1人につき、500円キャッシュバック！（上限人数なし）",
       "freeEntry": "体験会のみ参加の方は、参加費不要",
-      "status": "upcoming",
-      "image": "https://www.genspark.ai/api/files/s/kdMdJUbA",
+      "status": "completed",
+      "image": "https://www.genspark.ai/api/files/s/jC2gkpnW",
       "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
       "notes": "⚠️12:00〜搬入可能、16:00完全撤収\n\n体験ブース・出店希望の方は、名前・店舗名・内容・店舗ロゴか商品などの写真を大倉までご連絡ください💡",
-      "createdAt": "2025-12-01T17:00:00.000Z"
+      "createdAt": "2025-12-01T17:00:00.000Z",
+      "completedAt": "2025-12-03T15:00:00.000Z",
+      "participantCount": 35,
+      "feedback": "おかげさまで第22回も無事終わりました☺️✨"
     }
   ],
   "messages": []
