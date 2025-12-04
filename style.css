@@ -1151,6 +1151,7 @@ section {
    ============================================ */
 .about-section {
     background: var(--bg-primary);
+    padding: 60px 0;
 }
 
 .about-intro {

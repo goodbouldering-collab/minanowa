@@ -25,7 +25,7 @@
       "joinDate": "2024-01-15",
       "isPublic": true,
       "isAdmin": false,
-      "lastLogin": "2025-12-03T17:52:33.472Z"
+      "lastLogin": "2025-12-04T16:31:30.379Z"
     },
     {
       "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
@@ -235,10 +235,6 @@
     "3f5a70a1-de3a-40c3-8c1a-9a530afe6886": {
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2025-11-30T07:48:42.034Z"
-    },
-    "6af0f57d-1078-40d8-a906-587d47a9ce1b": {
-      "memberId": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
-      "createdAt": "2025-12-01T23:24:05.078Z"
     },
     "06e52970-5352-4566-87a7-16db08f5a7e3": {
       "memberId": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
