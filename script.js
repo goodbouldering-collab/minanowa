@@ -2693,3 +2693,168 @@ function setupEventListeners() {
         }
     });
 }
+
+// ============================================
+// Event Card Slider
+// ============================================
+let allEvents = [];
+let currentEventIndex = 0;
+
+async function loadAllEvents() {
+    try {
+        const [upcomingRes, pastRes] = await Promise.all([
+            fetch(`${API_BASE}/api/events`),
+            fetch(`${API_BASE}/api/past-events`)
+        ]);
+        
+        const upcomingData = await upcomingRes.json();
+        const pastData = await pastRes.json();
+        
+        const upcoming = upcomingData.events || [];
+        const past = (pastData.events || []).sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        allEvents = [...past, ...upcoming];
+        
+        if (allEvents.length > 0) {
+            const nextEventIndex = past.length;
+            currentEventIndex = nextEventIndex < allEvents.length ? nextEventIndex : 0;
+            renderEventCard(currentEventIndex);
+        }
+    } catch (error) {
+        console.error('イベント読み込みエラー:', error);
+    }
+}
+
+function renderEventCard(index) {
+    if (index < 0 || index >= allEvents.length) return;
+    
+    const event = allEvents[index];
+    const eventDate = new Date(event.date);
+    const isCompleted = event.status === 'completed';
+    const isUpcoming = event.status === 'upcoming';
+    
+    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    const month = monthNames[eventDate.getMonth()];
+    const day = eventDate.getDate();
+    
+    document.getElementById('eventImage').src = event.image || 'https://via.placeholder.com/1200x600?text=Event';
+    document.getElementById('eventImage').alt = event.title;
+    
+    const statusBadge = document.getElementById('eventStatusBadge');
+    if (isCompleted) {
+        statusBadge.textContent = '開催済み';
+        statusBadge.className = 'event-status-badge completed';
+    } else if (isUpcoming) {
+        statusBadge.textContent = '次回開催';
+        statusBadge.className = 'event-status-badge upcoming';
+    }
+    
+    document.getElementById('eventDay').textContent = day;
+    document.getElementById('eventMonth').textContent = month;
+    document.getElementById('eventTitle').textContent = event.title;
+    document.getElementById('eventTime').textContent = event.time || '時間未定';
+    document.getElementById('eventLocation').textContent = event.location || '場所未定';
+    document.getElementById('eventDescription').textContent = event.description || '';
+    
+    const statsHtml = [];
+    if (isCompleted && event.participantCount) {
+        statsHtml.push(`
+            <div class="event-stat-item">
+                <i class="fas fa-users"></i>
+                <div>
+                    <div class="event-stat-value">${event.participantCount}</div>
+                    <div class="event-stat-label">参加者</div>
+                </div>
+            </div>
+        `);
+    }
+    if (event.capacity) {
+        statsHtml.push(`
+            <div class="event-stat-item">
+                <i class="fas fa-chair"></i>
+                <div>
+                    <div class="event-stat-value">${event.capacity}</div>
+                    <div class="event-stat-label">定員</div>
+                </div>
+            </div>
+        `);
+    }
+    document.getElementById('eventStats').innerHTML = statsHtml.join('');
+    document.getElementById('eventStats').style.display = statsHtml.length > 0 ? 'flex' : 'none';
+    
+    const reportSection = document.getElementById('eventReport');
+    if (isCompleted && event.report) {
+        document.getElementById('eventReportText').textContent = event.report;
+        reportSection.style.display = 'block';
+    } else {
+        reportSection.style.display = 'none';
+    }
+    
+    const infoHtml = [];
+    if (event.fee) {
+        infoHtml.push(`
+            <div class="event-info-item">
+                <i class="fas fa-yen-sign"></i>
+                <span>${event.fee}</span>
+            </div>
+        `);
+    }
+    document.getElementById('eventInfoGrid').innerHTML = infoHtml.join('');
+    
+    const footerHtml = [];
+    if (isUpcoming && event.formUrl) {
+        footerHtml.push(`
+            <a href="${event.formUrl}" target="_blank" class="btn btn-primary btn-large">
+                <i class="fas fa-calendar-plus"></i> 参加申し込み
+            </a>
+        `);
+    }
+    document.getElementById('eventCardFooter').innerHTML = footerHtml.join('');
+}
+
+function navigateEvent(direction) {
+    if (direction === 'prev') {
+        currentEventIndex = (currentEventIndex - 1 + allEvents.length) % allEvents.length;
+    } else {
+        currentEventIndex = (currentEventIndex + 1) % allEvents.length;
+    }
+    renderEventCard(currentEventIndex);
+    updateTimelineIndicator();
+}
+
+function jumpToEvent(type) {
+    const upcomingIndex = allEvents.findIndex(e => e.status === 'upcoming');
+    const pastEvents = allEvents.filter(e => e.status === 'completed');
+    
+    if (type === 'current' && upcomingIndex !== -1) {
+        currentEventIndex = upcomingIndex;
+    } else if (type === 'past' && pastEvents.length > 0) {
+        currentEventIndex = 0;
+    } else if (type === 'future') {
+        const futureIndex = allEvents.findIndex((e, i) => i > upcomingIndex && e.status === 'upcoming');
+        currentEventIndex = futureIndex !== -1 ? futureIndex : allEvents.length - 1;
+    }
+    
+    renderEventCard(currentEventIndex);
+    updateTimelineIndicator();
+}
+
+function updateTimelineIndicator() {
+    const dots = document.querySelectorAll('.timeline-dot');
+    dots.forEach(dot => dot.classList.remove('active'));
+    
+    const currentEvent = allEvents[currentEventIndex];
+    if (currentEvent) {
+        if (currentEvent.status === 'completed') {
+            dots[0]?.classList.add('active');
+        } else {
+            dots[1]?.classList.add('active');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('currentEventCard')) {
+        loadAllEvents();
+    }
+});
