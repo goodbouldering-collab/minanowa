@@ -270,13 +270,19 @@
                 <span class="section-tag">Monthly Event</span>
                 <h2 class="section-title">異業種交流会</h2>
                 <p class="section-subtitle">次回・過去の交流会をご覧ください</p>
+                
+                <!-- ナビゲーションボタン -->
+                <div class="event-nav-top">
+                    <button class="event-nav-btn-top prev" onclick="navigateEvent('prev')" aria-label="前のイベント">
+                        <i class="fas fa-chevron-left"></i> 前のイベント
+                    </button>
+                    <button class="event-nav-btn-top next" onclick="navigateEvent('next')" aria-label="次のイベント">
+                        次のイベント <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
             
             <div class="event-slider-container">
-                <button class="event-nav-btn prev" onclick="navigateEvent('prev')" aria-label="前のイベント">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
                 <div class="event-card-wrapper">
                     <div class="event-card" id="currentEventCard">
                         <div class="event-card-image">
@@ -317,10 +323,6 @@
                         </div>
                     </div>
                 </div>
-                
-                <button class="event-nav-btn next" onclick="navigateEvent('next')" aria-label="次のイベント">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
             </div>
             
             <div class="event-timeline-indicator">
