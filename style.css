@@ -4624,3 +4624,8 @@ section {
         font-size: 1rem;
     }
 }
+
+/* イベントカード画像を非表示 */
+.event-card-image {
+    display: none !important;
+}

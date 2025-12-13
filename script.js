@@ -2737,8 +2737,8 @@ function renderEventCard(index) {
     const month = monthNames[eventDate.getMonth()];
     const day = eventDate.getDate();
     
-    document.getElementById('eventImage').src = event.image || 'https://via.placeholder.com/1200x600?text=Event';
-    document.getElementById('eventImage').alt = event.title;
+//     document.getElementById('eventImage').src = event.image || 'https://via.placeholder.com/1200x600?text=Event';
+//     document.getElementById('eventImage').alt = event.title;
     
     const statusBadge = document.getElementById('eventStatusBadge');
     if (isCompleted) {
