@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データベーステスト - みんなのWA</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .section { margin: 30px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .member-card { border: 1px solid #ddd; padding: 15px; margin: 10px; display: inline-block; width: 300px; }
+        .event-card { border: 1px solid #ddd; padding: 15px; margin: 10px; }
+        .error { color: red; padding: 10px; background: #fee; }
+        .success { color: green; padding: 10px; background: #efe; }
+    </style>
+</head>
+<body>
+    <h1>みんなのWA データベーステスト</h1>
+    
+    <div class="section">
+        <h2>API接続テスト</h2>
+        <button onclick="testAPIs()">全APIをテスト</button>
+        <div id="apiResults"></div>
+    </div>
+
+    <div class="section">
+        <h2>メンバー一覧 (<span id="memberCount">0</span>名)</h2>
+        <div id="membersList"></div>
+    </div>
+
+    <div class="section">
+        <h2>イベント一覧 (<span id="eventCount">0</span>件)</h2>
+        <div id="eventsList"></div>
+    </div>
+
+    <div class="section">
+        <h2>活動レポート (<span id="blogCount">0</span>件)</h2>
+        <div id="blogsList"></div>
+    </div>
+
+    <script>
+        async function testAPIs() {
+            const results = document.getElementById('apiResults');
+            results.innerHTML = '<p>テスト中...</p>';
+            
+            try {
+                // Members API
+                const membersRes = await fetch('/api/members');
+                const membersData = await membersRes.json();
+                
+                // Events API
+                const eventsRes = await fetch('/api/events');
+                const eventsData = await eventsRes.json();
+                
+                // Past Events API
+                const pastEventsRes = await fetch('/api/past-events');
+                const pastEventsData = await pastEventsRes.json();
+                
+                // Blogs API
+                const blogsRes = await fetch('/api/blogs');
+                const blogsData = await blogsRes.json();
+                
+                results.innerHTML = `
+                    <div class="success">
+                        <h3>✅ 全API正常</h3>
+                        <p>メンバー: ${membersData.total}名</p>
+                        <p>未来イベント: ${eventsData.events?.length || 0}件</p>
+                        <p>過去イベント: ${pastEventsData.events?.length || 0}件</p>
+                        <p>ブログ: ${blogsData.total}件</p>
+                    </div>
+                `;
+                
+                // Display members
+                displayMembers(membersData.members);
+                
+                // Display events
+                const allEvents = [...(eventsData.events || []), ...(pastEventsData.events || [])];
+                displayEvents(allEvents);
+                
+                // Display blogs
+                displayBlogs(blogsData.blogs);
+                
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ エラー: ${error.message}</div>`;
+            }
+        }
+        
+        function displayMembers(members) {
+            const container = document.getElementById('membersList');
+            const countEl = document.getElementById('memberCount');
+            countEl.textContent = members.length;
+            
+            container.innerHTML = members.map(m => `
+                <div class="member-card">
+                    <img src="${m.avatar}" width="80" height="80" style="border-radius: 50%;">
+                    <h3>${m.name}</h3>
+                    <p><strong>${m.business}</strong></p>
+                    <p>${m.introduction}</p>
+                    <p>📍 ${m.location}</p>
+                </div>
+            `).join('');
+        }
+        
+        function displayEvents(events) {
+            const container = document.getElementById('eventsList');
+            const countEl = document.getElementById('eventCount');
+            countEl.textContent = events.length;
+            
+            container.innerHTML = events.map(e => `
+                <div class="event-card">
+                    <h3>${e.title}</h3>
+                    <p><strong>日時:</strong> ${e.date} ${e.time}</p>
+                    <p><strong>場所:</strong> ${e.location}</p>
+                    <p><strong>定員:</strong> ${e.capacity}名</p>
+                    <p><strong>参加費:</strong> ${e.fee}</p>
+                    ${e.participantCount ? `<p><strong>参加者:</strong> ${e.participantCount}名</p>` : ''}
+                    ${e.report ? `<p><strong>報告:</strong> ${e.report}</p>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function displayBlogs(blogs) {
+            const container = document.getElementById('blogsList');
+            const countEl = document.getElementById('blogCount');
+            countEl.textContent = blogs.length;
+            
+            container.innerHTML = blogs.map(b => `
+                <div class="event-card">
+                    <h3>${b.title}</h3>
+                    <p><strong>投稿者:</strong> ${b.authorName}</p>
+                    <p><strong>カテゴリ:</strong> ${b.category}</p>
+                    <p>${b.excerpt}</p>
+                    <p><small>👁 ${b.views} views | ❤️ ${b.likes} likes</small></p>
+                </div>
+            `).join('');
+        }
+        
+        // ページ読み込み時に自動実行
+        window.addEventListener('load', testAPIs);
+    </script>
+</body>
+</html>

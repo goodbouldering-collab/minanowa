@@ -2708,7 +2708,7 @@ function setupEventListeners() {
 // ============================================
 // Event Card Slider
 // ============================================
-let allEvents = [];
+// allEvents is declared globally at line 14
 let currentEventIndex = 0;
 
 async function loadAllEvents() {
