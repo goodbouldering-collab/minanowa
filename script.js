@@ -445,25 +445,36 @@ function sortResults() {
 // メンバー一覧・検索
 // ============================================
 async function loadMembers() {
+    console.log('[DEBUG] loadMembers called');
     const membersGrid = document.getElementById('membersGrid');
-    if (!membersGrid) return;
+    console.log('[DEBUG] membersGrid element:', membersGrid);
+    if (!membersGrid) {
+        console.error('[DEBUG] membersGrid not found!');
+        return;
+    }
     
     try {
+        console.log('[DEBUG] Fetching from:', `${API_BASE}/api/members`);
         const response = await fetch(`${API_BASE}/api/members`);
+        console.log('[DEBUG] Response status:', response.status);
         const data = await response.json();
+        console.log('[DEBUG] Data received:', data);
         
         if (data.success) {
             allMembers = data.members;
+            console.log('[DEBUG] Members count:', data.members.length);
             renderMembers(data.members);
             updateResultsCount(data.total);
+        } else {
+            console.error('[DEBUG] API returned success=false');
         }
     } catch (error) {
-        console.error('メンバー取得エラー:', error);
+        console.error('[DEBUG] Error in loadMembers:', error);
         membersGrid.innerHTML = `
             <div class="no-results glass-card">
                 <i class="fas fa-exclamation-circle"></i>
                 <h3>読み込みエラー</h3>
-                <p>メンバー情報を取得できませんでした</p>
+                <p>メンバー情報を取得できませんでした: ${error.message}</p>
             </div>
         `;
     }
