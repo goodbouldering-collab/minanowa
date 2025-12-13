@@ -2806,7 +2806,62 @@ function renderEventCard(index) {
         infoHtml.push(`
             <div class="event-info-item">
                 <i class="fas fa-yen-sign"></i>
-                <span>${event.fee}</span>
+                <div>
+                    <strong>参加費</strong><br>
+                    ${event.fee}
+                    ${event.feeDetails ? `<br><small>${event.feeDetails}</small>` : ''}
+                </div>
+            </div>
+        `);
+    }
+    if (event.cashback) {
+        infoHtml.push(`
+            <div class="event-info-item">
+                <i class="fas fa-gift"></i>
+                <div>
+                    <strong>キャッシュバック</strong><br>
+                    ${event.cashback}
+                </div>
+            </div>
+        `);
+    }
+    if (event.freeEntry) {
+        infoHtml.push(`
+            <div class="event-info-item">
+                <i class="fas fa-ticket-alt"></i>
+                <div>
+                    <strong>無料参加</strong><br>
+                    ${event.freeEntry}
+                </div>
+            </div>
+        `);
+    }
+    if (event.timetable && event.timetable.length > 0) {
+        const timetableItems = event.timetable.map(item => `
+            <div class="timetable-item">
+                <strong>${item.time}</strong> ${item.activity}
+            </div>
+        `).join('');
+        infoHtml.push(`
+            <div class="event-info-item timetable-section">
+                <i class="fas fa-clock"></i>
+                <div>
+                    <strong>タイムテーブル</strong>
+                    <div class="timetable-list">
+                        ${timetableItems}
+                    </div>
+                </div>
+            </div>
+        `);
+    }
+    if (event.notes) {
+        infoHtml.push(`
+            <div class="event-info-item">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>備考</strong><br>
+                    ${event.notes}
+                </div>
             </div>
         `);
     }
