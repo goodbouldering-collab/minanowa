@@ -2,8 +2,14 @@
 
 # みんなのWA - サイトアクセス情報
 
-## 🌐 メインサイト
-https://3000-i26mzzri6plazftdqznnd-b32ec7bb.sandbox.novita.ai
+## 🌐 メインサイト（最新版）
+**https://3000-i26mzzri6plazftdqznnd-b32ec7bb.sandbox.novita.ai**
+
+### 最新アップデート（2025-12-14）
+- ✅ UI改善・スペース最適化版
+- ✅ 集合写真適用
+- ✅ モダンデザイン刷新
+- ✅ プロフィール写真編集機能
 
 ## 🔐 管理者ログイン
 - **Email**: `admin@minanowa.com`
@@ -12,5 +18,11 @@ https://3000-i26mzzri6plazftdqznnd-b32ec7bb.sandbox.novita.ai
 ## 📊 テストページ（API確認用）
 https://3000-i26mzzri6plazftdqznnd-b32ec7bb.sandbox.novita.ai/test.html
 
+## 📝 最新機能
+1. **メンバー管理**: プロフィール編集、写真変更、公開/非公開設定
+2. **イベント管理**: 新規作成、編集、削除
+3. **ブログ管理**: 記事作成、編集
+4. **データ管理**: メンバー、イベント、ブログの統合管理
+
 ---
-*初回アクセス時は、ハードリフレッシュ（Ctrl + Shift + R / Cmd + Shift + R）を推奨*
+**⚠️ 重要**: 初回アクセス時は、ハードリフレッシュ（**Ctrl + Shift + R** / **Cmd + Shift + R**）を必ず実行してください！
