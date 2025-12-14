@@ -2293,10 +2293,20 @@ function showMemberEditor(member) {
                     <input type="text" id="memberLocation" name="location" class="glass-input"
                            value="${member.location || ''}" placeholder="例：彦根市">
                 </div>
-                <div class="form-group">
-                    <label for="memberAvatar">アバター画像URL</label>
-                    <input type="url" id="memberAvatar" name="avatar" class="glass-input"
-                           value="${member.avatar || ''}" placeholder="https://...">
+            </div>
+            
+            <div class="form-group">
+                <label for="memberAvatar">プロフィール写真URL</label>
+                <div class="avatar-preview-container">
+                    <img id="avatarPreview" src="${member.avatar || 'https://i.pravatar.cc/200?img=1'}" 
+                         alt="プロフィール写真プレビュー" class="avatar-preview-image"
+                         onerror="this.src='https://i.pravatar.cc/200?img=1'">
+                    <div class="avatar-input-group">
+                        <input type="url" id="memberAvatar" name="avatar" class="glass-input"
+                               value="${member.avatar || ''}" placeholder="https://example.com/photo.jpg"
+                               oninput="updateAvatarPreview(this.value)">
+                        <small class="form-help">画像のURLを入力してください（例：https://example.com/photo.jpg）</small>
+                    </div>
                 </div>
             </div>
             
@@ -2342,6 +2352,13 @@ function showMemberEditor(member) {
             </div>
         </form>
     `;
+}
+
+function updateAvatarPreview(url) {
+    const previewImg = document.getElementById('avatarPreview');
+    if (previewImg && url) {
+        previewImg.src = url;
+    }
 }
 
 async function saveMemberProfile(event, memberId) {

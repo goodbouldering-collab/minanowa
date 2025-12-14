@@ -3287,10 +3287,12 @@ section {
 }
 
 .admin-member-item img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .admin-member-info {
@@ -3670,6 +3672,40 @@ section {
 .member-edit-form {
     margin-top: 20px;
     max-width: 900px;
+}
+
+.avatar-preview-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 15px;
+    background: rgba(45, 90, 39, 0.05);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(45, 90, 39, 0.1);
+}
+
+.avatar-preview-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+.avatar-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-help {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+    display: block;
 }
 
 /* メッセージ機能 */
