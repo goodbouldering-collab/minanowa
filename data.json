@@ -454,6 +454,48 @@
       "createdAt": "2025-11-20T00:00:00.000Z"
     },
     {
+      "id": "event-20251223",
+      "title": "第1回 みんなのWA 長浜交流会",
+      "date": "2025-12-23",
+      "time": "18:00〜20:00",
+      "location": "シェアハウスtorch",
+      "locationUrl": "https://maps.app.goo.gl/JQWrqMk3kqenUZqHA",
+      "description": "長浜で記念すべき第1回目！シェアハウスを見学させてもらったり、餃子パーティーでラフに交流して楽しむ会です⭐️ ぜひお友達お誘いの上、ご参加ください❣️",
+      "capacity": 20,
+      "attendees": [],
+      "fee": "500円（材料費）",
+      "feeDetails": "一品持ち込み（ソフトドリンクは用意します）",
+      "cashback": "",
+      "freeEntry": "",
+      "status": "upcoming",
+      "image": "",
+      "formUrl": "https://forms.gle/hkUrcdbx9TgUZv1P9",
+      "notes": "21時完全終了 / 駐車場: 5台 / 17時45分長浜駅送迎可能 / ⚠️材料準備のため12/10(水)締切",
+      "timetable": [
+        {
+          "time": "17:45",
+          "activity": "長浜駅送迎（希望者）"
+        },
+        {
+          "time": "18:00",
+          "activity": "シェアハウス見学"
+        },
+        {
+          "time": "18:30",
+          "activity": "餃子パーティー・交流会"
+        },
+        {
+          "time": "20:00",
+          "activity": "閉会"
+        },
+        {
+          "time": "21:00",
+          "activity": "完全終了"
+        }
+      ],
+      "createdAt": "2025-12-14T09:00:00.000Z"
+    },
+    {
       "id": "event-20260107",
       "title": "第23回 みんなのWA 彦根 異業種交流会",
       "date": "2026-01-07",
