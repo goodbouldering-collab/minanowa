@@ -2168,18 +2168,217 @@ function renderAdminMembers(members) {
                             ${member.isAdmin ? '<span class="admin-badge">管理者</span>' : ''}
                         </div>
                         <div class="admin-member-email">${member.email}</div>
+                        <div class="admin-member-meta">
+                            <span><i class="fas fa-briefcase"></i> ${member.business || '未設定'}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${member.location || '未設定'}</span>
+                        </div>
                     </div>
-                    <div class="admin-toggle">
-                        <label>管理者権限</label>
-                        <input type="checkbox" 
-                               ${member.isAdmin ? 'checked' : ''} 
-                               ${member.id === currentUser.id ? 'disabled' : ''}
-                               onchange="toggleAdminStatus('${member.id}', this.checked)">
+                    <div class="admin-member-actions">
+                        <button class="btn-edit" onclick="editMemberProfile('${member.id}')">
+                            <i class="fas fa-edit"></i> 編集
+                        </button>
+                        <div class="admin-toggle">
+                            <label>管理者</label>
+                            <input type="checkbox" 
+                                   ${member.isAdmin ? 'checked' : ''} 
+                                   ${member.id === currentUser.id ? 'disabled' : ''}
+                                   onchange="toggleAdminStatus('${member.id}', this.checked)">
+                        </div>
                     </div>
                 </div>
             `).join('')}
         </div>
     `;
+}
+
+async function editMemberProfile(memberId) {
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/members`, {
+            headers: { 'x-session-id': sessionId }
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            const member = data.members.find(m => m.id === memberId);
+            if (member) {
+                showMemberEditor(member);
+            }
+        }
+    } catch (error) {
+        console.error('メンバー取得エラー:', error);
+        showNotification('メンバー情報の取得に失敗しました', 'error');
+    }
+}
+
+function showMemberEditor(member) {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="admin-toolbar">
+            <h3>メンバープロフィール編集</h3>
+            <button class="btn glass-btn-small" onclick="loadAdminMembers()">
+                <i class="fas fa-arrow-left"></i> 戻る
+            </button>
+        </div>
+        
+        <form class="member-edit-form" onsubmit="saveMemberProfile(event, '${member.id}')">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="memberName">名前 <span class="required">*</span></label>
+                    <input type="text" id="memberName" name="name" required class="glass-input"
+                           value="${member.name || ''}" placeholder="例：田中 太郎">
+                </div>
+                <div class="form-group">
+                    <label for="memberFurigana">ふりがな</label>
+                    <input type="text" id="memberFurigana" name="furigana" class="glass-input"
+                           value="${member.furigana || ''}" placeholder="例：たなか たろう">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="memberEmail">メールアドレス <span class="required">*</span></label>
+                    <input type="email" id="memberEmail" name="email" required class="glass-input"
+                           value="${member.email || ''}" placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="memberPhone">電話番号</label>
+                    <input type="tel" id="memberPhone" name="phone" class="glass-input"
+                           value="${member.phone || ''}" placeholder="090-1234-5678">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="memberBusiness">事業・職業 <span class="required">*</span></label>
+                    <input type="text" id="memberBusiness" name="business" required class="glass-input"
+                           value="${member.business || ''}" placeholder="例：ITコンサルタント">
+                </div>
+                <div class="form-group">
+                    <label for="memberCategory">業種カテゴリ</label>
+                    <select id="memberCategory" name="businessCategory" class="glass-input">
+                        <option value="製造・クラフト" ${member.businessCategory === '製造・クラフト' ? 'selected' : ''}>製造・クラフト</option>
+                        <option value="IT・デジタル" ${member.businessCategory === 'IT・デジタル' ? 'selected' : ''}>IT・デジタル</option>
+                        <option value="飲食・食品" ${member.businessCategory === '飲食・食品' ? 'selected' : ''}>飲食・食品</option>
+                        <option value="デザイン・クリエイティブ" ${member.businessCategory === 'デザイン・クリエイティブ' ? 'selected' : ''}>デザイン・クリエイティブ</option>
+                        <option value="教育・研修" ${member.businessCategory === '教育・研修' ? 'selected' : ''}>教育・研修</option>
+                        <option value="サービス" ${member.businessCategory === 'サービス' ? 'selected' : ''}>サービス</option>
+                        <option value="その他" ${member.businessCategory === 'その他' ? 'selected' : ''}>その他</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="memberIntroduction">自己紹介</label>
+                <textarea id="memberIntroduction" name="introduction" class="glass-input" rows="4"
+                          placeholder="あなたの事業や活動について...">${member.introduction || ''}</textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="memberLocation">活動地域</label>
+                    <input type="text" id="memberLocation" name="location" class="glass-input"
+                           value="${member.location || ''}" placeholder="例：彦根市">
+                </div>
+                <div class="form-group">
+                    <label for="memberAvatar">アバター画像URL</label>
+                    <input type="url" id="memberAvatar" name="avatar" class="glass-input"
+                           value="${member.avatar || ''}" placeholder="https://...">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="memberWebsite">ウェブサイト</label>
+                <input type="url" id="memberWebsite" name="website" class="glass-input"
+                       value="${member.website || ''}" placeholder="https://example.com">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="memberTwitter">Twitter</label>
+                    <input type="text" id="memberTwitter" name="twitter" class="glass-input"
+                           value="${member.sns?.twitter || ''}" placeholder="@username">
+                </div>
+                <div class="form-group">
+                    <label for="memberInstagram">Instagram/Facebook</label>
+                    <input type="text" id="memberInstagram" name="instagram" class="glass-input"
+                           value="${member.sns?.instagram || member.sns?.facebook || ''}" placeholder="@username">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="memberSkills">スキル・専門分野（カンマ区切り）</label>
+                <input type="text" id="memberSkills" name="skills" class="glass-input"
+                       value="${(member.skills || []).join(', ')}" placeholder="例：Web制作, マーケティング, デザイン">
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="isPublic" ${member.isPublic ? 'checked' : ''}>
+                    プロフィールを公開する
+                </label>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> 保存する
+                </button>
+                <button type="button" class="btn btn-outline" onclick="loadAdminMembers()">
+                    キャンセル
+                </button>
+            </div>
+        </form>
+    `;
+}
+
+async function saveMemberProfile(event, memberId) {
+    event.preventDefault();
+    
+    const form = event.target;
+    
+    const memberData = {
+        name: form.name.value,
+        furigana: form.furigana.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        business: form.business.value,
+        businessCategory: form.businessCategory.value,
+        introduction: form.introduction.value,
+        location: form.location.value,
+        avatar: form.avatar.value,
+        website: form.website.value,
+        sns: {
+            twitter: form.twitter.value,
+            instagram: form.instagram.value
+        },
+        skills: form.skills.value.split(',').map(s => s.trim()).filter(s => s),
+        isPublic: form.isPublic.checked,
+        sessionId: sessionId
+    };
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/members/${memberId}`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId
+            },
+            body: JSON.stringify(memberData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('メンバー情報を更新しました', 'success');
+            loadAdminMembers();
+        } else {
+            showNotification(data.message || '更新に失敗しました', 'error');
+        }
+    } catch (error) {
+        console.error('メンバー更新エラー:', error);
+        showNotification('サーバーエラーが発生しました', 'error');
+    }
 }
 
 async function toggleAdminStatus(memberId, isAdmin) {

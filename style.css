@@ -3316,13 +3316,34 @@ section {
 .admin-member-email {
     font-size: 0.85rem;
     color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.admin-member-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+.admin-member-meta i {
+    color: var(--primary);
+    margin-right: 4px;
+}
+
+.admin-member-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .admin-toggle {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
+    gap: 5px;
+    font-size: 0.75rem;
     color: var(--text-muted);
 }
 
@@ -3645,8 +3666,10 @@ section {
 }
 
 /* イベント編集フォーム */
-.event-edit-form {
+.event-edit-form,
+.member-edit-form {
     margin-top: 20px;
+    max-width: 900px;
 }
 
 /* メッセージ機能 */
