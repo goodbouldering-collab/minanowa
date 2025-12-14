@@ -1334,6 +1334,8 @@ section {
     overflow: hidden;
     box-shadow: var(--shadow-2xl);
     transition: all 0.4s ease;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary-light) 100%);
+    min-height: 300px;
 }
 
 .about-image-card:hover {
@@ -1344,6 +1346,8 @@ section {
 .about-image-card img {
     width: 100%;
     height: auto;
+    min-height: 300px;
+    object-fit: cover;
     display: block;
     transition: transform 0.4s ease;
 }
