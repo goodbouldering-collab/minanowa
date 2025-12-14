@@ -2348,10 +2348,51 @@ function showEventEditor(event = null) {
                            value="${event?.capacity || 30}" min="1" max="500">
                 </div>
                 <div class="form-group">
-                    <label for="eventFee">参加費（円）</label>
-                    <input type="number" id="eventFee" name="fee" class="glass-input"
-                           value="${event?.fee || 0}" min="0">
+                    <label for="eventFee">参加費</label>
+                    <input type="text" id="eventFee" name="fee" class="glass-input"
+                           value="${event?.fee || ''}" placeholder="例：3,000円＋持ち寄り一品 / 4,000円">
                 </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventFeeDetails">参加費詳細</label>
+                <textarea id="eventFeeDetails" name="feeDetails" class="glass-input" rows="2"
+                          placeholder="持ち寄り一品の例や詳細説明...">${event?.feeDetails || ''}</textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="eventCashback">キャッシュバック特典</label>
+                    <input type="text" id="eventCashback" name="cashback" class="glass-input"
+                           value="${event?.cashback || ''}" placeholder="例：新規お連れ様1人につき500円">
+                </div>
+                <div class="form-group">
+                    <label for="eventFreeEntry">無料参加条件</label>
+                    <input type="text" id="eventFreeEntry" name="freeEntry" class="glass-input"
+                           value="${event?.freeEntry || ''}" placeholder="例：体験会のみ参加は無料">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventFormUrl">応募フォームURL</label>
+                <input type="url" id="eventFormUrl" name="formUrl" class="glass-input"
+                       value="${event?.formUrl || ''}" placeholder="https://forms.google.com/...">
+            </div>
+            
+            <div class="form-group">
+                <label for="eventNotes">備考</label>
+                <input type="text" id="eventNotes" name="notes" class="glass-input"
+                       value="${event?.notes || ''}" placeholder="搬入・撤収時間など">
+            </div>
+            
+            <div class="form-group">
+                <label for="eventTimetable">タイムテーブル（1行1項目：時間 活動内容）</label>
+                <textarea id="eventTimetable" name="timetable" class="glass-input" rows="6"
+                          placeholder="12:00 開会・フリートーク
+12:30 1分自己紹介（希望者のみ）
+13:00 名刺交換・事業体験
+14:00 お悩み相談・シェア会
+15:00 閉会">${event?.timetable ? event.timetable.map(t => `${t.time} ${t.activity}`).join('\n') : ''}</textarea>
             </div>
             
             <div class="form-row">
@@ -2406,6 +2447,19 @@ async function saveEvent(event) {
     
     const form = event.target;
     
+    // タイムテーブルをパース
+    const timetableText = form.timetable.value.trim();
+    const timetable = timetableText ? timetableText.split('\n').map(line => {
+        const parts = line.trim().split(/\s+/);
+        if (parts.length >= 2) {
+            return {
+                time: parts[0],
+                activity: parts.slice(1).join(' ')
+            };
+        }
+        return null;
+    }).filter(t => t !== null) : [];
+    
     const eventData = {
         title: form.title.value,
         date: form.date.value,
@@ -2413,7 +2467,13 @@ async function saveEvent(event) {
         location: form.location.value,
         description: form.description.value,
         capacity: parseInt(form.capacity.value) || 30,
-        fee: parseInt(form.fee.value) || 0,
+        fee: form.fee.value,
+        feeDetails: form.feeDetails.value,
+        cashback: form.cashback.value,
+        freeEntry: form.freeEntry.value,
+        formUrl: form.formUrl.value,
+        notes: form.notes.value,
+        timetable: timetable,
         image: form.image.value,
         status: form.status.value,
         sessionId: sessionId

@@ -1036,7 +1036,7 @@ app.get('/api/admin/events', checkAdmin, (req, res) => {
 
 // 管理者: イベント作成
 app.post('/api/admin/events', checkAdmin, (req, res) => {
-    const { title, date, time, location, description, capacity, fee, image, status } = req.body;
+    const { title, date, time, location, description, capacity, fee, feeDetails, cashback, freeEntry, formUrl, notes, timetable, image, status } = req.body;
     
     if (!title || !date) {
         return res.status(400).json({ success: false, message: 'タイトルと日付は必須です' });
@@ -1046,7 +1046,7 @@ app.post('/api/admin/events', checkAdmin, (req, res) => {
     if (!appData.events) appData.events = [];
     
     const newEvent = {
-        id: uuidv4(),
+        id: `event-${Date.now()}`,
         title,
         date,
         time: time || '',
@@ -1054,7 +1054,13 @@ app.post('/api/admin/events', checkAdmin, (req, res) => {
         description: description || '',
         capacity: capacity || 30,
         attendees: [],
-        fee: fee || 0,
+        fee: fee || '',
+        feeDetails: feeDetails || '',
+        cashback: cashback || '',
+        freeEntry: freeEntry || '',
+        formUrl: formUrl || '',
+        notes: notes || '',
+        timetable: timetable || [],
         status: status || 'upcoming',
         image: image || '',
         createdAt: new Date().toISOString()
