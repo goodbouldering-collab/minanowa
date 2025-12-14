@@ -23,7 +23,7 @@
         "商品開発"
       ],
       "joinDate": "2024-01-15",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     },
     {
@@ -50,7 +50,7 @@
         "IT研修"
       ],
       "joinDate": "2024-02-20",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     },
     {
@@ -75,7 +75,7 @@
         "商品企画"
       ],
       "joinDate": "2024-03-10",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     },
     {
@@ -126,7 +126,7 @@
         "リノベーション"
       ],
       "joinDate": "2024-05-12",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     },
     {
@@ -152,7 +152,7 @@
         "イベント企画"
       ],
       "joinDate": "2024-06-01",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     },
     {
@@ -208,7 +208,7 @@
         "商品撮影"
       ],
       "joinDate": "2024-07-15",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     },
     {
@@ -261,7 +261,7 @@
         "直売"
       ],
       "joinDate": "2024-09-05",
-      "isPublic": true,
+      "isPublic": false,
       "isAdmin": false
     }
   ],

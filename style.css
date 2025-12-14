@@ -1106,13 +1106,13 @@ ul {
    セクション共通
    ============================================ */
 section {
-    padding: 80px 0;
+    padding: 40px 0;
     position: relative;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .section-tag {
@@ -1140,8 +1140,9 @@ section {
 .event-nav-top {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .event-nav-btn-top {
@@ -1184,7 +1185,7 @@ section {
    ============================================ */
 .about-section {
     background: var(--bg-primary);
-    padding: 60px 0;
+    padding: 40px 0;
 }
 
 .about-intro {
@@ -1922,8 +1923,8 @@ section {
 }
 
 .search-panel {
-    padding: 35px;
-    margin-bottom: 40px;
+    padding: 25px;
+    margin-bottom: 25px;
 }
 
 .search-main {
@@ -2073,7 +2074,7 @@ section {
 .members-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+    gap: 20px;
 }
 
 .member-card {
@@ -2461,7 +2462,7 @@ section {
 .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 30px;
+    gap: 20px;
 }
 
 .blog-card {
@@ -4365,7 +4366,7 @@ section {
 .event-slider-container {
     position: relative;
     max-width: 1000px;
-    margin: 50px auto;
+    margin: 20px auto;
 }
 
 .event-card-wrapper {
@@ -4374,15 +4375,18 @@ section {
 
 .event-card {
     background: var(--white);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-2xl);
-    overflow: hidden;
-    transition: all 0.4s ease;
+    border-radius: 16px;
+    border: 2px solid rgba(45, 90, 39, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: visible;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
 .event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(45, 90, 39, 0.2);
+    border-color: var(--primary);
 }
 
 .event-card-image {
@@ -4425,11 +4429,11 @@ section {
 }
 
 .event-card-content {
-    padding: 40px;
+    padding: 30px;
 }
 
 .event-card-header {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .event-date-info {
@@ -4444,12 +4448,12 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 140px;
-    padding: 20px 15px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: var(--radius-lg);
+    min-width: 110px;
+    padding: 16px 12px;
+    background: linear-gradient(135deg, #2d5a27, #ff6b6b);
+    border-radius: 12px;
     color: var(--white);
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 6px 20px rgba(45, 90, 39, 0.3);
 }
 
 /* しおりデザイン */
@@ -4599,18 +4603,18 @@ section {
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 2px solid var(--primary-light);
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(45, 90, 39, 0.15);
 }
 
 .event-info-item {
-    padding: 12px 0;
+    padding: 10px 0;
     background: transparent;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
 }
 
 .event-info-item:last-child {
