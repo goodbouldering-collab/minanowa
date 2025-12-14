@@ -4380,27 +4380,70 @@ section {
 }
 
 .event-date-large {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 100px;
-    padding: 15px;
+    min-width: 140px;
+    padding: 20px 15px;
     background: linear-gradient(135deg, var(--primary), var(--accent));
     border-radius: var(--radius-lg);
     color: var(--white);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
-.date-day {
-    font-size: 3rem;
-    font-weight: 800;
-    line-height: 1;
+/* しおりデザイン */
+.event-date-large::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 8px solid var(--primary);
+}
+
+.event-date-large::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 15px;
+    background: var(--white);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    opacity: 0.3;
+}
+
+.date-year {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    opacity: 0.9;
 }
 
 .date-month {
     font-size: 1rem;
     font-weight: 600;
-    margin-top: 5px;
+    line-height: 1.4;
+}
+
+.date-day {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.date-weekday {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    opacity: 0.9;
 }
 
 .event-meta {

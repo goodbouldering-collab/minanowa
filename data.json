@@ -406,6 +406,47 @@
   ],
   "events": [
     {
+      "id": "event-20251203",
+      "title": "第22回 みんなのWA 彦根 異業種交流会",
+      "date": "2025-12-03",
+      "time": "12:00〜15:00",
+      "location": "彦根市高宮町1410 ハウスセレクション内 デスミさん展示場",
+      "description": "年内最後の異業種交流会！フリートーク形式で人脈を広げ、新しいビジネスチャンスを見つけましょう。お友達もお誘い合わせの上、ぜひご参加ください😌",
+      "capacity": 50,
+      "attendees": [],
+      "fee": "3,000円＋持ち寄り一品 / 4,000円",
+      "feeDetails": "持ち寄り一品の例：お菓子、マクド、手作り料理、からあげ、アイス、自社商品など（人数分でなくてもOK👌）",
+      "cashback": "新規お連れ様1人につき500円キャッシュバック（上限なし）",
+      "freeEntry": "体験会のみ参加は無料",
+      "status": "completed",
+      "image": "",
+      "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "notes": "搬入: 12:00〜 / 完全撤収: 16:00 / 体験ブース・出店可能（交流会代金+1000円）",
+      "timetable": [
+        {
+          "time": "12:00",
+          "activity": "開会・フリートーク"
+        },
+        {
+          "time": "12:30",
+          "activity": "1分自己紹介（希望者のみ）"
+        },
+        {
+          "time": "13:00",
+          "activity": "名刺交換・事業体験"
+        },
+        {
+          "time": "14:00",
+          "activity": "お悩み相談・シェア会"
+        },
+        {
+          "time": "15:00",
+          "activity": "閉会"
+        }
+      ],
+      "createdAt": "2025-11-20T00:00:00.000Z"
+    },
+    {
       "id": "event-20260107",
       "title": "第23回 みんなのWA 彦根 異業種交流会",
       "date": "2026-01-07",
@@ -445,51 +486,6 @@
         }
       ],
       "createdAt": "2025-12-07T13:15:00.000Z"
-    },
-    {
-      "id": "event-20251220",
-      "title": "第24回 みんなのWA 長浜交流会",
-      "date": "2025-12-20",
-      "time": "18:00〜20:30",
-      "location": "長浜市 まちづくりセンター 多目的ホール",
-      "description": "年末特別企画！長浜エリアでの初開催です。\n\n今年最後の交流会として、長浜市で活動する事業者の皆さまとの交流の機会を設けます。",
-      "capacity": 40,
-      "attendees": [],
-      "fee": "3,000円＋持ち寄り一品 または 4,000円",
-      "feeDetails": "3,000円＋持ち寄り一品（飲み物・お菓子など）\nまたは\n4,000円（持ち寄りなし）",
-      "cashback": "新規お連れ様 500円キャッシュバック",
-      "freeEntry": "体験参加無料（初回限定）",
-      "status": "upcoming",
-      "image": "",
-      "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
-      "notes": "長浜での初開催です！",
-      "timetable": [
-        {
-          "time": "18:00",
-          "activity": "開会・受付開始"
-        },
-        {
-          "time": "18:15",
-          "activity": "自己紹介タイム"
-        },
-        {
-          "time": "18:45",
-          "activity": "フリートーク・名刺交換"
-        },
-        {
-          "time": "19:30",
-          "activity": "事業紹介・ビジネスマッチング"
-        },
-        {
-          "time": "20:15",
-          "activity": "次回案内・閉会挨拶"
-        },
-        {
-          "time": "20:30",
-          "activity": "閉会"
-        }
-      ],
-      "createdAt": "2025-11-20T10:00:00.000Z"
     }
   ],
   "pastEvents": [

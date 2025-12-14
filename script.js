@@ -2794,8 +2794,11 @@ function renderEventCard(index) {
     const isUpcoming = event.status === 'upcoming';
     
     const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+    const year = eventDate.getFullYear();
     const month = monthNames[eventDate.getMonth()];
     const day = eventDate.getDate();
+    const weekday = weekdayNames[eventDate.getDay()];
     
 //     document.getElementById('eventImage').src = event.image || 'https://via.placeholder.com/1200x600?text=Event';
 //     document.getElementById('eventImage').alt = event.title;
@@ -2809,8 +2812,10 @@ function renderEventCard(index) {
         statusBadge.className = 'event-status-badge upcoming';
     }
     
-    document.getElementById('eventDay').textContent = day;
+    document.getElementById('eventYear').textContent = year;
     document.getElementById('eventMonth').textContent = month;
+    document.getElementById('eventDay').textContent = `${day}日`;
+    document.getElementById('eventWeekday').textContent = `(${weekday})`;
     document.getElementById('eventTitle').textContent = event.title;
     document.getElementById('eventTime').textContent = event.time || '時間未定';
     document.getElementById('eventLocation').textContent = event.location || '場所未定';
