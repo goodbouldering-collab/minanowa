@@ -13,15 +13,8 @@
       "avatar": "https://i.pravatar.cc/200?img=1",
       "location": "彦根市",
       "website": "https://example.com",
-      "sns": {
-        "twitter": "@tanaka_soap",
-        "instagram": "tanaka_handmade"
-      },
-      "skills": [
-        "石鹸づくり",
-        "ワークショップ運営",
-        "商品開発"
-      ],
+      "sns": {"twitter": "@tanaka_soap", "instagram": "tanaka_handmade"},
+      "skills": ["石鹸づくり", "ワークショップ運営", "商品開発"],
       "joinDate": "2024-01-15",
       "isPublic": true,
       "isAdmin": false
@@ -39,16 +32,8 @@
       "avatar": "https://i.pravatar.cc/200?img=13",
       "location": "彦根市",
       "website": "https://example.com",
-      "sns": {
-        "twitter": "@suzuki_it",
-        "facebook": "suzuki.kenta"
-      },
-      "skills": [
-        "DX推進",
-        "Web制作",
-        "システム開発",
-        "IT研修"
-      ],
+      "sns": {"twitter": "@suzuki_it", "facebook": "suzuki.kenta"},
+      "skills": ["DX推進", "Web制作", "システム開発", "IT研修"],
       "joinDate": "2024-02-20",
       "isPublic": true,
       "isAdmin": false
@@ -66,14 +51,8 @@
       "avatar": "https://i.pravatar.cc/200?img=14",
       "location": "彦根市",
       "website": "",
-      "sns": {
-        "instagram": "sato_wagashi"
-      },
-      "skills": [
-        "和菓子製造",
-        "伝統技術",
-        "商品企画"
-      ],
+      "sns": {"instagram": "sato_wagashi"},
+      "skills": ["和菓子製造", "伝統技術", "商品企画"],
       "joinDate": "2024-03-10",
       "isPublic": true,
       "isAdmin": false
@@ -91,15 +70,8 @@
       "avatar": "https://i.pravatar.cc/200?img=5",
       "location": "米原市",
       "website": "https://example.com",
-      "sns": {
-        "twitter": "@yamada_illust",
-        "instagram": "yamada_art"
-      },
-      "skills": [
-        "イラスト",
-        "ロゴデザイン",
-        "チラシ制作"
-      ],
+      "sns": {"twitter": "@yamada_illust", "instagram": "yamada_art"},
+      "skills": ["イラスト", "ロゴデザイン", "チラシ制作"],
       "joinDate": "2024-04-05",
       "isPublic": true,
       "isAdmin": false
@@ -117,14 +89,8 @@
       "avatar": "https://i.pravatar.cc/200?img=12",
       "location": "彦根市",
       "website": "https://example.com",
-      "sns": {
-        "facebook": "ito.daisuke.arch"
-      },
-      "skills": [
-        "建築設計",
-        "エコ住宅",
-        "リノベーション"
-      ],
+      "sns": {"facebook": "ito.daisuke.arch"},
+      "skills": ["建築設計", "エコ住宅", "リノベーション"],
       "joinDate": "2024-05-12",
       "isPublic": true,
       "isAdmin": false
@@ -142,15 +108,8 @@
       "avatar": "https://i.pravatar.cc/200?img=47",
       "location": "長浜市",
       "website": "https://example.com",
-      "sns": {
-        "instagram": "watanabe_cafe",
-        "twitter": "@mari_cafe"
-      },
-      "skills": [
-        "カフェ経営",
-        "オーガニック料理",
-        "イベント企画"
-      ],
+      "sns": {"instagram": "watanabe_cafe", "twitter": "@mari_cafe"},
+      "skills": ["カフェ経営", "オーガニック料理", "イベント企画"],
       "joinDate": "2024-06-01",
       "isPublic": true,
       "isAdmin": false
@@ -168,16 +127,8 @@
       "avatar": "https://i.pravatar.cc/200?img=68",
       "location": "彦根市",
       "website": "https://minanowa.com",
-      "sns": {
-        "twitter": "@nakamura_npo",
-        "facebook": "nakamura.seiichi"
-      },
-      "skills": [
-        "地域活性化",
-        "組織運営",
-        "人材育成",
-        "イベント企画"
-      ],
+      "sns": {"twitter": "@nakamura_npo", "facebook": "nakamura.seiichi"},
+      "skills": ["地域活性化", "組織運営", "人材育成", "イベント企画"],
       "joinDate": "2023-01-01",
       "isPublic": true,
       "isAdmin": true
@@ -195,16 +146,8 @@
       "avatar": "https://i.pravatar.cc/200?img=15",
       "location": "彦根市",
       "website": "https://example.com",
-      "sns": {
-        "instagram": "kimura_photo",
-        "facebook": "kimura.kenji"
-      },
-      "skills": [
-        "写真撮影",
-        "動画編集",
-        "イベント撮影",
-        "商品撮影"
-      ],
+      "sns": {"instagram": "kimura_photo", "facebook": "kimura.kenji"},
+      "skills": ["写真撮影", "動画編集", "イベント撮影", "商品撮影"],
       "joinDate": "2024-07-15",
       "isPublic": true,
       "isAdmin": false
@@ -222,16 +165,8 @@
       "avatar": "https://i.pravatar.cc/200?img=32",
       "location": "米原市",
       "website": "https://example.com",
-      "sns": {
-        "twitter": "@takahashi_english",
-        "instagram": "misaki_english"
-      },
-      "skills": [
-        "英語教育",
-        "TOEIC対策",
-        "ビジネス英語",
-        "子供英語"
-      ],
+      "sns": {"twitter": "@takahashi_english", "instagram": "misaki_english"},
+      "skills": ["英語教育", "TOEIC対策", "ビジネス英語", "子供英語"],
       "joinDate": "2024-08-20",
       "isPublic": true,
       "isAdmin": false
@@ -249,15 +184,8 @@
       "avatar": "https://i.pravatar.cc/200?img=33",
       "location": "長浜市",
       "website": "",
-      "sns": {
-        "instagram": "matsumoto_farm"
-      },
-      "skills": [
-        "有機農業",
-        "食品加工",
-        "商品開発",
-        "直売"
-      ],
+      "sns": {"instagram": "matsumoto_farm"},
+      "skills": ["有機農業", "食品加工", "商品開発", "直売"],
       "joinDate": "2024-09-05",
       "isPublic": true,
       "isAdmin": false
@@ -275,12 +203,7 @@
       "authorName": "田中 美香",
       "authorAvatar": "https://i.pravatar.cc/200?img=1",
       "category": "商品開発",
-      "tags": [
-        "石鹸",
-        "新商品",
-        "柚子",
-        "ハンドメイド"
-      ],
+      "tags": ["石鹸", "新商品", "柚子", "ハンドメイド"],
       "featuredImage": "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&q=80",
       "publishedAt": "2024-11-28T10:00:00Z",
       "updatedAt": "2024-11-28T10:00:00Z",
@@ -298,12 +221,7 @@
       "authorName": "鈴木 健太",
       "authorAvatar": "https://i.pravatar.cc/200?img=13",
       "category": "地域DX",
-      "tags": [
-        "DX",
-        "デジタル化",
-        "伝統産業",
-        "IT支援"
-      ],
+      "tags": ["DX", "デジタル化", "伝統産業", "IT支援"],
       "featuredImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
       "publishedAt": "2024-11-27T14:00:00Z",
       "updatedAt": "2024-11-27T14:00:00Z",
@@ -321,12 +239,7 @@
       "authorName": "佐藤 和也",
       "authorAvatar": "https://i.pravatar.cc/200?img=14",
       "category": "伝統工芸",
-      "tags": [
-        "和菓子",
-        "伝統",
-        "季節",
-        "抹茶"
-      ],
+      "tags": ["和菓子", "伝統", "季節", "抹茶"],
       "featuredImage": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&q=80",
       "publishedAt": "2024-11-26T09:00:00Z",
       "updatedAt": "2024-11-26T09:00:00Z",
@@ -344,12 +257,7 @@
       "authorName": "中村 誠一",
       "authorAvatar": "https://i.pravatar.cc/200?img=68",
       "category": "コラボ事例",
-      "tags": [
-        "コラボ",
-        "商品開発",
-        "地域活性",
-        "お土産"
-      ],
+      "tags": ["コラボ", "商品開発", "地域活性", "お土産"],
       "featuredImage": "https://images.unsplash.com/photo-1549388604-817d0e85c6db?w=800&q=80",
       "publishedAt": "2024-12-01T10:00:00Z",
       "updatedAt": "2024-12-01T10:00:00Z",
@@ -367,12 +275,7 @@
       "authorName": "中村 誠一",
       "authorAvatar": "https://i.pravatar.cc/200?img=68",
       "category": "イベントレポート",
-      "tags": [
-        "交流会",
-        "レポート",
-        "記念",
-        "ネットワーク"
-      ],
+      "tags": ["交流会", "レポート", "記念", "ネットワーク"],
       "featuredImage": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
       "publishedAt": "2024-10-08T15:00:00Z",
       "updatedAt": "2024-10-08T15:00:00Z",
@@ -390,12 +293,7 @@
       "authorName": "中村 誠一",
       "authorAvatar": "https://i.pravatar.cc/200?img=68",
       "category": "成功事例",
-      "tags": [
-        "カフェ",
-        "起業",
-        "成功事例",
-        "オーガニック"
-      ],
+      "tags": ["カフェ", "起業", "成功事例", "オーガニック"],
       "featuredImage": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
       "publishedAt": "2024-11-15T11:00:00Z",
       "updatedAt": "2024-11-15T11:00:00Z",
@@ -407,42 +305,30 @@
   "events": [
     {
       "id": "event-20260107",
-      "title": "みんなのWA 彦根 異業種交流会",
+      "title": "第23回 みんなのWA 彦根交流会",
       "date": "2026-01-07",
       "time": "12:00〜15:00",
       "location": "彦根市高宮町1410 ハウスセレクション内 デスミさん展示場",
-      "description": "新年最初の異業種交流会！フリートーク形式で人脈を広げ、新しいビジネスチャンスを見つけましょう。お友達もお誘い合わせの上、ぜひご参加ください😌",
+      "description": "新年最初の交流会です！ぜひお友達もお誘い合わせの上ご参加ください😌‼️\n\nフリートーク式での人脈作り、参加者同士の名刺・連絡先交換、それぞれの事業の説明や体験会を行います。",
       "capacity": 50,
       "attendees": [],
-      "fee": "3,000円＋持ち寄り一品 / 4,000円",
-      "feeDetails": "持ち寄り一品の例：お菓子、マクド、手作り料理、からあげ、アイス、自社商品など（人数分でなくてもOK👌）",
-      "cashback": "新規お連れ様1人につき500円キャッシュバック（上限なし）",
-      "freeEntry": "体験会のみ参加は無料",
+      "fee": "3,000円＋持ち寄り一品 または 4,000円",
+      "feeDetails": "3,000円＋持ち寄り一品（お菓子、マクドのポテトやナゲット、手作り料理、からあげ、アイス、自社商品など。人数分でなくてもOK👌）\nまたは\n4,000円（持ち寄りなし）",
+      "cashback": "新規お連れ様 500円キャッシュバック（上限人数なし）",
+      "freeEntry": "体験会のみ参加は参加費不要",
       "status": "upcoming",
       "image": "",
       "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
-      "notes": "搬入: 11:00〜 / 完全撤収: 16:00",
+      "notes": "搬入可能: 11:00〜、完全撤収: 16:00",
       "timetable": [
-        {
-          "time": "12:00",
-          "activity": "開会・フリートーク"
-        },
-        {
-          "time": "12:30",
-          "activity": "1分自己紹介（希望者のみ）"
-        },
-        {
-          "time": "13:00",
-          "activity": "名刺交換・事業体験"
-        },
-        {
-          "time": "14:00",
-          "activity": "お悩み相談・シェア会"
-        },
-        {
-          "time": "15:00",
-          "activity": "閉会"
-        }
+        {"time": "11:00", "activity": "搬入可能"},
+        {"time": "12:00", "activity": "開会・フリートーク開始"},
+        {"time": "12:30", "activity": "1分自己紹介（希望者のみ、当日参加OK）"},
+        {"time": "13:00", "activity": "名刺交換・事業体験・フリートーク"},
+        {"time": "14:00", "activity": "お悩み相談・シェア会"},
+        {"time": "14:45", "activity": "次回案内・閉会挨拶"},
+        {"time": "15:00", "activity": "閉会"},
+        {"time": "16:00", "activity": "完全撤収"}
       ],
       "createdAt": "2025-12-07T13:15:00.000Z"
     },
@@ -464,30 +350,12 @@
       "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
       "notes": "長浜での初開催です！",
       "timetable": [
-        {
-          "time": "18:00",
-          "activity": "開会・受付開始"
-        },
-        {
-          "time": "18:15",
-          "activity": "自己紹介タイム"
-        },
-        {
-          "time": "18:45",
-          "activity": "フリートーク・名刺交換"
-        },
-        {
-          "time": "19:30",
-          "activity": "事業紹介・ビジネスマッチング"
-        },
-        {
-          "time": "20:15",
-          "activity": "次回案内・閉会挨拶"
-        },
-        {
-          "time": "20:30",
-          "activity": "閉会"
-        }
+        {"time": "18:00", "activity": "開会・受付開始"},
+        {"time": "18:15", "activity": "自己紹介タイム"},
+        {"time": "18:45", "activity": "フリートーク・名刺交換"},
+        {"time": "19:30", "activity": "事業紹介・ビジネスマッチング"},
+        {"time": "20:15", "activity": "次回案内・閉会挨拶"},
+        {"time": "20:30", "activity": "閉会"}
       ],
       "createdAt": "2025-11-20T10:00:00.000Z"
     }

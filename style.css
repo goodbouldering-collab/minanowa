@@ -4494,29 +4494,45 @@ section {
 }
 
 .event-info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid var(--primary-light);
 }
 
 .event-info-item {
-    padding: 15px;
-    background: var(--bg-primary);
-    border-radius: var(--radius-md);
+    padding: 12px 0;
+    background: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
+}
+
+.event-info-item:last-child {
+    border-bottom: none;
 }
 
 .event-info-item i {
     color: var(--primary);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    margin-top: 2px;
+    flex-shrink: 0;
 }
 
 .event-info-item span {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.event-info-item strong {
+    color: var(--text-primary);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
 }
 
 .event-info-item.timetable-section {
@@ -4529,21 +4545,18 @@ section {
 }
 
 .timetable-item {
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-color);
+    padding: 6px 0;
     font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-.timetable-item:last-child {
-    border-bottom: none;
+    line-height: 1.8;
+    display: flex;
+    gap: 15px;
 }
 
 .timetable-item strong {
     color: var(--primary);
-    margin-right: 10px;
-    display: inline-block;
-    min-width: 90px;
+    font-weight: 700;
+    min-width: 60px;
+    flex-shrink: 0;
 }
 
 .event-card-footer {
