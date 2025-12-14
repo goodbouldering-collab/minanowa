@@ -2166,6 +2166,7 @@ function renderAdminMembers(members) {
                         <div class="admin-member-name">
                             ${member.name}
                             ${member.isAdmin ? '<span class="admin-badge">管理者</span>' : ''}
+                            ${!member.isPublic ? '<span class="admin-badge" style="background: var(--text-muted)">非公開</span>' : ''}
                         </div>
                         <div class="admin-member-email">${member.email}</div>
                         <div class="admin-member-meta">
@@ -2178,12 +2179,23 @@ function renderAdminMembers(members) {
                             <i class="fas fa-edit"></i> 編集
                         </button>
                         <div class="admin-toggle">
+                            <label>公開</label>
+                            <input type="checkbox" 
+                                   ${member.isPublic ? 'checked' : ''}
+                                   onchange="toggleMemberPublic('${member.id}', this.checked)">
+                        </div>
+                        <div class="admin-toggle">
                             <label>管理者</label>
                             <input type="checkbox" 
                                    ${member.isAdmin ? 'checked' : ''} 
                                    ${member.id === currentUser.id ? 'disabled' : ''}
                                    onchange="toggleAdminStatus('${member.id}', this.checked)">
                         </div>
+                        <button class="btn-delete" 
+                                ${member.id === currentUser.id ? 'disabled' : ''}
+                                onclick="deleteMember('${member.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             `).join('')}
@@ -2381,6 +2393,32 @@ async function saveMemberProfile(event, memberId) {
     }
 }
 
+async function toggleMemberPublic(memberId, isPublic) {
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/members/${memberId}`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId
+            },
+            body: JSON.stringify({ isPublic, sessionId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification(`プロフィールを${isPublic ? '公開' : '非公開'}にしました`, 'success');
+        } else {
+            showNotification(data.message || '更新に失敗しました', 'error');
+            loadAdminMembers();
+        }
+    } catch (error) {
+        console.error('公開状態更新エラー:', error);
+        showNotification('サーバーエラーが発生しました', 'error');
+        loadAdminMembers();
+    }
+}
+
 async function toggleAdminStatus(memberId, isAdmin) {
     try {
         const response = await fetch(`${API_BASE}/api/admin/members/${memberId}/admin`, {
@@ -2398,12 +2436,37 @@ async function toggleAdminStatus(memberId, isAdmin) {
             showNotification(`管理者権限を${isAdmin ? '付与' : '解除'}しました`, 'success');
         } else {
             showNotification(data.message || '更新に失敗しました', 'error');
-            loadAdminMembers(); // 失敗時はリロード
+            loadAdminMembers();
         }
     } catch (error) {
         console.error('管理者権限更新エラー:', error);
         showNotification('サーバーエラーが発生しました', 'error');
         loadAdminMembers();
+    }
+}
+
+async function deleteMember(memberId) {
+    if (!confirm('このメンバーを削除しますか？\nこの操作は取り消せません。')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/members/${memberId}`, {
+            method: 'DELETE',
+            headers: { 'x-session-id': sessionId }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('メンバーを削除しました', 'success');
+            loadAdminMembers();
+        } else {
+            showNotification(data.message || '削除に失敗しました', 'error');
+        }
+    } catch (error) {
+        console.error('メンバー削除エラー:', error);
+        showNotification('サーバーエラーが発生しました', 'error');
     }
 }
 
