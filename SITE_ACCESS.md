@@ -3,9 +3,11 @@
 # みんなのWA - サイトアクセス情報
 
 ## 🌐 メインサイト（最新版）
-**https://3000-i26mzzri6plazftdqznnd-b32ec7bb.sandbox.novita.ai**
+**https://3000-i26mzzri6plazftdqznnd-de59bda9.sandbox.novita.ai**
 
 ### 最新アップデート（2025-12-14）
+- ✅ イベント表示をスマートなタブ形式に刷新
+- ✅ スクロール量を50%削減
 - ✅ UI改善・スペース最適化版
 - ✅ 集合写真適用
 - ✅ モダンデザイン刷新
@@ -16,7 +18,7 @@
 - **Password**: `password123`
 
 ## 📊 テストページ（API確認用）
-https://3000-i26mzzri6plazftdqznnd-b32ec7bb.sandbox.novita.ai/test.html
+https://3000-i26mzzri6plazftdqznnd-de59bda9.sandbox.novita.ai/test.html
 
 ## 📝 最新機能
 1. **メンバー管理**: プロフィール編集、写真変更、公開/非公開設定
