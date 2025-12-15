@@ -1590,8 +1590,255 @@ section {
    交流会セクション
    ============================================ */
 .event-section {
-    padding: 80px 0;
+    padding: 40px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* イベントタブナビゲーション */
+.event-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0 20px;
+    flex-wrap: wrap;
+}
+
+.event-tab {
+    padding: 12px 30px;
+    background: var(--white);
+    border: 2px solid rgba(45, 90, 39, 0.2);
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.event-tab:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
+}
+
+.event-tab.active {
+    background: linear-gradient(135deg, var(--primary), #1a4d1a);
+    border-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 4px 16px rgba(45, 90, 39, 0.3);
+}
+
+.event-tab i {
+    font-size: 1.1rem;
+}
+
+/* イベントコンテンツラッパー */
+.event-content-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* コンパクトなイベントカード */
+.event-compact-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid rgba(45, 90, 39, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.event-compact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(45, 90, 39, 0.15);
+    border-color: var(--primary);
+}
+
+/* イベントヘッダー（コンパクト） */
+.event-compact-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.05), rgba(255, 107, 107, 0.05));
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.event-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 12px;
+    color: var(--white);
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+}
+
+.event-date-badge .month-day {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.event-date-badge .year-weekday {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+.event-compact-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.event-compact-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.event-compact-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.event-compact-meta i {
+    color: var(--primary);
+    margin-right: 5px;
+}
+
+.event-status-inline {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.event-status-inline.upcoming {
+    background: rgba(45, 90, 39, 0.1);
+    color: var(--primary);
+}
+
+.event-status-inline.completed {
+    background: rgba(100, 100, 100, 0.1);
+    color: #666;
+}
+
+/* イベント詳細（アコーディオン） */
+.event-details {
+    padding: 0 25px 20px;
+}
+
+.event-detail-section {
+    margin-bottom: 15px;
+}
+
+.event-detail-section h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.event-detail-section h4 i {
+    font-size: 1rem;
+}
+
+.event-detail-content {
+    padding-left: 24px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.event-detail-list {
+    list-style: none;
+    padding: 0;
+}
+
+.event-detail-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.event-detail-list li:last-child {
+    border-bottom: none;
+}
+
+.event-detail-list strong {
+    color: var(--text-primary);
+    font-weight: 600;
+    display: inline-block;
+    min-width: 100px;
+}
+
+/* タイムテーブル（コンパクト） */
+.timetable-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.timetable-compact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(45, 90, 39, 0.05);
+    border-radius: 8px;
+}
+
+.timetable-compact-item .time {
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 50px;
+}
+
+.timetable-compact-item .activity {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* アクションボタン */
+.event-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--primary), #1a4d1a);
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
+}
+
+.event-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 90, 39, 0.4);
+    background: linear-gradient(135deg, #1a4d1a, var(--primary));
 }
 
 .event-section-old {
@@ -4811,4 +5058,51 @@ section {
 /* イベントカード画像を非表示 */
 .event-card-image {
     display: none !important;
+}
+
+/* レスポンシブ対応 - イベントタブ */
+@media (max-width: 768px) {
+    .event-tabs {
+        gap: 8px;
+    }
+    
+    .event-tab {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+    }
+    
+    .event-tab .tab-label {
+        display: none;
+    }
+    
+    .event-tab i {
+        font-size: 1.2rem;
+    }
+    
+    .event-compact-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .event-date-badge {
+        min-width: 100%;
+    }
+    
+    .event-compact-title {
+        font-size: 1.2rem;
+    }
+    
+    .event-compact-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .timetable-compact {
+        grid-template-columns: 1fr;
+    }
+    
+    .event-details {
+        padding: 0 15px 15px;
+    }
 }

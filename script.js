@@ -3257,3 +3257,113 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAllEvents();
     }
 });
+
+// 新しいイベントタブ表示機能
+let currentEventTab = 0;
+
+function switchEventTab(index) {
+    currentEventTab = index;
+    
+    // タブのアクティブ状態を更新
+    document.querySelectorAll('.event-tab').forEach((tab, i) => {
+        if (i === index) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+    
+    // イベントコンテンツを表示
+    renderEventContent(index);
+}
+
+function renderEventContent(index) {
+    const wrapper = document.getElementById('eventContentWrapper');
+    if (!wrapper || !allEvents || allEvents.length === 0) return;
+    
+    const event = allEvents[index];
+    if (!event) return;
+    
+    const eventDate = new Date(event.date);
+    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+    const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = eventDate.getDate().toString().padStart(2, '0');
+    const weekday = weekdayNames[eventDate.getDay()];
+    const year = eventDate.getFullYear();
+    
+    const isCompleted = event.status === 'completed';
+    const statusText = isCompleted ? '開催済み' : '開催予定';
+    const statusClass = isCompleted ? 'completed' : 'upcoming';
+    
+    let html = `
+        <div class="event-compact-card">
+            <div class="event-compact-header">
+                <div class="event-date-badge">
+                    <div class="month-day">${month}/${day}</div>
+                    <div class="year-weekday">${year} (${weekday})</div>
+                </div>
+                <div class="event-compact-info">
+                    <h3 class="event-compact-title">
+                        ${event.title}
+                        <span class="event-status-inline ${statusClass}">${statusText}</span>
+                    </h3>
+                    <div class="event-compact-meta">
+                        <span><i class="fas fa-clock"></i> ${event.time || '時間未定'}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${event.location || '場所未定'}</span>
+                        ${event.capacity ? `<span><i class="fas fa-users"></i> 定員${event.capacity}名</span>` : ''}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="event-details">
+                ${event.description ? `
+                    <div class="event-detail-section">
+                        <h4><i class="fas fa-info-circle"></i> 内容</h4>
+                        <div class="event-detail-content">${event.description}</div>
+                    </div>
+                ` : ''}
+                
+                <div class="event-detail-section">
+                    <h4><i class="fas fa-ticket-alt"></i> 参加費・詳細</h4>
+                    <ul class="event-detail-list">
+                        ${event.fee ? `<li><strong>参加費:</strong> ${event.fee}</li>` : ''}
+                        ${event.feeDetails ? `<li><strong>詳細:</strong> ${event.feeDetails}</li>` : ''}
+                        ${event.cashback ? `<li><strong>特典:</strong> ${event.cashback}</li>` : ''}
+                        ${event.freeEntry ? `<li><strong>無料参加:</strong> ${event.freeEntry}</li>` : ''}
+                        ${event.notes ? `<li><strong>備考:</strong> ${event.notes}</li>` : ''}
+                    </ul>
+                </div>
+                
+                ${event.timetable && event.timetable.length > 0 ? `
+                    <div class="event-detail-section">
+                        <h4><i class="fas fa-calendar-check"></i> タイムテーブル</h4>
+                        <div class="timetable-compact">
+                            ${event.timetable.map(item => `
+                                <div class="timetable-compact-item">
+                                    <span class="time">${item.time}</span>
+                                    <span class="activity">${item.activity}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                ${event.formUrl ? `
+                    <a href="${event.formUrl}" target="_blank" class="event-action-btn">
+                        <i class="fas fa-edit"></i> 申し込みフォーム
+                    </a>
+                ` : ''}
+            </div>
+        </div>
+    `;
+    
+    wrapper.innerHTML = html;
+}
+
+// ページ読み込み時に最初のタブを表示
+document.addEventListener('DOMContentLoaded', () => {
+    if (allEvents && allEvents.length > 0) {
+        switchEventTab(0);
+    }
+});

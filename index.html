@@ -271,76 +271,27 @@
             <div class="section-header">
                 <span class="section-tag">Networking Events</span>
                 <h2 class="section-title">異業種交流会・イベント</h2>
-                <p class="section-subtitle">次回・過去の交流会をご覧ください</p>
-                
-                <!-- ナビゲーションボタン -->
-                <div class="event-nav-top">
-                    <button class="event-nav-btn-top prev" onclick="navigateEvent('prev')" aria-label="前のイベント">
-                        <i class="fas fa-chevron-left"></i> 前のイベント
-                    </button>
-                    <button class="event-nav-btn-top next" onclick="navigateEvent('next')" aria-label="次のイベント">
-                        次のイベント <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
             </div>
             
-            <div class="event-slider-container">
-                <div class="event-card-wrapper">
-                    <div class="event-card" id="currentEventCard">
-                        <div class="event-card-image">
-                            <img src="" alt="交流会の様子" id="eventImage">
-                            <div class="event-status-badge" id="eventStatusBadge"></div>
-                        </div>
-                        <div class="event-card-content">
-                            <div class="event-card-header">
-                                <div class="event-date-info">
-                                    <div class="event-date-large">
-                                        <span class="date-year" id="eventYear">2026</span>
-                                        <span class="date-month" id="eventMonth">1月</span>
-                                        <span class="date-day" id="eventDay">7日</span>
-                                        <span class="date-weekday" id="eventWeekday">(水)</span>
-                                    </div>
-                                    <div class="event-meta">
-                                        <h3 class="event-card-title" id="eventTitle">第22回 みんなのWA 彦根交流会</h3>
-                                        <div class="event-time-location">
-                                            <span><i class="fas fa-clock"></i> <span id="eventTime">12:00〜15:00</span></span>
-                                            <span><i class="fas fa-map-marker-alt"></i> <span id="eventLocation">彦根市</span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="event-card-body">
-                                <div class="event-description" id="eventDescription"></div>
-                                
-                                <div class="event-stats" id="eventStats"></div>
-                                
-                                <div class="event-report" id="eventReport" style="display:none;">
-                                    <h4><i class="fas fa-clipboard-check"></i> 開催報告</h4>
-                                    <p id="eventReportText"></p>
-                                </div>
-                                
-                                <div class="event-info-grid" id="eventInfoGrid"></div>
-                            </div>
-                            
-                            <div class="event-card-footer" id="eventCardFooter"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="event-timeline-indicator">
-                <button class="timeline-dot" onclick="jumpToEvent('past')" title="過去のイベント">
+            <!-- イベントタブナビゲーション -->
+            <div class="event-tabs">
+                <button class="event-tab active" data-index="0" onclick="switchEventTab(0)">
+                    <i class="fas fa-calendar-check"></i>
+                    <span class="tab-label">次回</span>
+                </button>
+                <button class="event-tab" data-index="1" onclick="switchEventTab(1)">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="tab-label">予定</span>
+                </button>
+                <button class="event-tab" data-index="2" onclick="switchEventTab(2)">
                     <i class="fas fa-history"></i>
+                    <span class="tab-label">過去</span>
                 </button>
-                <div class="timeline-line"></div>
-                <button class="timeline-dot active" onclick="jumpToEvent('current')" title="次回のイベント">
-                    <i class="fas fa-calendar-day"></i>
-                </button>
-                <div class="timeline-line"></div>
-                <button class="timeline-dot" onclick="jumpToEvent('future')" title="今後のイベント">
-                    <i class="fas fa-calendar-plus"></i>
-                </button>
+            </div>
+            
+            <!-- イベントコンテンツ -->
+            <div class="event-content-wrapper" id="eventContentWrapper">
+                <!-- JavaScriptで動的に生成 -->
             </div>
         </div>
     </section>
