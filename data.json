@@ -159,7 +159,7 @@
     {
       "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "email": "admin@minanowa.com",
-      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
+      "password": "password123",
       "name": "由井 辰美",
       "furigana": "ゆい たつみ",
       "phone": "08038283985",
@@ -183,7 +183,7 @@
       "joinDate": "2023-01-01",
       "isPublic": true,
       "isAdmin": true,
-      "lastLogin": "2025-12-14T07:54:53.695Z"
+      "lastLogin": "2025-12-16T17:56:04.555Z"
     },
     {
       "id": "new-member-001",
@@ -270,6 +270,10 @@
     "c059e8e4-d949-41e1-a5e7-dac13c5ed4ea": {
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2025-12-14T07:54:53.695Z"
+    },
+    "8c3cc85f-fd63-458b-9768-6fdece1c5468": {
+      "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+      "createdAt": "2025-12-16T17:56:04.555Z"
     }
   },
   "blogs": [

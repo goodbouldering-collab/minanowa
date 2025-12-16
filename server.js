@@ -231,7 +231,17 @@ app.post('/api/login', async (req, res) => {
             });
         }
 
-        const isValidPassword = await bcrypt.compare(password, member.password);
+        // パスワード検証（bcryptハッシュまたは平文に対応）
+        let isValidPassword = false;
+        
+        if (member.password.startsWith('$2')) {
+            // bcryptハッシュの場合
+            isValidPassword = await bcrypt.compare(password, member.password);
+        } else {
+            // 平文の場合（開発環境のみ）
+            isValidPassword = (password === member.password);
+        }
+        
         if (!isValidPassword) {
             return res.status(401).json({
                 success: false,
