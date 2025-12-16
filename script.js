@@ -3041,23 +3041,17 @@ let currentEventIndex = 0;
 
 async function loadAllEvents() {
     try {
-        const [upcomingRes, pastRes] = await Promise.all([
-            fetch(`${API_BASE}/api/events`),
-            fetch(`${API_BASE}/api/past-events`)
-        ]);
+        const response = await fetch(`${API_BASE}/api/events`);
+        const data = await response.json();
         
-        const upcomingData = await upcomingRes.json();
-        const pastData = await pastRes.json();
-        
-        const upcoming = upcomingData.events || [];
-        const past = (pastData.events || []).sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        allEvents = [...past, ...upcoming];
-        
-        if (allEvents.length > 0) {
-            const nextEventIndex = past.length;
-            currentEventIndex = nextEventIndex < allEvents.length ? nextEventIndex : 0;
-            renderEventCard(currentEventIndex);
+        if (data.success) {
+            allEvents = data.events || [];
+            console.log('✅ イベント読み込み完了:', allEvents.length, '件');
+            
+            // 新しいタブUIを初期化
+            if (allEvents.length > 0) {
+                switchEventTab(0);
+            }
         }
     } catch (error) {
         console.error('イベント読み込みエラー:', error);
@@ -3279,10 +3273,23 @@ function switchEventTab(index) {
 
 function renderEventContent(index) {
     const wrapper = document.getElementById('eventContentWrapper');
-    if (!wrapper || !allEvents || allEvents.length === 0) return;
+    if (!wrapper) {
+        console.error('❌ eventContentWrapper要素が見つかりません');
+        return;
+    }
+    
+    if (!allEvents || allEvents.length === 0) {
+        wrapper.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">イベント情報を読み込み中...</p>';
+        return;
+    }
     
     const event = allEvents[index];
-    if (!event) return;
+    if (!event) {
+        console.error('❌ イベントが見つかりません:', index);
+        return;
+    }
+    
+    console.log('📅 イベント表示:', event.title);
     
     const eventDate = new Date(event.date);
     const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
@@ -3361,9 +3368,4 @@ function renderEventContent(index) {
     wrapper.innerHTML = html;
 }
 
-// ページ読み込み時に最初のタブを表示
-document.addEventListener('DOMContentLoaded', () => {
-    if (allEvents && allEvents.length > 0) {
-        switchEventTab(0);
-    }
-});
+// イベントはloadAllEvents()内で初期化される
