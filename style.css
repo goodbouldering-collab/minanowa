@@ -1662,50 +1662,87 @@ section {
 
 /* イベントヘッダー（コンパクト） */
 .event-compact-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 20px 25px;
+    position: relative;
+    padding: 25px 30px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.05), rgba(255, 107, 107, 0.05));
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+/* しおり風日付バッジ（右上配置） */
 .event-date-badge {
+    position: absolute;
+    top: -8px;
+    right: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
-    padding: 12px;
+    min-width: 90px;
+    padding: 16px 12px 20px;
     background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: 12px;
+    border-radius: 8px 8px 0 0;
     color: var(--white);
     text-align: center;
-    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+    box-shadow: 0 6px 20px rgba(45, 90, 39, 0.3);
+    z-index: 10;
+}
+
+/* しおりの三角形（上部） */
+.event-date-badge::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 6px solid var(--primary);
+}
+
+/* しおりのリボン（下部） */
+.event-date-badge::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    border-top: 18px solid var(--accent);
 }
 
 .event-date-badge .month-day {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    line-height: 1;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
 }
 
 .event-date-badge .year-weekday {
     font-size: 0.75rem;
-    opacity: 0.9;
+    opacity: 0.95;
     margin-top: 4px;
+    position: relative;
+    z-index: 1;
 }
 
 .event-compact-info {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
+    padding-right: 110px; /* 日付バッジのスペース確保 */
 }
 
 .event-compact-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    word-wrap: break-word;
 }
 
 .event-compact-meta {
@@ -5080,13 +5117,21 @@ section {
     }
     
     .event-compact-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
+        padding: 30px 20px 20px;
     }
     
     .event-date-badge {
-        min-width: 100%;
+        right: 15px;
+        min-width: 75px;
+        padding: 12px 8px 16px;
+    }
+    
+    .event-date-badge .month-day {
+        font-size: 1.3rem;
+    }
+    
+    .event-compact-info {
+        padding-right: 90px;
     }
     
     .event-compact-title {
