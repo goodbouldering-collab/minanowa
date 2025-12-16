@@ -916,8 +916,11 @@ ul {
 }
 
 .hero-quick-tags .quick-label {
-    font-size: 0.9rem;
-    opacity: 0.8;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    opacity: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-quick-tags button {
@@ -955,9 +958,12 @@ ul {
 }
 
 .hero-stat .stat-label {
-    font-size: 0.9rem;
-    opacity: 0.8;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    opacity: 1;
     margin-top: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-buttons {
@@ -1319,8 +1325,9 @@ section {
 }
 
 .stat-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
     margin-top: 5px;
 }
 
@@ -2311,8 +2318,9 @@ section {
 }
 
 .quick-label {
-    font-size: 0.9rem;
-    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .quick-tag {
