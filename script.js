@@ -3247,7 +3247,8 @@ function updateTimelineIndicator() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('currentEventCard')) {
+    if (document.getElementById('eventContentWrapper')) {
+        console.log('📅 イベントセクション検出 - イベント読み込み開始');
         loadAllEvents();
     }
 });
