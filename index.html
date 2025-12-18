@@ -273,30 +273,29 @@
                 <h2 class="section-title">異業種交流会・イベント</h2>
             </div>
             
-            <!-- イベントタイムライン -->
-            <div class="event-timeline-wrapper">
-                <!-- タイムラインナビゲーション（シンプル1列） -->
-                <div class="timeline-nav">
-                    <button class="timeline-nav-btn" id="timelinePrevBtn" onclick="navigateTimeline(-1)" title="前のイベント">
+            <!-- イベントカルーセル（最新UI） -->
+            <div class="event-carousel-wrapper">
+                <!-- イベント一覧タブ（上部） -->
+                <div class="event-tabs-carousel" id="eventTabsCarousel">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+                
+                <!-- カルーセルナビゲーション -->
+                <div class="carousel-controls">
+                    <button class="carousel-nav-btn prev" id="carouselPrevBtn" onclick="navigateCarousel(-1)">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="timeline-indicator" id="timelineIndicator">
-                        <span class="current-position">1</span> / <span class="total-events">6</span>
+                    <div class="carousel-dots" id="carouselDots">
+                        <!-- JavaScriptで動的に生成 -->
                     </div>
-                    <button class="timeline-nav-btn" id="timelineNextBtn" onclick="navigateTimeline(1)" title="次のイベント">
+                    <button class="carousel-nav-btn next" id="carouselNextBtn" onclick="navigateCarousel(1)">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
                 
-                <!-- メインイベント表示 -->
-                <div class="event-main-display" id="eventMainDisplay">
-                    <!-- JavaScriptで動的に生成 -->
-                </div>
-                
-                <!-- イベント一覧（リスト形式） -->
-                <div class="event-list-section">
-                    <h4 class="event-list-title"><i class="fas fa-list"></i> 全イベント一覧</h4>
-                    <div class="event-list" id="eventList">
+                <!-- カルーセルコンテナ -->
+                <div class="event-carousel-container">
+                    <div class="event-carousel-track" id="eventCarouselTrack">
                         <!-- JavaScriptで動的に生成 -->
                     </div>
                 </div>

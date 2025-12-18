@@ -3152,14 +3152,19 @@ async function loadAllEvents() {
             allEvents = data.events || [];
             console.log('✅ イベント読み込み完了:', allEvents.length, '件');
             
-            // タイムライン表示を初期化（新UI）
-            if (allEvents.length > 0 && document.getElementById('eventMainDisplay')) {
+            // カルーセル表示を初期化（最新UI）
+            if (allEvents.length > 0 && document.getElementById('eventCarouselTrack')) {
                 // 次回イベントを見つける（未開催の最初のイベント）
+                const upcomingIndex = allEvents.findIndex(e => e.status !== 'completed');
+                currentCarouselIndex = upcomingIndex >= 0 ? upcomingIndex : 0;
+                renderCarousel();
+            }
+            // 旧UI対応
+            else if (allEvents.length > 0 && document.getElementById('eventMainDisplay')) {
                 const upcomingIndex = allEvents.findIndex(e => e.status !== 'completed');
                 currentTimelineIndex = upcomingIndex >= 0 ? upcomingIndex : 0;
                 renderTimelineDisplay();
             }
-            // 旧タブUIがある場合
             else if (allEvents.length > 0 && document.getElementById('eventContentWrapper')) {
                 switchEventTab(0);
             }
@@ -3360,8 +3365,9 @@ function updateTimelineIndicator() {
 document.addEventListener('DOMContentLoaded', () => {
     const eventWrapper = document.getElementById('eventContentWrapper');
     const eventMainDisplay = document.getElementById('eventMainDisplay');
+    const eventCarouselTrack = document.getElementById('eventCarouselTrack');
     
-    if (eventWrapper || eventMainDisplay) {
+    if (eventWrapper || eventMainDisplay || eventCarouselTrack) {
         console.log('📅 イベントセクション検出 - イベント読み込み開始');
         loadAllEvents();
     }
@@ -3386,78 +3392,97 @@ function switchEventTab(index) {
     renderEventContent(index);
 }
 
-// タイムライン表示用グローバル変数
-let currentTimelineIndex = 0;
+// カルーセル表示用グローバル変数
+let currentCarouselIndex = 0;
+let carouselTouchStartX = 0;
+let carouselTouchEndX = 0;
 
-// タイムラインナビゲーション
-function navigateTimeline(direction) {
+// カルーセルナビゲーション
+function navigateCarousel(direction) {
     if (!allEvents || allEvents.length === 0) return;
     
-    currentTimelineIndex += direction;
-    currentTimelineIndex = Math.max(0, Math.min(allEvents.length - 1, currentTimelineIndex));
+    currentCarouselIndex += direction;
+    currentCarouselIndex = Math.max(0, Math.min(allEvents.length - 1, currentCarouselIndex));
     
-    renderTimelineDisplay();
+    renderCarousel();
 }
 
-// タイムライン表示を描画
-function renderTimelineDisplay() {
+// タブクリックでカルーセル移動
+function jumpToEvent(index) {
+    if (!allEvents || allEvents.length === 0) return;
+    currentCarouselIndex = index;
+    renderCarousel();
+    
+    // カルーセルまでスクロール
+    document.getElementById('eventCarouselTrack')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// カルーセル表示を描画
+function renderCarousel() {
     if (!allEvents || allEvents.length === 0) return;
     
-    const mainDisplay = document.getElementById('eventMainDisplay');
-    const eventList = document.getElementById('eventList');
-    const indicator = document.getElementById('timelineIndicator');
-    const prevBtn = document.getElementById('timelinePrevBtn');
-    const nextBtn = document.getElementById('timelineNextBtn');
+    const tabsCarousel = document.getElementById('eventTabsCarousel');
+    const carouselTrack = document.getElementById('eventCarouselTrack');
+    const carouselDots = document.getElementById('carouselDots');
+    const prevBtn = document.getElementById('carouselPrevBtn');
+    const nextBtn = document.getElementById('carouselNextBtn');
     
-    if (!mainDisplay || !indicator) return;
-    
-    // インジケーター更新
-    indicator.innerHTML = `<span class="current-position">${currentTimelineIndex + 1}</span> / <span class="total-events">${allEvents.length}</span>`;
+    if (!tabsCarousel || !carouselTrack) return;
     
     // ボタン状態更新
-    if (prevBtn) prevBtn.disabled = currentTimelineIndex === 0;
-    if (nextBtn) nextBtn.disabled = currentTimelineIndex === allEvents.length - 1;
-    
-    // メインイベント表示
-    const event = allEvents[currentTimelineIndex];
-    mainDisplay.innerHTML = renderEventCard(event, true);
+    if (prevBtn) prevBtn.disabled = currentCarouselIndex === 0;
+    if (nextBtn) nextBtn.disabled = currentCarouselIndex === allEvents.length - 1;
     
     // ヒーローバッジ更新（次回イベント）
     updateHeroEventBadge();
     
-    // イベント一覧表示（リスト形式）
-    if (eventList) {
-        eventList.innerHTML = allEvents.map((e, index) => {
-            const eventDate = new Date(e.date);
-            const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
-            const day = eventDate.getDate().toString().padStart(2, '0');
-            const year = eventDate.getFullYear();
-            const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
-            const weekday = weekdayNames[eventDate.getDay()];
-            const isActive = index === currentTimelineIndex;
-            const isCompleted = e.status === 'completed';
-            
-            return `
-                <div class="event-list-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
-                     onclick="currentTimelineIndex = ${index}; renderTimelineDisplay(); document.getElementById('eventMainDisplay').scrollIntoView({ behavior: 'smooth' });">
-                    <div class="event-list-date">
-                        <div class="month-day">${month}/${day}</div>
-                        <div class="year">${year}</div>
-                    </div>
-                    <div class="event-list-info">
-                        <div class="event-list-title-text">${e.title}</div>
-                        <div class="event-list-meta">
-                            <span><i class="fas fa-clock"></i> ${e.time || '時間未定'}</span>
-                            <span><i class="fas fa-map-marker-alt"></i> ${e.location || '場所未定'}</span>
-                        </div>
-                    </div>
-                    <div class="event-list-status ${isCompleted ? 'completed' : 'upcoming'}">
-                        ${isCompleted ? '開催済み' : '開催予定'}
-                    </div>
-                </div>
-            `;
-        }).join('');
+    // タブ表示（上部）
+    tabsCarousel.innerHTML = allEvents.map((e, index) => {
+        const eventDate = new Date(e.date);
+        const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = eventDate.getDate().toString().padStart(2, '0');
+        const year = eventDate.getFullYear();
+        const isActive = index === currentCarouselIndex;
+        const isCompleted = e.status === 'completed';
+        
+        return `
+            <div class="event-tab-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+                 onclick="jumpToEvent(${index})">
+                <div class="event-tab-date">${month}/${day}</div>
+                <div class="event-tab-title">${e.title}</div>
+                <span class="event-tab-status ${isCompleted ? 'completed' : 'upcoming'}">
+                    ${isCompleted ? '開催済み' : '予定'}
+                </span>
+            </div>
+        `;
+    }).join('');
+    
+    // アクティブなタブを中央にスクロール
+    setTimeout(() => {
+        const activeTab = tabsCarousel.querySelector('.event-tab-item.active');
+        if (activeTab) {
+            activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }, 100);
+    
+    // カルーセルスライド
+    carouselTrack.innerHTML = allEvents.map((e, index) => {
+        return `<div class="event-carousel-slide">${renderCarouselCard(e)}</div>`;
+    }).join('');
+    
+    // カルーセル位置更新
+    carouselTrack.style.transform = `translateX(-${currentCarouselIndex * 100}%)`;
+    
+    // ドット表示
+    if (carouselDots) {
+        carouselDots.innerHTML = allEvents.map((_, index) => 
+            `<button class="carousel-dot ${index === currentCarouselIndex ? 'active' : ''}" 
+                     onclick="jumpToEvent(${index})"></button>`
+        ).join('');
     }
+    
+    // タッチスワイプ対応
+    setupCarouselSwipe();
 }
 
 // ヒーローセクションの次回イベントバッジを更新
@@ -3485,6 +3510,95 @@ function updateHeroEventBadge() {
             <span>次回交流会: 近日公開</span>
         `;
     }
+}
+
+// カルーセルカード生成（最新デザイン）
+function renderCarouselCard(event) {
+    const eventDate = new Date(event.date);
+    const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    const month = monthNames[eventDate.getMonth()];
+    const day = eventDate.getDate();
+    const weekday = weekdayNames[eventDate.getDay()];
+    const year = eventDate.getFullYear();
+    
+    const isCompleted = event.status === 'completed';
+    const statusText = isCompleted ? '開催済み' : '開催予定';
+    const statusClass = isCompleted ? 'completed' : 'upcoming';
+    
+    const defaultImage = 'https://www.genspark.ai/api/files/s/ERlCiKcs';
+    const eventImage = event.image || defaultImage;
+    
+    return `
+        <div class="event-card-carousel">
+            <!-- イベント画像 -->
+            <div class="event-image-wrapper">
+                <img src="${eventImage}" alt="${event.title}" class="event-image" 
+                     onerror="this.src='${defaultImage}'">
+                <div class="event-image-overlay"></div>
+                
+                <!-- オーバーレイ情報 -->
+                <div class="event-card-info-overlay">
+                    <div class="event-card-date-badge-overlay">
+                        <i class="fas fa-calendar-alt date-icon"></i>
+                        <span class="date-text">${year}年 ${month}${day}日（${weekday}）</span>
+                    </div>
+                    <h3 class="event-card-title-overlay">${event.title}</h3>
+                    <div class="event-card-meta-overlay">
+                        ${event.time ? `<span><i class="fas fa-clock"></i> ${event.time}</span>` : ''}
+                        ${event.location ? `<span><i class="fas fa-map-marker-alt"></i> ${event.location}</span>` : ''}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- イベント詳細 -->
+            <div class="event-card-details-section">
+                <div class="event-status-badge-large ${statusClass}">
+                    <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-calendar-check'}"></i>
+                    <span>${statusText}</span>
+                </div>
+                
+                ${event.description ? `
+                    <div class="event-detail-section">
+                        <h4><i class="fas fa-info-circle"></i> イベント概要</h4>
+                        <div class="event-detail-content">${event.description}</div>
+                    </div>
+                ` : ''}
+                
+                <div class="event-detail-section">
+                    <h4><i class="fas fa-ticket-alt"></i> 参加費・詳細</h4>
+                    <ul class="event-detail-list">
+                        ${event.fee ? `<li><strong>参加費:</strong> ${event.fee}</li>` : ''}
+                        ${event.feeDetails ? `<li><strong>詳細:</strong> ${event.feeDetails}</li>` : ''}
+                        ${event.cashback ? `<li><strong>特典:</strong> ${event.cashback}</li>` : ''}
+                        ${event.freeEntry ? `<li><strong>無料参加:</strong> ${event.freeEntry}</li>` : ''}
+                        ${event.capacity ? `<li><strong>定員:</strong> ${event.capacity}名</li>` : ''}
+                        ${event.notes ? `<li><strong>備考:</strong> ${event.notes}</li>` : ''}
+                    </ul>
+                </div>
+                
+                ${event.timetable && event.timetable.length > 0 ? `
+                    <div class="event-detail-section">
+                        <h4><i class="fas fa-calendar-check"></i> タイムテーブル</h4>
+                        <div class="timetable-compact">
+                            ${event.timetable.map(item => `
+                                <div class="timetable-compact-item">
+                                    <span class="time">${item.time}</span>
+                                    <span class="activity">${item.activity}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                ${event.formUrl && !isCompleted ? `
+                    <a href="${event.formUrl}" target="_blank" class="event-action-btn">
+                        <i class="fas fa-edit"></i> 申し込みフォーム
+                    </a>
+                ` : ''}
+            </div>
+        </div>
+    `;
 }
 
 // イベントカードを生成（写真含む）
@@ -3572,6 +3686,42 @@ function renderEventCard(event, includeImage = true) {
             </div>
         </div>
     `;
+}
+
+// カルーセルスワイプ設定
+function setupCarouselSwipe() {
+    const track = document.getElementById('eventCarouselTrack');
+    if (!track) return;
+    
+    track.addEventListener('touchstart', (e) => {
+        carouselTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    track.addEventListener('touchmove', (e) => {
+        carouselTouchEndX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    track.addEventListener('touchend', () => {
+        handleCarouselSwipe();
+    });
+}
+
+function handleCarouselSwipe() {
+    const swipeThreshold = 50;
+    const diff = carouselTouchStartX - carouselTouchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // 左スワイプ（次へ）
+            navigateCarousel(1);
+        } else {
+            // 右スワイプ（前へ）
+            navigateCarousel(-1);
+        }
+    }
+    
+    carouselTouchStartX = 0;
+    carouselTouchEndX = 0;
 }
 
 // イベントはloadAllEvents()内で初期化される
