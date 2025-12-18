@@ -3451,8 +3451,15 @@ function renderCarousel() {
     // ヒーローバッジ更新（次回イベント）
     updateHeroEventBadge();
     
-    // 次回イベントのインデックスを取得（未開催の最初のイベント）
-    const nextEventIndex = allEvents.findIndex(e => e.status !== 'completed');
+    // 次回イベントのインデックスを取得（今日以降の最も近いイベント）
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const nextEventIndex = allEvents.findIndex(e => {
+        const eventDate = new Date(e.date);
+        eventDate.setHours(0, 0, 0, 0);
+        return eventDate >= today;
+    });
     
     // スマートタブ表示（1行でコンパクトに）
     tabsSmart.innerHTML = allEvents.map((e, index) => {
@@ -3510,8 +3517,18 @@ function updateHeroEventBadge() {
     const nextEventBadge = document.getElementById('nextEventBadge');
     if (!nextEventBadge || !allEvents || allEvents.length === 0) return;
     
-    // 次回イベント（未開催の最初のイベント）を取得
-    const nextEvent = allEvents.find(e => e.status !== 'completed');
+    // 今日の日付（時刻を0時に設定）
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // 今日以降のイベントで最も近いものを取得
+    const upcomingEvents = allEvents.filter(e => {
+        const eventDate = new Date(e.date);
+        eventDate.setHours(0, 0, 0, 0);
+        return eventDate >= today;
+    }).sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    const nextEvent = upcomingEvents[0];
     
     if (nextEvent) {
         const eventDate = new Date(nextEvent.date);
