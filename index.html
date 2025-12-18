@@ -273,25 +273,32 @@
                 <h2 class="section-title">異業種交流会・イベント</h2>
             </div>
             
-            <!-- イベントタブナビゲーション -->
-            <div class="event-tabs">
-                <button class="event-tab active" data-index="0" onclick="switchEventTab(0)">
-                    <i class="fas fa-calendar-check"></i>
-                    <span class="tab-label">次回</span>
-                </button>
-                <button class="event-tab" data-index="1" onclick="switchEventTab(1)">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span class="tab-label">予定</span>
-                </button>
-                <button class="event-tab" data-index="2" onclick="switchEventTab(2)">
-                    <i class="fas fa-history"></i>
-                    <span class="tab-label">過去</span>
-                </button>
-            </div>
-            
-            <!-- イベントコンテンツ -->
-            <div class="event-content-wrapper" id="eventContentWrapper">
-                <!-- JavaScriptで動的に生成 -->
+            <!-- イベントタイムライン -->
+            <div class="event-timeline-wrapper">
+                <!-- タイムラインナビゲーション -->
+                <div class="timeline-nav">
+                    <button class="timeline-nav-btn prev" id="timelinePrevBtn" onclick="navigateTimeline(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                        <span>過去へ</span>
+                    </button>
+                    <div class="timeline-indicator" id="timelineIndicator">
+                        <span class="current-position">1</span> / <span class="total-events">6</span>
+                    </div>
+                    <button class="timeline-nav-btn next" id="timelineNextBtn" onclick="navigateTimeline(1)">
+                        <span>未来へ</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- メインイベント表示 -->
+                <div class="event-main-display" id="eventMainDisplay">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+                
+                <!-- タイムラインプレビュー -->
+                <div class="timeline-preview" id="timelinePreview">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
             </div>
         </div>
     </section>

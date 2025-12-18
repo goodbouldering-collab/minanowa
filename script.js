@@ -2361,6 +2361,21 @@ function updateAvatarPreview(url) {
     }
 }
 
+function updateEventImagePreview(url) {
+    const previewContainer = document.getElementById('eventImagePreview');
+    if (!previewContainer) return;
+    
+    if (url && url.trim()) {
+        previewContainer.innerHTML = `
+            <img src="${url}" alt="イベント写真プレビュー" 
+                 style="max-width: 100%; max-height: 200px; border-radius: 12px; border: 2px solid var(--border); object-fit: cover;"
+                 onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\\'color: var(--text-secondary); font-size: 0.9rem;\\'>画像の読み込みに失敗しました</p>'">
+        `;
+    } else {
+        previewContainer.innerHTML = '';
+    }
+}
+
 async function saveMemberProfile(event, memberId) {
     event.preventDefault();
     
@@ -2674,20 +2689,31 @@ function showEventEditor(event = null) {
 15:00 閉会">${event?.timetable ? event.timetable.map(t => `${t.time} ${t.activity}`).join('\n') : ''}</textarea>
             </div>
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="eventImage">イメージ画像URL</label>
-                    <input type="url" id="eventImage" name="image" class="glass-input"
-                           value="${event?.image || ''}" placeholder="https://...">
+            <div class="form-group">
+                <label for="eventImage">イベント写真URL</label>
+                <input type="url" id="eventImage" name="image" class="glass-input"
+                       value="${event?.image || ''}" 
+                       placeholder="https://example.com/image.jpg"
+                       oninput="updateEventImagePreview(this.value)">
+                <small style="display: block; margin-top: 5px; color: var(--text-secondary);">
+                    <i class="fas fa-info-circle"></i> イベント詳細ページに表示される写真のURLを入力してください
+                </small>
+                <div id="eventImagePreview" style="margin-top: 15px;">
+                    ${event?.image ? `
+                        <img src="${event.image}" alt="イベント写真プレビュー" 
+                             style="max-width: 100%; max-height: 200px; border-radius: 12px; border: 2px solid var(--border); object-fit: cover;"
+                             onerror="this.style.display='none'">
+                    ` : ''}
                 </div>
-                <div class="form-group">
-                    <label for="eventStatus">ステータス</label>
-                    <select id="eventStatus" name="status" class="glass-input">
-                        <option value="upcoming" ${event?.status === 'upcoming' ? 'selected' : ''}>予定</option>
-                        <option value="completed" ${event?.status === 'completed' ? 'selected' : ''}>終了</option>
-                        <option value="cancelled" ${event?.status === 'cancelled' ? 'selected' : ''}>中止</option>
-                    </select>
-                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventStatus">ステータス</label>
+                <select id="eventStatus" name="status" class="glass-input">
+                    <option value="upcoming" ${event?.status === 'upcoming' ? 'selected' : ''}>予定</option>
+                    <option value="completed" ${event?.status === 'completed' ? 'selected' : ''}>終了</option>
+                    <option value="cancelled" ${event?.status === 'cancelled' ? 'selected' : ''}>中止</option>
+                </select>
             </div>
             
             <div style="display: flex; gap: 15px; margin-top: 20px;">
@@ -3048,8 +3074,15 @@ async function loadAllEvents() {
             allEvents = data.events || [];
             console.log('✅ イベント読み込み完了:', allEvents.length, '件');
             
-            // 新しいタブUIを初期化
-            if (allEvents.length > 0) {
+            // タイムライン表示を初期化（新UI）
+            if (allEvents.length > 0 && document.getElementById('eventMainDisplay')) {
+                // 次回イベントを見つける（未開催の最初のイベント）
+                const upcomingIndex = allEvents.findIndex(e => e.status !== 'completed');
+                currentTimelineIndex = upcomingIndex >= 0 ? upcomingIndex : 0;
+                renderTimelineDisplay();
+            }
+            // 旧タブUIがある場合
+            else if (allEvents.length > 0 && document.getElementById('eventContentWrapper')) {
                 switchEventTab(0);
             }
         }
@@ -3247,7 +3280,10 @@ function updateTimelineIndicator() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('eventContentWrapper')) {
+    const eventWrapper = document.getElementById('eventContentWrapper');
+    const eventMainDisplay = document.getElementById('eventMainDisplay');
+    
+    if (eventWrapper || eventMainDisplay) {
         console.log('📅 イベントセクション検出 - イベント読み込み開始');
         loadAllEvents();
     }
@@ -3272,28 +3308,66 @@ function switchEventTab(index) {
     renderEventContent(index);
 }
 
-function renderEventContent(index) {
-    const wrapper = document.getElementById('eventContentWrapper');
-    if (!wrapper) {
-        console.error('❌ eventContentWrapper要素が見つかりません');
-        return;
-    }
+// タイムライン表示用グローバル変数
+let currentTimelineIndex = 0;
+
+// タイムラインナビゲーション
+function navigateTimeline(direction) {
+    if (!allEvents || allEvents.length === 0) return;
     
-    if (!allEvents || allEvents.length === 0) {
-        wrapper.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">イベント情報を読み込み中...</p>';
-        return;
-    }
+    currentTimelineIndex += direction;
+    currentTimelineIndex = Math.max(0, Math.min(allEvents.length - 1, currentTimelineIndex));
     
-    const event = allEvents[index];
-    if (!event) {
-        console.error('❌ イベントが見つかりません:', index);
-        return;
-    }
+    renderTimelineDisplay();
+}
+
+// タイムライン表示を描画
+function renderTimelineDisplay() {
+    if (!allEvents || allEvents.length === 0) return;
     
-    console.log('📅 イベント表示:', event.title);
+    const mainDisplay = document.getElementById('eventMainDisplay');
+    const timelinePreview = document.getElementById('timelinePreview');
+    const indicator = document.getElementById('timelineIndicator');
+    const prevBtn = document.getElementById('timelinePrevBtn');
+    const nextBtn = document.getElementById('timelineNextBtn');
     
+    if (!mainDisplay || !timelinePreview || !indicator) return;
+    
+    // インジケーター更新
+    indicator.innerHTML = `<span class="current-position">${currentTimelineIndex + 1}</span> / <span class="total-events">${allEvents.length}</span>`;
+    
+    // ボタン状態更新
+    if (prevBtn) prevBtn.disabled = currentTimelineIndex === 0;
+    if (nextBtn) nextBtn.disabled = currentTimelineIndex === allEvents.length - 1;
+    
+    // メインイベント表示
+    const event = allEvents[currentTimelineIndex];
+    mainDisplay.innerHTML = renderEventCard(event, true);
+    
+    // プレビュー表示
+    timelinePreview.innerHTML = allEvents.map((e, index) => {
+        const eventDate = new Date(e.date);
+        const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = eventDate.getDate().toString().padStart(2, '0');
+        const isActive = index === currentTimelineIndex;
+        const isCompleted = e.status === 'completed';
+        
+        return `
+            <div class="timeline-preview-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+                 onclick="currentTimelineIndex = ${index}; renderTimelineDisplay();">
+                <div class="timeline-preview-date">${month}/${day}</div>
+                <div class="timeline-preview-title">${e.title}</div>
+                <span class="timeline-preview-status ${isCompleted ? 'completed' : 'upcoming'}">
+                    ${isCompleted ? '開催済み' : '開催予定'}
+                </span>
+            </div>
+        `;
+    }).join('');
+}
+
+// イベントカードを生成（写真含む）
+function renderEventCard(event, includeImage = true) {
     const eventDate = new Date(event.date);
-    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
     const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
     const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
     const day = eventDate.getDate().toString().padStart(2, '0');
@@ -3304,12 +3378,23 @@ function renderEventContent(index) {
     const statusText = isCompleted ? '開催済み' : '開催予定';
     const statusClass = isCompleted ? 'completed' : 'upcoming';
     
-    let html = `
+    const defaultImage = 'https://www.genspark.ai/api/files/s/ERlCiKcs';
+    const eventImage = event.image || defaultImage;
+    
+    return `
         <div class="event-compact-card">
+            ${includeImage ? `
+                <div class="event-image-wrapper">
+                    <img src="${eventImage}" alt="${event.title}" class="event-image" 
+                         onerror="this.src='${defaultImage}'">
+                    <div class="event-image-overlay"></div>
+                </div>
+            ` : ''}
+            
             <div class="event-compact-header">
                 <div class="event-date-badge">
                     <div class="month-day">${month}/${day}</div>
-                    <div class="year-weekday">${year} (${weekday})</div>
+                    <div class="year-weekday">${year}年 (${weekday})</div>
                 </div>
                 <div class="event-compact-info">
                     <h3 class="event-compact-title">
@@ -3365,8 +3450,6 @@ function renderEventContent(index) {
             </div>
         </div>
     `;
-    
-    wrapper.innerHTML = html;
 }
 
 // イベントはloadAllEvents()内で初期化される
