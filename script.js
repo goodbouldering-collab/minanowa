@@ -3453,6 +3453,9 @@ function renderCarousel() {
     // ヒーローバッジ更新（次回イベント）
     updateHeroEventBadge();
     
+    // 次回イベントのインデックスを取得（未開催の最初のイベント）
+    const nextEventIndex = allEvents.findIndex(e => e.status !== 'completed');
+    
     // スマートタブ表示（1行でコンパクトに）
     tabsSmart.innerHTML = allEvents.map((e, index) => {
         const eventDate = new Date(e.date);
@@ -3460,10 +3463,12 @@ function renderCarousel() {
         const day = eventDate.getDate().toString().padStart(2, '0');
         const isActive = index === currentCarouselIndex;
         const isCompleted = e.status === 'completed';
+        const isNextEvent = index === nextEventIndex;
         
         return `
-            <button class="smart-tab-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+            <button class="smart-tab-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isNextEvent ? 'next-event' : ''}" 
                     onclick="jumpToEvent(${index})" title="${e.title}">
+                ${isNextEvent ? '<span class="next-badge">次回</span>' : ''}
                 <span class="tab-date">${month}/${day}</span>
             </button>
         `;
