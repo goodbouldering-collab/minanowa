@@ -3559,15 +3559,17 @@ function renderCarouselCard(event) {
             ` : ''}
             
             <div class="event-compact-header">
-                <div class="event-date-badge">
-                    <div class="month-day">${month}/${day}</div>
-                    <div class="year-weekday">${year}年 (${weekday})</div>
-                </div>
                 <div class="event-compact-info">
-                    <h3 class="event-compact-title">
-                        ${event.title}
-                        <span class="event-status-inline ${statusClass}">${statusText}</span>
-                    </h3>
+                    <div class="event-title-row">
+                        <span class="event-date-inline">
+                            <span class="date-main">${month}/${day}</span>
+                            <span class="date-sub">${year}年(${weekday})</span>
+                        </span>
+                        <h3 class="event-compact-title">
+                            ${event.title}
+                            <span class="event-status-inline ${statusClass}">${statusText}</span>
+                        </h3>
+                    </div>
                     <div class="event-compact-meta">
                         <span><i class="fas fa-clock"></i> ${event.time || '時間未定'}</span>
                         <span><i class="fas fa-map-marker-alt"></i> ${event.location || '場所未定'}</span>

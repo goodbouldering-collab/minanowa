@@ -2313,47 +2313,52 @@ section {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* シンプル日付バッジ（左上配置） */
-.event-date-badge {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+/* タイトル行（日付とタイトルを横並び） */
+.event-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+/* インライン日付表示 */
+.event-date-inline {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
-    padding: 12px 10px;
+    min-width: 70px;
+    padding: 10px 8px;
     background: linear-gradient(135deg, #2d5a27, #4a7c59);
     color: var(--white);
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(45, 90, 39, 0.3);
-    z-index: 10;
 }
 
-.event-date-badge .month-day {
-    font-size: 1.4rem;
+.event-date-inline .date-main {
+    font-size: 1.3rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
-.event-date-badge .year-weekday {
-    font-size: 0.7rem;
+.event-date-inline .date-sub {
+    font-size: 0.65rem;
     opacity: 0.9;
     margin-top: 2px;
 }
 
 .event-compact-info {
     width: 100%;
-    padding-left: 120px; /* 日付バッジのスペース確保（左側） */
 }
 
 .event-compact-title {
+    flex: 1;
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 12px;
+    margin: 0;
     line-height: 1.4;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -5849,27 +5854,25 @@ section {
     }
     
     .event-compact-header {
-        padding: 25px 20px 20px 20px;
+        padding: 20px 15px;
     }
     
-    .event-date-badge {
-        top: 15px;
-        left: 15px;
-        min-width: 70px;
-        padding: 10px 8px;
-        border-radius: 6px;
+    .event-title-row {
+        flex-direction: column;
+        gap: 10px;
     }
     
-    .event-date-badge .month-day {
+    .event-date-inline {
+        min-width: 60px;
+        padding: 8px 6px;
+    }
+    
+    .event-date-inline .date-main {
         font-size: 1.1rem;
     }
     
-    .event-date-badge .year-weekday {
-        font-size: 0.65rem;
-    }
-    
-    .event-compact-info {
-        padding-left: 100px;
+    .event-date-inline .date-sub {
+        font-size: 0.6rem;
     }
     
     .event-compact-title {
