@@ -3419,7 +3419,12 @@ function jumpToEvent(index) {
 
 // カルーセル表示を描画
 function renderCarousel() {
-    if (!allEvents || allEvents.length === 0) return;
+    console.log('🎠 renderCarousel 呼び出し - イベント数:', allEvents?.length);
+    
+    if (!allEvents || allEvents.length === 0) {
+        console.error('❌ allEventsが空です');
+        return;
+    }
     
     const tabsCarousel = document.getElementById('eventTabsCarousel');
     const carouselTrack = document.getElementById('eventCarouselTrack');
@@ -3427,7 +3432,18 @@ function renderCarousel() {
     const prevBtn = document.getElementById('carouselPrevBtn');
     const nextBtn = document.getElementById('carouselNextBtn');
     
-    if (!tabsCarousel || !carouselTrack) return;
+    console.log('🔍 要素チェック:', {
+        tabsCarousel: !!tabsCarousel,
+        carouselTrack: !!carouselTrack,
+        carouselDots: !!carouselDots,
+        prevBtn: !!prevBtn,
+        nextBtn: !!nextBtn
+    });
+    
+    if (!tabsCarousel || !carouselTrack) {
+        console.error('❌ カルーセル要素が見つかりません');
+        return;
+    }
     
     // ボタン状態更新
     if (prevBtn) prevBtn.disabled = currentCarouselIndex === 0;
@@ -3466,12 +3482,14 @@ function renderCarousel() {
     }, 100);
     
     // カルーセルスライド
+    console.log('📋 カルーセルスライド生成開始');
     carouselTrack.innerHTML = allEvents.map((e, index) => {
         return `<div class="event-carousel-slide">${renderCarouselCard(e)}</div>`;
     }).join('');
     
     // カルーセル位置更新
     carouselTrack.style.transform = `translateX(-${currentCarouselIndex * 100}%)`;
+    console.log('📍 カルーセル位置:', currentCarouselIndex, 'transform:', carouselTrack.style.transform);
     
     // ドット表示
     if (carouselDots) {
@@ -3479,10 +3497,12 @@ function renderCarousel() {
             `<button class="carousel-dot ${index === currentCarouselIndex ? 'active' : ''}" 
                      onclick="jumpToEvent(${index})"></button>`
         ).join('');
+        console.log('🔘 ドット生成完了:', allEvents.length, '個');
     }
     
     // タッチスワイプ対応
     setupCarouselSwipe();
+    console.log('✅ renderCarousel 完了');
 }
 
 // ヒーローセクションの次回イベントバッジを更新
