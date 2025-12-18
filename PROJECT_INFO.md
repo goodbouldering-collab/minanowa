@@ -27,6 +27,9 @@ https://3000-i26mzzri6plazftdqznnd-de59bda9.sandbox.novita.ai
 **このプロジェクトのタイトルは「みんなのWA」です。**
 **Genspark側で自動的にタイトルが変更されても、正式名称は「みんなのWA」です。**
 
+## 🎨 AI Developer への指示
+**今後、完成サイトのURLは必ずクリック可能なリンク形式で提示すること**
+
 ## 🔐 管理者情報
 - Email: admin@minanowa.com
 - Password: password123
