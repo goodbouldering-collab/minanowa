@@ -1611,7 +1611,7 @@ section {
    交流会セクション
    ============================================ */
 .event-section {
-    padding: 40px 0;
+    padding: 30px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
@@ -1640,30 +1640,45 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: var(--white);
-    border: 2px solid var(--primary);
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--white), rgba(250, 250, 250, 0.95));
+    border: 3px solid transparent;
+    background-clip: padding-box;
     border-radius: 50%;
     color: var(--primary);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.15);
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
     outline: none;
+    position: relative;
+}
+
+.smart-nav-btn::before {
+    content: '';\n    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.5), rgba(199, 123, 48, 0.5), rgba(212, 168, 75, 0.5));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
 }
 
 .smart-nav-btn:hover:not(:disabled) {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: var(--white);
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.25);
+    transform: scale(1.1);
+    box-shadow: 0 6px 18px rgba(45, 90, 39, 0.35),
+                0 3px 8px rgba(199, 123, 48, 0.25);
 }
 
 .smart-nav-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
-    border-color: var(--border);
+    background: rgba(200, 200, 200, 0.3);
     color: var(--text-secondary);
 }
 
@@ -1790,9 +1805,11 @@ section {
 }
 
 .carousel-dot-bottom.active {
-    background: var(--primary);
-    width: 26px;
-    border-radius: 5px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    width: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.4),
+                0 2px 4px rgba(199, 123, 48, 0.3);
 }
 
 .carousel-dot-bottom:focus,
@@ -2321,11 +2338,11 @@ section {
 }
 
 /* イベントヘッダー（コンパクト） */
-/* イベント画像 - ワクワク感のあるデザイン */
+/* イベント画像 - コンパクト＆ワクワク感のあるデザイン */
 .event-image-wrapper {
     position: relative;
     width: 100%;
-    height: 320px;
+    height: 220px;
     overflow: hidden;
     border-radius: 20px 20px 0 0;
 }
@@ -2374,7 +2391,7 @@ section {
 
 .event-compact-header {
     position: relative;
-    padding: 35px 35px 30px 35px;
+    padding: 25px 30px 20px 30px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03) 0%, rgba(199, 123, 48, 0.03) 50%, rgba(212, 168, 75, 0.03) 100%);
     border-bottom: 2px solid transparent;
     border-image: linear-gradient(90deg, rgba(45, 90, 39, 0.2), rgba(199, 123, 48, 0.2), rgba(212, 168, 75, 0.2));
@@ -2490,16 +2507,17 @@ section {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
-    background: rgba(45, 90, 39, 0.05);
-    border-radius: 12px;
+    padding: 5px 10px;
+    background: rgba(45, 90, 39, 0.08);
+    border-radius: 10px;
     transition: all var(--transition-fast);
+    font-size: 0.85rem;
 }
 
 .event-compact-meta > span:hover {
-    background: rgba(45, 90, 39, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
+    background: rgba(45, 90, 39, 0.12);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.15);
 }
 
 .event-compact-meta i {
@@ -2509,85 +2527,71 @@ section {
 
 .event-status-inline {
     display: inline-block;
-    padding: 5px 14px;
+    padding: 6px 16px;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
     margin-left: 10px;
     vertical-align: middle;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: all var(--transition-fast);
     position: relative;
-    overflow: hidden;
-}
-
-.event-status-inline::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width var(--transition-normal), height var(--transition-normal);
-}
-
-.event-status-inline:hover::before {
-    width: 200px;
-    height: 200px;
 }
 
 .event-status-inline.upcoming {
-    background: linear-gradient(135deg, rgba(45, 90, 39, 0.15), rgba(74, 140, 63, 0.15));
-    color: var(--primary);
-    border: 1.5px solid rgba(45, 90, 39, 0.3);
+    background: #2d5a27;
+    color: #ffffff;
+    border: 2px solid #4a8c3f;
 }
 
 .event-status-inline.upcoming:hover {
-    background: linear-gradient(135deg, rgba(45, 90, 39, 0.25), rgba(74, 140, 63, 0.25));
+    background: #4a8c3f;
     transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
 }
 
 .event-status-inline.completed {
-    background: linear-gradient(135deg, rgba(100, 100, 100, 0.12), rgba(150, 150, 150, 0.12));
-    color: #666;
-    border: 1.5px solid rgba(100, 100, 100, 0.2);
+    background: #888;
+    color: #ffffff;
+    border: 2px solid #aaa;
 }
 
 .event-status-inline.completed:hover {
-    background: linear-gradient(135deg, rgba(100, 100, 100, 0.18), rgba(150, 150, 150, 0.18));
+    background: #999;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* イベント詳細（アコーディオン） */
+/* イベント詳細（アコーディオン） - コンパクト化 */
 .event-details {
-    padding: 0 25px 20px;
+    padding: 0 25px 15px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .event-detail-section {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .event-detail-section h4 {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--primary);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .event-detail-section h4 i {
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .event-detail-content {
-    padding-left: 24px;
+    padding-left: 20px;
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
 .event-detail-list {
@@ -2642,19 +2646,19 @@ section {
 .event-action-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 32px;
+    gap: 8px;
+    padding: 12px 28px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--secondary) 100%);
     color: var(--white);
     border: none;
     border-radius: 50px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.95rem;
     text-decoration: none;
-    margin-top: 20px;
+    margin-top: 15px;
     transition: all var(--transition-normal);
-    box-shadow: 0 8px 24px rgba(45, 90, 39, 0.35),
-                0 4px 8px rgba(199, 123, 48, 0.2);
+    box-shadow: 0 6px 18px rgba(45, 90, 39, 0.3),
+                0 3px 6px rgba(199, 123, 48, 0.2);
     position: relative;
     overflow: hidden;
     cursor: pointer;
