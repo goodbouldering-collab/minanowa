@@ -1008,6 +1008,26 @@ async function handleLogin(event) {
             closeLoginModal();
             updateUIForLoggedInUser();
             
+            // ページ最上部へスクロール
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // 次回イベントを表示
+            if (allEvents && allEvents.length > 0) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const nextEventIndex = allEvents.findIndex(e => {
+                    const eventDate = new Date(e.date);
+                    eventDate.setHours(0, 0, 0, 0);
+                    return eventDate >= today;
+                });
+                
+                if (nextEventIndex !== -1) {
+                    currentCarouselIndex = nextEventIndex;
+                    renderCarousel();
+                }
+            }
+            
             showNotification(`ようこそ、${currentUser.name}さん！`, 'success');
         } else {
             showNotification(data.message || 'ログインに失敗しました', 'error');
@@ -3154,14 +3174,28 @@ async function loadAllEvents() {
             
             // カルーセル表示を初期化（最新UI）
             if (allEvents.length > 0 && document.getElementById('eventCarouselTrack')) {
-                // 次回イベントを見つける（未開催の最初のイベント）
-                const upcomingIndex = allEvents.findIndex(e => e.status !== 'completed');
+                // 次回イベントを見つける（今日以降の最初のイベント）
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const upcomingIndex = allEvents.findIndex(e => {
+                    const eventDate = new Date(e.date);
+                    eventDate.setHours(0, 0, 0, 0);
+                    return eventDate >= today;
+                });
                 currentCarouselIndex = upcomingIndex >= 0 ? upcomingIndex : 0;
                 renderCarousel();
             }
             // 旧UI対応
             else if (allEvents.length > 0 && document.getElementById('eventMainDisplay')) {
-                const upcomingIndex = allEvents.findIndex(e => e.status !== 'completed');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const upcomingIndex = allEvents.findIndex(e => {
+                    const eventDate = new Date(e.date);
+                    eventDate.setHours(0, 0, 0, 0);
+                    return eventDate >= today;
+                });
                 currentTimelineIndex = upcomingIndex >= 0 ? upcomingIndex : 0;
                 renderTimelineDisplay();
             }
