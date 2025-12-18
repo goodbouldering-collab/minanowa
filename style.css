@@ -1644,6 +1644,12 @@ section {
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    outline: none;
+}
+
+.event-tab-item:focus,
+.event-tab-item:focus-visible {
+    outline: none;
 }
 
 .event-tab-item:hover {
@@ -1733,6 +1739,12 @@ section {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
+    outline: none;
+}
+
+.carousel-nav-btn:focus,
+.carousel-nav-btn:focus-visible {
+    outline: none;
 }
 
 .carousel-nav-btn:hover:not(:disabled) {
@@ -1762,6 +1774,12 @@ section {
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
+    outline: none;
+}
+
+.carousel-dot:focus,
+.carousel-dot:focus-visible {
+    outline: none;
 }
 
 .carousel-dot:hover {
@@ -1800,6 +1818,13 @@ section {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     border: 2px solid rgba(45, 90, 39, 0.1);
     overflow: hidden;
+    outline: none;
+}
+
+.event-carousel-slide .event-compact-card:focus,
+.event-carousel-slide .event-compact-card:focus-visible {
+    outline: none;
+    border: 2px solid rgba(45, 90, 39, 0.1);
 }
 
 /* イベントタイムライン */
