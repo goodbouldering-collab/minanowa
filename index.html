@@ -273,22 +273,19 @@
                 <h2 class="section-title">異業種交流会・イベント</h2>
             </div>
             
-            <!-- イベントカルーセル（最新UI） -->
+            <!-- イベントカルーセル（スマートUI） -->
             <div class="event-carousel-wrapper">
-                <!-- イベント一覧タブ（上部） -->
-                <div class="event-tabs-carousel" id="eventTabsCarousel">
-                    <!-- JavaScriptで動的に生成 -->
-                </div>
-                
-                <!-- カルーセルナビゲーション -->
-                <div class="carousel-controls">
-                    <button class="carousel-nav-btn prev" id="carouselPrevBtn" onclick="navigateCarousel(-1)">
+                <!-- スマートナビゲーション（タブ統合型） -->
+                <div class="smart-event-nav">
+                    <button class="smart-nav-btn prev" id="smartPrevBtn" onclick="navigateCarousel(-1)" title="前のイベント">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="carousel-dots" id="carouselDots">
+                    
+                    <div class="event-tabs-smart" id="eventTabsSmart">
                         <!-- JavaScriptで動的に生成 -->
                     </div>
-                    <button class="carousel-nav-btn next" id="carouselNextBtn" onclick="navigateCarousel(1)">
+                    
+                    <button class="smart-nav-btn next" id="smartNextBtn" onclick="navigateCarousel(1)" title="次のイベント">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
@@ -298,6 +295,11 @@
                     <div class="event-carousel-track" id="eventCarouselTrack">
                         <!-- JavaScriptで動的に生成 -->
                     </div>
+                </div>
+                
+                <!-- ドットインジケーター（下部） -->
+                <div class="carousel-dots-bottom" id="carouselDotsBottom">
+                    <!-- JavaScriptで動的に生成 -->
                 </div>
             </div>
         </div>

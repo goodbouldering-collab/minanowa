@@ -3426,21 +3426,22 @@ function renderCarousel() {
         return;
     }
     
-    const tabsCarousel = document.getElementById('eventTabsCarousel');
+    // スマートナビゲーション要素を使用
+    const tabsSmart = document.getElementById('eventTabsSmart');
     const carouselTrack = document.getElementById('eventCarouselTrack');
-    const carouselDots = document.getElementById('carouselDots');
-    const prevBtn = document.getElementById('carouselPrevBtn');
-    const nextBtn = document.getElementById('carouselNextBtn');
+    const dotsBottom = document.getElementById('carouselDotsBottom');
+    const prevBtn = document.getElementById('smartPrevBtn');
+    const nextBtn = document.getElementById('smartNextBtn');
     
     console.log('🔍 要素チェック:', {
-        tabsCarousel: !!tabsCarousel,
+        tabsSmart: !!tabsSmart,
         carouselTrack: !!carouselTrack,
-        carouselDots: !!carouselDots,
+        dotsBottom: !!dotsBottom,
         prevBtn: !!prevBtn,
         nextBtn: !!nextBtn
     });
     
-    if (!tabsCarousel || !carouselTrack) {
+    if (!tabsSmart || !carouselTrack) {
         console.error('❌ カルーセル要素が見つかりません');
         return;
     }
@@ -3452,30 +3453,25 @@ function renderCarousel() {
     // ヒーローバッジ更新（次回イベント）
     updateHeroEventBadge();
     
-    // タブ表示（上部）
-    tabsCarousel.innerHTML = allEvents.map((e, index) => {
+    // スマートタブ表示（1行でコンパクトに）
+    tabsSmart.innerHTML = allEvents.map((e, index) => {
         const eventDate = new Date(e.date);
         const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
         const day = eventDate.getDate().toString().padStart(2, '0');
-        const year = eventDate.getFullYear();
         const isActive = index === currentCarouselIndex;
         const isCompleted = e.status === 'completed';
         
         return `
-            <div class="event-tab-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
-                 onclick="jumpToEvent(${index})">
-                <div class="event-tab-date">${month}/${day}</div>
-                <div class="event-tab-title">${e.title}</div>
-                <span class="event-tab-status ${isCompleted ? 'completed' : 'upcoming'}">
-                    ${isCompleted ? '開催済み' : '予定'}
-                </span>
-            </div>
+            <button class="smart-tab-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+                    onclick="jumpToEvent(${index})" title="${e.title}">
+                <span class="tab-date">${month}/${day}</span>
+            </button>
         `;
     }).join('');
     
     // アクティブなタブを中央にスクロール
     setTimeout(() => {
-        const activeTab = tabsCarousel.querySelector('.event-tab-item.active');
+        const activeTab = tabsSmart.querySelector('.smart-tab-item.active');
         if (activeTab) {
             activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
@@ -3491,16 +3487,17 @@ function renderCarousel() {
     carouselTrack.style.transform = `translateX(-${currentCarouselIndex * 100}%)`;
     console.log('📍 カルーセル位置:', currentCarouselIndex, 'transform:', carouselTrack.style.transform);
     
-    // ドット表示
-    if (carouselDots) {
-        carouselDots.innerHTML = allEvents.map((_, index) => 
+    // ドット表示（下部）
+    if (dotsBottom) {
+        dotsBottom.innerHTML = allEvents.map((_, index) => 
             `<button class="carousel-dot ${index === currentCarouselIndex ? 'active' : ''}" 
-                     onclick="jumpToEvent(${index})"></button>`
+                     onclick="jumpToEvent(${index})" 
+                     aria-label="イベント ${index + 1}"></button>`
         ).join('');
         console.log('🔘 ドット生成完了:', allEvents.length, '個');
     }
     
-    // タッチスワイプ対応
+    // タッチスワイプ対応（カードタップは無効化）
     setupCarouselSwipe();
     console.log('✅ renderCarousel 完了');
 }
@@ -3711,16 +3708,53 @@ function setupCarouselSwipe() {
     const track = document.getElementById('eventCarouselTrack');
     if (!track) return;
     
+    let startX = 0;
+    let startY = 0;
+    let isSwiping = false;
+    let hasMoved = false;
+    
     track.addEventListener('touchstart', (e) => {
-        carouselTouchStartX = e.touches[0].clientX;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        carouselTouchStartX = startX;
+        isSwiping = false;
+        hasMoved = false;
     }, { passive: true });
     
     track.addEventListener('touchmove', (e) => {
-        carouselTouchEndX = e.touches[0].clientX;
+        if (!isSwiping) {
+            const diffX = Math.abs(e.touches[0].clientX - startX);
+            const diffY = Math.abs(e.touches[0].clientY - startY);
+            
+            // 横方向の移動が縦方向より大きい場合のみスワイプと判定
+            if (diffX > 10 && diffX > diffY) {
+                isSwiping = true;
+                hasMoved = true;
+            }
+        }
+        
+        if (isSwiping) {
+            carouselTouchEndX = e.touches[0].clientX;
+        }
     }, { passive: true });
     
     track.addEventListener('touchend', () => {
-        handleCarouselSwipe();
+        if (isSwiping && hasMoved) {
+            handleCarouselSwipe();
+        }
+        isSwiping = false;
+        hasMoved = false;
+    });
+    
+    // カードのクリック時の移動を無効化（タップではカードの内容を操作可能に）
+    const cards = track.querySelectorAll('.event-compact-card');
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // リンクボタン以外のクリックは何もしない
+            if (!e.target.closest('.event-action-btn')) {
+                e.stopPropagation();
+            }
+        });
     });
 }
 
