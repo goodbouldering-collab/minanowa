@@ -3536,9 +3536,8 @@ function updateHeroEventBadge() {
 function renderCarouselCard(event) {
     const eventDate = new Date(event.date);
     const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
-    const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-    const month = monthNames[eventDate.getMonth()];
-    const day = eventDate.getDate();
+    const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = eventDate.getDate().toString().padStart(2, '0');
     const weekday = weekdayNames[eventDate.getDay()];
     const year = eventDate.getFullYear();
     
@@ -3546,41 +3545,41 @@ function renderCarouselCard(event) {
     const statusText = isCompleted ? '開催済み' : '開催予定';
     const statusClass = isCompleted ? 'completed' : 'upcoming';
     
-    const defaultImage = 'https://www.genspark.ai/api/files/s/ERlCiKcs';
-    const eventImage = event.image || defaultImage;
+    // 写真がある場合のみ表示（デフォルト画像は使用しない）
+    const hasImage = event.image && event.image.trim() !== '' && !event.image.includes('genspark.ai/api/files/s/ERlCiKcs');
     
     return `
-        <div class="event-card-carousel">
-            <!-- イベント画像 -->
-            <div class="event-image-wrapper">
-                <img src="${eventImage}" alt="${event.title}" class="event-image" 
-                     onerror="this.src='${defaultImage}'">
-                <div class="event-image-overlay"></div>
-                
-                <!-- オーバーレイ情報 -->
-                <div class="event-card-info-overlay">
-                    <div class="event-card-date-badge-overlay">
-                        <i class="fas fa-calendar-alt date-icon"></i>
-                        <span class="date-text">${year}年 ${month}${day}日（${weekday}）</span>
-                    </div>
-                    <h3 class="event-card-title-overlay">${event.title}</h3>
-                    <div class="event-card-meta-overlay">
-                        ${event.time ? `<span><i class="fas fa-clock"></i> ${event.time}</span>` : ''}
-                        ${event.location ? `<span><i class="fas fa-map-marker-alt"></i> ${event.location}</span>` : ''}
+        <div class="event-compact-card">
+            ${hasImage ? `
+                <div class="event-image-wrapper">
+                    <img src="${event.image}" alt="${event.title}" class="event-image" 
+                         onerror="this.style.display='none'; this.parentElement.style.display='none';">
+                    <div class="event-image-overlay"></div>
+                </div>
+            ` : ''}
+            
+            <div class="event-compact-header">
+                <div class="event-date-badge">
+                    <div class="month-day">${month}/${day}</div>
+                    <div class="year-weekday">${year}年 (${weekday})</div>
+                </div>
+                <div class="event-compact-info">
+                    <h3 class="event-compact-title">
+                        ${event.title}
+                        <span class="event-status-inline ${statusClass}">${statusText}</span>
+                    </h3>
+                    <div class="event-compact-meta">
+                        <span><i class="fas fa-clock"></i> ${event.time || '時間未定'}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${event.location || '場所未定'}</span>
+                        ${event.capacity ? `<span><i class="fas fa-users"></i> 定員${event.capacity}名</span>` : ''}
                     </div>
                 </div>
             </div>
             
-            <!-- イベント詳細 -->
-            <div class="event-card-details-section">
-                <div class="event-status-badge-large ${statusClass}">
-                    <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-calendar-check'}"></i>
-                    <span>${statusText}</span>
-                </div>
-                
+            <div class="event-details">
                 ${event.description ? `
                     <div class="event-detail-section">
-                        <h4><i class="fas fa-info-circle"></i> イベント概要</h4>
+                        <h4><i class="fas fa-info-circle"></i> 内容</h4>
                         <div class="event-detail-content">${event.description}</div>
                     </div>
                 ` : ''}
@@ -3592,7 +3591,6 @@ function renderCarouselCard(event) {
                         ${event.feeDetails ? `<li><strong>詳細:</strong> ${event.feeDetails}</li>` : ''}
                         ${event.cashback ? `<li><strong>特典:</strong> ${event.cashback}</li>` : ''}
                         ${event.freeEntry ? `<li><strong>無料参加:</strong> ${event.freeEntry}</li>` : ''}
-                        ${event.capacity ? `<li><strong>定員:</strong> ${event.capacity}名</li>` : ''}
                         ${event.notes ? `<li><strong>備考:</strong> ${event.notes}</li>` : ''}
                     </ul>
                 </div>

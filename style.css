@@ -1794,108 +1794,12 @@ section {
     width: 100%;
 }
 
-/* イベントカード（カルーセル内） */
-.event-card-carousel {
-    background: var(--white);
+/* カルーセル内のイベントカード（コンパクトカードを使用） */
+.event-carousel-slide .event-compact-card {
     border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(45, 90, 39, 0.1);
     overflow: hidden;
-    position: relative;
-}
-
-.event-card-carousel .event-image-wrapper {
-    height: 400px;
-    position: relative;
-}
-
-.event-card-carousel .event-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.event-card-carousel .event-image-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-}
-
-.event-card-info-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 30px;
-    color: var(--white);
-    z-index: 2;
-}
-
-.event-card-date-badge-overlay {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 30px;
-    margin-bottom: 15px;
-    backdrop-filter: blur(10px);
-}
-
-.event-card-date-badge-overlay .date-icon {
-    font-size: 1.2rem;
-    color: var(--primary);
-}
-
-.event-card-date-badge-overlay .date-text {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.event-card-title-overlay {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.event-card-meta-overlay {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    font-size: 0.95rem;
-    opacity: 0.95;
-}
-
-.event-card-meta-overlay i {
-    margin-right: 6px;
-}
-
-.event-card-details-section {
-    padding: 30px;
-}
-
-.event-status-badge-large {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.event-status-badge-large.upcoming {
-    background: linear-gradient(135deg, rgba(45, 90, 39, 0.1), rgba(45, 90, 39, 0.15));
-    color: var(--primary);
-}
-
-.event-status-badge-large.completed {
-    background: rgba(128, 128, 128, 0.1);
-    color: var(--text-secondary);
 }
 
 /* イベントタイムライン */
