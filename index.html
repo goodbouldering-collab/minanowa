@@ -66,9 +66,9 @@
         <div class="particles" id="particles"></div>
         
         <div class="hero-content">
-            <div class="hero-badge animate-fade-in">
+            <div class="hero-badge animate-fade-in" id="nextEventBadge">
                 <i class="fas fa-calendar-alt"></i>
-                <span>次回交流会: 12月3日（水）12:00〜15:00</span>
+                <span>次回交流会を読み込み中...</span>
             </div>
             
             <h1 class="hero-title animate-slide-up">
@@ -275,17 +275,15 @@
             
             <!-- イベントタイムライン -->
             <div class="event-timeline-wrapper">
-                <!-- タイムラインナビゲーション -->
+                <!-- タイムラインナビゲーション（シンプル1列） -->
                 <div class="timeline-nav">
-                    <button class="timeline-nav-btn prev" id="timelinePrevBtn" onclick="navigateTimeline(-1)">
+                    <button class="timeline-nav-btn" id="timelinePrevBtn" onclick="navigateTimeline(-1)" title="前のイベント">
                         <i class="fas fa-chevron-left"></i>
-                        <span>過去へ</span>
                     </button>
                     <div class="timeline-indicator" id="timelineIndicator">
                         <span class="current-position">1</span> / <span class="total-events">6</span>
                     </div>
-                    <button class="timeline-nav-btn next" id="timelineNextBtn" onclick="navigateTimeline(1)">
-                        <span>未来へ</span>
+                    <button class="timeline-nav-btn" id="timelineNextBtn" onclick="navigateTimeline(1)" title="次のイベント">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
@@ -295,9 +293,12 @@
                     <!-- JavaScriptで動的に生成 -->
                 </div>
                 
-                <!-- タイムラインプレビュー -->
-                <div class="timeline-preview" id="timelinePreview">
-                    <!-- JavaScriptで動的に生成 -->
+                <!-- イベント一覧（リスト形式） -->
+                <div class="event-list-section">
+                    <h4 class="event-list-title"><i class="fas fa-list"></i> 全イベント一覧</h4>
+                    <div class="event-list" id="eventList">
+                        <!-- JavaScriptで動的に生成 -->
+                    </div>
                 </div>
             </div>
         </div>

@@ -1610,39 +1610,44 @@ section {
 .timeline-nav {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
-    padding: 20px;
+    padding: 15px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.05), rgba(45, 90, 39, 0.1));
-    border-radius: 16px;
+    border-radius: 50px;
     border: 2px solid rgba(45, 90, 39, 0.15);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .timeline-nav-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
     background: var(--white);
     border: 2px solid var(--primary);
-    border-radius: 50px;
+    border-radius: 50%;
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 .timeline-nav-btn:hover:not(:disabled) {
     background: var(--primary);
     color: var(--white);
-    transform: translateY(-2px);
+    transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
 }
 
 .timeline-nav-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
     border-color: var(--border);
     color: var(--text-secondary);
@@ -1669,72 +1674,127 @@ section {
     margin-bottom: 30px;
 }
 
-.timeline-preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    padding: 20px;
-    background: rgba(247, 249, 248, 0.5);
-    border-radius: 12px;
+/* イベント一覧セクション */
+.event-list-section {
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.03), rgba(255, 107, 107, 0.03));
+    border-radius: 16px;
+    border: 2px solid rgba(45, 90, 39, 0.1);
 }
 
-.timeline-preview-item {
-    padding: 15px;
+.event-list-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.event-list-title i {
+    color: var(--primary);
+}
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.event-list-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
     background: var(--white);
-    border-radius: 8px;
+    border-radius: 12px;
     border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-align: center;
 }
 
-.timeline-preview-item:hover {
+.event-list-item:hover {
     border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
 }
 
-.timeline-preview-item.active {
+.event-list-item.active {
     border-color: var(--primary);
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.05), rgba(45, 90, 39, 0.1));
 }
 
-.timeline-preview-item.completed {
+.event-list-item.completed {
     opacity: 0.7;
 }
 
-.timeline-preview-date {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 8px;
+.event-list-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    color: var(--white);
 }
 
-.timeline-preview-title {
-    font-size: 0.85rem;
-    color: var(--text-primary);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.event-list-date .month-day {
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.2;
 }
 
-.timeline-preview-status {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 4px 12px;
-    font-size: 0.75rem;
-    border-radius: 20px;
+.event-list-date .year {
+    font-size: 0.7rem;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.event-list-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.event-list-title-text {
+    font-size: 1rem;
     font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.timeline-preview-status.upcoming {
+.event-list-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.event-list-meta i {
+    margin-right: 4px;
+}
+
+.event-list-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.event-list-status.upcoming {
     background: rgba(45, 90, 39, 0.1);
     color: var(--primary);
 }
 
-.timeline-preview-status.completed {
+.event-list-status.completed {
     background: rgba(128, 128, 128, 0.1);
     color: var(--text-secondary);
 }
@@ -5248,33 +5308,58 @@ section {
 @media (max-width: 768px) {
     /* タイムラインナビゲーション */
     .timeline-nav {
-        flex-direction: column;
-        gap: 12px;
-        padding: 15px;
+        gap: 15px;
+        padding: 12px;
+        max-width: 100%;
     }
     
     .timeline-nav-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
     
-    .timeline-nav-btn span {
-        display: inline;
-    }
-    
-    .timeline-preview {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 15px;
-    }
-    
-    .timeline-preview-item {
-        padding: 12px;
+    .timeline-indicator {
+        font-size: 0.9rem;
+        padding: 8px 15px;
     }
     
     .event-image-wrapper {
         height: 200px;
+    }
+    
+    /* イベント一覧 */
+    .event-list-section {
+        padding: 20px;
+    }
+    
+    .event-list-title {
+        font-size: 1.1rem;
+    }
+    
+    .event-list-item {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .event-list-date {
+        min-width: 60px;
+    }
+    
+    .event-list-date .month-day {
+        font-size: 1rem;
+    }
+    
+    .event-list-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .event-list-status {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
     }
     
     .event-tabs {

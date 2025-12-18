@@ -2367,13 +2367,77 @@ function updateEventImagePreview(url) {
     
     if (url && url.trim()) {
         previewContainer.innerHTML = `
-            <img src="${url}" alt="イベント写真プレビュー" 
-                 style="max-width: 100%; max-height: 200px; border-radius: 12px; border: 2px solid var(--border); object-fit: cover;"
-                 onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\\'color: var(--text-secondary); font-size: 0.9rem;\\'>画像の読み込みに失敗しました</p>'">
+            <div style="position: relative; display: inline-block;">
+                <img src="${url}" alt="イベント写真プレビュー" 
+                     style="max-width: 100%; max-height: 200px; border-radius: 12px; border: 2px solid var(--border); object-fit: cover;"
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<p style=\\'color: var(--text-secondary); font-size: 0.9rem;\\'>画像の読み込みに失敗しました</p>'">
+                <button type="button" onclick="removeEventImage()" 
+                        style="position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.8); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         `;
     } else {
-        previewContainer.innerHTML = '';
+        previewContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem;">写真が選択されていません</p>';
     }
+}
+
+async function uploadEventImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const progressDiv = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('uploadProgressBar');
+    const statusText = document.getElementById('uploadStatus');
+    
+    try {
+        progressDiv.style.display = 'block';
+        statusText.textContent = 'アップロード中...';
+        progressBar.style.width = '30%';
+        
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        const response = await fetch(`${API_BASE}/api/admin/upload-event-image`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        progressBar.style.width = '70%';
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            progressBar.style.width = '100%';
+            statusText.textContent = 'アップロード完了！';
+            
+            // URLを隠しフィールドに設定
+            document.getElementById('eventImageUrl').value = data.imageUrl;
+            
+            // プレビューを更新
+            updateEventImagePreview(data.imageUrl);
+            
+            setTimeout(() => {
+                progressDiv.style.display = 'none';
+                progressBar.style.width = '0%';
+            }, 2000);
+        } else {
+            throw new Error(data.message || 'アップロードに失敗しました');
+        }
+    } catch (error) {
+        console.error('画像アップロードエラー:', error);
+        statusText.textContent = 'エラー: ' + error.message;
+        progressBar.style.width = '0%';
+        alert('画像のアップロードに失敗しました: ' + error.message);
+    }
+}
+
+function removeEventImage() {
+    if (!confirm('この写真を削除してもよろしいですか？')) return;
+    
+    document.getElementById('eventImageUrl').value = '';
+    document.getElementById('eventImageFile').value = '';
+    updateEventImagePreview('');
 }
 
 async function saveMemberProfile(event, memberId) {
@@ -2690,20 +2754,34 @@ function showEventEditor(event = null) {
             </div>
             
             <div class="form-group">
-                <label for="eventImage">イベント写真URL</label>
-                <input type="url" id="eventImage" name="image" class="glass-input"
-                       value="${event?.image || ''}" 
-                       placeholder="https://example.com/image.jpg"
-                       oninput="updateEventImagePreview(this.value)">
-                <small style="display: block; margin-top: 5px; color: var(--text-secondary);">
-                    <i class="fas fa-info-circle"></i> イベント詳細ページに表示される写真のURLを入力してください
-                </small>
+                <label for="eventImageFile">イベント写真</label>
+                <input type="hidden" id="eventImageUrl" name="image" value="${event?.image || ''}">
+                <div style="margin-bottom: 10px;">
+                    <input type="file" id="eventImageFile" accept="image/*" 
+                           class="glass-input" style="padding: 10px;"
+                           onchange="uploadEventImage(this)">
+                    <small style="display: block; margin-top: 5px; color: var(--text-secondary);">
+                        <i class="fas fa-info-circle"></i> JPEG, PNG, GIF, WebP形式（最大5MB）
+                    </small>
+                </div>
                 <div id="eventImagePreview" style="margin-top: 15px;">
                     ${event?.image ? `
-                        <img src="${event.image}" alt="イベント写真プレビュー" 
-                             style="max-width: 100%; max-height: 200px; border-radius: 12px; border: 2px solid var(--border); object-fit: cover;"
-                             onerror="this.style.display='none'">
-                    ` : ''}
+                        <div style="position: relative; display: inline-block;">
+                            <img src="${event.image}" alt="イベント写真プレビュー" 
+                                 style="max-width: 100%; max-height: 200px; border-radius: 12px; border: 2px solid var(--border); object-fit: cover;"
+                                 onerror="this.style.display='none'">
+                            <button type="button" onclick="removeEventImage()" 
+                                    style="position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.8); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    ` : '<p style="color: var(--text-secondary); font-size: 0.9rem;">写真が選択されていません</p>'}
+                </div>
+                <div id="uploadProgress" style="display: none; margin-top: 10px;">
+                    <div style="background: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                        <div id="uploadProgressBar" style="width: 0%; height: 20px; background: var(--primary); transition: width 0.3s;"></div>
+                    </div>
+                    <p id="uploadStatus" style="margin-top: 5px; font-size: 0.9rem; color: var(--text-secondary);"></p>
                 </div>
             </div>
             
@@ -3326,12 +3404,12 @@ function renderTimelineDisplay() {
     if (!allEvents || allEvents.length === 0) return;
     
     const mainDisplay = document.getElementById('eventMainDisplay');
-    const timelinePreview = document.getElementById('timelinePreview');
+    const eventList = document.getElementById('eventList');
     const indicator = document.getElementById('timelineIndicator');
     const prevBtn = document.getElementById('timelinePrevBtn');
     const nextBtn = document.getElementById('timelineNextBtn');
     
-    if (!mainDisplay || !timelinePreview || !indicator) return;
+    if (!mainDisplay || !indicator) return;
     
     // インジケーター更新
     indicator.innerHTML = `<span class="current-position">${currentTimelineIndex + 1}</span> / <span class="total-events">${allEvents.length}</span>`;
@@ -3344,25 +3422,69 @@ function renderTimelineDisplay() {
     const event = allEvents[currentTimelineIndex];
     mainDisplay.innerHTML = renderEventCard(event, true);
     
-    // プレビュー表示
-    timelinePreview.innerHTML = allEvents.map((e, index) => {
-        const eventDate = new Date(e.date);
-        const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
-        const day = eventDate.getDate().toString().padStart(2, '0');
-        const isActive = index === currentTimelineIndex;
-        const isCompleted = e.status === 'completed';
+    // ヒーローバッジ更新（次回イベント）
+    updateHeroEventBadge();
+    
+    // イベント一覧表示（リスト形式）
+    if (eventList) {
+        eventList.innerHTML = allEvents.map((e, index) => {
+            const eventDate = new Date(e.date);
+            const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
+            const day = eventDate.getDate().toString().padStart(2, '0');
+            const year = eventDate.getFullYear();
+            const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+            const weekday = weekdayNames[eventDate.getDay()];
+            const isActive = index === currentTimelineIndex;
+            const isCompleted = e.status === 'completed';
+            
+            return `
+                <div class="event-list-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+                     onclick="currentTimelineIndex = ${index}; renderTimelineDisplay(); document.getElementById('eventMainDisplay').scrollIntoView({ behavior: 'smooth' });">
+                    <div class="event-list-date">
+                        <div class="month-day">${month}/${day}</div>
+                        <div class="year">${year}</div>
+                    </div>
+                    <div class="event-list-info">
+                        <div class="event-list-title-text">${e.title}</div>
+                        <div class="event-list-meta">
+                            <span><i class="fas fa-clock"></i> ${e.time || '時間未定'}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${e.location || '場所未定'}</span>
+                        </div>
+                    </div>
+                    <div class="event-list-status ${isCompleted ? 'completed' : 'upcoming'}">
+                        ${isCompleted ? '開催済み' : '開催予定'}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// ヒーローセクションの次回イベントバッジを更新
+function updateHeroEventBadge() {
+    const nextEventBadge = document.getElementById('nextEventBadge');
+    if (!nextEventBadge || !allEvents || allEvents.length === 0) return;
+    
+    // 次回イベント（未開催の最初のイベント）を取得
+    const nextEvent = allEvents.find(e => e.status !== 'completed');
+    
+    if (nextEvent) {
+        const eventDate = new Date(nextEvent.date);
+        const month = eventDate.getMonth() + 1;
+        const day = eventDate.getDate();
+        const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+        const weekday = weekdayNames[eventDate.getDay()];
         
-        return `
-            <div class="timeline-preview-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
-                 onclick="currentTimelineIndex = ${index}; renderTimelineDisplay();">
-                <div class="timeline-preview-date">${month}/${day}</div>
-                <div class="timeline-preview-title">${e.title}</div>
-                <span class="timeline-preview-status ${isCompleted ? 'completed' : 'upcoming'}">
-                    ${isCompleted ? '開催済み' : '開催予定'}
-                </span>
-            </div>
+        nextEventBadge.innerHTML = `
+            <i class="fas fa-calendar-alt"></i>
+            <span>次回交流会: ${month}月${day}日（${weekday}）${nextEvent.time || ''}</span>
         `;
-    }).join('');
+    } else {
+        nextEventBadge.innerHTML = `
+            <i class="fas fa-calendar-alt"></i>
+            <span>次回交流会: 近日公開</span>
+        `;
+    }
 }
 
 // イベントカードを生成（写真含む）
