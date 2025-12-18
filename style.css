@@ -75,6 +75,20 @@
     max-width: 100%;
 }
 
+/* フォーカス時のアウトライン削除 */
+*:focus {
+    outline: none;
+}
+
+button:focus,
+a:focus,
+.carousel-slide:focus,
+.event-card:focus,
+.smart-tab-item:focus,
+.event-tab-smart:focus {
+    outline: none;
+}
+
 html {
     scroll-behavior: smooth;
     font-size: 16px;
