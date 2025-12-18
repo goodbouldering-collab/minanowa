@@ -2350,19 +2350,20 @@ section {
 }
 
 .event-compact-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 12px;
     line-height: 1.4;
     word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .event-compact-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    font-size: 0.9rem;
+    gap: 12px;
+    font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
@@ -2373,11 +2374,12 @@ section {
 
 .event-status-inline {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 0.7rem;
     font-weight: 600;
-    margin-left: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
 .event-status-inline.upcoming {
@@ -5871,12 +5873,13 @@ section {
     }
     
     .event-compact-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     .event-compact-meta {
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
+        font-size: 0.8rem;
     }
     
     .timetable-compact {
