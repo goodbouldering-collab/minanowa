@@ -3407,14 +3407,12 @@ function navigateCarousel(direction) {
     renderCarousel();
 }
 
-// タブクリックでカルーセル移動
+// タブクリックでカルーセル移動（画面ジャンプなし）
 function jumpToEvent(index) {
     if (!allEvents || allEvents.length === 0) return;
     currentCarouselIndex = index;
     renderCarousel();
-    
-    // カルーセルまでスクロール
-    document.getElementById('eventCarouselTrack')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // スクロールは行わない（画面位置を維持）
 }
 
 // カルーセル表示を描画

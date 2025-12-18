@@ -2313,54 +2313,40 @@ section {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* リボン風日付バッジ（左上配置） */
+/* シンプル日付バッジ（左上配置） */
 .event-date-badge {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 20px;
+    left: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 90px;
-    padding: 15px 12px 18px 12px;
+    min-width: 80px;
+    padding: 12px 10px;
     background: linear-gradient(135deg, #2d5a27, #4a7c59);
     color: var(--white);
     text-align: center;
-    box-shadow: 0 3px 10px rgba(45, 90, 39, 0.4);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.3);
     z-index: 10;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
-}
-
-.event-date-badge::before {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    right: 0;
-    height: 10px;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
 }
 
 .event-date-badge .month-day {
-    font-size: 1.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    position: relative;
-    z-index: 1;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .event-date-badge .year-weekday {
     font-size: 0.7rem;
     opacity: 0.9;
-    margin-top: 3px;
-    position: relative;
-    z-index: 1;
+    margin-top: 2px;
 }
 
 .event-compact-info {
     width: 100%;
-    padding-left: 130px; /* 日付バッジのスペース確保（左側） */
+    padding-left: 120px; /* 日付バッジのスペース確保（左側） */
 }
 
 .event-compact-title {
@@ -5865,14 +5851,15 @@ section {
     }
     
     .event-date-badge {
-        top: 0;
-        left: 0;
-        min-width: 75px;
-        padding: 12px 8px 15px 8px;
+        top: 15px;
+        left: 15px;
+        min-width: 70px;
+        padding: 10px 8px;
+        border-radius: 6px;
     }
     
     .event-date-badge .month-day {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .event-date-badge .year-weekday {
@@ -5880,7 +5867,7 @@ section {
     }
     
     .event-compact-info {
-        padding-left: 90px;
+        padding-left: 100px;
     }
     
     .event-compact-title {
