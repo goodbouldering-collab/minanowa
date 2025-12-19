@@ -3610,64 +3610,52 @@ function renderCarouselCard(event) {
             ` : ''}
             
             <div class="event-compact-header">
-                <div class="event-compact-info">
-                    <div class="event-title-row">
-                        <span class="event-date-inline">
-                            <span class="date-main">${month}/${day}</span>
-                            <span class="date-sub">${year}年(${weekday})</span>
-                        </span>
-                        <h3 class="event-compact-title">
-                            ${event.title}
-                            <span class="event-status-inline ${statusClass}">${statusText}</span>
-                        </h3>
-                    </div>
-                    <div class="event-compact-meta">
-                        <span><i class="fas fa-clock"></i> ${event.time || '時間未定'}</span>
-                        <span><i class="fas fa-map-marker-alt"></i> ${event.location || '場所未定'}</span>
-                        ${event.capacity ? `<span><i class="fas fa-users"></i> 定員${event.capacity}名</span>` : ''}
+                <div class="event-title-row">
+                    <span class="event-date-inline">
+                        <span class="date-main">${month}/${day}</span>
+                        <span class="date-sub">${year}(${weekday})</span>
+                    </span>
+                    <div class="event-title-info">
+                        <h3 class="event-compact-title">${event.title}</h3>
+                        <span class="event-status-inline ${statusClass}">${statusText}</span>
                     </div>
                 </div>
             </div>
             
+            <div class="event-compact-meta">
+                <span><i class="fas fa-clock"></i> ${event.time || '時間未定'}</span>
+                <span><i class="fas fa-map-marker-alt"></i> ${event.location || '場所未定'}</span>
+                ${event.capacity ? `<span><i class="fas fa-users"></i> 定員${event.capacity}名</span>` : ''}
+            </div>
+            
             <div class="event-details">
-                ${event.description ? `
-                    <div class="event-detail-section">
-                        <h4><i class="fas fa-info-circle"></i> 内容</h4>
-                        <div class="event-detail-content">${event.description}</div>
+                ${event.description ? `<p class="event-description">${event.description}</p>` : ''}
+                
+                ${event.fee || event.feeDetails || event.cashback || event.freeEntry ? `
+                    <div class="event-info-grid">
+                        ${event.fee ? `<div class="info-item"><strong>参加費</strong><span>${event.fee}</span></div>` : ''}
+                        ${event.feeDetails ? `<div class="info-item"><strong>詳細</strong><span>${event.feeDetails}</span></div>` : ''}
+                        ${event.cashback ? `<div class="info-item"><strong>特典</strong><span>${event.cashback}</span></div>` : ''}
+                        ${event.freeEntry ? `<div class="info-item"><strong>無料</strong><span>${event.freeEntry}</span></div>` : ''}
                     </div>
                 ` : ''}
-                
-                <div class="event-detail-section">
-                    <h4><i class="fas fa-ticket-alt"></i> 参加費・詳細</h4>
-                    <ul class="event-detail-list">
-                        ${event.fee ? `<li><strong>参加費:</strong> ${event.fee}</li>` : ''}
-                        ${event.feeDetails ? `<li><strong>詳細:</strong> ${event.feeDetails}</li>` : ''}
-                        ${event.cashback ? `<li><strong>特典:</strong> ${event.cashback}</li>` : ''}
-                        ${event.freeEntry ? `<li><strong>無料参加:</strong> ${event.freeEntry}</li>` : ''}
-                        ${event.notes ? `<li><strong>備考:</strong> ${event.notes}</li>` : ''}
-                    </ul>
-                </div>
                 
                 ${event.timetable && event.timetable.length > 0 ? `
-                    <div class="event-detail-section">
-                        <h4><i class="fas fa-calendar-check"></i> タイムテーブル</h4>
-                        <div class="timetable-compact">
-                            ${event.timetable.map(item => `
-                                <div class="timetable-compact-item">
-                                    <span class="time">${item.time}</span>
-                                    <span class="activity">${item.activity}</span>
-                                </div>
-                            `).join('')}
-                        </div>
+                    <div class="event-timetable">
+                        ${event.timetable.map(item => `<div class="tt-item"><span>${item.time}</span><span>${item.activity}</span></div>`).join('')}
                     </div>
                 ` : ''}
                 
-                ${event.formUrl && !isCompleted ? `
+                ${event.notes ? `<p class="event-notes"><i class="fas fa-exclamation-circle"></i> ${event.notes}</p>` : ''}
+            </div>
+            
+            ${event.formUrl && !isCompleted ? `
+                <div class="event-action-footer">
                     <a href="${event.formUrl}" target="_blank" class="event-action-btn">
                         <i class="fas fa-edit"></i> 申し込みフォーム
                     </a>
-                ` : ''}
-            </div>
+                </div>
+            ` : ''}
         </div>
     `;
 }

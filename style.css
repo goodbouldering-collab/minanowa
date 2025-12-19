@@ -1611,7 +1611,7 @@ section {
    交流会セクション
    ============================================ */
 .event-section {
-    padding: 30px 0;
+    padding: 20px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
@@ -1622,15 +1622,15 @@ section {
     position: relative;
 }
 
-/* スマートナビゲーション */
+/* スマートナビゲーション - コンパクト */
 .smart-event-nav {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 30px;
-    padding: 20px;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 12px 15px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03), rgba(45, 90, 39, 0.08));
-    border-radius: 16px;
+    border-radius: 14px;
     border: 2px solid rgba(45, 90, 39, 0.1);
     overflow: hidden;
 }
@@ -1784,8 +1784,8 @@ section {
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 25px;
-    padding: 15px;
+    margin-top: 12px;
+    padding: 10px;
 }
 
 .carousel-dot-bottom {
@@ -2338,11 +2338,11 @@ section {
 }
 
 /* イベントヘッダー（コンパクト） */
-/* イベント画像 - コンパクト＆ワクワク感のあるデザイン */
+/* イベント画像 - 超コンパクト */
 .event-image-wrapper {
     position: relative;
     width: 100%;
-    height: 220px;
+    height: 180px;
     overflow: hidden;
     border-radius: 20px 20px 0 0;
 }
@@ -2391,12 +2391,9 @@ section {
 
 .event-compact-header {
     position: relative;
-    padding: 25px 30px 20px 30px;
+    padding: 20px 20px 15px 20px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03) 0%, rgba(199, 123, 48, 0.03) 50%, rgba(212, 168, 75, 0.03) 100%);
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg, rgba(45, 90, 39, 0.2), rgba(199, 123, 48, 0.2), rgba(212, 168, 75, 0.2));
-    border-image-slice: 1;
-    overflow: hidden;
+    border-bottom: 1px solid rgba(45, 90, 39, 0.1);
 }
 
 /* タイトル行（日付とタイトルを横並び） */
@@ -2407,25 +2404,22 @@ section {
     margin-bottom: 12px;
 }
 
-/* インライン日付表示 - ワクワク感のあるデザイン */
+/* インライン日付表示 - コンパクト */
 .event-date-inline {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
-    padding: 14px 12px;
+    min-width: 65px;
+    padding: 10px 8px;
     background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #c77b30 100%);
     color: var(--white);
     text-align: center;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(45, 90, 39, 0.35),
-                0 4px 8px rgba(199, 123, 48, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
     position: relative;
-    transform: translateY(0);
-    transition: all var(--transition-normal);
+    transition: all var(--transition-fast);
 }
 
 .event-date-inline::before {
@@ -2454,75 +2448,56 @@ section {
 }
 
 .event-date-inline .date-main {
-    font-size: 1.4rem;
-    font-weight: 800;
+    font-size: 1.2rem;
+    font-weight: 700;
     line-height: 1.1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    letter-spacing: 0.5px;
 }
 
 .event-date-inline .date-sub {
-    font-size: 0.7rem;
-    opacity: 0.95;
-    margin-top: 3px;
+    font-size: 0.65rem;
+    opacity: 0.9;
+    margin-top: 2px;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-.event-compact-info {
-    width: 100%;
+.event-title-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .event-compact-title {
-    flex: 1;
-    font-size: 1.3rem;
-    font-weight: 800;
+    font-size: 1.15rem;
+    font-weight: 700;
     color: var(--text-primary);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.4;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-    transition: all var(--transition-normal);
-}
-
-.event-title-row:hover .event-compact-title {
-    transform: translateX(4px);
 }
 
 .event-compact-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    font-size: 0.9rem;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba(45, 90, 39, 0.03);
+    border-bottom: 1px solid rgba(45, 90, 39, 0.08);
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    margin-top: 8px;
 }
 
 .event-compact-meta > span {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 10px;
-    background: rgba(45, 90, 39, 0.08);
-    border-radius: 10px;
-    transition: all var(--transition-fast);
-    font-size: 0.85rem;
-}
-
-.event-compact-meta > span:hover {
-    background: rgba(45, 90, 39, 0.12);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.15);
+    gap: 5px;
 }
 
 .event-compact-meta i {
     color: var(--primary);
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .event-status-inline {
@@ -2562,10 +2537,97 @@ section {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* イベント詳細（アコーディオン） - コンパクト化 */
+/* シンプルな詳細エリア */
+.event-description {
+    padding: 15px 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(45, 90, 39, 0.08);
+}
+
+.event-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+    padding: 15px 20px;
+    background: rgba(45, 90, 39, 0.02);
+    border-bottom: 1px solid rgba(45, 90, 39, 0.08);
+}
+
+.event-info-grid .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
+}
+
+.event-info-grid .info-item strong {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-info-grid .info-item span {
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.event-timetable {
+    padding: 15px 20px;
+    background: rgba(45, 90, 39, 0.02);
+    border-bottom: 1px solid rgba(45, 90, 39, 0.08);
+}
+
+.event-timetable .tt-item {
+    display: flex;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px dashed rgba(45, 90, 39, 0.1);
+}
+
+.event-timetable .tt-item:last-child {
+    border-bottom: none;
+}
+
+.event-timetable .tt-item span:first-child {
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 80px;
+}
+
+.event-timetable .tt-item span:last-child {
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.event-notes {
+    padding: 12px 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: rgba(255, 107, 107, 0.05);
+    border-bottom: 1px solid rgba(255, 107, 107, 0.1);
+}
+
+.event-notes i {
+    color: #ff6b6b;
+    margin-right: 6px;
+}
+
+/* 申し込みフォームフッター（常時表示） */
+.event-action-footer {
+    padding: 15px 20px;
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.03), rgba(199, 123, 48, 0.03));
+    text-align: center;
+    border-top: 2px solid rgba(45, 90, 39, 0.1);
+}
+
+/* イベント詳細 - シンプル＆コンパクト */
 .event-details {
-    padding: 0 25px 15px;
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: auto;
 }
 
@@ -2646,16 +2708,18 @@ section {
 .event-action-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 12px 28px;
+    width: 100%;
+    max-width: 400px;
+    padding: 14px 32px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--secondary) 100%);
     color: var(--white);
     border: none;
     border-radius: 50px;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
     text-decoration: none;
-    margin-top: 15px;
     transition: all var(--transition-normal);
     box-shadow: 0 6px 18px rgba(45, 90, 39, 0.3),
                 0 3px 6px rgba(199, 123, 48, 0.2);
