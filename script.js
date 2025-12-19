@@ -3615,10 +3615,7 @@ function renderCarouselCard(event) {
                         <span class="date-main">${month}/${day}</span>
                         <span class="date-sub">${year}(${weekday})</span>
                     </span>
-                    <div class="event-title-info">
-                        <h3 class="event-compact-title">${event.title}</h3>
-                        <span class="event-status-inline ${statusClass}">${statusText}</span>
-                    </div>
+                    <h3 class="event-compact-title">${event.title}</h3>
                 </div>
             </div>
             
