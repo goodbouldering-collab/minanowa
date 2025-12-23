@@ -3512,20 +3512,24 @@ function renderCarousel() {
         return eventDate >= today;
     });
     
-    // スマートタブ表示（1行でコンパクトに）
+    // スマートタブ表示（日付バッジデザイン）
     tabsSmart.innerHTML = allEvents.map((e, index) => {
         const eventDate = new Date(e.date);
         const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
         const day = eventDate.getDate().toString().padStart(2, '0');
+        const year = eventDate.getFullYear();
+        const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+        const weekday = weekdayNames[eventDate.getDay()];
         const isActive = index === currentCarouselIndex;
         const isCompleted = e.status === 'completed';
         const isNextEvent = index === nextEventIndex;
         
         return `
-            <button class="smart-tab-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isNextEvent ? 'next-event' : ''}" 
+            <button class="event-tab-badge ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isNextEvent ? 'next-event' : ''}" 
                     onclick="jumpToEvent(${index})" title="${e.title}">
-                ${isNextEvent ? '<span class="next-badge">次回</span>' : ''}
-                <span class="tab-date">${month}/${day}</span>
+                ${isNextEvent ? '<span class="next-badge-mini">次回</span>' : ''}
+                <span class="badge-date-main">${month}/${day}</span>
+                <span class="badge-date-sub">${year}(${weekday})</span>
             </button>
         `;
     }).join('');
@@ -3637,13 +3641,7 @@ function renderCarouselCard(event) {
             ` : ''}
             
             <div class="event-compact-header">
-                <div class="event-title-row">
-                    <span class="event-date-inline">
-                        <span class="date-main">${month}/${day}</span>
-                        <span class="date-sub">${year}(${weekday})</span>
-                    </span>
-                    <h3 class="event-compact-title">${event.title}</h3>
-                </div>
+                <h3 class="event-compact-title-only">${event.title}</h3>
             </div>
             
             <div class="event-compact-meta">

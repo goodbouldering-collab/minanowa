@@ -1784,73 +1784,93 @@ section {
     display: none;
 }
 
-.smart-tab-item {
+/* イベントタブバッジ（日付バッジデザイン） */
+.event-tab-badge {
     flex-shrink: 0;
-    min-width: 60px;
-    padding: 10px 12px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    outline: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-.smart-tab-item:hover:not(:disabled) {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.7);
-}
-
-.smart-tab-item.active {
-    background: rgba(45, 90, 39, 0.85);
-    backdrop-filter: blur(10px) saturate(180%);
-    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    padding: 10px 8px;
+    background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #c77b30 100%);
     color: var(--white);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.smart-tab-item.completed {
-    opacity: 0.6;
-}
-
-.smart-tab-item:focus,
-.smart-tab-item:focus-visible {
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(45, 90, 39, 0.3);
+    position: relative;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    border: none;
     outline: none;
 }
 
-.smart-tab-item .tab-date {
-    display: block;
-    font-size: 0.85rem;
+.event-tab-badge::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+    border-radius: 12px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.event-tab-badge:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(45, 90, 39, 0.4);
+}
+
+.event-tab-badge:hover::before {
+    opacity: 1;
+}
+
+/* アクティブ状態でも色を変えない（同じデザイン維持） */
+.event-tab-badge.active {
+    background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #c77b30 100%);
+    box-shadow: 0 4px 14px rgba(45, 90, 39, 0.4),
+                0 2px 6px rgba(199, 123, 48, 0.3);
+}
+
+.event-tab-badge.completed {
+    opacity: 0.5;
+}
+
+.event-tab-badge:focus,
+.event-tab-badge:focus-visible {
+    outline: none;
+}
+
+.badge-date-main {
+    font-size: 1rem;
     font-weight: 700;
-}
-
-/* 次回イベントバッジ（タブ内に表示、サイズ維持） */
-.smart-tab-item .next-badge {
+    line-height: 1.2;
     display: block;
-    font-size: 0.6rem;
+}
+
+.badge-date-sub {
+    font-size: 0.65rem;
+    opacity: 0.9;
+    margin-top: 2px;
+    font-weight: 500;
+    display: block;
+}
+
+/* 次回バッジミニ */
+.next-badge-mini {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff6b6b;
+    color: white;
+    font-size: 0.55rem;
     font-weight: 700;
-    color: #ff6b6b;
-    margin-bottom: 2px;
-    line-height: 1;
-}
-
-.smart-tab-item.active .next-badge {
-    color: rgba(255, 255, 255, 0.95);
-}
-
-.smart-tab-item {
-    position: relative;
+    padding: 2px 6px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
 }
 
 .event-tab-smart.active .event-tab-smart-date {
@@ -2555,6 +2575,18 @@ section {
     line-height: 1.3;
     word-wrap: break-word;
     overflow-wrap: break-word;
+}
+
+/* タイトルのみ（日付なし） */
+.event-compact-title-only {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
 }
 
 .event-compact-meta {
