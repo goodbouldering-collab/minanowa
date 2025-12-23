@@ -1705,18 +1705,18 @@ section {
     position: relative;
 }
 
-/* スマートナビゲーション - 超コンパクト */
+/* スマートナビゲーション - 背景なし・カードと一体化 */
 .smart-event-nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 12px;
-    padding: 10px 12px;
-    background: linear-gradient(135deg, rgba(45, 90, 39, 0.03), rgba(45, 90, 39, 0.08));
-    border-radius: 12px;
-    border: 2px solid rgba(45, 90, 39, 0.1);
-    overflow: hidden;
+    gap: 8px;
+    margin-bottom: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    overflow: visible;
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
@@ -1727,39 +1727,28 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--white), rgba(250, 250, 250, 0.95));
-    border: 3px solid transparent;
-    background-clip: padding-box;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(45, 90, 39, 0.2);
     border-radius: 50%;
     color: var(--primary);
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all var(--transition-normal);
-    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     outline: none;
     position: relative;
 }
 
-.smart-nav-btn::before {
-    content: '';\n    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    padding: 3px;
-    background: linear-gradient(135deg, rgba(45, 90, 39, 0.5), rgba(199, 123, 48, 0.5), rgba(212, 168, 75, 0.5));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    z-index: -1;
-}
+
 
 .smart-nav-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: var(--white);
-    transform: scale(1.1);
-    box-shadow: 0 6px 18px rgba(45, 90, 39, 0.35),
-                0 3px 8px rgba(199, 123, 48, 0.25);
+    background: rgba(45, 90, 39, 0.1);
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .smart-nav-btn:disabled {
@@ -1777,7 +1766,7 @@ section {
 .event-tabs-smart {
     flex: 1;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -1786,33 +1775,36 @@ section {
     -ms-overflow-style: none;
     touch-action: pan-x;
     -webkit-overflow-scrolling: touch;
+    padding: 0 4px;
 }
 
 .event-tabs-smart::-webkit-scrollbar {
     display: none;
 }
 
-/* イベントタブバッジ（日付バッジデザイン） */
+/* イベントタブバッジ（カードタイトル風デザイン） */
 .event-tab-badge {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 70px;
-    padding: 10px 8px;
-    background: rgba(255, 255, 255, 0.9);
+    min-width: 80px;
+    padding: 12px 10px;
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     color: var(--text-primary);
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
     position: relative;
     transition: all var(--transition-fast);
     cursor: pointer;
-    border: 2px solid rgba(45, 90, 39, 0.15);
+    border: 2px solid rgba(45, 90, 39, 0.1);
+    border-bottom: none;
     outline: none;
+    margin-bottom: -2px;
 }
 
 .event-tab-badge::before {
@@ -1841,13 +1833,14 @@ section {
                 0 3px 8px rgba(199, 123, 48, 0.4);
 }
 
-/* アクティブ状態のみグラデーション */
+/* アクティブ状態のみグラデーション（カードと一体化） */
 .event-tab-badge.active {
     background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #c77b30 100%);
     color: var(--white);
-    box-shadow: 0 4px 14px rgba(45, 90, 39, 0.4),
-                0 2px 6px rgba(199, 123, 48, 0.3);
+    box-shadow: 0 -4px 12px rgba(45, 90, 39, 0.3);
     border-color: transparent;
+    transform: translateY(2px);
+    z-index: 10;
 }
 
 .event-tab-badge.completed {
@@ -1860,16 +1853,16 @@ section {
 }
 
 .badge-date-main {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     line-height: 1.2;
     display: block;
 }
 
 .badge-date-sub {
-    font-size: 0.65rem;
-    opacity: 0.9;
-    margin-top: 2px;
+    font-size: 0.7rem;
+    opacity: 0.85;
+    margin-top: 3px;
     font-weight: 500;
     display: block;
 }
@@ -2154,16 +2147,18 @@ section {
 
 /* カルーセル内のイベントカード（ワクワク感のあるデザイン） */
 .event-carousel-slide .event-compact-card {
-    border-radius: 18px;
+    border-radius: 0 0 18px 18px;
     box-shadow: 0 6px 24px rgba(45, 90, 39, 0.12),
                 0 3px 8px rgba(199, 123, 48, 0.08);
     border: 2px solid transparent;
+    border-top: none;
     background: linear-gradient(white, white) padding-box,
                 linear-gradient(135deg, rgba(45, 90, 39, 0.25), rgba(199, 123, 48, 0.25), rgba(212, 168, 75, 0.25)) border-box;
     overflow: hidden;
     outline: none;
     position: relative;
     transition: all var(--transition-normal);
+    margin-top: 0;
 }
 
 .event-carousel-slide .event-compact-card::before {

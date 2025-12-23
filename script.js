@@ -3536,7 +3536,7 @@ function renderCarousel() {
     
     // アクティブなタブを中央にスクロール
     setTimeout(() => {
-        const activeTab = tabsSmart.querySelector('.smart-tab-item.active');
+        const activeTab = tabsSmart.querySelector('.event-tab-badge.active');
         if (activeTab) {
             activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
