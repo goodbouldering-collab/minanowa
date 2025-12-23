@@ -3158,6 +3158,52 @@ function setupEventListeners() {
 }
 
 // ============================================
+// 運営チーム表示
+// ============================================
+async function loadTeamMembers() {
+    try {
+        const response = await fetch(`${API_BASE}/api/members`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const adminMembers = data.members.filter(m => m.isAdmin && m.isPublic);
+            // 役職順にソート（代表 > 副代表 > その他）
+            const roleOrder = { '代表': 1, '副代表': 2 };
+            adminMembers.sort((a, b) => {
+                const orderA = roleOrder[a.role] || 999;
+                const orderB = roleOrder[b.role] || 999;
+                return orderA - orderB;
+            });
+            
+            const teamGrid = document.getElementById('teamGrid');
+            if (teamGrid && adminMembers.length > 0) {
+                teamGrid.innerHTML = adminMembers.map(member => `
+                    <div class="team-card" data-aos="fade-up">
+                        <div class="team-avatar">
+                            <img src="${member.avatar || 'https://i.pravatar.cc/200'}" alt="${member.name}">
+                        </div>
+                        <div class="team-role">${member.role || '運営メンバー'}</div>
+                        <h3 class="team-name">${member.name}</h3>
+                        <p class="team-business">${member.business}</p>
+                        <p class="team-intro">${member.introduction || ''}</p>
+                        ${member.skills && member.skills.length > 0 ? `
+                            <div class="team-skills">
+                                ${member.skills.slice(0, 4).map(skill => 
+                                    `<span class="team-skill-tag">${skill}</span>`
+                                ).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+                console.log('✅ 運営チーム表示完了:', adminMembers.length, '名');
+            }
+        }
+    } catch (error) {
+        console.error('❌ 運営チームの読み込みエラー:', error);
+    }
+}
+
+// ============================================
 // Event Card Slider
 // ============================================
 // allEvents is declared globally at line 14
@@ -3400,6 +3446,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventWrapper = document.getElementById('eventContentWrapper');
     const eventMainDisplay = document.getElementById('eventMainDisplay');
     const eventCarouselTrack = document.getElementById('eventCarouselTrack');
+    
+    // 運営チームを読み込み
+    const teamGrid = document.getElementById('teamGrid');
+    if (teamGrid) {
+        console.log('👥 運営チームセクション検出 - チーム情報読み込み開始');
+        loadTeamMembers();
+    }
     
     if (eventWrapper || eventMainDisplay || eventCarouselTrack) {
         console.log('📅 イベントセクション検出 - イベント読み込み開始');

@@ -23,8 +23,9 @@
         "商品開発"
       ],
       "joinDate": "2024-01-15",
-      "isPublic": false,
-      "isAdmin": false,
+      "isPublic": true,
+      "isAdmin": true,
+      "role": "副代表",
       "lastLogin": "2025-12-16T17:28:01.985Z"
     },
     {
@@ -51,8 +52,9 @@
         "IT研修"
       ],
       "joinDate": "2024-02-20",
-      "isPublic": false,
-      "isAdmin": false
+      "isPublic": true,
+      "isAdmin": true,
+      "role": "イベント企画担当"
     },
     {
       "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
@@ -183,6 +185,7 @@
       "joinDate": "2023-01-01",
       "isPublic": true,
       "isAdmin": true,
+      "role": "代表",
       "lastLogin": "2025-12-17T18:01:29.840Z"
     },
     {
