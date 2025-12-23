@@ -66,11 +66,6 @@
         <div class="particles" id="particles"></div>
         
         <div class="hero-content">
-            <div class="hero-badge animate-fade-in" id="nextEventBadge">
-                <i class="fas fa-calendar-alt"></i>
-                <span>次回交流会を読み込み中...</span>
-            </div>
-            
             <h1 class="hero-title animate-slide-up">
                 <span class="title-small">彦根発 異業種交流コミュニティ</span>
                 <span class="title-main">つながりが、<br class="sp-only"><span class="highlight">可能性</span>を広げる</span>
@@ -136,8 +131,12 @@
             </div>
             
             <div class="hero-buttons animate-slide-up delay-3">
-                <div class="next-event-title-wrapper">
-                    <p class="next-event-title-gold" id="nextEventTitleGold">次回イベントを読み込み中...</p>
+                <div class="next-event-preview" id="nextEventPreview">
+                    <div class="next-event-title-gold" id="nextEventTitleGold">次回イベントを読み込み中...</div>
+                    <div class="next-event-datetime" id="nextEventDateTime">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="nextEventDateText">日時を読み込み中...</span>
+                    </div>
                 </div>
                 <a href="#event" class="btn btn-primary btn-large">
                     <i class="fas fa-calendar-check"></i>

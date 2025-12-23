@@ -3565,8 +3565,8 @@ function renderCarousel() {
 
 // ヒーローセクションの次回イベントバッジを更新
 function updateHeroEventBadge() {
-    const nextEventBadge = document.getElementById('nextEventBadge');
     const nextEventTitleGold = document.getElementById('nextEventTitleGold');
+    const nextEventDateText = document.getElementById('nextEventDateText');
     
     if (!allEvents || allEvents.length === 0) return;
     
@@ -3585,32 +3585,27 @@ function updateHeroEventBadge() {
     
     if (nextEvent) {
         const eventDate = new Date(nextEvent.date);
+        const year = eventDate.getFullYear();
         const month = eventDate.getMonth() + 1;
         const day = eventDate.getDate();
         const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
         const weekday = weekdayNames[eventDate.getDay()];
         
-        // ヒーローバッジ更新
-        if (nextEventBadge) {
-            nextEventBadge.innerHTML = `
-                <i class="fas fa-calendar-alt"></i>
-                <span>次回交流会: ${month}月${day}日（${weekday}）${nextEvent.time || ''}</span>
-            `;
-        }
-        
         // ボタン上の金色イベント名更新
         if (nextEventTitleGold) {
             nextEventTitleGold.textContent = nextEvent.title || `第${nextEvent.id.replace('event-', '')}回 みんなのWA 交流会`;
         }
-    } else {
-        if (nextEventBadge) {
-            nextEventBadge.innerHTML = `
-                <i class="fas fa-calendar-alt"></i>
-                <span>次回交流会: 近日公開</span>
-            `;
+        
+        // 日時情報更新
+        if (nextEventDateText) {
+            nextEventDateText.textContent = `${year}年${month}月${day}日（${weekday}） ${nextEvent.time || ''}`;
         }
+    } else {
         if (nextEventTitleGold) {
             nextEventTitleGold.textContent = '次回イベント準備中';
+        }
+        if (nextEventDateText) {
+            nextEventDateText.textContent = '日程調整中';
         }
     }
 }
