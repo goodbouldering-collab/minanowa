@@ -3,6 +3,11 @@
 // Interactive Glassmorphism Edition v2.0
 // ============================================
 
+// ブラウザのスクロール位置復元を無効化（常にトップから表示）
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
 // API ベースURL
 const API_BASE = '';
 
@@ -3437,6 +3442,17 @@ function updateTimelineIndicator() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // URLパラメータチェック（イベント直リンクかどうか）
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get('event');
+    const hasHash = window.location.hash;
+    
+    // パラメータやハッシュがない場合は、ページトップへスクロール
+    if (!eventId && !hasHash) {
+        window.scrollTo(0, 0);
+        console.log('📍 ページトップへスクロール');
+    }
+    
     const eventWrapper = document.getElementById('eventContentWrapper');
     const eventMainDisplay = document.getElementById('eventMainDisplay');
     const eventCarouselTrack = document.getElementById('eventCarouselTrack');
@@ -3453,8 +3469,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAllEvents();
         
         // URLパラメータでイベントID指定時は該当イベントへジャンプ
-        const urlParams = new URLSearchParams(window.location.search);
-        const eventId = urlParams.get('event');
         if (eventId && allEvents) {
             setTimeout(() => {
                 const eventIndex = allEvents.findIndex(e => e.id === eventId);
