@@ -2489,11 +2489,11 @@ section {
 
 .event-compact-header {
     position: relative;
-    padding: 15px 18px 12px 18px;
-    background: rgba(255, 255, 255, 0.6);
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(45, 90, 39, 0.08);
+    border-bottom: 2px solid rgba(45, 90, 39, 0.12);
 }
 
 /* タイトル行（日付とタイトルを横並び） */
@@ -2572,38 +2572,42 @@ section {
 
 /* タイトルのみ（日付なし） */
 .event-compact-title-only {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.5;
     word-wrap: break-word;
     overflow-wrap: break-word;
     text-align: left;
+    letter-spacing: 0.3px;
 }
 
 .event-compact-meta {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 10px 18px;
-    background: rgba(255, 255, 255, 0.5);
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(45, 90, 39, 0.06);
-    font-size: 0.82rem;
-    color: var(--text-secondary);
+    border-bottom: 2px solid rgba(45, 90, 39, 0.1);
+    font-size: 0.9rem;
+    color: var(--text-primary);
 }
 
 .event-compact-meta > span {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+    line-height: 1.5;
 }
 
 .event-compact-meta i {
     color: var(--primary);
-    font-size: 0.85rem;
+    font-size: 1rem;
+    width: 20px;
+    flex-shrink: 0;
 }
 
 /* スクロールヒントは削除 - スペース節約 */
@@ -2647,61 +2651,60 @@ section {
 
 /* シンプルな詳細エリア */
 .event-description {
-    padding: 12px 18px;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(45, 90, 39, 0.06);
+    padding: 0 0 12px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    background: transparent;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(45, 90, 39, 0.1);
 }
 
 .event-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 6px;
-    padding: 12px 18px;
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(45, 90, 39, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 0 12px 0;
+    background: transparent;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(45, 90, 39, 0.1);
 }
 
 .event-info-grid .info-item {
     display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-size: 0.82rem;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.9rem;
+    line-height: 1.6;
 }
 
 .event-info-grid .info-item strong {
     color: var(--primary);
-    font-weight: 600;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    min-width: 60px;
+    flex-shrink: 0;
 }
 
 .event-info-grid .info-item span {
-    color: var(--text-secondary);
-    line-height: 1.3;
+    color: var(--text-primary);
+    line-height: 1.6;
+    flex: 1;
 }
 
 .event-timetable {
-    padding: 12px 18px;
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(45, 90, 39, 0.06);
+    padding: 0 0 12px 0;
+    background: transparent;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(45, 90, 39, 0.1);
 }
 
 .event-timetable .tt-item {
     display: flex;
-    gap: 10px;
-    padding: 5px 0;
-    font-size: 0.82rem;
-    border-bottom: 1px dashed rgba(45, 90, 39, 0.1);
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(45, 90, 39, 0.05);
 }
 
 .event-timetable .tt-item:last-child {
@@ -2709,33 +2712,34 @@ section {
 }
 
 .event-timetable .tt-item span:first-child {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary);
-    min-width: 70px;
-    font-size: 0.8rem;
+    min-width: 75px;
+    font-size: 0.88rem;
+    flex-shrink: 0;
 }
 
 .event-timetable .tt-item span:last-child {
-    color: var(--text-secondary);
+    color: var(--text-primary);
     flex: 1;
-    line-height: 1.3;
+    line-height: 1.6;
 }
 
 .event-notes {
-    padding: 10px 18px;
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    background: rgba(255, 230, 230, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 107, 107, 0.08);
-    line-height: 1.4;
+    padding: 12px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: rgba(255, 243, 224, 0.7);
+    border-left: 3px solid #ff9800;
+    border-radius: 4px;
+    line-height: 1.6;
+    margin-bottom: 0;
 }
 
 .event-notes i {
-    color: #ff6b6b;
-    margin-right: 5px;
-    font-size: 0.8rem;
+    color: #ff9800;
+    margin-right: 6px;
+    font-size: 0.9rem;
 }
 
 /* 申し込みフォームフッター（常時表示・透け完全防止） */
@@ -2753,35 +2757,36 @@ section {
     border-top: 1px solid rgba(45, 90, 39, 0.08);
 }
 
-/* イベント詳細 - 極限コンパクト */
+/* イベント詳細 - シンプル＆見やすい */
 .event-details {
     max-height: 400px;
     overflow-y: auto;
     position: relative;
     scrollbar-width: thin;
-    scrollbar-color: rgba(45, 90, 39, 0.4) rgba(45, 90, 39, 0.08);
-    padding-bottom: 0;
-    padding-top: 0;
+    scrollbar-color: rgba(45, 90, 39, 0.5) rgba(45, 90, 39, 0.1);
+    padding: 16px;
     margin-bottom: 0;
+    background: rgba(250, 250, 250, 0.5);
 }
 
-/* Webkit系ブラウザ用スクロールバー */
+/* Webkit系ブラウザ用スクロールバー - 見やすく */
 .event-details::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .event-details::-webkit-scrollbar-track {
-    background: rgba(45, 90, 39, 0.05);
-    border-radius: 3px;
+    background: rgba(45, 90, 39, 0.08);
+    border-radius: 4px;
 }
 
 .event-details::-webkit-scrollbar-thumb {
-    background: rgba(45, 90, 39, 0.3);
-    border-radius: 3px;
+    background: rgba(45, 90, 39, 0.4);
+    border-radius: 4px;
+    border: 2px solid rgba(250, 250, 250, 0.5);
 }
 
 .event-details::-webkit-scrollbar-thumb:hover {
-    background: rgba(45, 90, 39, 0.5);
+    background: rgba(45, 90, 39, 0.6);
 }
 
 /* スクロール可能を示す下部グラデーション - 透け防止（テキストなし・コンパクト） */
