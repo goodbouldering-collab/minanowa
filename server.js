@@ -459,6 +459,57 @@ app.get('/api/events/:id', (req, res) => {
     res.json({ success: true, event });
 });
 
+// イベント詳細ページ（SEO対応URLルート）
+app.get('/events/:id', (req, res) => {
+    const { id } = req.params;
+    appData = loadData();
+    
+    const event = (appData.events || []).find(e => e.id === id);
+    if (!event) {
+        return res.status(404).send('<h1>イベントが見つかりません</h1><p><a href="/">トップページへ戻る</a></p>');
+    }
+    
+    // イベント情報を含むHTMLページを返す（OGタグ対応）
+    const eventDate = new Date(event.date);
+    const dateStr = `${eventDate.getFullYear()}年${eventDate.getMonth() + 1}月${eventDate.getDate()}日`;
+    
+    res.send(`
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${event.title} - みんなのWA 彦根異業種交流会</title>
+    <meta name="description" content="${event.description || event.title}">
+    
+    <!-- OGP Tags -->
+    <meta property="og:title" content="${event.title} - みんなのWA">
+    <meta property="og:description" content="${event.description || event.title}">
+    <meta property="og:type" content="event">
+    <meta property="og:url" content="${req.protocol}://${req.get('host')}/events/${event.id}">
+    ${event.image ? `<meta property="og:image" content="${event.image}">` : ''}
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${event.title}">
+    <meta name="twitter:description" content="${event.description || event.title}">
+    ${event.image ? `<meta name="twitter:image" content="${event.image}">` : ''}
+    
+    <!-- Redirect to main page with event focus -->
+    <script>
+        // メインページにリダイレクトし、該当イベントへスクロール
+        window.location.href = '/?event=${event.id}';
+    </script>
+</head>
+<body>
+    <h1>${event.title}</h1>
+    <p>イベントページへ移動しています...</p>
+    <p><a href="/?event=${event.id}">こちらをクリック</a></p>
+</body>
+</html>
+    `);
+});
+
 // イベント参加申し込み
 app.post('/api/events/:id/join', checkAuth, (req, res) => {
     const { id } = req.params;

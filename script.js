@@ -3404,6 +3404,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (eventWrapper || eventMainDisplay || eventCarouselTrack) {
         console.log('📅 イベントセクション検出 - イベント読み込み開始');
         loadAllEvents();
+        
+        // URLパラメータでイベントID指定時は該当イベントへジャンプ
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('event');
+        if (eventId && allEvents) {
+            setTimeout(() => {
+                const eventIndex = allEvents.findIndex(e => e.id === eventId);
+                if (eventIndex !== -1) {
+                    jumpToEvent(eventIndex);
+                    // イベントセクションへスクロール
+                    const eventSection = document.querySelector('.event-section');
+                    if (eventSection) {
+                        eventSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }, 500);
+        }
     }
 });
 
