@@ -3177,25 +3177,19 @@ async function loadTeamMembers() {
             
             const teamGrid = document.getElementById('teamGrid');
             if (teamGrid && adminMembers.length > 0) {
+                // コンパクト版カード（トップ配置用）
                 teamGrid.innerHTML = adminMembers.map(member => `
-                    <div class="team-card" data-aos="fade-up">
-                        <div class="team-avatar">
+                    <div class="team-compact-card" data-aos="fade-up">
+                        <div class="team-compact-avatar">
                             <img src="${member.avatar || 'https://i.pravatar.cc/200'}" alt="${member.name}">
                         </div>
-                        <div class="team-role">${member.role || '運営メンバー'}</div>
-                        <h3 class="team-name">${member.name}</h3>
-                        <p class="team-business">${member.business}</p>
-                        <p class="team-intro">${member.introduction || ''}</p>
-                        ${member.skills && member.skills.length > 0 ? `
-                            <div class="team-skills">
-                                ${member.skills.slice(0, 4).map(skill => 
-                                    `<span class="team-skill-tag">${skill}</span>`
-                                ).join('')}
-                            </div>
-                        ` : ''}
+                        <div class="team-compact-role">${member.role || '運営メンバー'}</div>
+                        <h3 class="team-compact-name">${member.name}</h3>
+                        <p class="team-compact-business">${member.business}</p>
+                        <p class="team-compact-intro">${member.introduction || ''}</p>
                     </div>
                 `).join('');
-                console.log('✅ 運営チーム表示完了:', adminMembers.length, '名');
+                console.log('✅ 運営チーム（コンパクト版）表示完了:', adminMembers.length, '名');
             }
         }
     } catch (error) {

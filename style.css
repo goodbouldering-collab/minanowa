@@ -1574,7 +1574,130 @@ section {
 }
 
 /* ===========================
-   運営チームセクション
+   運営チームセクション（トップ配置・コンパクト版）
+   =========================== */
+.team-section-compact {
+    padding: 40px 0 50px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-bottom: 1px solid rgba(45, 90, 39, 0.08);
+}
+
+.team-compact-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.team-compact-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.team-compact-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #2d5a27, #c77b30);
+    border-radius: 2px;
+}
+
+.team-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.team-compact-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    border: 1.5px solid rgba(45, 90, 39, 0.1);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.team-compact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(45, 90, 39, 0.12);
+    border-color: rgba(45, 90, 39, 0.2);
+}
+
+.team-compact-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    border: 2.5px solid rgba(45, 90, 39, 0.15);
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.team-compact-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-compact-role {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--white);
+    background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #c77b30 100%);
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 5px rgba(45, 90, 39, 0.15);
+}
+
+.team-compact-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 6px 0 4px;
+}
+
+.team-compact-business {
+    font-size: 0.75rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.team-compact-intro {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    .team-compact-grid {
+        grid-template-columns: 1fr;
+        max-width: 320px;
+        gap: 16px;
+    }
+}
+
+/* ===========================
+   運営チームセクション（旧・非使用）
    =========================== */
 .team-section {
     padding: 60px 0;
