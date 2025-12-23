@@ -3543,6 +3543,7 @@ function renderCarousel() {
     
     // タッチスワイプ対応（カードタップは無効化）
     setupCarouselSwipe();
+    setupScrollHints();
     console.log('✅ renderCarousel 完了');
 }
 
@@ -3625,6 +3626,10 @@ function renderCarouselCard(event) {
                 ${event.capacity ? `<span><i class="fas fa-users"></i> 定員${event.capacity}名</span>` : ''}
             </div>
             
+            <div class="event-scroll-hint">
+                <span class="scroll-hint-text"><i class="fas fa-chevron-down"></i> 詳細情報をスクロール</span>
+            </div>
+            
             <div class="event-details">
                 ${event.description ? `<p class="event-description">${event.description}</p>` : ''}
                 
@@ -3701,6 +3706,10 @@ function renderEventCard(event, includeImage = true) {
                 </div>
             </div>
             
+            <div class="event-scroll-hint">
+                <span class="scroll-hint-text"><i class="fas fa-chevron-down"></i> 詳細情報をスクロール</span>
+            </div>
+            
             <div class="event-details">
                 ${event.description ? `
                     <div class="event-detail-section">
@@ -3742,6 +3751,25 @@ function renderEventCard(event, includeImage = true) {
             </div>
         </div>
     `;
+}
+
+// スクロールヒントの表示制御
+function setupScrollHints() {
+    const details = document.querySelectorAll('.event-details');
+    details.forEach(detail => {
+        const hint = detail.previousElementSibling;
+        if (hint && hint.classList.contains('event-scroll-hint')) {
+            detail.addEventListener('scroll', () => {
+                if (detail.scrollTop > 20) {
+                    hint.style.opacity = '0';
+                    hint.style.pointerEvents = 'none';
+                } else {
+                    hint.style.opacity = '1';
+                    hint.style.pointerEvents = 'auto';
+                }
+            });
+        }
+    });
 }
 
 // カルーセルスワイプ設定
