@@ -1,6 +1,34 @@
 {
   "members": [
     {
+      "id": "okura-yuki-001",
+      "email": "okura@minanowa.com",
+      "password": "$2b$10$defaultpasswordhash",
+      "name": "大倉 ゆき",
+      "furigana": "おおくら ゆき",
+      "phone": "090-0000-0000",
+      "business": "t-3cパーソナルコーチ",
+      "businessCategory": "コンサルティング・コーチング",
+      "introduction": "パーソナルコーチングを通じて、個人の可能性を最大限に引き出すサポートをしています。みんなのWAの運営を通じて、地域の事業者同士のつながりを育んでいます。",
+      "avatar": "https://i.pravatar.cc/200?img=45",
+      "location": "彦根市",
+      "website": "",
+      "sns": {
+        "twitter": "",
+        "instagram": ""
+      },
+      "skills": [
+        "パーソナルコーチング",
+        "コミュニティ運営",
+        "目標達成支援",
+        "組織開発"
+      ],
+      "joinDate": "2023-01-01",
+      "isPublic": true,
+      "isAdmin": true,
+      "role": "代表"
+    },
+    {
       "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
       "email": "tanaka@example.com",
       "password": "$2b$10$Uf4vBf4hTOdc3xkG2ElWk.V52mQksgolLiqW3Efi/vFBNhVDTQzTu",
@@ -23,9 +51,8 @@
         "商品開発"
       ],
       "joinDate": "2024-01-15",
-      "isPublic": true,
-      "isAdmin": true,
-      "role": "副代表",
+      "isPublic": false,
+      "isAdmin": false,
       "lastLogin": "2025-12-16T17:28:01.985Z"
     },
     {
@@ -52,9 +79,8 @@
         "IT研修"
       ],
       "joinDate": "2024-02-20",
-      "isPublic": true,
-      "isAdmin": true,
-      "role": "イベント企画担当"
+      "isPublic": false,
+      "isAdmin": false
     },
     {
       "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
@@ -185,8 +211,36 @@
       "joinDate": "2023-01-01",
       "isPublic": true,
       "isAdmin": true,
-      "role": "代表",
+      "role": "サポート",
       "lastLogin": "2025-12-17T18:01:29.840Z"
+    },
+    {
+      "id": "ueda-eikichi-001",
+      "email": "ueda@minanowa.com",
+      "password": "$2b$10$defaultpasswordhash",
+      "name": "上田 永吉",
+      "furigana": "うえだ えいきち",
+      "phone": "090-0000-0001",
+      "business": "りーる整体院代表",
+      "businessCategory": "健康・医療",
+      "introduction": "りーる整体院の代表として、地域の皆様の健康をサポートしています。みんなのWAの運営サポートを通じて、事業者同士の交流促進に貢献しています。",
+      "avatar": "https://i.pravatar.cc/200?img=33",
+      "location": "彦根市",
+      "website": "",
+      "sns": {
+        "twitter": "",
+        "instagram": ""
+      },
+      "skills": [
+        "整体施術",
+        "健康相談",
+        "イベントサポート",
+        "地域連携"
+      ],
+      "joinDate": "2023-06-01",
+      "isPublic": true,
+      "isAdmin": true,
+      "role": "サポート"
     },
     {
       "id": "new-member-001",

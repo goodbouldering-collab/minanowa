@@ -3172,8 +3172,8 @@ async function loadTeamMembers() {
         
         if (data.success) {
             const adminMembers = data.members.filter(m => m.isAdmin && m.isPublic);
-            // 役職順にソート（代表 > 副代表 > その他）
-            const roleOrder = { '代表': 1, '副代表': 2 };
+            // 役職順にソート（代表 > サポート > その他）
+            const roleOrder = { '代表': 1, 'サポート': 2 };
             adminMembers.sort((a, b) => {
                 const orderA = roleOrder[a.role] || 999;
                 const orderB = roleOrder[b.role] || 999;
