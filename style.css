@@ -1999,13 +1999,14 @@ section {
     justify-content: flex-start;
     gap: 8px;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible; /* 次回バッジを表示するため */
     scroll-behavior: smooth;
     scrollbar-width: none;
     -ms-overflow-style: none;
     touch-action: pan-x;
     -webkit-overflow-scrolling: touch;
     padding: 0 4px;
+    padding-top: 12px; /* 次回バッジのスペース確保 */
 }
 
 .event-tabs-smart::-webkit-scrollbar {
@@ -2035,6 +2036,7 @@ section {
     border-bottom: none;
     outline: none;
     margin-bottom: -2px;
+    overflow: visible; /* 次回バッジを表示するため */
 }
 
 .event-tab-badge::before {
@@ -2106,9 +2108,11 @@ section {
     color: white;
     font-size: 0.55rem;
     font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
+    padding: 3px 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.5);
+    z-index: 100; /* 確実に最前面に表示 */
+    pointer-events: none; /* クリックイベントを親要素に透過 */
 }
 
 .event-tab-smart.active .event-tab-smart-date {
