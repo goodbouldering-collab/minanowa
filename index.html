@@ -76,43 +76,12 @@
                 お互いの事業を紹介し合い、新しいコラボレーションを生み出す
             </p>
             
-            <!-- ヒーロー検索 -->
-            <div class="hero-search glass-card animate-slide-up delay-2">
-                <div class="hero-search-input">
+            <!-- 事業者検索ボタン -->
+            <div class="hero-search-simple animate-slide-up delay-2">
+                <a href="#members" class="btn btn-glass btn-large">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="heroSearchInput" placeholder="事業者名、職業、スキルで検索..." onkeydown="handleHeroSearch(event)" autocomplete="off">
-                </div>
-                <div class="hero-search-filters">
-                    <select id="heroCategoryFilter">
-                        <option value="all">カテゴリー</option>
-                        <option value="製造・クラフト">製造・クラフト</option>
-                        <option value="IT・デジタル">IT・デジタル</option>
-                        <option value="飲食・食品">飲食・食品</option>
-                        <option value="デザイン・アート">デザイン・アート</option>
-                        <option value="建築・不動産">建築・不動産</option>
-                        <option value="NPO・地域活動">NPO・地域活動</option>
-                    </select>
-                    <select id="heroLocationFilter">
-                        <option value="all">地域</option>
-                        <option value="彦根市">彦根市</option>
-                        <option value="米原市">米原市</option>
-                        <option value="長浜市">長浜市</option>
-                        <option value="近江八幡市">近江八幡市</option>
-                    </select>
-                </div>
-                <button class="hero-search-btn" onclick="executeHeroSearch()">
-                    <i class="fas fa-search"></i>
-                    <span>検索</span>
-                </button>
-            </div>
-            
-            <!-- クイックタグ -->
-            <div class="hero-quick-tags animate-slide-up delay-3">
-                <button onclick="quickSearch('IT')">IT・Web</button>
-                <button onclick="quickSearch('デザイン')">デザイン</button>
-                <button onclick="quickSearch('飲食')">飲食店</button>
-                <button onclick="quickSearch('手作り')">手作り</button>
-                <button onclick="quickSearch('コンサル')">コンサル</button>
+                    事業者を探す
+                </a>
             </div>
             
             <div class="hero-stats animate-slide-up delay-3">

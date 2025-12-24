@@ -834,6 +834,18 @@ ul {
 }
 
 /* ヒーロー検索 */
+/* シンプルな検索ボタン */
+.hero-search-simple {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.hero-search-simple .btn {
+    font-size: 1.1rem;
+    padding: 16px 40px;
+}
+
 .hero-search {
     display: flex;
     align-items: center;
