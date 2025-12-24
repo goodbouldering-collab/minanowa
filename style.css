@@ -1422,45 +1422,32 @@ section {
     margin-top: 40px;
 }
 
-/* コンパクト版統計情報（1列横並び・小さめ） */
-.about-stats-compact {
+/* ヒーロースタイルの統計情報（3列ブロック表示） */
+.about-stats-hero-style {
     display: flex;
-    align-items: center;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 40px;
     margin-top: 30px;
-    padding: 10px 24px;
-    background: rgba(45, 90, 39, 0.05);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-radius: 40px;
-    border: 1px solid rgba(45, 90, 39, 0.15);
-    width: fit-content;
 }
 
-.about-stat-compact {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
+.about-hero-stat {
+    text-align: center;
 }
 
-.about-stat-number {
-    font-size: 1.2rem;
+.about-hero-stat-number {
+    display: block;
+    font-size: 2.5rem;
     font-weight: 800;
     color: var(--primary);
     line-height: 1;
 }
 
-.about-stat-label {
-    font-size: 0.75rem;
+.about-hero-stat-label {
+    display: block;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.about-stat-separator {
-    font-size: 1rem;
-    color: rgba(45, 90, 39, 0.3);
-    font-weight: 300;
+    color: var(--text-primary);
+    margin-top: 8px;
 }
 
 .about-stat-item {
