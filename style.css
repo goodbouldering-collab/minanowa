@@ -1039,11 +1039,28 @@ ul {
     -webkit-backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 215, 0, 0.3);
     border-radius: 20px;
-    padding: 20px 30px;
+    padding: 20px 30px 20px 30px;
     box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
     transition: all var(--transition-normal);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+}
+
+.next-event-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+    letter-spacing: 0.5px;
+    z-index: 10;
+    white-space: nowrap;
 }
 
 .next-event-preview::before {
@@ -1069,7 +1086,7 @@ ul {
 }
 
 .next-event-title-gold {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
     background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #ffd700 50%, #c7a600 75%, #ffd700 100%);
     background-size: 200% auto;
@@ -1078,7 +1095,7 @@ ul {
     background-clip: text;
     animation: goldShine 3s linear infinite;
     letter-spacing: 0.5px;
-    margin: 0 0 12px 0;
+    margin: 8px 0 10px 0;
     position: relative;
     z-index: 1;
 }
