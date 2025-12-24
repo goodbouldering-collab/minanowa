@@ -430,6 +430,17 @@ app.put('/api/members/:id', checkAuth, (req, res) => {
 // イベントAPI
 // ============================================
 
+// ヒーロー画像取得API
+app.get('/api/hero-images', (req, res) => {
+    appData = loadData();
+    const images = appData.heroImages || [];
+    
+    // order順にソート
+    const sortedImages = images.sort((a, b) => a.order - b.order);
+    
+    res.json({ success: true, images: sortedImages, total: sortedImages.length });
+});
+
 app.get('/api/events', (req, res) => {
     appData = loadData();
     const { status, limit = 10 } = req.query;

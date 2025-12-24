@@ -53,7 +53,7 @@ async function initApp() {
     setupEventListeners();
     
     // インタラクティブ要素の初期化
-    initHeroSlider();
+    loadHeroImages(); // ヒーロー画像を動的ロード（内部でinitHeroSlider()を呼ぶ）
     initParticles();
     initTestimonialSlider();
     initScrollAnimations();
@@ -228,6 +228,40 @@ function animateCounter(elementId, targetValue) {
 // ============================================
 // ヒーロースライダー
 // ============================================
+// ヒーロー画像を動的にロード
+async function loadHeroImages() {
+    try {
+        const response = await fetch(`${API_BASE}/api/hero-images`);
+        const data = await response.json();
+        
+        if (data.success && data.images && data.images.length > 0) {
+            const sliderContainer = document.querySelector('.hero-slider');
+            const dotsContainer = document.querySelector('.slider-dots');
+            
+            if (sliderContainer && dotsContainer) {
+                // スライドを生成
+                sliderContainer.innerHTML = data.images.map((img, index) => 
+                    `<div class="slide ${index === 0 ? 'active' : ''}" style="background-image: url('${img.url}')"></div>`
+                ).join('');
+                
+                // ドットを生成
+                dotsContainer.innerHTML = data.images.map((img, index) => 
+                    `<button class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></button>`
+                ).join('');
+                
+                console.log('✅ ヒーロー画像ロード完了:', data.images.length, '枚');
+                
+                // スライダーを初期化
+                initHeroSlider();
+            }
+        }
+    } catch (error) {
+        console.error('❌ ヒーロー画像のロードエラー:', error);
+        // エラー時は既存のスライダーを初期化
+        initHeroSlider();
+    }
+}
+
 function initHeroSlider() {
     const slides = document.querySelectorAll('.hero-slider .slide');
     const dots = document.querySelectorAll('.slider-dots .dot');

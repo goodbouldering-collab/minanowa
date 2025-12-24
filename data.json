@@ -677,5 +677,25 @@
     }
   ],
   "pastEvents": [],
-  "messages": []
+  "messages": [],
+  "heroImages": [
+    {
+      "id": "hero-img-1",
+      "url": "https://www.genspark.ai/api/files/s/ERlCiKcs",
+      "alt": "みんなのWA 交流会の様子",
+      "order": 1
+    },
+    {
+      "id": "hero-img-2",
+      "url": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80",
+      "alt": "ビジネス交流イメージ",
+      "order": 2
+    },
+    {
+      "id": "hero-img-3",
+      "url": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1600&q=80",
+      "alt": "コラボレーションイメージ",
+      "order": 3
+    }
+  ]
 }
