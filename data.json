@@ -697,5 +697,9 @@
       "alt": "コラボレーションイメージ",
       "order": 3
     }
-  ]
+  ],
+  "aboutImage": {
+    "url": "https://www.genspark.ai/api/files/s/ERlCiKcs",
+    "alt": "みんなのWA交流会の様子"
+  }
 }

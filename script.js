@@ -54,6 +54,7 @@ async function initApp() {
     
     // インタラクティブ要素の初期化
     loadHeroImages(); // ヒーロー画像を動的ロード（内部でinitHeroSlider()を呼ぶ）
+    loadAboutImage(); // About画像を動的ロード
     initParticles();
     initTestimonialSlider();
     initScrollAnimations();
@@ -259,6 +260,25 @@ async function loadHeroImages() {
         console.error('❌ ヒーロー画像のロードエラー:', error);
         // エラー時は既存のスライダーを初期化
         initHeroSlider();
+    }
+}
+
+// About画像を動的にロード
+async function loadAboutImage() {
+    try {
+        const response = await fetch(`${API_BASE}/api/about-image`);
+        const data = await response.json();
+        
+        if (data.success && data.image) {
+            const aboutImageElement = document.querySelector('.about-image-card img');
+            if (aboutImageElement) {
+                aboutImageElement.src = data.image.url;
+                aboutImageElement.alt = data.image.alt || 'みんなのWA交流会の様子';
+                console.log('✅ About画像ロード完了');
+            }
+        }
+    } catch (error) {
+        console.error('❌ About画像のロードエラー:', error);
     }
 }
 

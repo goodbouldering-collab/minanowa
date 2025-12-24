@@ -441,6 +441,17 @@ app.get('/api/hero-images', (req, res) => {
     res.json({ success: true, images: sortedImages, total: sortedImages.length });
 });
 
+// About画像取得API
+app.get('/api/about-image', (req, res) => {
+    appData = loadData();
+    const image = appData.aboutImage || {
+        url: 'https://www.genspark.ai/api/files/s/ERlCiKcs',
+        alt: 'みんなのWA交流会の様子'
+    };
+    
+    res.json({ success: true, image });
+});
+
 app.get('/api/events', (req, res) => {
     appData = loadData();
     const { status, limit = 10 } = req.query;

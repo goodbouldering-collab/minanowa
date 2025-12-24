@@ -1422,6 +1422,47 @@ section {
     margin-top: 40px;
 }
 
+/* コンパクト版統計情報（1列横並び・小さめ） */
+.about-stats-compact {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-top: 30px;
+    padding: 10px 24px;
+    background: rgba(45, 90, 39, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 40px;
+    border: 1px solid rgba(45, 90, 39, 0.15);
+    width: fit-content;
+}
+
+.about-stat-compact {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.about-stat-number {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.about-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.about-stat-separator {
+    font-size: 1rem;
+    color: rgba(45, 90, 39, 0.3);
+    font-weight: 300;
+}
+
 .about-stat-item {
     display: flex;
     align-items: center;
