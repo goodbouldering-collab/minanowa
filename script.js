@@ -25,10 +25,31 @@ let activeConversation = null;
 let heroSliderInterval = null;
 let testimonialInterval = null;
 
-// ページロード直後に即座にトップへスクロール（最優先）
+// ページロード直後に完全にスクロールをブロック（最優先）
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
+
+// スクロール位置を強制的にトップに固定
+window.scrollTo(0, 0);
+document.documentElement.scrollTop = 0;
+document.body.scrollTop = 0;
+
+// スクロールイベントをブロック（ページ準備完了まで）
+let scrollBlocked = true;
+const blockScroll = (e) => {
+    if (scrollBlocked) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.scrollTo(0, 0);
+        return false;
+    }
+};
+
+// 全てのスクロールイベントをブロック
+window.addEventListener('scroll', blockScroll, { passive: false, capture: true });
+window.addEventListener('wheel', blockScroll, { passive: false, capture: true });
+window.addEventListener('touchmove', blockScroll, { passive: false, capture: true });
 
 // no-jsクラスを削除（JavaScriptが有効であることを示す）
 document.documentElement.classList.remove('no-js');
@@ -36,15 +57,7 @@ if (document.body) {
     document.body.classList.remove('no-js');
 }
 
-// URLパラメータがない場合、即座にトップへスクロール
-const urlParams = new URLSearchParams(window.location.search);
-const hasUrlParams = urlParams.get('event') || window.location.hash;
-if (!hasUrlParams) {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    console.log('📍 即座にトップへスクロール（最優先）');
-}
+console.log('🔒 スクロール完全ブロック中...');
 
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
@@ -99,10 +112,25 @@ async function initApp() {
     const loadTime = ((performance.now() - startTime) / 1000).toFixed(2);
     console.log(`🌸 みんなのWA - 初期化完了 (${loadTime}s)`);
     
-    // ページを表示（ちらつき防止のため最後に表示）
+    // 最終的にスクロール位置を確認
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasUrlParams = urlParams.get('event') || window.location.hash;
+    if (!hasUrlParams) {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    }
+    
+    // ページを表示してスクロールブロックを解除
     requestAnimationFrame(() => {
+        // HTMLにreadyクラスを追加
+        document.documentElement.classList.add('ready');
         document.body.classList.add('loaded');
-        console.log('✨ ページ表示完了');
+        
+        // スクロールブロックを解除
+        scrollBlocked = false;
+        
+        console.log('✨ ページ表示完了 - スクロール解除');
     });
 }
 

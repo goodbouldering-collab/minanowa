@@ -96,19 +96,39 @@ html {
     width: 100%;
 }
 
+/* ページロード時のスクロール完全ブロック */
+html:not(.ready) {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
 /* ページロード時のちらつき防止 */
 body {
     opacity: 0;
     transition: opacity 0.3s ease-in;
 }
 
+body:not(.loaded) {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
 body.loaded {
     opacity: 1;
+    overflow-x: hidden;
+    position: relative;
 }
 
 /* JavaScriptが無効な場合も表示 */
 body.no-js {
     opacity: 1;
+    overflow: visible !important;
+    position: relative !important;
 }
 
 body {
