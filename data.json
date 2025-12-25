@@ -324,10 +324,6 @@
     }
   ],
   "sessions": {
-    "c059e8e4-d949-41e1-a5e7-dac13c5ed4ea": {
-      "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-      "createdAt": "2025-12-14T07:54:53.695Z"
-    },
     "8c3cc85f-fd63-458b-9768-6fdece1c5468": {
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2025-12-16T17:56:04.555Z"

@@ -25,6 +25,21 @@ let activeConversation = null;
 let heroSliderInterval = null;
 let testimonialInterval = null;
 
+// ページロード直後に即座にトップへスクロール（最優先）
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+// URLパラメータがない場合、即座にトップへスクロール
+const urlParams = new URLSearchParams(window.location.search);
+const hasUrlParams = urlParams.get('event') || window.location.hash;
+if (!hasUrlParams) {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    console.log('📍 即座にトップへスクロール（最優先）');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
 });
@@ -53,8 +68,19 @@ async function initApp() {
     setupEventListeners();
     
     // インタラクティブ要素の初期化
-    loadHeroImages(); // ヒーロー画像を動的ロード（内部でinitHeroSlider()を呼ぶ）
-    loadAboutImage(); // About画像を動的ロード
+    await loadHeroImages(); // ヒーロー画像を動的ロード（内部でinitHeroSlider()を呼ぶ）
+    await loadAboutImage(); // About画像を動的ロード
+    
+    // 画像読み込み後、URLパラメータがなければトップへスクロール確認
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasUrlParams = urlParams.get('event') || window.location.hash;
+    if (!hasUrlParams) {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        console.log('📍 画像読み込み後、トップへスクロール確認');
+    }
+    
     initParticles();
     initTestimonialSlider();
     initScrollAnimations();
@@ -3501,10 +3527,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventId = urlParams.get('event');
     const hasHash = window.location.hash;
     
-    // パラメータやハッシュがない場合は、ページトップへスクロール
+    // パラメータやハッシュがない場合は、ページトップへスクロール（DOMContentLoaded後も確認）
     if (!eventId && !hasHash) {
-        window.scrollTo(0, 0);
-        console.log('📍 ページトップへスクロール');
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            console.log('📍 ページトップへスクロール（DOMContentLoaded後）');
+        }, 0);
+        
+        // 非同期処理完了後も再確認
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+            console.log('📍 ページトップへスクロール（非同期処理後）');
+        }, 100);
     }
     
     const eventWrapper = document.getElementById('eventContentWrapper');
