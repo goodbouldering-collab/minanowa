@@ -96,6 +96,21 @@ html {
     width: 100%;
 }
 
+/* ページロード時のちらつき防止 */
+body {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* JavaScriptが無効な場合も表示 */
+body.no-js {
+    opacity: 1;
+}
+
 body {
     font-family: var(--font-primary);
     font-weight: 400;

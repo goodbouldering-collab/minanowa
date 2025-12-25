@@ -30,6 +30,12 @@ if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
 
+// no-jsクラスを削除（JavaScriptが有効であることを示す）
+document.documentElement.classList.remove('no-js');
+if (document.body) {
+    document.body.classList.remove('no-js');
+}
+
 // URLパラメータがない場合、即座にトップへスクロール
 const urlParams = new URLSearchParams(window.location.search);
 const hasUrlParams = urlParams.get('event') || window.location.hash;
@@ -92,6 +98,12 @@ async function initApp() {
     
     const loadTime = ((performance.now() - startTime) / 1000).toFixed(2);
     console.log(`🌸 みんなのWA - 初期化完了 (${loadTime}s)`);
+    
+    // ページを表示（ちらつき防止のため最後に表示）
+    requestAnimationFrame(() => {
+        document.body.classList.add('loaded');
+        console.log('✨ ページ表示完了');
+    });
 }
 
 // 次回イベント情報を取得・表示
@@ -3526,24 +3538,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('event');
     const hasHash = window.location.hash;
-    
-    // パラメータやハッシュがない場合は、ページトップへスクロール（DOMContentLoaded後も確認）
-    if (!eventId && !hasHash) {
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            console.log('📍 ページトップへスクロール（DOMContentLoaded後）');
-        }, 0);
-        
-        // 非同期処理完了後も再確認
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-            console.log('📍 ページトップへスクロール（非同期処理後）');
-        }, 100);
-    }
     
     const eventWrapper = document.getElementById('eventContentWrapper');
     const eventMainDisplay = document.getElementById('eventMainDisplay');
