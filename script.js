@@ -112,9 +112,7 @@ async function initApp() {
     const loadTime = ((performance.now() - startTime) / 1000).toFixed(2);
     console.log(`🌸 みんなのWA - 初期化完了 (${loadTime}s)`);
     
-    // 最終的にスクロール位置を確認
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasUrlParams = urlParams.get('event') || window.location.hash;
+    // 最終的にスクロール位置を確認（変数は上で既に宣言済み）
     if (!hasUrlParams) {
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
