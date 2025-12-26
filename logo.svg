@@ -1,17 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50">
   <defs>
+    <!-- グリーングラデーション -->
     <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#c44569;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#4a8c3f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d5a27;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- ゴールドアクセント -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0c96a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4a84b;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <!-- Cherry blossom circle -->
-  <circle cx="20" cy="20" r="16" fill="url(#logoGrad)" opacity="0.9"/>
-  <!-- Petal shapes forming WA -->
-  <path d="M20 6 Q26 12 20 20 Q14 12 20 6" fill="white" opacity="0.9"/>
-  <path d="M20 34 Q26 28 20 20 Q14 28 20 34" fill="white" opacity="0.9"/>
-  <path d="M6 20 Q12 14 20 20 Q12 26 6 20" fill="white" opacity="0.9"/>
-  <path d="M34 20 Q28 14 20 20 Q28 26 34 20" fill="white" opacity="0.9"/>
-  <!-- Center dot -->
-  <circle cx="20" cy="20" r="4" fill="white"/>
+  
+  <!-- 背景円 - 「和」の輪を表現 -->
+  <circle cx="25" cy="25" r="20" fill="url(#logoGrad)" opacity="0.95"/>
+  
+  <!-- 中央に「WA」の文字をモチーフにした桜の花びら -->
+  <!-- 上の花びら -->
+  <path d="M25 8 Q30 13 25 20 Q20 13 25 8" fill="white" opacity="0.95"/>
+  <!-- 下の花びら -->
+  <path d="M25 42 Q30 37 25 30 Q20 37 25 42" fill="white" opacity="0.95"/>
+  <!-- 左の花びら -->
+  <path d="M8 25 Q13 20 20 25 Q13 30 8 25" fill="white" opacity="0.95"/>
+  <!-- 右の花びら -->
+  <path d="M42 25 Q37 20 30 25 Q37 30 42 25" fill="white" opacity="0.95"/>
+  
+  <!-- 中心の円 - つながりを象徴 -->
+  <circle cx="25" cy="25" r="5" fill="url(#accentGrad)"/>
+  
+  <!-- テキスト「みんなのWA」 -->
+  <text x="55" y="20" font-family="'Noto Sans JP', sans-serif" font-size="12" font-weight="700" fill="#2d5a27">みんなの</text>
+  <text x="55" y="35" font-family="'Noto Sans JP', sans-serif" font-size="16" font-weight="900" fill="url(#logoGrad)">WA</text>
 </svg>
