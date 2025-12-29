@@ -4255,7 +4255,7 @@ section {
     transition: var(--transition-normal);
     cursor: pointer;
     flex-shrink: 0;
-    width: 380px;
+    width: 320px;
 }
 
 .blog-card:hover {
