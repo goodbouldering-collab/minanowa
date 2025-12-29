@@ -3557,34 +3557,9 @@ section {
 }
 
 .collab-slider {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-behavior: smooth;
-    padding: 10px 0 30px 0;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(74, 140, 63, 0.3) transparent;
-}
-
-.collab-slider::-webkit-scrollbar {
-    height: 8px;
-}
-
-.collab-slider::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-}
-
-.collab-slider::-webkit-scrollbar-thumb {
-    background: rgba(74, 140, 63, 0.3);
-    border-radius: 10px;
-    transition: var(--transition-fast);
-}
-
-.collab-slider::-webkit-scrollbar-thumb:hover {
-    background: rgba(74, 140, 63, 0.5);
 }
 
 .collab-card {
@@ -3593,9 +3568,6 @@ section {
     overflow: hidden;
     box-shadow: var(--shadow-md);
     transition: var(--transition-normal);
-    flex-shrink: 0;
-    width: 450px;
-    max-width: 85vw;
 }
 
 .collab-card:hover {
@@ -6062,13 +6034,8 @@ section {
     }
     
     .collab-slider {
+        grid-template-columns: 1fr;
         gap: 20px;
-        padding: 10px 0 25px 0;
-    }
-    
-    .collab-card {
-        width: 320px;
-        max-width: 85vw;
     }
     
     .connect-flow {
