@@ -1355,7 +1355,7 @@ section {
 }
 
 .section-tag {
-    display: inline-block;
+    display: block;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--secondary);
