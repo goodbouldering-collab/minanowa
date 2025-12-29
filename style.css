@@ -544,7 +544,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 80px;
+    height: 65px;
 }
 
 .nav-logo {
@@ -572,16 +572,16 @@ ul {
 }
 
 .logo-img {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
     transition: var(--transition-fast);
 }
 
 .navbar.scrolled .logo-img {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
 }
 
 .logo-text {
@@ -780,11 +780,12 @@ ul {
    ============================================ */
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding-top: 65px;
 }
 
 .hero-bg {
@@ -842,7 +843,7 @@ ul {
 .hero-content {
     text-align: center;
     color: var(--text-on-dark);
-    padding: 100px 20px 60px;
+    padding: 40px 20px 50px;
     max-width: 1000px;
     position: relative;
     z-index: 1;
@@ -5982,7 +5983,7 @@ section {
     }
     
     .hero-content {
-        padding: 100px 20px 60px;
+        padding: 30px 20px 40px;
     }
     
     .hero-search {
