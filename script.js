@@ -1817,7 +1817,10 @@ function switchAdminTab(tab) {
             'dashboard': 'ダッシュボード',
             'members': 'メンバー',
             'blogs': 'ブログ',
-            'events': 'イベント'
+            'events': 'イベント',
+            'testimonials': '会員の声',
+            'collaborations': 'コラボ',
+            'images': '画像'
         };
         btn.classList.toggle('active', btn.textContent.includes(tabNames[tab]));
     });
@@ -1835,6 +1838,15 @@ function switchAdminTab(tab) {
             break;
         case 'events':
             loadAdminEvents();
+            break;
+        case 'testimonials':
+            loadAdminTestimonials();
+            break;
+        case 'collaborations':
+            loadAdminCollaborations();
+            break;
+        case 'images':
+            loadAdminImages();
             break;
     }
 }
@@ -4016,3 +4028,506 @@ function handleCarouselSwipe() {
 }
 
 // イベントはloadAllEvents()内で初期化される
+
+// ============================================
+// 会員の声管理
+// ============================================
+
+async function loadAdminTestimonials() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>会員の声を読み込み中...</p>
+        </div>
+    `;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/testimonials`);
+        const testimonials = await response.json();
+        
+        renderAdminTestimonials(testimonials);
+    } catch (error) {
+        console.error('会員の声取得エラー:', error);
+        adminContent.innerHTML = `<p>エラーが発生しました</p>`;
+    }
+}
+
+function renderAdminTestimonials(testimonials) {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    const testimonialsHtml = testimonials.map(t => `
+        <div class="admin-item">
+            <div class="admin-item-header">
+                <div class="admin-item-info">
+                    <img src="${t.memberAvatar}" alt="${t.memberName}" class="admin-item-avatar">
+                    <div>
+                        <h4>${t.memberName}</h4>
+                        <p class="admin-item-meta">${t.business} • 評価: ${'★'.repeat(t.rating)}</p>
+                    </div>
+                </div>
+                <div class="admin-item-actions">
+                    <button class="btn btn-sm btn-outline" onclick="editTestimonial('${t.id}')">
+                        <i class="fas fa-edit"></i> 編集
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTestimonial('${t.id}')">
+                        <i class="fas fa-trash"></i> 削除
+                    </button>
+                </div>
+            </div>
+            <div class="admin-item-content">
+                <p>${t.content.substring(0, 150)}${t.content.length > 150 ? '...' : ''}</p>
+            </div>
+        </div>
+    `).join('');
+    
+    adminContent.innerHTML = `
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h3><i class="fas fa-comments"></i> 会員の声管理</h3>
+                <button class="btn btn-primary" onclick="createTestimonial()">
+                    <i class="fas fa-plus"></i> 新規作成
+                </button>
+            </div>
+            <div class="admin-items-grid">
+                ${testimonialsHtml || '<p class="admin-empty">会員の声がまだありません</p>'}
+            </div>
+        </div>
+    `;
+}
+
+function createTestimonial() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h3><i class="fas fa-plus"></i> 会員の声を作成</h3>
+                <button class="btn btn-outline" onclick="loadAdminTestimonials()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+            </div>
+            <form class="admin-form" onsubmit="handleCreateTestimonial(event)">
+                <div class="form-group">
+                    <label>メンバー名</label>
+                    <input type="text" name="memberName" class="glass-input" required>
+                </div>
+                <div class="form-group">
+                    <label>事業内容</label>
+                    <input type="text" name="business" class="glass-input" required>
+                </div>
+                <div class="form-group">
+                    <label>アバター画像URL</label>
+                    <input type="url" name="memberAvatar" class="glass-input" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>内容</label>
+                    <textarea name="content" class="glass-input" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>評価（1-5）</label>
+                    <input type="number" name="rating" class="glass-input" min="1" max="5" value="5" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="isPublic" checked> 公開する
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="loadAdminTestimonials()">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">作成</button>
+                </div>
+            </form>
+        </div>
+    `;
+}
+
+async function handleCreateTestimonial(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {
+        memberName: formData.get('memberName'),
+        business: formData.get('business'),
+        memberAvatar: formData.get('memberAvatar') || 'https://i.pravatar.cc/200?img=1',
+        content: formData.get('content'),
+        rating: parseInt(formData.get('rating')),
+        isPublic: formData.get('isPublic') === 'on'
+    };
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/testimonials`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId 
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('会員の声を作成しました');
+            loadAdminTestimonials();
+        } else {
+            alert('作成に失敗しました');
+        }
+    } catch (error) {
+        console.error('作成エラー:', error);
+        alert('エラーが発生しました');
+    }
+}
+
+async function deleteTestimonial(id) {
+    if (!confirm('この会員の声を削除しますか？')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/testimonials/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-session-id': sessionId }
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('会員の声を削除しました');
+            loadAdminTestimonials();
+        } else {
+            alert('削除に失敗しました');
+        }
+    } catch (error) {
+        console.error('削除エラー:', error);
+        alert('エラーが発生しました');
+    }
+}
+
+// ============================================
+// コラボ事例管理
+// ============================================
+
+async function loadAdminCollaborations() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>コラボ事例を読み込み中...</p>
+        </div>
+    `;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/collaborations`);
+        const collaborations = await response.json();
+        
+        renderAdminCollaborations(collaborations);
+    } catch (error) {
+        console.error('コラボ事例取得エラー:', error);
+        adminContent.innerHTML = `<p>エラーが発生しました</p>`;
+    }
+}
+
+function renderAdminCollaborations(collaborations) {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    const collabsHtml = collaborations.map(c => `
+        <div class="admin-item">
+            <div class="admin-item-header">
+                <div class="admin-item-info">
+                    <img src="${c.image}" alt="${c.title}" class="admin-item-image">
+                    <div>
+                        <h4>${c.title}</h4>
+                        <p class="admin-item-meta">${c.category} • ${c.result}</p>
+                    </div>
+                </div>
+                <div class="admin-item-actions">
+                    <button class="btn btn-sm btn-outline" onclick="editCollaboration('${c.id}')">
+                        <i class="fas fa-edit"></i> 編集
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteCollaboration('${c.id}')">
+                        <i class="fas fa-trash"></i> 削除
+                    </button>
+                </div>
+            </div>
+            <div class="admin-item-content">
+                <p>${c.description}</p>
+                <div class="collab-members">
+                    ${c.members.map(m => `<span class="member-badge">${m.name}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    adminContent.innerHTML = `
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h3><i class="fas fa-handshake"></i> コラボ事例管理</h3>
+                <button class="btn btn-primary" onclick="createCollaboration()">
+                    <i class="fas fa-plus"></i> 新規作成
+                </button>
+            </div>
+            <div class="admin-items-grid">
+                ${collabsHtml || '<p class="admin-empty">コラボ事例がまだありません</p>'}
+            </div>
+        </div>
+    `;
+}
+
+function createCollaboration() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h3><i class="fas fa-plus"></i> コラボ事例を作成</h3>
+                <button class="btn btn-outline" onclick="loadAdminCollaborations()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+            </div>
+            <form class="admin-form" onsubmit="handleCreateCollaboration(event)">
+                <div class="form-group">
+                    <label>タイトル</label>
+                    <input type="text" name="title" class="glass-input" required>
+                </div>
+                <div class="form-group">
+                    <label>説明</label>
+                    <textarea name="description" class="glass-input" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>画像URL</label>
+                    <input type="url" name="image" class="glass-input" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>成果</label>
+                    <input type="text" name="result" class="glass-input" placeholder="例: 売上30%UP" required>
+                </div>
+                <div class="form-group">
+                    <label>カテゴリ</label>
+                    <input type="text" name="category" class="glass-input" placeholder="例: 商品開発" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="isPublic" checked> 公開する
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="loadAdminCollaborations()">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">作成</button>
+                </div>
+            </form>
+        </div>
+    `;
+}
+
+async function handleCreateCollaboration(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {
+        title: formData.get('title'),
+        description: formData.get('description'),
+        image: formData.get('image'),
+        result: formData.get('result'),
+        category: formData.get('category'),
+        members: [],
+        isPublic: formData.get('isPublic') === 'on'
+    };
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/collaborations`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId 
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('コラボ事例を作成しました');
+            loadAdminCollaborations();
+        } else {
+            alert('作成に失敗しました');
+        }
+    } catch (error) {
+        console.error('作成エラー:', error);
+        alert('エラーが発生しました');
+    }
+}
+
+async function deleteCollaboration(id) {
+    if (!confirm('このコラボ事例を削除しますか？')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/collaborations/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-session-id': sessionId }
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('コラボ事例を削除しました');
+            loadAdminCollaborations();
+        } else {
+            alert('削除に失敗しました');
+        }
+    } catch (error) {
+        console.error('削除エラー:', error);
+        alert('エラーが発生しました');
+    }
+}
+
+// ============================================
+// 画像管理
+// ============================================
+
+async function loadAdminImages() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h3><i class="fas fa-images"></i> 画像管理</h3>
+            </div>
+            <div class="admin-images">
+                <div class="admin-image-section">
+                    <h4>ヒーロー画像（スライドショー）</h4>
+                    <p class="admin-hint">トップページのヒーロースライドで使用される画像を管理します</p>
+                    <div id="heroImagesContainer"></div>
+                    <button class="btn btn-primary" onclick="addHeroImage()">
+                        <i class="fas fa-plus"></i> ヒーロー画像を追加
+                    </button>
+                </div>
+                <div class="admin-image-section">
+                    <h4>About画像</h4>
+                    <p class="admin-hint">「みんなのWAとは」セクションで使用される画像</p>
+                    <div id="aboutImageContainer"></div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    loadHeroImages();
+    loadAboutImage();
+}
+
+async function loadHeroImages() {
+    try {
+        const response = await fetch(`${API_BASE}/api/hero-images`);
+        const images = await response.json();
+        
+        const container = document.getElementById('heroImagesContainer');
+        if (!container) return;
+        
+        container.innerHTML = images.map((img, index) => `
+            <div class="admin-image-item">
+                <img src="${img.url}" alt="${img.alt}">
+                <input type="text" value="${img.url}" class="glass-input" placeholder="画像URL" data-index="${index}" data-field="url">
+                <input type="text" value="${img.alt}" class="glass-input" placeholder="代替テキスト" data-index="${index}" data-field="alt">
+                <button class="btn btn-sm btn-danger" onclick="removeHeroImage(${index})">
+                    <i class="fas fa-trash"></i> 削除
+                </button>
+            </div>
+        `).join('') + `
+            <button class="btn btn-primary" onclick="saveHeroImages()">
+                <i class="fas fa-save"></i> 保存
+            </button>
+        `;
+    } catch (error) {
+        console.error('ヒーロー画像取得エラー:', error);
+    }
+}
+
+async function loadAboutImage() {
+    try {
+        const response = await fetch(`${API_BASE}/api/data`);
+        const data = await response.json();
+        const aboutImage = data.aboutImage;
+        
+        const container = document.getElementById('aboutImageContainer');
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div class="admin-image-item">
+                <img src="${aboutImage.url}" alt="${aboutImage.alt}">
+                <input type="text" id="aboutImageUrl" value="${aboutImage.url}" class="glass-input" placeholder="画像URL">
+                <input type="text" id="aboutImageAlt" value="${aboutImage.alt}" class="glass-input" placeholder="代替テキスト">
+                <button class="btn btn-primary" onclick="saveAboutImage()">
+                    <i class="fas fa-save"></i> 保存
+                </button>
+            </div>
+        `;
+    } catch (error) {
+        console.error('About画像取得エラー:', error);
+    }
+}
+
+async function saveHeroImages() {
+    const inputs = document.querySelectorAll('#heroImagesContainer input[data-index]');
+    const images = [];
+    const imageMap = new Map();
+    
+    inputs.forEach(input => {
+        const index = input.dataset.index;
+        const field = input.dataset.field;
+        if (!imageMap.has(index)) {
+            imageMap.set(index, { id: `hero-img-${parseInt(index) + 1}`, order: parseInt(index) + 1 });
+        }
+        imageMap.get(index)[field] = input.value;
+    });
+    
+    imageMap.forEach(img => images.push(img));
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/hero-images`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId 
+            },
+            body: JSON.stringify({ images })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('ヒーロー画像を保存しました');
+            loadHeroImages();
+        } else {
+            alert('保存に失敗しました');
+        }
+    } catch (error) {
+        console.error('保存エラー:', error);
+        alert('エラーが発生しました');
+    }
+}
+
+async function saveAboutImage() {
+    const url = document.getElementById('aboutImageUrl').value;
+    const alt = document.getElementById('aboutImageAlt').value;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/about-image`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId 
+            },
+            body: JSON.stringify({ url, alt })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('About画像を保存しました');
+        } else {
+            alert('保存に失敗しました');
+        }
+    } catch (error) {
+        console.error('保存エラー:', error);
+        alert('エラーが発生しました');
+    }
+}

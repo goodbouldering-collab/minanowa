@@ -697,5 +697,135 @@
   "aboutImage": {
     "url": "https://www.genspark.ai/api/files/s/ERlCiKcs",
     "alt": "みんなのWA交流会の様子"
-  }
+  },
+  "testimonials": [
+    {
+      "id": "testimonial-001",
+      "memberName": "田中 美香",
+      "memberId": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
+      "memberAvatar": "https://i.pravatar.cc/200?img=1",
+      "business": "手作り石鹸職人",
+      "content": "みんなのWAに参加して、本当に良かったです。異業種の方々との交流を通じて、新しい商品開発のヒントを得ることができました。特に和菓子職人の佐藤さんとのコラボは、私のビジネスを大きく成長させるきっかけになりました。",
+      "rating": 5,
+      "joinDate": "2024-01-15",
+      "isPublic": true,
+      "createdAt": "2024-06-01T10:00:00Z"
+    },
+    {
+      "id": "testimonial-002",
+      "memberName": "鈴木 健太",
+      "memberId": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
+      "memberAvatar": "https://i.pravatar.cc/200?img=13",
+      "business": "ITコンサルタント",
+      "content": "交流会での出会いが、新しいプロジェクトの立ち上げに繋がりました。地域の伝統産業とITを融合させる取り組みは、みんなのWAなしには実現できなかったと思います。",
+      "rating": 5,
+      "joinDate": "2024-02-20",
+      "isPublic": true,
+      "createdAt": "2024-07-15T14:00:00Z"
+    },
+    {
+      "id": "testimonial-003",
+      "memberName": "渡辺 真理",
+      "memberId": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
+      "memberAvatar": "https://i.pravatar.cc/200?img=47",
+      "business": "カフェオーナー",
+      "content": "起業前から参加させていただき、多くの先輩事業者からアドバイスをもらえました。今では月1回のワークショップイベントを開催できるまでになり、顧客数も2倍に増えました！",
+      "rating": 5,
+      "joinDate": "2024-06-01",
+      "isPublic": true,
+      "createdAt": "2024-09-20T09:00:00Z"
+    }
+  ],
+  "collaborations": [
+    {
+      "id": "collab-001",
+      "title": "和菓子×手作り石鹸のギフトセット",
+      "description": "石鹸職人の田中さんと和菓子職人の佐藤さんが「彦根の贈り物」ギフトセットを共同開発。地元の観光客に大人気となり、売上30%アップを実現。",
+      "members": [
+        {
+          "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
+          "name": "田中 美香",
+          "avatar": "https://i.pravatar.cc/200?img=1",
+          "business": "手作り石鹸職人"
+        },
+        {
+          "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
+          "name": "佐藤 和也",
+          "avatar": "https://i.pravatar.cc/200?img=14",
+          "business": "和菓子職人"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80",
+      "result": "売上30%UP",
+      "category": "商品開発",
+      "isPublic": true,
+      "createdAt": "2024-08-01T10:00:00Z"
+    },
+    {
+      "id": "collab-002",
+      "title": "伝統工芸×IT×デザイン",
+      "description": "ITコンサルタント鈴木さんとイラストレーター山田さんが、地元工芸品のECサイトとブランディングを共同制作。海外からの受注獲得に成功。",
+      "members": [
+        {
+          "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
+          "name": "鈴木 健太",
+          "avatar": "https://i.pravatar.cc/200?img=13",
+          "business": "ITコンサルタント"
+        },
+        {
+          "id": "d92d11d2-7fbf-4220-936b-04a155d9fa93",
+          "name": "山田 花子",
+          "avatar": "https://i.pravatar.cc/200?img=5",
+          "business": "イラストレーター"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
+      "result": "海外受注獲得",
+      "category": "DX支援",
+      "isPublic": true,
+      "createdAt": "2024-09-15T14:00:00Z"
+    },
+    {
+      "id": "collab-003",
+      "title": "カフェ×ワークショップ",
+      "description": "カフェオーナー渡辺さんが、会員の専門家を招いて月1回のワークショップイベントを開催。顧客数が2倍に増加。",
+      "members": [
+        {
+          "id": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
+          "name": "渡辺 真理",
+          "avatar": "https://i.pravatar.cc/200?img=47",
+          "business": "カフェオーナー"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
+      "result": "顧客数2倍",
+      "category": "イベント企画",
+      "isPublic": true,
+      "createdAt": "2024-10-10T11:00:00Z"
+    },
+    {
+      "id": "collab-004",
+      "title": "健康サービス×マーケティング",
+      "description": "整体院の上田さんがデジタル戦略家の由井さんのサポートでSNSマーケティング戦略を構築。予約率が150%向上。",
+      "members": [
+        {
+          "id": "ueda-eikichi-001",
+          "name": "上田 永吉",
+          "avatar": "https://i.pravatar.cc/200?img=33",
+          "business": "りーる整体院代表"
+        },
+        {
+          "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+          "name": "由井 辰美",
+          "avatar": "https://i.pravatar.cc/200?img=68",
+          "business": "デジタル戦略家"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "result": "予約率150%UP",
+      "category": "マーケティング",
+      "isPublic": true,
+      "createdAt": "2024-11-05T09:00:00Z"
+    }
+  ]
 }
