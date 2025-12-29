@@ -1345,13 +1345,13 @@ ul {
    セクション共通
    ============================================ */
 section {
-    padding: 40px 0;
+    padding: 50px 0;
     position: relative;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .section-tag {
@@ -1361,18 +1361,18 @@ section {
     color: var(--secondary);
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .section-title {
-    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
     font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .section-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-muted);
 }
 
@@ -1430,9 +1430,9 @@ section {
 .about-intro {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
+    gap: 40px;
     align-items: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .about-intro-text {
@@ -1661,13 +1661,13 @@ section {
    Interview Section
    ============================================ */
 .interview-section {
-    padding: 80px 0;
+    padding: 50px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
 .interview-content {
     max-width: 900px;
-    margin: 50px auto 0;
+    margin: 0 auto;
 }
 
 .interview-video-wrapper {
@@ -2088,7 +2088,7 @@ section {
    交流会セクション
    ============================================ */
 .event-section {
-    padding: 15px 0;
+    padding: 50px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
@@ -6017,7 +6017,7 @@ section {
     }
     
     section {
-        padding: 80px 0;
+        padding: 40px 0;
     }
     
     .about-intro {
