@@ -3534,16 +3534,16 @@ section {
 .collab-tabs {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 30px;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 .collab-tab {
-    padding: 10px 24px;
+    padding: 6px 16px;
     background: var(--white);
-    border: 2px solid rgba(45, 90, 39, 0.2);
+    border: 1.5px solid rgba(45, 90, 39, 0.2);
     border-radius: var(--radius-full);
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-primary);
     cursor: pointer;
@@ -3553,18 +3553,21 @@ section {
 .collab-tab:hover {
     background: rgba(45, 90, 39, 0.05);
     border-color: var(--primary);
+    transform: translateY(-1px);
 }
 
 .collab-tab.active {
     background: var(--primary);
     color: var(--white);
     border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.3);
 }
 
 /* カルーセルコンテナ */
 .collab-carousel-wrapper {
     position: relative;
     margin-bottom: 30px;
+    perspective: 1500px;
 }
 
 .collab-carousel {
@@ -3572,6 +3575,7 @@ section {
     overflow: hidden;
     scroll-behavior: smooth;
     gap: 25px;
+    transform-style: preserve-3d;
 }
 
 .carousel-nav {
@@ -3636,6 +3640,7 @@ section {
 .collab-slider {
     display: flex;
     gap: 25px;
+    transform-style: preserve-3d;
 }
 
 .collab-card {
@@ -3643,13 +3648,13 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    transition: var(--transition-normal);
+    transition: all 0.4s ease;
     min-width: 320px;
     flex-shrink: 0;
 }
 
 .collab-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) rotateY(-5deg);
     box-shadow: var(--shadow-xl);
 }
 
@@ -4330,14 +4335,15 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-normal);
+    transition: all 0.4s ease;
     cursor: pointer;
     flex-shrink: 0;
     width: 320px;
+    min-width: 320px;
 }
 
 .blog-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) rotateY(5deg);
     box-shadow: var(--shadow-lg);
 }
 
