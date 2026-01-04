@@ -869,6 +869,11 @@ app.get('/api/stats', (req, res) => {
         locations[loc] = (locations[loc] || 0) + 1;
     });
 
+    // 開催回数の計算（過去の回数 + 現在のイベント数）
+    const pastEventCount = appData.settings?.pastEventCount || 30;
+    const currentEventCount = (appData.events || []).length;
+    const totalEventCount = pastEventCount + currentEventCount;
+
     res.json({
         success: true,
         stats: {
@@ -879,7 +884,8 @@ app.get('/api/stats', (req, res) => {
             categories,
             locations,
             blogCount: appData.blogs.filter(b => b.status === 'published').length,
-            eventCount: (appData.events || []).filter(e => e.status === 'upcoming').length
+            eventCount: (appData.events || []).filter(e => e.status === 'upcoming').length,
+            totalEventCount: totalEventCount
         }
     });
 });

@@ -904,12 +904,20 @@ ul {
 .hero-search-simple {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    margin-top: 15px;
 }
 
 .hero-search-simple .btn {
-    font-size: 0.95rem;
-    padding: 12px 28px;
+    font-size: 0.9rem;
+    padding: 10px 24px;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+.hero-search-simple .btn:hover {
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
 .hero-search {

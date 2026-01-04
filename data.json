@@ -674,6 +674,12 @@
   ],
   "pastEvents": [],
   "messages": [],
+  "settings": {
+    "pastEventCount": 30,
+    "stats": {
+      "description": "統計情報の設定。過去イベント数 + 現在のイベント数 = 総開催回数"
+    }
+  },
   "heroImages": [
     {
       "id": "hero-img-1",

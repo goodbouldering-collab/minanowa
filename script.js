@@ -260,14 +260,23 @@ async function loadStats() {
             const stats = data.stats;
             animateCounter('memberCount', stats.totalMembers);
             animateCounter('categoryCount', Object.keys(stats.categories || {}).length);
+            
+            // 開催回数を更新
+            const eventCountElement = document.querySelector('.hero-stat .stat-number[data-count]');
+            if (eventCountElement && stats.totalEventCount) {
+                eventCountElement.setAttribute('data-count', stats.totalEventCount);
+                animateCounter(eventCountElement, stats.totalEventCount);
+            }
         }
     } catch (error) {
         console.error('統計情報取得エラー:', error);
     }
 }
 
-function animateCounter(elementId, targetValue) {
-    const element = document.getElementById(elementId);
+function animateCounter(elementIdOrElement, targetValue) {
+    const element = typeof elementIdOrElement === 'string' 
+        ? document.getElementById(elementIdOrElement)
+        : elementIdOrElement;
     if (!element) return;
     
     const duration = 2000;
