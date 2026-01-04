@@ -3890,6 +3890,13 @@ section {
     font-size: 0.9rem;
 }
 
+/* 共通カルーセルラッパー */
+.carousel-wrapper {
+    position: relative;
+    margin-bottom: 25px;
+    perspective: 1500px;
+}
+
 .members-grid {
     display: flex;
     gap: 20px;
@@ -3899,6 +3906,7 @@ section {
     padding-bottom: 20px;
     scrollbar-width: thin;
     scrollbar-color: rgba(45, 90, 39, 0.3) rgba(0, 0, 0, 0.05);
+    transform-style: preserve-3d;
 }
 
 .members-grid::-webkit-scrollbar {

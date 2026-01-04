@@ -588,6 +588,7 @@ async function loadMembers() {
             allMembers = data.members;
             renderMembers(data.members);
             updateResultsCount(data.total);
+            setupMembersNavigation(); // スワイプとナビゲーションを設定
         }
     } catch (error) {
         console.error('メンバー読み込みエラー:', error);
@@ -692,6 +693,56 @@ function updateResultsCount(count, query = '') {
             resultsCount.textContent = `${count}件の結果`;
         } else {
             resultsCount.textContent = `全${count}名`;
+        }
+    }
+}
+
+// メンバーグリッドのナビゲーションとスワイプ設定
+function setupMembersNavigation() {
+    const membersGrid = document.getElementById('membersGrid');
+    const prevBtn = document.getElementById('membersPrev');
+    const nextBtn = document.getElementById('membersNext');
+    
+    if (!membersGrid) return;
+    
+    // ナビゲーションボタン
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            membersGrid.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            membersGrid.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    }
+    
+    // スワイプ機能
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    membersGrid.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    membersGrid.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleMemberSwipe();
+    }, { passive: true });
+    
+    function handleMemberSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // 左スワイプ（次へ）
+                membersGrid.scrollBy({ left: 300, behavior: 'smooth' });
+            } else {
+                // 右スワイプ（前へ）
+                membersGrid.scrollBy({ left: -300, behavior: 'smooth' });
+            }
         }
     }
 }
@@ -969,6 +1020,7 @@ function setupCollabTabs() {
 function setupCollabNavigation() {
     const prevBtn = document.getElementById('collabPrev');
     const nextBtn = document.getElementById('collabNext');
+    const carousel = document.getElementById('collabBlogCarousel');
     
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -985,6 +1037,41 @@ function setupCollabNavigation() {
                 goToCollabPage(currentCollabPage + 1);
             }
         });
+    }
+    
+    // スワイプ機能を追加
+    if (carousel) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 左スワイプ（次へ）
+                    const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
+                    if (currentCollabPage < totalPages - 1) {
+                        goToCollabPage(currentCollabPage + 1);
+                    }
+                } else {
+                    // 右スワイプ（前へ）
+                    if (currentCollabPage > 0) {
+                        goToCollabPage(currentCollabPage - 1);
+                    }
+                }
+            }
+        }
     }
 }
 
