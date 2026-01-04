@@ -3566,7 +3566,7 @@ section {
 /* カルーセルコンテナ */
 .collab-carousel-wrapper {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     perspective: 1500px;
 }
 
@@ -3574,7 +3574,7 @@ section {
     display: flex;
     overflow: hidden;
     scroll-behavior: smooth;
-    gap: 25px;
+    gap: 20px;
     transform-style: preserve-3d;
 }
 
@@ -3639,7 +3639,7 @@ section {
 
 .collab-slider {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     transform-style: preserve-3d;
 }
 
@@ -3649,7 +3649,8 @@ section {
     overflow: hidden;
     box-shadow: var(--shadow-md);
     transition: all 0.4s ease;
-    min-width: 320px;
+    min-width: 280px;
+    width: 280px;
     flex-shrink: 0;
 }
 
@@ -3659,7 +3660,7 @@ section {
 }
 
 .collab-image {
-    height: 160px;
+    height: 140px;
     overflow: hidden;
 }
 
@@ -3675,7 +3676,7 @@ section {
 }
 
 .collab-content {
-    padding: 20px;
+    padding: 15px;
 }
 
 .collab-members {
@@ -3926,7 +3927,8 @@ section {
     cursor: pointer;
     border: 1px solid transparent;
     flex-shrink: 0;
-    width: 220px;
+    width: 280px;
+    min-width: 280px;
 }
 
 .member-card:hover {
@@ -4338,8 +4340,8 @@ section {
     transition: all 0.4s ease;
     cursor: pointer;
     flex-shrink: 0;
-    width: 320px;
-    min-width: 320px;
+    width: 280px;
+    min-width: 280px;
 }
 
 .blog-card:hover {
@@ -4349,7 +4351,7 @@ section {
 
 .blog-card-image {
     position: relative;
-    height: 200px;
+    height: 140px;
     overflow: hidden;
 }
 
@@ -6306,6 +6308,9 @@ section {
     overflow: visible;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    min-width: 280px;
+    width: 280px;
+    flex-shrink: 0;
 }
 
 .event-card:hover {
@@ -6314,7 +6319,7 @@ section {
 
 .event-card-image {
     position: relative;
-    height: 400px;
+    height: 280px;
     overflow: hidden;
 }
 
