@@ -3652,10 +3652,11 @@ section {
     min-width: 280px;
     width: 280px;
     flex-shrink: 0;
+    transform-style: preserve-3d;
 }
 
 .collab-card:hover {
-    transform: translateY(-8px) rotateY(-5deg);
+    transform: translateY(-10px) rotateY(-8deg);
     box-shadow: var(--shadow-lg);
 }
 
@@ -3929,31 +3930,37 @@ section {
     flex-shrink: 0;
     width: 280px;
     min-width: 280px;
+    transform-style: preserve-3d;
 }
 
 .member-card:hover {
-    transform: translateY(-8px) rotateY(-5deg);
+    transform: translateY(-10px) rotateY(-8deg);
     box-shadow: var(--shadow-lg);
     border-color: rgba(45, 90, 39, 0.15);
 }
 
 .member-card-header {
     position: relative;
-    padding: 20px 15px 15px;
+    padding: 18px 12px 12px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     text-align: center;
+    min-height: 80px;
 }
 
 .member-card-category {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255, 255, 255, 0.2);
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.25);
     color: var(--white);
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 0.7rem;
+    font-weight: 600;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .member-card-avatar {
@@ -3973,14 +3980,16 @@ section {
 
 .member-card-name {
     color: var(--white);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 4px;
+    line-height: 1.3;
 }
 
 .member-card-business {
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
 }
 
 .member-card-body {
@@ -3989,9 +3998,9 @@ section {
 
 .member-card-intro {
     color: var(--text-muted);
-    font-size: 0.8rem;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -4342,10 +4351,11 @@ section {
     flex-shrink: 0;
     width: 280px;
     min-width: 280px;
+    transform-style: preserve-3d;
 }
 
 .blog-card:hover {
-    transform: translateY(-8px) rotateY(5deg);
+    transform: translateY(-10px) rotateY(8deg);
     box-shadow: var(--shadow-lg);
 }
 
@@ -6311,10 +6321,11 @@ section {
     min-width: 280px;
     width: 280px;
     flex-shrink: 0;
+    transform-style: preserve-3d;
 }
 
 .event-card:hover {
-    transform: translateY(-8px) rotateY(5deg);
+    transform: translateY(-10px) rotateY(8deg);
     box-shadow: var(--shadow-lg);
 }
 
