@@ -3647,7 +3647,7 @@ section {
     background: var(--white);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     transition: all 0.4s ease;
     min-width: 280px;
     width: 280px;
@@ -3656,7 +3656,7 @@ section {
 
 .collab-card:hover {
     transform: translateY(-8px) rotateY(-5deg);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
 }
 
 .collab-image {
@@ -3923,7 +3923,7 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-normal);
+    transition: all 0.4s ease;
     cursor: pointer;
     border: 1px solid transparent;
     flex-shrink: 0;
@@ -3932,7 +3932,7 @@ section {
 }
 
 .member-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) rotateY(-5deg);
     box-shadow: var(--shadow-lg);
     border-color: rgba(45, 90, 39, 0.15);
 }
@@ -4379,7 +4379,7 @@ section {
 }
 
 .blog-card-content {
-    padding: 25px;
+    padding: 15px;
 }
 
 .blog-card-author {
@@ -6301,12 +6301,12 @@ section {
 }
 
 .event-card {
-    background: transparent;
-    border-radius: 16px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
     border: none;
-    box-shadow: none;
-    overflow: visible;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all 0.4s ease;
     position: relative;
     min-width: 280px;
     width: 280px;
@@ -6314,12 +6314,13 @@ section {
 }
 
 .event-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) rotateY(5deg);
+    box-shadow: var(--shadow-lg);
 }
 
 .event-card-image {
     position: relative;
-    height: 280px;
+    height: 140px;
     overflow: hidden;
 }
 
