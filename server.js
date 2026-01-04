@@ -1244,6 +1244,80 @@ app.get('/preview', (req, res) => {
     res.sendFile(path.join(__dirname, 'preview.html'));
 });
 
+// ============================================
+// コラボレーション API
+// ============================================
+
+// コラボ事例一覧取得
+app.get('/api/collaborations', (req, res) => {
+    const collaborations = appData.collaborations || [];
+    res.json({
+        success: true,
+        collaborations: collaborations.filter(c => c.isPublic)
+    });
+});
+
+// コラボ事例作成
+app.post('/api/admin/collaborations', (req, res) => {
+    try {
+        const newCollaboration = {
+            id: `collab-${Date.now()}`,
+            ...req.body,
+            createdAt: new Date().toISOString()
+        };
+        
+        if (!appData.collaborations) {
+            appData.collaborations = [];
+        }
+        
+        appData.collaborations.push(newCollaboration);
+        saveData();
+        res.json({ success: true, collaboration: newCollaboration });
+    } catch (error) {
+        console.error('コラボ事例作成エラー:', error);
+        res.status(500).json({ success: false, message: 'コラボ事例の作成に失敗しました' });
+    }
+});
+
+// コラボ事例更新
+app.put('/api/admin/collaborations/:id', (req, res) => {
+    try {
+        const collabIndex = appData.collaborations?.findIndex(c => c.id === req.params.id);
+        if (collabIndex === -1) {
+            return res.status(404).json({ success: false, message: 'コラボ事例が見つかりません' });
+        }
+        
+        appData.collaborations[collabIndex] = {
+            ...appData.collaborations[collabIndex],
+            ...req.body,
+            updatedAt: new Date().toISOString()
+        };
+        
+        saveData();
+        res.json({ success: true, collaboration: appData.collaborations[collabIndex] });
+    } catch (error) {
+        console.error('コラボ事例更新エラー:', error);
+        res.status(500).json({ success: false, message: 'コラボ事例の更新に失敗しました' });
+    }
+});
+
+// コラボ事例削除
+app.delete('/api/admin/collaborations/:id', (req, res) => {
+    try {
+        const collabIndex = appData.collaborations?.findIndex(c => c.id === req.params.id);
+        if (collabIndex === -1) {
+            return res.status(404).json({ success: false, message: 'コラボ事例が見つかりません' });
+        }
+        
+        appData.collaborations.splice(collabIndex, 1);
+        saveData();
+        res.json({ success: true, message: 'コラボ事例を削除しました' });
+    } catch (error) {
+        console.error('コラボ事例削除エラー:', error);
+        res.status(500).json({ success: false, message: 'コラボ事例の削除に失敗しました' });
+    }
+});
+
 app.use((req, res, next) => {
     if (!req.path.startsWith('/api')) {
         res.sendFile(path.join(__dirname, 'index.html'));
@@ -1372,72 +1446,6 @@ app.delete('/api/admin/testimonials/:id', (req, res) => {
 // ============================================
 
 // コラボ事例一覧取得
-app.get('/api/collaborations', (req, res) => {
-    const collaborations = appData.collaborations || [];
-    res.json(collaborations.filter(c => c.isPublic));
-});
-
-// コラボ事例作成
-app.post('/api/admin/collaborations', (req, res) => {
-    try {
-        const newCollaboration = {
-            id: `collab-${Date.now()}`,
-            ...req.body,
-            createdAt: new Date().toISOString()
-        };
-        
-        if (!appData.collaborations) {
-            appData.collaborations = [];
-        }
-        
-        appData.collaborations.push(newCollaboration);
-        saveData();
-        res.json({ success: true, collaboration: newCollaboration });
-    } catch (error) {
-        console.error('コラボ事例作成エラー:', error);
-        res.status(500).json({ success: false, message: 'コラボ事例の作成に失敗しました' });
-    }
-});
-
-// コラボ事例更新
-app.put('/api/admin/collaborations/:id', (req, res) => {
-    try {
-        const collabIndex = appData.collaborations?.findIndex(c => c.id === req.params.id);
-        if (collabIndex === -1) {
-            return res.status(404).json({ success: false, message: 'コラボ事例が見つかりません' });
-        }
-        
-        appData.collaborations[collabIndex] = {
-            ...appData.collaborations[collabIndex],
-            ...req.body,
-            updatedAt: new Date().toISOString()
-        };
-        
-        saveData();
-        res.json({ success: true, collaboration: appData.collaborations[collabIndex] });
-    } catch (error) {
-        console.error('コラボ事例更新エラー:', error);
-        res.status(500).json({ success: false, message: 'コラボ事例の更新に失敗しました' });
-    }
-});
-
-// コラボ事例削除
-app.delete('/api/admin/collaborations/:id', (req, res) => {
-    try {
-        const collabIndex = appData.collaborations?.findIndex(c => c.id === req.params.id);
-        if (collabIndex === -1) {
-            return res.status(404).json({ success: false, message: 'コラボ事例が見つかりません' });
-        }
-        
-        appData.collaborations.splice(collabIndex, 1);
-        saveData();
-        res.json({ success: true, message: 'コラボ事例を削除しました' });
-    } catch (error) {
-        console.error('コラボ事例削除エラー:', error);
-        res.status(500).json({ success: false, message: 'コラボ事例の削除に失敗しました' });
-    }
-});
-
 // ============================================
 // 画像管理 API
 // ============================================

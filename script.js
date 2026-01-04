@@ -771,7 +771,10 @@ function renderBlogs(blogs) {
 // コラボとブログをミックスして表示
 async function loadCollabAndBlogs() {
     const grid = document.getElementById('collabBlogGrid');
-    if (!grid) return;
+    if (!grid) {
+        console.error('collabBlogGrid element not found');
+        return;
+    }
     
     try {
         // コラボとブログを並行して取得
@@ -783,35 +786,39 @@ async function loadCollabAndBlogs() {
         const collabData = await collabRes.json();
         const blogData = await blogRes.json();
         
-        if (collabData.success && blogData.success) {
-            const collabs = collabData.collaborations.filter(c => c.isPublic);
-            const blogs = blogData.blogs;
-            
-            // コラボとブログをミックス
-            const items = [];
-            
-            // コラボを追加
-            collabs.forEach(collab => {
-                items.push({ type: 'collab', data: collab });
-            });
-            
-            // ブログを追加
-            blogs.forEach(blog => {
-                items.push({ type: 'blog', data: blog });
-            });
-            
-            // ランダムにシャッフル
-            items.sort(() => Math.random() - 0.5);
-            
-            renderCollabAndBlogs(items);
-        }
+        console.log('Collab data:', collabData);
+        console.log('Blog data:', blogData);
+        
+        const collabs = (collabData.success && collabData.collaborations) ? collabData.collaborations.filter(c => c.isPublic) : [];
+        const blogs = (blogData.success && blogData.blogs) ? blogData.blogs : [];
+        
+        console.log('Filtered collabs:', collabs.length, 'blogs:', blogs.length);
+        
+        // コラボとブログをミックス
+        const items = [];
+        
+        // コラボを追加
+        collabs.forEach(collab => {
+            items.push({ type: 'collab', data: collab });
+        });
+        
+        // ブログを追加
+        blogs.forEach(blog => {
+            items.push({ type: 'blog', data: blog });
+        });
+        
+        // ランダムにシャッフル
+        items.sort(() => Math.random() - 0.5);
+        
+        console.log('Total items to render:', items.length);
+        renderCollabAndBlogs(items);
     } catch (error) {
         console.error('コンテンツ取得エラー:', error);
         grid.innerHTML = `
             <div class="no-results glass-card">
                 <i class="fas fa-exclamation-circle"></i>
                 <h3>読み込みエラー</h3>
-                <p>コンテンツを取得できませんでした</p>
+                <p>コンテンツを取得できませんでした: ${error.message}</p>
             </div>
         `;
     }
