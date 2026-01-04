@@ -79,7 +79,7 @@ async function initApp() {
     await Promise.all([
         loadStats(),
         loadMembers(),
-        loadBlogs(),
+        loadCollabAndBlogs(),
         loadNextEvent()
     ]);
     
@@ -663,8 +663,6 @@ function renderMembers(members) {
         <div class="member-card" onclick="openMemberDetail('${member.id}')">
             <div class="member-card-header">
                 <span class="member-card-category">${member.businessCategory || 'その他'}</span>
-                <img src="${member.avatar}" alt="${member.name}" class="member-card-avatar" 
-                     onerror="this.src='https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&q=80'">
                 <h3 class="member-card-name">${member.name}</h3>
                 <p class="member-card-business">${member.business}</p>
             </div>
@@ -768,6 +766,124 @@ function renderBlogs(blogs) {
             </div>
         </div>
     `).join('');
+}
+
+// コラボとブログをミックスして表示
+async function loadCollabAndBlogs() {
+    const grid = document.getElementById('collabBlogGrid');
+    if (!grid) return;
+    
+    try {
+        // コラボとブログを並行して取得
+        const [collabRes, blogRes] = await Promise.all([
+            fetch(`${API_BASE}/api/collaborations`),
+            fetch(`${API_BASE}/api/blogs?limit=6`)
+        ]);
+        
+        const collabData = await collabRes.json();
+        const blogData = await blogRes.json();
+        
+        if (collabData.success && blogData.success) {
+            const collabs = collabData.collaborations.filter(c => c.isPublic);
+            const blogs = blogData.blogs;
+            
+            // コラボとブログをミックス
+            const items = [];
+            
+            // コラボを追加
+            collabs.forEach(collab => {
+                items.push({ type: 'collab', data: collab });
+            });
+            
+            // ブログを追加
+            blogs.forEach(blog => {
+                items.push({ type: 'blog', data: blog });
+            });
+            
+            // ランダムにシャッフル
+            items.sort(() => Math.random() - 0.5);
+            
+            renderCollabAndBlogs(items);
+        }
+    } catch (error) {
+        console.error('コンテンツ取得エラー:', error);
+        grid.innerHTML = `
+            <div class="no-results glass-card">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>読み込みエラー</h3>
+                <p>コンテンツを取得できませんでした</p>
+            </div>
+        `;
+    }
+}
+
+function renderCollabAndBlogs(items) {
+    const grid = document.getElementById('collabBlogGrid');
+    if (!grid) return;
+    
+    if (items.length === 0) {
+        grid.innerHTML = `
+            <div class="no-results glass-card">
+                <i class="fas fa-newspaper"></i>
+                <h3>コンテンツがありません</h3>
+                <p>まだ投稿されていません</p>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = items.map(item => {
+        if (item.type === 'collab') {
+            const collab = item.data;
+            return `
+                <div class="collab-card">
+                    <div class="collab-image">
+                        <img src="${collab.coverImageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80'}" alt="${collab.title}">
+                    </div>
+                    <div class="collab-content">
+                        <div class="collab-members">
+                            ${collab.memberAvatars ? collab.memberAvatars.slice(0, 2).map((avatar, idx) => 
+                                `${idx > 0 ? '<span class="plus">×</span>' : ''}<img src="${avatar}" alt="メンバー${idx + 1}">`
+                            ).join('') : ''}
+                        </div>
+                        <h3>${collab.title}</h3>
+                        <p>${collab.description}</p>
+                        <div class="collab-result">
+                            <span><i class="fas fa-chart-line"></i> ${collab.result || '成果'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            const blog = item.data;
+            return `
+                <div class="blog-card" onclick="openBlogDetail('${blog.slug}')">
+                    <div class="blog-card-image">
+                        <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}">
+                        <span class="blog-card-category">${blog.category}</span>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-author">
+                            <img src="${blog.authorAvatar}" alt="${blog.authorName}">
+                            <div>
+                                <span class="author-name">${blog.authorName}</span>
+                                <span class="blog-card-date">${formatDate(blog.publishDate)}</span>
+                            </div>
+                        </div>
+                        <h3 class="blog-card-title">${blog.title}</h3>
+                        <p class="blog-card-excerpt">${blog.excerpt}</p>
+                        <div class="blog-card-meta">
+                            <div class="blog-card-stats">
+                                <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
+                                <span><i class="fas fa-heart"></i> ${blog.likes || 0}</span>
+                            </div>
+                            <span class="blog-card-link">続きを読む <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
 }
 
 function formatDate(dateString) {

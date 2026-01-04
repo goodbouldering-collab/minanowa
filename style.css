@@ -3817,7 +3817,7 @@ section {
     cursor: pointer;
     border: 1px solid transparent;
     flex-shrink: 0;
-    width: 320px;
+    width: 220px;
 }
 
 .member-card:hover {
@@ -3828,7 +3828,7 @@ section {
 
 .member-card-header {
     position: relative;
-    padding: 30px 25px 25px;
+    padding: 20px 15px 15px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     text-align: center;
 }
@@ -3862,27 +3862,27 @@ section {
 
 .member-card-name {
     color: var(--white);
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .member-card-business {
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .member-card-body {
-    padding: 20px 25px 25px;
+    padding: 15px 15px 18px;
 }
 
 .member-card-intro {
     color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 15px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
