@@ -214,12 +214,33 @@
                 <p class="section-subtitle">コラボ事例と活動の様子をお届け</p>
             </div>
             
-            <div class="collab-slider" id="collabBlogGrid">
-                <div class="loading-spinner">
-                    <div class="spinner"></div>
-                    <p>読み込み中...</p>
-                </div>
+            <!-- タブフィルター -->
+            <div class="collab-tabs">
+                <button class="collab-tab active" data-filter="all">すべて</button>
+                <button class="collab-tab" data-filter="collab">コラボ事例</button>
+                <button class="collab-tab" data-filter="blog">活動レポート</button>
             </div>
+            
+            <!-- カルーセルコンテナ -->
+            <div class="collab-carousel-wrapper">
+                <button class="carousel-nav carousel-prev" id="collabPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="collab-carousel" id="collabBlogCarousel">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>読み込み中...</p>
+                    </div>
+                </div>
+                
+                <button class="carousel-nav carousel-next" id="collabNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <!-- ページャー -->
+            <div class="carousel-pagination" id="collabPagination"></div>
         </div>
     </section>
 

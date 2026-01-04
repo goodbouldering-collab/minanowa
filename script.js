@@ -769,10 +769,16 @@ function renderBlogs(blogs) {
 }
 
 // コラボとブログをミックスして表示
+// グローバル変数
+let allCollabItems = [];
+let filteredCollabItems = [];
+let currentCollabPage = 0;
+const itemsPerPage = 3;
+
 async function loadCollabAndBlogs() {
-    const grid = document.getElementById('collabBlogGrid');
-    if (!grid) {
-        console.error('collabBlogGrid element not found');
+    const carousel = document.getElementById('collabBlogCarousel');
+    if (!carousel) {
+        console.error('collabBlogCarousel element not found');
         return;
     }
     
@@ -795,32 +801,190 @@ async function loadCollabAndBlogs() {
         console.log('Filtered collabs:', collabs.length, 'blogs:', blogs.length);
         
         // コラボとブログをミックス
-        const items = [];
+        allCollabItems = [];
         
         // コラボを追加
         collabs.forEach(collab => {
-            items.push({ type: 'collab', data: collab });
+            allCollabItems.push({ type: 'collab', data: collab });
         });
         
         // ブログを追加
         blogs.forEach(blog => {
-            items.push({ type: 'blog', data: blog });
+            allCollabItems.push({ type: 'blog', data: blog });
         });
         
         // ランダムにシャッフル
-        items.sort(() => Math.random() - 0.5);
+        allCollabItems.sort(() => Math.random() - 0.5);
         
-        console.log('Total items to render:', items.length);
-        renderCollabAndBlogs(items);
+        console.log('Total items to render:', allCollabItems.length);
+        
+        // 初期表示
+        filteredCollabItems = [...allCollabItems];
+        currentCollabPage = 0;
+        renderCollabCarousel();
+        setupCollabTabs();
+        setupCollabNavigation();
     } catch (error) {
         console.error('コンテンツ取得エラー:', error);
-        grid.innerHTML = `
+        carousel.innerHTML = `
             <div class="no-results glass-card">
                 <i class="fas fa-exclamation-circle"></i>
                 <h3>読み込みエラー</h3>
                 <p>コンテンツを取得できませんでした: ${error.message}</p>
             </div>
         `;
+    }
+}
+
+function renderCollabCarousel() {
+    const carousel = document.getElementById('collabBlogCarousel');
+    if (!carousel) return;
+    
+    if (filteredCollabItems.length === 0) {
+        carousel.innerHTML = `
+            <div class="no-results glass-card">
+                <i class="fas fa-newspaper"></i>
+                <h3>コンテンツがありません</h3>
+                <p>該当する投稿がありません</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // 現在のページのアイテムを取得
+    const start = currentCollabPage * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredCollabItems.slice(start, end);
+    
+    carousel.innerHTML = `
+        <div class="collab-slider">
+            ${pageItems.map(item => renderCollabItem(item)).join('')}
+        </div>
+    `;
+    
+    updateCollabPagination();
+}
+
+function renderCollabItem(item) {
+    if (item.type === 'collab') {
+        const collab = item.data;
+        return `
+            <div class="collab-card">
+                <div class="collab-image">
+                    <img src="${collab.image || collab.coverImageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80'}" alt="${collab.title}">
+                </div>
+                <div class="collab-content">
+                    <div class="collab-members">
+                        ${collab.members ? collab.members.slice(0, 2).map((member, idx) => 
+                            `${idx > 0 ? '<span class="plus">×</span>' : ''}<img src="${member.avatar}" alt="${member.name}">`
+                        ).join('') : ''}
+                    </div>
+                    <h3>${collab.title}</h3>
+                    <p>${collab.description}</p>
+                    <div class="collab-result">
+                        <span><i class="fas fa-chart-line"></i> ${collab.result || '成果'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        const blog = item.data;
+        return `
+            <div class="blog-card" onclick="openBlogDetail('${blog.slug}')">
+                <div class="blog-card-image">
+                    <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}">
+                    <span class="blog-card-category">${blog.category}</span>
+                </div>
+                <div class="blog-card-content">
+                    <div class="blog-card-author">
+                        <img src="${blog.authorAvatar}" alt="${blog.authorName}">
+                        <div>
+                            <span class="author-name">${blog.authorName}</span>
+                            <span class="blog-card-date">${formatDate(blog.publishDate)}</span>
+                        </div>
+                    </div>
+                    <h3 class="blog-card-title">${blog.title}</h3>
+                    <p class="blog-card-excerpt">${blog.excerpt}</p>
+                    <div class="blog-card-meta">
+                        <div class="blog-card-stats">
+                            <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
+                            <span><i class="fas fa-heart"></i> ${blog.likes || 0}</span>
+                        </div>
+                        <span class="blog-card-link">続きを読む <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function updateCollabPagination() {
+    const pagination = document.getElementById('collabPagination');
+    if (!pagination) return;
+    
+    const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+    
+    pagination.innerHTML = Array.from({ length: totalPages }, (_, i) => 
+        `<div class="pagination-dot ${i === currentCollabPage ? 'active' : ''}" onclick="goToCollabPage(${i})"></div>`
+    ).join('');
+}
+
+function goToCollabPage(page) {
+    const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
+    if (page < 0 || page >= totalPages) return;
+    
+    currentCollabPage = page;
+    renderCollabCarousel();
+}
+
+function setupCollabTabs() {
+    const tabs = document.querySelectorAll('.collab-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // タブのアクティブ状態を切り替え
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // フィルタリング
+            const filter = tab.dataset.filter;
+            if (filter === 'all') {
+                filteredCollabItems = [...allCollabItems];
+            } else if (filter === 'collab') {
+                filteredCollabItems = allCollabItems.filter(item => item.type === 'collab');
+            } else if (filter === 'blog') {
+                filteredCollabItems = allCollabItems.filter(item => item.type === 'blog');
+            }
+            
+            currentCollabPage = 0;
+            renderCollabCarousel();
+        });
+    });
+}
+
+function setupCollabNavigation() {
+    const prevBtn = document.getElementById('collabPrev');
+    const nextBtn = document.getElementById('collabNext');
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentCollabPage > 0) {
+                goToCollabPage(currentCollabPage - 1);
+            }
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
+            if (currentCollabPage < totalPages - 1) {
+                goToCollabPage(currentCollabPage + 1);
+            }
+        });
     }
 }
 
