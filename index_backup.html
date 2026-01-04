@@ -136,80 +136,7 @@
     </header>
 
     <!-- WAについて -->
-    <section class="members-section" id="members">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Find Members</span>
-                <h2 class="section-title" id="resultsTitle">事業者を探す</h2>
-                <p class="section-subtitle">名前・職業・スキルで検索してつながろう</p>
-            </div>
-            
-            <div class="search-panel glass-card">
-                <div class="search-main">
-                    <div class="search-input-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." onkeydown="handleSearch(event)" autocomplete="off">
-                    </div>
-                    <button class="search-btn" onclick="performSearch()">
-                        <i class="fas fa-search"></i>
-                        検索
-                    </button>
-                </div>
-                
-                <div class="search-filters">
-                    <div class="filter-group">
-                        <label><i class="fas fa-tag"></i> カテゴリー</label>
-                        <select id="categoryFilter" onchange="performSearch()">
-                            <option value="all">すべて</option>
-                            <option value="製造・クラフト">製造・クラフト</option>
-                            <option value="IT・デジタル">IT・デジタル</option>
-                            <option value="飲食・食品">飲食・食品</option>
-                            <option value="デザイン・アート">デザイン・アート</option>
-                            <option value="建築・不動産">建築・不動産</option>
-                            <option value="NPO・地域活動">NPO・地域活動</option>
-                            <option value="その他">その他</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label><i class="fas fa-map-marker-alt"></i> 地域</label>
-                        <select id="locationFilter" onchange="performSearch()">
-                            <option value="all">すべて</option>
-                            <option value="彦根市">彦根市</option>
-                            <option value="米原市">米原市</option>
-                            <option value="長浜市">長浜市</option>
-                            <option value="近江八幡市">近江八幡市</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="quick-search">
-                    <span class="quick-label">人気の検索:</span>
-                    <button class="quick-tag" onclick="setQuickSearch('IT')">IT・Web</button>
-                    <button class="quick-tag" onclick="setQuickSearch('デザイン')">デザイン</button>
-                    <button class="quick-tag" onclick="setQuickSearch('飲食')">飲食店</button>
-                    <button class="quick-tag" onclick="setQuickSearch('手作り')">手作り</button>
-                </div>
-            </div>
-            
-            <div class="search-results">
-                <div class="results-header">
-                    <span id="resultsCount">全7名</span>
-                    <select id="sortSelect" onchange="sortResults()">
-                        <option value="newest">新着順</option>
-                        <option value="name">名前順</option>
-                        <option value="category">カテゴリー順</option>
-                    </select>
-                </div>
-                
-                <div class="members-grid" id="membersGrid">
-                    <div class="loading-spinner">
-                        <div class="spinner"></div>
-                        <p>読み込み中...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- インタビューセクション -->
     <section class="interview-section" id="interview">
         <div class="container">
             <div class="section-header">
@@ -574,6 +501,80 @@
     </section>
 
     <!-- メンバー検索セクション -->
+    <section class="members-section" id="members">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Find Members</span>
+                <h2 class="section-title" id="resultsTitle">事業者を探す</h2>
+                <p class="section-subtitle">名前・職業・スキルで検索してつながろう</p>
+            </div>
+            
+            <div class="search-panel glass-card">
+                <div class="search-main">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." onkeydown="handleSearch(event)" autocomplete="off">
+                    </div>
+                    <button class="search-btn" onclick="performSearch()">
+                        <i class="fas fa-search"></i>
+                        検索
+                    </button>
+                </div>
+                
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label><i class="fas fa-tag"></i> カテゴリー</label>
+                        <select id="categoryFilter" onchange="performSearch()">
+                            <option value="all">すべて</option>
+                            <option value="製造・クラフト">製造・クラフト</option>
+                            <option value="IT・デジタル">IT・デジタル</option>
+                            <option value="飲食・食品">飲食・食品</option>
+                            <option value="デザイン・アート">デザイン・アート</option>
+                            <option value="建築・不動産">建築・不動産</option>
+                            <option value="NPO・地域活動">NPO・地域活動</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-map-marker-alt"></i> 地域</label>
+                        <select id="locationFilter" onchange="performSearch()">
+                            <option value="all">すべて</option>
+                            <option value="彦根市">彦根市</option>
+                            <option value="米原市">米原市</option>
+                            <option value="長浜市">長浜市</option>
+                            <option value="近江八幡市">近江八幡市</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="quick-search">
+                    <span class="quick-label">人気の検索:</span>
+                    <button class="quick-tag" onclick="setQuickSearch('IT')">IT・Web</button>
+                    <button class="quick-tag" onclick="setQuickSearch('デザイン')">デザイン</button>
+                    <button class="quick-tag" onclick="setQuickSearch('飲食')">飲食店</button>
+                    <button class="quick-tag" onclick="setQuickSearch('手作り')">手作り</button>
+                </div>
+            </div>
+            
+            <div class="search-results">
+                <div class="results-header">
+                    <span id="resultsCount">全7名</span>
+                    <select id="sortSelect" onchange="sortResults()">
+                        <option value="newest">新着順</option>
+                        <option value="name">名前順</option>
+                        <option value="category">カテゴリー順</option>
+                    </select>
+                </div>
+                
+                <div class="members-grid" id="membersGrid">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>読み込み中...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- ブログセクション -->
     <section class="blog-section" id="blog">

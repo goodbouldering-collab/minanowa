@@ -4948,52 +4948,86 @@ section {
 /* 管理者パネル */
 .admin-panel {
     min-height: 600px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 0;
+    height: 85vh;
+    max-height: 900px;
+}
+
+.admin-header {
+    grid-column: 1 / -1;
+    padding: 20px 30px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .admin-header h2 {
     font-size: 1.5rem;
-    margin-bottom: 25px;
+    margin: 0;
     display: flex;
     align-items: center;
     gap: 10px;
+    color: var(--white);
 }
 
 .admin-header h2 i {
-    color: var(--primary);
+    color: var(--accent);
 }
 
 .admin-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    border-bottom: 2px solid var(--gray-200);
-    padding-bottom: 10px;
+    flex-direction: column;
+    gap: 5px;
+    padding: 20px 15px;
+    background: var(--bg-primary);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    overflow-y: auto;
 }
 
 .admin-tab {
-    padding: 12px 24px;
+    padding: 12px 16px;
     background: transparent;
     color: var(--text-muted);
     font-weight: 500;
+    font-size: 0.95rem;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     transition: var(--transition-fast);
+    text-align: left;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.admin-tab i {
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
 }
 
 .admin-tab:hover {
-    background: var(--gray-100);
-    color: var(--text-primary);
+    background: rgba(74, 140, 63, 0.1);
+    color: var(--primary);
+    transform: translateX(3px);
 }
 
 .admin-tab.active {
     background: var(--primary);
     color: var(--white);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.3);
 }
 
 .admin-content {
     min-height: 400px;
+    overflow-y: auto;
+    padding: 30px;
+    background: var(--white);
+    border-radius: 0 0 var(--radius-lg) 0;
 }
 
 .admin-toolbar {
@@ -6181,10 +6215,10 @@ section {
 }
 
 .event-card {
-    background: var(--white);
+    background: transparent;
     border-radius: 16px;
-    border: 2px solid rgba(45, 90, 39, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: none;
+    box-shadow: none;
     overflow: visible;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -6192,8 +6226,6 @@ section {
 
 .event-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(45, 90, 39, 0.2);
-    border-color: var(--primary);
 }
 
 .event-card-image {
@@ -7053,5 +7085,335 @@ section {
     
     .form-actions button {
         width: 100%;
+    }
+}
+
+/* ============================================
+   インタラクティブ & 美しいデザイン改善
+   ============================================ */
+
+/* カード全般のグラデーション背景 */
+.member-card,
+.blog-card,
+.collab-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.member-card::before,
+.blog-card::before,
+.collab-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    transition: left 0.5s ease;
+}
+
+.member-card:hover::before,
+.blog-card:hover::before,
+.collab-card:hover::before {
+    left: 100%;
+}
+
+/* グラデーションボーダー効果 */
+.glass-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(74, 140, 63, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glass-card:hover::before {
+    opacity: 0.6;
+}
+
+/* セクションヘッダーのアニメーション */
+.section-title {
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-header:hover .section-title::after {
+    width: 60%;
+}
+
+/* ボタンのグラデーション＆アニメーション */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-primary:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* カードホバー時の3D効果 */
+.member-card:hover,
+.blog-card:hover,
+.collab-card:hover {
+    transform: translateY(-8px) rotateX(2deg);
+    box-shadow: 0 20px 40px rgba(45, 90, 39, 0.2);
+}
+
+/* アイコンの回転アニメーション */
+.section-tag i,
+.btn i {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.section-header:hover .section-tag i,
+.btn:hover i {
+    transform: rotate(360deg);
+}
+
+/* スクロール時のフェードイン */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-on-scroll {
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* キラキラエフェクト */
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+    }
+}
+
+.sparkle {
+    position: relative;
+}
+
+.sparkle::after {
+    content: '✨';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.5rem;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+/* グラデーションテキスト */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ホバー時のカラーシフト */
+.collab-result span:hover {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--white);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* メンバーアバターのホバー効果 */
+.member-card-avatar,
+.collab-members img {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-card-avatar,
+.collab-card:hover .collab-members img {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 20px rgba(45, 90, 39, 0.3);
+}
+
+/* プログレスバーアニメーション */
+@keyframes progressGrow {
+    from {
+        width: 0;
+    }
+}
+
+.admin-category-fill {
+    animation: progressGrow 1s ease-out forwards;
+}
+
+/* スムーズなページトランジション */
+section {
+    transition: all 0.3s ease;
+}
+
+/* インタラクティブな背景パターン */
+.hero,
+.about-section,
+.event-section {
+    position: relative;
+}
+
+.hero::before,
+.about-section::before,
+.event-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(74, 140, 63, 0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(212, 168, 75, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hero:hover::before,
+.about-section:hover::before,
+.event-section:hover::before {
+    opacity: 1;
+}
+
+/* 楽しいバウンスアニメーション */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.hero-stat:hover {
+    animation: bounce 0.6s ease;
+}
+
+/* カラフルなフォーカスリング */
+.glass-input:focus,
+.search-input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 140, 63, 0.2),
+                0 4px 12px rgba(74, 140, 63, 0.15);
+}
+
+/* ツールチップスタイル */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .member-card:hover,
+    .blog-card:hover,
+    .collab-card:hover {
+        transform: translateY(-4px);
+    }
+    
+    /* 管理画面のモバイル対応 */
+    .admin-panel {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+        height: auto;
+        max-height: none;
+    }
+    
+    .admin-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        padding: 15px;
+        gap: 8px;
+    }
+    
+    .admin-tab {
+        white-space: nowrap;
+        font-size: 0.9rem;
+        padding: 10px 14px;
+    }
+    
+    .admin-content {
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        padding: 20px 15px;
     }
 }
