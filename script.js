@@ -4964,3 +4964,75 @@ async function saveAboutImage() {
         alert('エラーが発生しました');
     }
 }
+
+// ============================================
+// お問い合わせフォーム
+// ============================================
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactSubmit);
+    }
+}
+
+async function handleContactSubmit(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('.contact-submit-btn');
+    const formData = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value || '',
+        subject: form.subject.value,
+        message: form.message.value,
+        timestamp: new Date().toISOString()
+    };
+    
+    // ボタンを無効化
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+    
+    try {
+        // 実際のAPIエンドポイントに送信する場合
+        // const response = await fetch(`${API_BASE}/api/contact`, {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(formData)
+        // });
+        // const result = await response.json();
+        
+        // デモ用: 2秒待機してから成功表示
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        console.log('お問い合わせ送信:', formData);
+        
+        // 成功メッセージを表示
+        document.getElementById('contactSuccess').style.display = 'flex';
+        form.style.display = 'none';
+        
+    } catch (error) {
+        console.error('送信エラー:', error);
+        alert('送信に失敗しました。もう一度お試しください。');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 送信する';
+    }
+}
+
+function resetContactForm() {
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('contactSuccess');
+    
+    form.reset();
+    form.style.display = 'block';
+    success.style.display = 'none';
+    
+    const submitBtn = form.querySelector('.contact-submit-btn');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 送信する';
+}
+
+// 初期化に追加
+document.addEventListener('DOMContentLoaded', () => {
+    initContactForm();
+});

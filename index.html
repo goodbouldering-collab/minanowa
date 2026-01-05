@@ -28,6 +28,7 @@
                 <li><a href="#event">交流会</a></li>
                 <li><a href="#members">メンバー検索</a></li>
                 <li><a href="#connect">つながる</a></li>
+                <li><a href="#contact">お問い合わせ</a></li>
                 <li id="authButtons">
                     <button class="nav-btn nav-login" onclick="openLoginModal()">ログイン</button>
                     <button class="nav-btn nav-cta" onclick="openRegisterModal()">会員登録</button>
@@ -527,6 +528,100 @@
             
             <div class="team-compact-grid" id="teamGrid">
                 <!-- 動的にロードされます -->
+            </div>
+        </div>
+    </section>
+
+    <!-- お問い合わせフォーム -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Contact Us</span>
+                <h2 class="section-title">お問い合わせ</h2>
+                <p class="section-subtitle">ご質問やご相談など、お気軽にお問い合わせください</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>メール</h3>
+                            <p>info@minanowa.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>所在地</h3>
+                            <p>滋賀県彦根市</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>対応時間</h3>
+                            <p>平日 9:00 - 18:00</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">お名前 <span class="required">*</span></label>
+                            <input type="text" id="contactName" name="name" required placeholder="山田 太郎">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactEmail">メールアドレス <span class="required">*</span></label>
+                            <input type="email" id="contactEmail" name="email" required placeholder="example@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactPhone">電話番号</label>
+                            <input type="tel" id="contactPhone" name="phone" placeholder="090-1234-5678">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactSubject">件名 <span class="required">*</span></label>
+                            <select id="contactSubject" name="subject" required>
+                                <option value="">選択してください</option>
+                                <option value="membership">会員登録について</option>
+                                <option value="event">交流会について</option>
+                                <option value="collaboration">コラボレーションについて</option>
+                                <option value="other">その他</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactMessage">お問い合わせ内容 <span class="required">*</span></label>
+                            <textarea id="contactMessage" name="message" rows="6" required placeholder="お問い合わせ内容をご記入ください"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="contact-submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            送信する
+                        </button>
+                    </form>
+                    
+                    <div class="contact-success" id="contactSuccess" style="display: none;">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>送信完了</h3>
+                        <p>お問い合わせありがとうございます。<br>担当者より2営業日以内にご連絡いたします。</p>
+                        <button class="btn-back" onclick="resetContactForm()">戻る</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
