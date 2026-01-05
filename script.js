@@ -1236,17 +1236,19 @@ async function openBlogDetail(slug) {
     document.body.style.overflow = 'hidden';
     
     try {
-        const response = await fetch(`${API_BASE}/api/blogs/${slug}`);
-        const data = await response.json();
+        // allCollabItemsからブログを検索
+        const blogItem = allCollabItems.find(item => 
+            item.type === 'blog' && item.data.slug === slug
+        );
         
-        if (data.success) {
-            renderBlogDetail(data.blog);
+        if (blogItem && blogItem.data) {
+            renderBlogDetail(blogItem.data);
         } else {
             content.innerHTML = `
                 <div class="no-results">
                     <i class="fas fa-exclamation-circle"></i>
                     <h3>エラー</h3>
-                    <p>記事を取得できませんでした</p>
+                    <p>記事が見つかりませんでした</p>
                 </div>
             `;
         }
@@ -1320,19 +1322,26 @@ function parseMarkdown(text) {
 
 async function likeBlog(blogId) {
     try {
-        const response = await fetch(`${API_BASE}/api/blogs/${blogId}/like`, {
-            method: 'POST'
-        });
-        const data = await response.json();
+        // ローカルでいいねをカウント（data.jsonベース）
+        const blogItem = allCollabItems.find(item => 
+            item.type === 'blog' && item.data.id === blogId
+        );
         
-        if (data.success) {
+        if (blogItem && blogItem.data) {
+            // いいね数を増やす
+            blogItem.data.likes = (blogItem.data.likes || 0) + 1;
+            
+            // UIを更新
             const countEl = document.getElementById(`likeCount-${blogId}`);
             const btnEl = document.getElementById(`likeBtn-${blogId}`);
-            if (countEl) countEl.textContent = data.likes;
+            if (countEl) countEl.textContent = blogItem.data.likes;
             if (btnEl) {
                 btnEl.classList.add('liked');
                 btnEl.querySelector('i').classList.replace('far', 'fas');
+                btnEl.disabled = true;
             }
+            
+            console.log('いいね成功:', blogItem.data.title, '- 合計:', blogItem.data.likes);
         }
     } catch (error) {
         console.error('いいねエラー:', error);
