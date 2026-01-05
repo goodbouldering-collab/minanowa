@@ -607,7 +607,7 @@ async function loadMembers() {
             allMembers = publicMembers;
             renderMembers(publicMembers);
             updateResultsCount(publicMembers.length);
-            setupMembersNavigation(); // スワイプとナビゲーションを設定
+            // setupMembersNavigation(); // ナビゲーションとスワイプを無効化
         }
     } catch (error) {
         console.error('メンバー読み込みエラー:', error);
