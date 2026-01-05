@@ -56,10 +56,9 @@
     --radius-xl: 32px;
     --radius-full: 9999px;
     
-    --transition-fast: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --transition-normal: 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --transition-slow: 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --transition-smooth: 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-fast: 0.2s ease-out;
+    --transition-normal: 0.3s ease-out;
+    --transition-slow: 0.4s ease-out;
     
     --font-primary: 'Noto Sans JP', -apple-system, sans-serif;
     --container-max: 1200px;
@@ -2446,7 +2445,7 @@ section {
     color: var(--primary);
     font-size: 1.3rem;
     cursor: pointer;
-    transition: var(--transition-normal);
+    transition: all 0.2s ease;
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
     outline: none;
 }
@@ -3548,13 +3547,13 @@ section {
     font-weight: 600;
     color: var(--text-primary);
     cursor: pointer;
-    transition: var(--transition-normal);
+    transition: all 0.2s ease;
 }
 
 .collab-tab:hover {
     background: rgba(45, 90, 39, 0.05);
     border-color: var(--primary);
-    transform: translateY(-1px);
+}
 }
 
 .collab-tab.active {
@@ -3568,17 +3567,12 @@ section {
 .collab-carousel-wrapper {
     position: relative;
     margin-bottom: 25px;
-    perspective: 1500px;
 }
 
 .collab-carousel {
     display: flex;
     overflow: hidden;
-    scroll-behavior: smooth;
     gap: 20px;
-    transform-style: preserve-3d;
-    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .carousel-nav {
@@ -3627,7 +3621,7 @@ section {
     border-radius: 50%;
     background: rgba(45, 90, 39, 0.2);
     cursor: pointer;
-    transition: var(--transition-normal);
+    transition: all 0.2s ease;
 }
 
 .pagination-dot:hover {
@@ -3643,7 +3637,6 @@ section {
 .collab-slider {
     display: flex;
     gap: 20px;
-    transform-style: preserve-3d;
 }
 
 .collab-card {
@@ -3651,16 +3644,15 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-smooth);
+    transition: all 0.3s ease;
     min-width: 280px;
     width: 280px;
     flex-shrink: 0;
-    transform-style: preserve-3d;
 }
 
 .collab-card:hover {
-    transform: translateY(-10px) rotateY(-8deg);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .collab-image {
@@ -3672,12 +3664,10 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition-smooth);
+    transition: transform 0.3s ease;
 }
 
-.collab-card:hover .collab-image img {
-    transform: scale(1.1);
-}
+
 
 .collab-content {
     padding: 15px;
@@ -3897,7 +3887,6 @@ section {
 .carousel-wrapper {
     position: relative;
     margin-bottom: 25px;
-    perspective: 1500px;
 }
 
 .members-grid {
@@ -3909,7 +3898,6 @@ section {
     padding-bottom: 20px;
     scrollbar-width: thin;
     scrollbar-color: rgba(45, 90, 39, 0.3) rgba(0, 0, 0, 0.05);
-    transform-style: preserve-3d;
 }
 
 .members-grid::-webkit-scrollbar {
@@ -3935,18 +3923,17 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-smooth);
+    transition: all 0.3s ease;
     cursor: pointer;
     border: 1px solid transparent;
     flex-shrink: 0;
     width: 280px;
     min-width: 280px;
-    transform-style: preserve-3d;
 }
 
 .member-card:hover {
-    transform: translateY(-10px) rotateY(-8deg);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
     border-color: rgba(45, 90, 39, 0.15);
 }
 
@@ -4357,17 +4344,16 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-smooth);
+    transition: all 0.3s ease;
     cursor: pointer;
     flex-shrink: 0;
     width: 280px;
     min-width: 280px;
-    transform-style: preserve-3d;
 }
 
 .blog-card:hover {
-    transform: translateY(-10px) rotateY(8deg);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .blog-card-image {
@@ -4380,12 +4366,10 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition-smooth);
+    transition: transform 0.3s ease;
 }
 
-.blog-card:hover .blog-card-image img {
-    transform: scale(1.1);
-}
+
 
 .blog-card-category {
     position: absolute;
@@ -6327,17 +6311,16 @@ section {
     border: none;
     box-shadow: var(--shadow-sm);
     overflow: hidden;
-    transition: var(--transition-smooth);
+    transition: all 0.3s ease;
     position: relative;
     min-width: 280px;
     width: 280px;
     flex-shrink: 0;
-    transform-style: preserve-3d;
 }
 
 .event-card:hover {
-    transform: translateY(-10px) rotateY(8deg);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .event-card-image {

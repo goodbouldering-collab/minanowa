@@ -705,21 +705,21 @@ function setupMembersNavigation() {
     
     if (!membersGrid) return;
     
-    // カスタムスムーススクロール関数
-    function smoothScroll(element, targetLeft, duration = 800) {
+    // カスタムスムーススクロール関数（高速化）
+    function smoothScroll(element, targetLeft, duration = 400) {
         const startLeft = element.scrollLeft;
         const distance = targetLeft - startLeft;
         const startTime = performance.now();
         
-        // イージング関数（ゆっくりぬるっとした動き）
-        function easeInOutCubic(t) {
-            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        // イージング関数（スムーズな動き）
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
         }
         
         function animation(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            const easedProgress = easeInOutCubic(progress);
+            const easedProgress = easeInOutQuad(progress);
             
             element.scrollLeft = startLeft + distance * easedProgress;
             
@@ -933,25 +933,13 @@ function renderCollabCarousel() {
     const end = start + itemsPerPage;
     const pageItems = filteredCollabItems.slice(start, end);
     
-    // フェードアウト
-    carousel.style.opacity = '0';
-    carousel.style.transform = 'translateX(-30px)';
+    carousel.innerHTML = `
+        <div class="collab-slider">
+            ${pageItems.map(item => renderCollabItem(item)).join('')}
+        </div>
+    `;
     
-    setTimeout(() => {
-        carousel.innerHTML = `
-            <div class="collab-slider">
-                ${pageItems.map(item => renderCollabItem(item)).join('')}
-            </div>
-        `;
-        
-        // フェードイン
-        setTimeout(() => {
-            carousel.style.opacity = '1';
-            carousel.style.transform = 'translateX(0)';
-        }, 50);
-        
-        updateCollabPagination();
-    }, 400);
+    updateCollabPagination();
 }
 
 function renderCollabItem(item) {
