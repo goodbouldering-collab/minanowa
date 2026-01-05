@@ -1015,7 +1015,7 @@ function renderCollabItem(item) {
     if (item.type === 'collab') {
         const collab = item.data;
         return `
-            <div class="collab-card">
+            <div class="collab-card" onclick="openCollabDetail('${collab.id}')">
                 <div class="collab-image">
                     <img src="${collab.image || collab.coverImageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80'}" alt="${collab.title}">
                 </div>
@@ -1030,6 +1030,9 @@ function renderCollabItem(item) {
                     <div class="collab-result">
                         <span><i class="fas fa-chart-line"></i> ${collab.result || '成果'}</span>
                     </div>
+                    <button class="read-more-btn" onclick="event.stopPropagation(); openCollabDetail('${collab.id}')">
+                        続きを読む <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         `;
@@ -1354,6 +1357,114 @@ function closeBlogDetailModal() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
+}
+
+// ============================================
+// コラボ事例詳細
+// ============================================
+async function openCollabDetail(collabId) {
+    const modal = document.getElementById('blogDetailModal'); // ブログと同じモーダルを使用
+    const content = document.getElementById('blogDetailContent');
+    
+    if (!modal || !content) return;
+    
+    content.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+    `;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    try {
+        // allCollabItemsからコラボ事例を検索
+        const collabItem = allCollabItems.find(item => 
+            item.type === 'collab' && item.data.id === collabId
+        );
+        
+        if (collabItem && collabItem.data) {
+            renderCollabDetail(collabItem.data);
+        } else {
+            content.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>エラー</h3>
+                    <p>コラボ事例が見つかりませんでした</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('コラボ詳細取得エラー:', error);
+        content.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>エラー</h3>
+                <p>コラボ事例を取得できませんでした</p>
+            </div>
+        `;
+    }
+}
+
+function renderCollabDetail(collab) {
+    const content = document.getElementById('blogDetailContent');
+    if (!content) return;
+    
+    // コラボメンバーのHTML生成
+    const membersHtml = collab.members ? collab.members.map(member => `
+        <div class="collab-detail-member">
+            <img src="${member.avatar}" alt="${member.name}">
+            <div>
+                <h4>${member.name}</h4>
+                <p>${member.business}</p>
+            </div>
+        </div>
+    `).join('') : '';
+    
+    content.innerHTML = `
+        <div class="blog-detail collab-detail">
+            ${collab.image || collab.coverImageUrl ? `
+                <img src="${collab.image || collab.coverImageUrl}" alt="${collab.title}" class="blog-detail-image">
+            ` : ''}
+            
+            <div class="blog-detail-header">
+                <span class="blog-detail-category">コラボ事例</span>
+                <h1 class="blog-detail-title">${collab.title}</h1>
+                ${collab.date ? `
+                    <div class="blog-detail-date-simple">
+                        <i class="fas fa-calendar-alt"></i> ${formatDate(collab.date)}
+                    </div>
+                ` : ''}
+            </div>
+            
+            ${membersHtml ? `
+                <div class="collab-detail-members-section">
+                    <h3><i class="fas fa-users"></i> 参加メンバー</h3>
+                    <div class="collab-detail-members-grid">
+                        ${membersHtml}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <div class="blog-detail-content">
+                <h3><i class="fas fa-info-circle"></i> コラボの概要</h3>
+                <p>${collab.description}</p>
+                
+                ${collab.details ? `
+                    <h3><i class="fas fa-file-alt"></i> 詳細</h3>
+                    <p>${collab.details}</p>
+                ` : ''}
+                
+                ${collab.result ? `
+                    <div class="collab-result-detail">
+                        <h3><i class="fas fa-chart-line"></i> 成果</h3>
+                        <p>${collab.result}</p>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
 }
 
 // ============================================
