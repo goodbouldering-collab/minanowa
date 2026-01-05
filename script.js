@@ -1592,6 +1592,76 @@ async function logout() {
     showNotification('ログアウトしました', 'info');
 }
 
+// パスワードリセット関数
+function openForgotPasswordModal(event) {
+    event.preventDefault();
+    closeLoginModal();
+    const modal = document.getElementById('forgotPasswordModal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // フォームとメッセージをリセット
+        const form = document.getElementById('forgotPasswordForm');
+        const successMsg = document.getElementById('resetSuccessMessage');
+        if (form) form.style.display = 'block';
+        if (successMsg) successMsg.style.display = 'none';
+        document.getElementById('resetEmail').value = '';
+    }
+}
+
+function closeForgotPasswordModal() {
+    const modal = document.getElementById('forgotPasswordModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+function backToLogin() {
+    closeForgotPasswordModal();
+    openLoginModal();
+}
+
+async function handleForgotPassword(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const submitBtn = form.querySelector('.btn-submit');
+    const originalText = submitBtn.innerHTML;
+    const email = form.email.value;
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+    
+    try {
+        // 実際のアプリケーションではここでAPIを呼び出します
+        // const response = await fetch(`${API_BASE}/api/forgot-password`, {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ email })
+        // });
+        
+        // デモ用：1秒後に成功メッセージを表示
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // フォームを非表示にして成功メッセージを表示
+        form.style.display = 'none';
+        document.getElementById('resetSuccessMessage').style.display = 'block';
+        
+        // 3秒後にログイン画面に戻る
+        setTimeout(() => {
+            backToLogin();
+        }, 3000);
+        
+    } catch (error) {
+        console.error('パスワードリセットエラー:', error);
+        showNotification('送信に失敗しました。もう一度お試しください。', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
+}
+
 // UI更新: ログイン状態
 function updateUIForLoggedInUser() {
     const authButtons = document.getElementById('authButtons');

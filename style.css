@@ -6852,6 +6852,55 @@ section {
     font-weight: 600;
 }
 
+/* パスワードを忘れた場合リンク */
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.forgot-password-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* モーダルサブタイトル */
+.modal-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    font-weight: 400;
+}
+
+/* 成功メッセージ */
+.success-message {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.success-message i {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.success-message h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.success-message p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
 .demo-login {
     margin-top: 25px;
     padding: 20px;

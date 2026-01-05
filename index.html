@@ -894,6 +894,7 @@
                 <div class="form-group">
                     <label for="loginPassword">パスワード</label>
                     <input type="password" id="loginPassword" name="password" required placeholder="パスワード" class="glass-input" autocomplete="current-password">
+                    <a href="#" class="forgot-password-link" onclick="openForgotPasswordModal(event)">パスワードを忘れた場合</a>
                 </div>
                 <button type="submit" class="btn btn-primary btn-full btn-submit">
                     <i class="fas fa-sign-in-alt"></i> ログイン
@@ -1013,6 +1014,35 @@
                     <div class="spinner"></div>
                     <p>読み込み中...</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- パスワードリセットモーダル -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content glass-modal">
+            <button class="modal-close" onclick="closeForgotPasswordModal()">&times;</button>
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> パスワードをリセット</h2>
+                <p class="modal-subtitle">登録されているメールアドレスを入力してください</p>
+            </div>
+            <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
+                <div class="form-group">
+                    <label for="resetEmail">メールアドレス</label>
+                    <input type="email" id="resetEmail" name="email" required placeholder="example@email.com" class="glass-input" autocomplete="email">
+                    <p class="form-help-text">パスワードリセット用のリンクをメールでお送りします</p>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full btn-submit">
+                    <i class="fas fa-paper-plane"></i> リセットリンクを送信
+                </button>
+                <div class="form-footer">
+                    <p><a href="#" onclick="backToLogin()">ログインに戻る</a></p>
+                </div>
+            </form>
+            <div id="resetSuccessMessage" class="success-message" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <h3>メールを送信しました</h3>
+                <p>パスワードリセット用のリンクをメールでお送りしました。<br>メールをご確認ください。</p>
             </div>
         </div>
     </div>
