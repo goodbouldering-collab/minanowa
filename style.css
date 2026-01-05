@@ -3699,8 +3699,17 @@ section {
 
 .collab-carousel {
     display: flex;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     gap: 20px;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    padding-bottom: 10px;
+}
+
+.collab-carousel::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
 }
 
 .carousel-nav {
@@ -3737,36 +3746,6 @@ section {
 }
 
 /* ページネーション */
-.carousel-pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.pagination-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(45, 90, 39, 0.2);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.pagination-dot:hover {
-    background: rgba(45, 90, 39, 0.5);
-}
-
-.pagination-dot.active {
-    background: var(--primary);
-    width: 30px;
-    border-radius: 6px;
-}
-
-.collab-slider {
-    display: flex;
-    gap: 20px;
-}
-
 .collab-card {
     background: var(--white);
     border-radius: var(--radius-lg);

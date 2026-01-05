@@ -873,8 +873,6 @@ function renderBlogs(blogs) {
 // グローバル変数
 let allCollabItems = [];
 let filteredCollabItems = [];
-let currentCollabPage = 0;
-const itemsPerPage = 3;
 
 async function loadCollabAndBlogs() {
     const carousel = document.getElementById('collabBlogCarousel');
@@ -952,18 +950,8 @@ function renderCollabCarousel() {
         return;
     }
     
-    // 現在のページのアイテムを取得
-    const start = currentCollabPage * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = filteredCollabItems.slice(start, end);
-    
-    carousel.innerHTML = `
-        <div class="collab-slider">
-            ${pageItems.map(item => renderCollabItem(item)).join('')}
-        </div>
-    `;
-    
-    updateCollabPagination();
+    // すべてのアイテムを表示（ページネーションなし）
+    carousel.innerHTML = filteredCollabItems.map(item => renderCollabItem(item)).join('');
 }
 
 function renderCollabItem(item) {
@@ -1019,30 +1007,6 @@ function renderCollabItem(item) {
     }
 }
 
-function updateCollabPagination() {
-    const pagination = document.getElementById('collabPagination');
-    if (!pagination) return;
-    
-    const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
-    
-    if (totalPages <= 1) {
-        pagination.innerHTML = '';
-        return;
-    }
-    
-    pagination.innerHTML = Array.from({ length: totalPages }, (_, i) => 
-        `<div class="pagination-dot ${i === currentCollabPage ? 'active' : ''}" onclick="goToCollabPage(${i})"></div>`
-    ).join('');
-}
-
-function goToCollabPage(page) {
-    const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
-    if (page < 0 || page >= totalPages) return;
-    
-    currentCollabPage = page;
-    renderCollabCarousel();
-}
-
 function setupCollabTabs() {
     const tabs = document.querySelectorAll('.collab-tab');
     tabs.forEach(tab => {
@@ -1061,8 +1025,13 @@ function setupCollabTabs() {
                 filteredCollabItems = allCollabItems.filter(item => item.type === 'blog');
             }
             
-            currentCollabPage = 0;
             renderCollabCarousel();
+            
+            // カルーセルを先頭にスクロール
+            const carousel = document.getElementById('collabBlogCarousel');
+            if (carousel) {
+                carousel.scrollLeft = 0;
+            }
         });
     });
 }
@@ -1072,56 +1041,44 @@ function setupCollabNavigation() {
     const nextBtn = document.getElementById('collabNext');
     const carousel = document.getElementById('collabBlogCarousel');
     
+    if (!carousel) return;
+    
+    // スムーススクロール関数
+    function smoothScroll(element, targetLeft, duration = 400) {
+        const startLeft = element.scrollLeft;
+        const distance = targetLeft - startLeft;
+        const startTime = performance.now();
+        
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+        
+        function animation(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeInOutQuad(progress);
+            
+            element.scrollLeft = startLeft + distance * easedProgress;
+            
+            if (progress < 1) {
+                requestAnimationFrame(animation);
+            }
+        }
+        
+        requestAnimationFrame(animation);
+    }
+    
+    // ナビゲーションボタン
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-            if (currentCollabPage > 0) {
-                goToCollabPage(currentCollabPage - 1);
-            }
+            smoothScroll(carousel, carousel.scrollLeft - 300);
         });
     }
     
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
-            if (currentCollabPage < totalPages - 1) {
-                goToCollabPage(currentCollabPage + 1);
-            }
+            smoothScroll(carousel, carousel.scrollLeft + 300);
         });
-    }
-    
-    // スワイプ機能を追加
-    if (carousel) {
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        carousel.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-        
-        carousel.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-        
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-            
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // 左スワイプ（次へ）
-                    const totalPages = Math.ceil(filteredCollabItems.length / itemsPerPage);
-                    if (currentCollabPage < totalPages - 1) {
-                        goToCollabPage(currentCollabPage + 1);
-                    }
-                } else {
-                    // 右スワイプ（前へ）
-                    if (currentCollabPage > 0) {
-                        goToCollabPage(currentCollabPage - 1);
-                    }
-                }
-            }
-        }
     }
 }
 
