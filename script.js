@@ -3764,10 +3764,11 @@ function setupEventListeners() {
 // ============================================
 async function loadTeamMembers() {
     try {
-        const response = await fetch(`${API_BASE}/api/members`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success) {
+        if (data.members) {
             const adminMembers = data.members.filter(m => m.isAdmin && m.isPublic);
             // 役職順にソート（代表 > サポート > その他）
             const roleOrder = { '代表': 1, 'サポート': 2 };
@@ -3807,10 +3808,11 @@ let currentEventIndex = 0;
 
 async function loadAllEvents() {
     try {
-        const response = await fetch(`${API_BASE}/api/events`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success) {
+        if (data.events) {
             allEvents = data.events || [];
             console.log('✅ イベント読み込み完了:', allEvents.length, '件');
             
@@ -4879,14 +4881,16 @@ async function loadAdminImages() {
         </div>
     `;
     
-    loadHeroImages();
-    loadAboutImage();
+    loadAdminHeroImages();
+    loadAdminAboutImage();
 }
 
-async function loadHeroImages() {
+async function loadAdminHeroImages() {
     try {
-        const response = await fetch(`${API_BASE}/api/hero-images`);
-        const images = await response.json();
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
+        const data = await response.json();
+        const images = data.heroImages || [];
         
         const container = document.getElementById('heroImagesContainer');
         if (!container) return;
@@ -4910,9 +4914,10 @@ async function loadHeroImages() {
     }
 }
 
-async function loadAboutImage() {
+async function loadAdminAboutImage() {
     try {
-        const response = await fetch(`${API_BASE}/api/data`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         const aboutImage = data.aboutImage;
         
