@@ -705,16 +705,42 @@ function setupMembersNavigation() {
     
     if (!membersGrid) return;
     
+    // カスタムスムーススクロール関数
+    function smoothScroll(element, targetLeft, duration = 800) {
+        const startLeft = element.scrollLeft;
+        const distance = targetLeft - startLeft;
+        const startTime = performance.now();
+        
+        // イージング関数（ゆっくりぬるっとした動き）
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        function animation(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeInOutCubic(progress);
+            
+            element.scrollLeft = startLeft + distance * easedProgress;
+            
+            if (progress < 1) {
+                requestAnimationFrame(animation);
+            }
+        }
+        
+        requestAnimationFrame(animation);
+    }
+    
     // ナビゲーションボタン
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-            membersGrid.scrollBy({ left: -300, behavior: 'smooth' });
+            smoothScroll(membersGrid, membersGrid.scrollLeft - 300);
         });
     }
     
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            membersGrid.scrollBy({ left: 300, behavior: 'smooth' });
+            smoothScroll(membersGrid, membersGrid.scrollLeft + 300);
         });
     }
     
@@ -738,10 +764,10 @@ function setupMembersNavigation() {
         if (Math.abs(diff) > swipeThreshold) {
             if (diff > 0) {
                 // 左スワイプ（次へ）
-                membersGrid.scrollBy({ left: 300, behavior: 'smooth' });
+                smoothScroll(membersGrid, membersGrid.scrollLeft + 300);
             } else {
                 // 右スワイプ（前へ）
-                membersGrid.scrollBy({ left: -300, behavior: 'smooth' });
+                smoothScroll(membersGrid, membersGrid.scrollLeft - 300);
             }
         }
     }
@@ -907,13 +933,25 @@ function renderCollabCarousel() {
     const end = start + itemsPerPage;
     const pageItems = filteredCollabItems.slice(start, end);
     
-    carousel.innerHTML = `
-        <div class="collab-slider">
-            ${pageItems.map(item => renderCollabItem(item)).join('')}
-        </div>
-    `;
+    // フェードアウト
+    carousel.style.opacity = '0';
+    carousel.style.transform = 'translateX(-30px)';
     
-    updateCollabPagination();
+    setTimeout(() => {
+        carousel.innerHTML = `
+            <div class="collab-slider">
+                ${pageItems.map(item => renderCollabItem(item)).join('')}
+            </div>
+        `;
+        
+        // フェードイン
+        setTimeout(() => {
+            carousel.style.opacity = '1';
+            carousel.style.transform = 'translateX(0)';
+        }, 50);
+        
+        updateCollabPagination();
+    }, 400);
 }
 
 function renderCollabItem(item) {

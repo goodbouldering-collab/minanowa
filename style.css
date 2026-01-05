@@ -56,9 +56,10 @@
     --radius-xl: 32px;
     --radius-full: 9999px;
     
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-normal: 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-slow: 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-smooth: 1s cubic-bezier(0.25, 0.8, 0.25, 1);
     
     --font-primary: 'Noto Sans JP', -apple-system, sans-serif;
     --container-max: 1200px;
@@ -2445,7 +2446,7 @@ section {
     color: var(--primary);
     font-size: 1.3rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition-normal);
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
     outline: none;
 }
@@ -3547,7 +3548,7 @@ section {
     font-weight: 600;
     color: var(--text-primary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition-normal);
 }
 
 .collab-tab:hover {
@@ -3576,6 +3577,8 @@ section {
     scroll-behavior: smooth;
     gap: 20px;
     transform-style: preserve-3d;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .carousel-nav {
@@ -3624,7 +3627,7 @@ section {
     border-radius: 50%;
     background: rgba(45, 90, 39, 0.2);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition-normal);
 }
 
 .pagination-dot:hover {
@@ -3648,7 +3651,7 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
     min-width: 280px;
     width: 280px;
     flex-shrink: 0;
@@ -3669,7 +3672,7 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: var(--transition-smooth);
 }
 
 .collab-card:hover .collab-image img {
@@ -3932,7 +3935,7 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
     cursor: pointer;
     border: 1px solid transparent;
     flex-shrink: 0;
@@ -4354,7 +4357,7 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
     cursor: pointer;
     flex-shrink: 0;
     width: 280px;
@@ -4377,7 +4380,7 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: var(--transition-smooth);
 }
 
 .blog-card:hover .blog-card-image img {
@@ -6324,7 +6327,7 @@ section {
     border: none;
     box-shadow: var(--shadow-sm);
     overflow: hidden;
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
     position: relative;
     min-width: 280px;
     width: 280px;
