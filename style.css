@@ -3169,67 +3169,63 @@ section {
     padding: 0 25px 25px 25px;
 }
 
-/* 特徴リスト（コンパクト） */
-.feature-list-compact {
+/* 特徴グリッド（コンパクト） */
+.features-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.feature-compact-card {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-.feature-compact {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 15px;
+    align-items: center;
+    text-align: center;
+    padding: 20px 15px;
     background: rgba(45, 90, 39, 0.02);
     border-radius: var(--radius-md);
-    border-left: 3px solid var(--primary);
+    border: 1px solid rgba(45, 90, 39, 0.08);
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.feature-compact:hover {
-    transform: translateX(5px);
+.feature-compact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
     background: rgba(45, 90, 39, 0.05);
 }
 
-.feature-num {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: rgba(45, 90, 39, 0.2);
-    line-height: 1;
-    min-width: 35px;
-    transition: color 0.3s ease;
-}
-
-.feature-compact:hover .feature-num {
-    color: var(--primary);
-}
-
-.feature-icon-small {
-    width: 35px;
-    height: 35px;
+.feature-compact-icon {
+    width: 45px;
+    height: 45px;
     background: linear-gradient(135deg, var(--primary), var(--accent));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--white);
-    flex-shrink: 0;
+    margin-bottom: 12px;
+    transition: transform 0.3s ease;
 }
 
-.feature-compact strong {
+.feature-compact-card:hover .feature-compact-icon {
+    transform: rotate(360deg) scale(1.15);
+}
+
+.feature-compact-card strong {
     display: block;
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
-.feature-compact p {
+.feature-compact-card p {
     font-size: 0.85rem;
     color: var(--text-secondary);
     margin: 0;
+    line-height: 1.4;
 }
 
 /* メリットグリッド（コンパクト） */
@@ -3379,8 +3375,8 @@ section {
         text-align: center;
     }
     
-    .feature-num {
-        min-width: auto;
+    .features-compact-grid {
+        grid-template-columns: 1fr;
     }
 }
 
