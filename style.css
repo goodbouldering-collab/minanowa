@@ -9278,8 +9278,7 @@ section {
    インタラクティブ & 美しいデザイン改善
    ============================================ */
 
-/* カード全般のグラデーション背景 */
-.member-card,
+/* カード全般の背景 - member-card is flat white only */
 .blog-card,
 .collab-card {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
@@ -9287,7 +9286,13 @@ section {
     overflow: hidden;
 }
 
-.member-card::before,
+.member-card {
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Slide animation removed for member cards */
 .blog-card::before,
 .collab-card::before {
     content: '';
@@ -9456,14 +9461,12 @@ section {
     cursor: pointer;
 }
 
-/* メンバーアバターのホバー効果 */
-.member-card-avatar,
+/* Avatar hover effects removed for member cards */
 .collab-members img {
     position: relative;
     transition: all 0.3s ease;
 }
 
-.member-card:hover .member-card-avatar,
 .collab-card:hover .collab-members img {
     transform: scale(1.1) rotate(5deg);
     box-shadow: 0 8px 20px rgba(45, 90, 39, 0.3);
@@ -9567,7 +9570,7 @@ section {
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
-    .member-card:hover,
+    /* Hover animation removed for member cards */
     .blog-card:hover,
     .collab-card:hover {
         transform: translateY(-4px);
