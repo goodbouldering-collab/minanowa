@@ -5041,6 +5041,26 @@ async function handleContactSubmit(e) {
 }
 
 // ============================================
+// Aboutセクション - タブ切り替え
+// ============================================
+function switchAboutTab(tabName) {
+    // すべてのタブとパネルを非アクティブに
+    document.querySelectorAll('.about-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.remove('active');
+    });
+    
+    // 選択されたタブとパネルをアクティブに
+    const selectedTab = document.querySelector(`.about-tab[data-tab="${tabName}"]`);
+    const selectedPanel = document.getElementById(`${tabName}-panel`);
+    
+    if (selectedTab) selectedTab.classList.add('active');
+    if (selectedPanel) selectedPanel.classList.add('active');
+}
+
+// ============================================
 // Aboutセクション - データ駆動型アニメーション
 // ============================================
 function initAboutDataAnimation() {
@@ -5106,6 +5126,17 @@ function initAboutDataAnimation() {
                         animateCounter(monthlyAttendance, Math.floor(members * 0.6), 1500, '');
                         animateCounter(activeCollabs, Math.floor(collabs * 0.3) || 12, 1500, '');
                         animateCounter(referralCount, Math.floor(members * 3), 1500, '');
+                        
+                        // プログレスバーのアニメーション（stats tab用）
+                        setTimeout(() => {
+                            const monthlyAttendanceBar = document.getElementById('monthlyAttendanceBar');
+                            const activeCollabsBar = document.getElementById('activeCollabsBar');
+                            const referralCountBar = document.getElementById('referralCountBar');
+                            
+                            if (monthlyAttendanceBar) monthlyAttendanceBar.style.width = `${Math.min((members * 0.6) * 2, 100)}%`;
+                            if (activeCollabsBar) activeCollabsBar.style.width = `${Math.min(collabs * 5, 100)}%`;
+                            if (referralCountBar) referralCountBar.style.width = `${Math.min((members * 3) / 2, 100)}%`;
+                        }, 500);
                         
                         // プログレスバーのアニメーション
                         setTimeout(() => {
