@@ -3887,7 +3887,7 @@ section {
 .event-tabs-smart {
     flex: 1;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center; /* Center tabs */
     gap: 8px;
     overflow-x: auto;
     overflow-y: visible; /* 次回バッジを表示するため */
@@ -3898,6 +3898,7 @@ section {
     -webkit-overflow-scrolling: touch;
     padding: 0 4px;
     padding-top: 12px; /* 次回バッジのスペース確保 */
+    padding-bottom: 15px; /* ページャーのスペース確保 */
 }
 
 .event-tabs-smart::-webkit-scrollbar {

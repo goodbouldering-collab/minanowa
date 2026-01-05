@@ -4338,6 +4338,9 @@ function renderCarousel() {
     // タッチスワイプ対応（カードタップは無効化）
     setupCarouselSwipe();
     console.log('✅ renderCarousel 完了');
+    
+    // ページャーを更新
+    updateEventPager();
 }
 
 // ヒーローセクションの次回イベントバッジを更新
@@ -4540,6 +4543,26 @@ function renderEventCard(event, includeImage = true) {
             </div>
         </div>
     `;
+}
+
+// イベントカルーセルのページャー更新（スライド式カルーセル用）
+function updateEventPager() {
+    const pager = document.getElementById('eventPager');
+    if (!pager || !allEvents || allEvents.length === 0) return;
+    
+    const thumb = pager.querySelector('.pager-thumb');
+    if (!thumb) return;
+    
+    const totalSlides = allEvents.length;
+    const currentSlide = currentCarouselIndex;
+    
+    // ページャーの幅を計算（1スライド分の割合）
+    const thumbWidth = (1 / totalSlides) * 100;
+    // ページャーの位置を計算
+    const thumbLeft = (currentSlide / totalSlides) * 100;
+    
+    thumb.style.width = `${thumbWidth}%`;
+    thumb.style.left = `${thumbLeft}%`;
 }
 
 // カルーセルスワイプ設定

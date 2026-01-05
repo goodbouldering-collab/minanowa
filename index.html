@@ -390,19 +390,9 @@
             
             <!-- イベントカルーセル（スマートUI） -->
             <div class="event-carousel-wrapper">
-                <!-- スマートナビゲーション（タブ統合型） -->
-                <div class="smart-event-nav">
-                    <button class="smart-nav-btn prev" id="smartPrevBtn" onclick="navigateCarousel(-1)" title="前のイベント">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    
-                    <div class="event-tabs-smart" id="eventTabsSmart">
-                        <!-- JavaScriptで動的に生成 -->
-                    </div>
-                    
-                    <button class="smart-nav-btn next" id="smartNextBtn" onclick="navigateCarousel(1)" title="次のイベント">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                <!-- イベントタブ（ナビゲーションボタンなし） -->
+                <div class="event-tabs-smart" id="eventTabsSmart">
+                    <!-- JavaScriptで動的に生成 -->
                 </div>
                 
                 <!-- カルーセルコンテナ -->
@@ -410,6 +400,12 @@
                     <div class="event-carousel-track" id="eventCarouselTrack">
                         <!-- JavaScriptで動的に生成 -->
                     </div>
+                </div>
+                
+                <!-- スクロールページャー -->
+                <div class="scroll-pager" id="eventPager">
+                    <div class="pager-track"></div>
+                    <div class="pager-thumb"></div>
                 </div>
             </div>
         </div>
