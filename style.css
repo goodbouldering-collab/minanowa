@@ -320,7 +320,6 @@ ul {
 }
 
 .feature-card:hover::before,
-.member-card:hover::before,
 .blog-card:hover::before,
 .collab-card:hover::before {
     opacity: 1;
@@ -457,10 +456,6 @@ ul {
     animation: slideIn 0.5s ease forwards;
 }
 
-/* メンバーカードホバー時のアバター */
-.member-card:hover .member-card-avatar {
-    box-shadow: 0 0 20px rgba(240, 201, 106, 0.5);
-}
 
 /* ブログカード画像のパララックス風効果 */
 .blog-card:hover .blog-card-image img {
@@ -5617,10 +5612,6 @@ section {
     min-width: 280px;
 }
 
-.member-card:hover {
-    box-shadow: var(--shadow-sm);
-}
-
 .member-card-header {
     position: relative;
     padding: 18px 12px 12px;
@@ -5669,10 +5660,6 @@ section {
     object-fit: cover;
     border: 4px solid rgba(255, 255, 255, 0.4);
     margin: 0 auto 15px;
-}
-
-.member-card:hover .member-card-avatar {
-    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .member-card-name {
@@ -9317,7 +9304,6 @@ section {
     transition: left 0.5s ease;
 }
 
-.member-card:hover::before,
 .blog-card:hover::before,
 .collab-card:hover::before {
     left: 100%;
@@ -9399,7 +9385,6 @@ section {
 }
 
 /* カードホバー時の3D効果 */
-.member-card:hover,
 .blog-card:hover,
 .collab-card:hover {
     transform: translateY(-8px) rotateX(2deg);
