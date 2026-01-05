@@ -1367,17 +1367,17 @@ async function openMemberDetail(memberId) {
     document.body.style.overflow = 'hidden';
     
     try {
-        const response = await fetch(`${API_BASE}/api/members/${memberId}`);
-        const data = await response.json();
+        // data.jsonから読み込んだallMembersを使用
+        const member = allMembers.find(m => m.id === memberId);
         
-        if (data.success) {
-            renderMemberDetail(data.member);
+        if (member) {
+            renderMemberDetail(member);
         } else {
             content.innerHTML = `
                 <div class="no-results">
                     <i class="fas fa-exclamation-circle"></i>
                     <h3>エラー</h3>
-                    <p>メンバー情報を取得できませんでした</p>
+                    <p>メンバー情報が見つかりませんでした</p>
                 </div>
             `;
         }
