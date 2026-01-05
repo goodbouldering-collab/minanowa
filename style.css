@@ -4611,12 +4611,10 @@ section {
     object-fit: cover;
     border: 4px solid rgba(255, 255, 255, 0.4);
     margin: 0 auto 15px;
-    transition: var(--transition-normal);
 }
 
 .member-card:hover .member-card-avatar {
-    transform: scale(1.05);
-    border-color: var(--accent-light);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .member-card-name {
