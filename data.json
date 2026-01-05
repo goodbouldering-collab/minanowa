@@ -41,6 +41,7 @@
       "avatar": "https://i.pravatar.cc/200?img=1",
       "location": "彦根市",
       "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
       "sns": {
         "twitter": "@tanaka_soap",
         "instagram": "tanaka_handmade"
@@ -68,6 +69,7 @@
       "avatar": "https://i.pravatar.cc/200?img=13",
       "location": "彦根市",
       "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
       "sns": {
         "twitter": "@suzuki_it",
         "facebook": "suzuki.kenta"
@@ -120,6 +122,7 @@
       "avatar": "https://i.pravatar.cc/200?img=5",
       "location": "米原市",
       "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
       "sns": {
         "twitter": "@yamada_illust",
         "instagram": "yamada_art"
@@ -146,6 +149,7 @@
       "avatar": "https://i.pravatar.cc/200?img=12",
       "location": "彦根市",
       "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
       "sns": {
         "facebook": "ito.daisuke.arch"
       },

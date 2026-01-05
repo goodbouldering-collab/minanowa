@@ -660,30 +660,54 @@ function renderMembers(members) {
         return;
     }
     
-    membersGrid.innerHTML = members.map(member => `
-        <div class="member-card" onclick="openMemberDetail('${member.id}')">
-            <div class="member-card-header">
-                <span class="member-card-category">${member.businessCategory || 'その他'}</span>
-                <h3 class="member-card-name">${member.name}</h3>
-                <p class="member-card-business">${member.business}</p>
-            </div>
-            <div class="member-card-body">
-                <p class="member-card-intro">${member.introduction || '自己紹介文がありません'}</p>
-                <div class="member-card-skills">
-                    ${(member.skills || []).slice(0, 3).map(skill => 
-                        `<span class="skill-tag">${skill}</span>`
-                    ).join('')}
+    membersGrid.innerHTML = members.map(member => {
+        // OGP画像のURLを取得（存在しない場合はデフォルト画像）
+        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+        
+        // URLからドメインを抽出
+        const websiteUrl = member.website || '';
+        const displayUrl = websiteUrl ? websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+        
+        return `
+            <div class="member-card" onclick="openMemberDetail('${member.id}')">
+                ${websiteUrl ? `
+                    <div class="member-card-ogp">
+                        <img src="${ogpImage}" alt="${member.name}" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                        <span class="member-card-category">${member.businessCategory || 'その他'}</span>
+                    </div>
+                ` : `
+                    <div class="member-card-header">
+                        <span class="member-card-category">${member.businessCategory || 'その他'}</span>
+                        <h3 class="member-card-name">${member.name}</h3>
+                        <p class="member-card-business">${member.business}</p>
+                    </div>
+                `}
+                <div class="member-card-body">
+                    ${websiteUrl ? `
+                        <h3 class="member-card-name" style="color: var(--text-primary); margin-bottom: 4px;">${member.name}</h3>
+                        <p class="member-card-business" style="color: var(--text-muted); margin-bottom: 8px;">${member.business}</p>
+                        <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" class="member-card-url" onclick="event.stopPropagation()">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>${displayUrl}</span>
+                        </a>
+                    ` : ''}
+                    <p class="member-card-intro">${member.introduction || '自己紹介文がありません'}</p>
+                    <div class="member-card-skills">
+                        ${(member.skills || []).slice(0, 3).map(skill => 
+                            `<span class="skill-tag">${skill}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="member-card-meta">
+                        <span class="member-card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${member.location || '未設定'}
+                        </span>
+                        <button class="member-card-btn">詳細を見る</button>
+                    </div>
                 </div>
-                <div class="member-card-meta">
-                    <span class="member-card-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        ${member.location || '未設定'}
-                    </span>
-                    <button class="member-card-btn">詳細を見る</button>
-                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function updateResultsCount(count, query = '') {
