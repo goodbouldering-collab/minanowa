@@ -135,12 +135,23 @@ async function initApp() {
 // 次回イベント情報を取得・表示
 async function loadNextEvent() {
     try {
-        const response = await fetch(`${API_BASE}/api/events?status=upcoming&limit=1`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success && data.events.length > 0) {
-            const event = data.events[0];
-            updateEventDisplay(event);
+        if (data.events && data.events.length > 0) {
+            // 今日以降のイベントを取得してソート
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const upcomingEvents = data.events
+                .filter(event => new Date(event.date) >= today)
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            if (upcomingEvents.length > 0) {
+                const event = upcomingEvents[0];
+                updateEventDisplay(event);
+            }
         }
     } catch (error) {
         console.error('イベント情報取得エラー:', error);
@@ -253,19 +264,22 @@ function clearSession() {
 // ============================================
 async function loadStats() {
     try {
-        const response = await fetch(`${API_BASE}/api/stats`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success) {
-            const stats = data.stats;
-            animateCounter('memberCount', stats.totalMembers);
-            animateCounter('categoryCount', Object.keys(stats.categories || {}).length);
+        if (data) {
+            const publicMembers = data.members.filter(m => m.isPublic);
+            const categories = new Set(publicMembers.map(m => m.businessCategory));
+            
+            animateCounter('memberCount', publicMembers.length);
+            animateCounter('categoryCount', categories.size);
             
             // 開催回数を更新
             const eventCountElement = document.querySelector('.hero-stat .stat-number[data-count]');
-            if (eventCountElement && stats.totalEventCount) {
-                eventCountElement.setAttribute('data-count', stats.totalEventCount);
-                animateCounter(eventCountElement, stats.totalEventCount);
+            if (eventCountElement && data.events) {
+                eventCountElement.setAttribute('data-count', data.events.length);
+                animateCounter(eventCountElement, data.events.length);
             }
         }
     } catch (error) {
@@ -305,25 +319,26 @@ function animateCounter(elementIdOrElement, targetValue) {
 // ヒーロー画像を動的にロード
 async function loadHeroImages() {
     try {
-        const response = await fetch(`${API_BASE}/api/hero-images`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success && data.images && data.images.length > 0) {
+        if (data.heroImages && data.heroImages.length > 0) {
             const sliderContainer = document.querySelector('.hero-slider');
             const dotsContainer = document.querySelector('.slider-dots');
             
             if (sliderContainer && dotsContainer) {
                 // スライドを生成
-                sliderContainer.innerHTML = data.images.map((img, index) => 
+                sliderContainer.innerHTML = data.heroImages.map((img, index) => 
                     `<div class="slide ${index === 0 ? 'active' : ''}" style="background-image: url('${img.url}')"></div>`
                 ).join('');
                 
                 // ドットを生成
-                dotsContainer.innerHTML = data.images.map((img, index) => 
+                dotsContainer.innerHTML = data.heroImages.map((img, index) => 
                     `<button class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></button>`
                 ).join('');
                 
-                console.log('✅ ヒーロー画像ロード完了:', data.images.length, '枚');
+                console.log('✅ ヒーロー画像ロード完了:', data.heroImages.length, '枚');
                 
                 // スライダーを初期化
                 initHeroSlider();
@@ -339,14 +354,15 @@ async function loadHeroImages() {
 // About画像を動的にロード
 async function loadAboutImage() {
     try {
-        const response = await fetch(`${API_BASE}/api/about-image`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success && data.image) {
+        if (data.aboutImage) {
             const aboutImageElement = document.querySelector('.about-image-card img');
             if (aboutImageElement) {
-                aboutImageElement.src = data.image.url;
-                aboutImageElement.alt = data.image.alt || 'みんなのWA交流会の様子';
+                aboutImageElement.src = data.aboutImage.url || data.aboutImage;
+                aboutImageElement.alt = data.aboutImage.alt || 'みんなのWA交流会の様子';
                 console.log('✅ About画像ロード完了');
             }
         }
@@ -581,13 +597,16 @@ async function loadMembers() {
     if (!membersGrid) return;
     
     try {
-        const response = await fetch(`${API_BASE}/api/members`);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
         const data = await response.json();
         
-        if (data.success) {
-            allMembers = data.members;
-            renderMembers(data.members);
-            updateResultsCount(data.total);
+        if (data.members) {
+            // 公開メンバーのみをフィルター
+            const publicMembers = data.members.filter(m => m.isPublic);
+            allMembers = publicMembers;
+            renderMembers(publicMembers);
+            updateResultsCount(publicMembers.length);
             setupMembersNavigation(); // スワイプとナビゲーションを設定
         }
     } catch (error) {
@@ -882,20 +901,14 @@ async function loadCollabAndBlogs() {
     }
     
     try {
-        // コラボとブログを並行して取得
-        const [collabRes, blogRes] = await Promise.all([
-            fetch(`${API_BASE}/api/collaborations`),
-            fetch(`${API_BASE}/api/blogs?limit=6`)
-        ]);
+        // data.jsonからデータを取得
+        const response = await fetch('./data.json');
+        const data = await response.json();
         
-        const collabData = await collabRes.json();
-        const blogData = await blogRes.json();
+        console.log('Data loaded:', data);
         
-        console.log('Collab data:', collabData);
-        console.log('Blog data:', blogData);
-        
-        const collabs = (collabData.success && collabData.collaborations) ? collabData.collaborations.filter(c => c.isPublic) : [];
-        const blogs = (blogData.success && blogData.blogs) ? blogData.blogs : [];
+        const collabs = (data.collaborations) ? data.collaborations.filter(c => c.isPublic) : [];
+        const blogs = (data.blogs) ? data.blogs.slice(0, 6) : [];
         
         console.log('Filtered collabs:', collabs.length, 'blogs:', blogs.length);
         
