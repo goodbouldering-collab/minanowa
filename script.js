@@ -608,6 +608,11 @@ async function loadMembers() {
             renderMembers(publicMembers);
             updateResultsCount(publicMembers.length);
             // setupMembersNavigation(); // ナビゲーションとスワイプを無効化
+            
+            // スクロールページャーをセットアップ
+            setTimeout(() => {
+                setupScrollPager('membersGrid', 'membersPager');
+            }, 100);
         }
     } catch (error) {
         console.error('メンバー読み込みエラー:', error);
@@ -738,6 +743,40 @@ function updateResultsCount(count, query = '') {
             resultsCount.textContent = `全${count}名`;
         }
     }
+}
+
+// スクロールページャーの更新
+function setupScrollPager(scrollContainerId, pagerId) {
+    const container = document.getElementById(scrollContainerId);
+    const pager = document.getElementById(pagerId);
+    
+    if (!container || !pager) return;
+    
+    const thumb = pager.querySelector('.pager-thumb');
+    if (!thumb) return;
+    
+    function updatePager() {
+        const scrollWidth = container.scrollWidth;
+        const clientWidth = container.clientWidth;
+        const scrollLeft = container.scrollLeft;
+        
+        // ページャーの幅を計算（表示領域の割合）
+        const thumbWidth = (clientWidth / scrollWidth) * 100;
+        // ページャーの位置を計算
+        const thumbLeft = (scrollLeft / scrollWidth) * 100;
+        
+        thumb.style.width = `${thumbWidth}%`;
+        thumb.style.left = `${thumbLeft}%`;
+    }
+    
+    // スクロール時に更新
+    container.addEventListener('scroll', updatePager);
+    
+    // 初期化時に更新
+    updatePager();
+    
+    // リサイズ時に更新
+    window.addEventListener('resize', updatePager);
 }
 
 // メンバーグリッドのナビゲーションとスワイプ設定
@@ -936,6 +975,11 @@ async function loadCollabAndBlogs() {
         renderCollabCarousel();
         setupCollabTabs();
         // setupCollabNavigation(); // ナビゲーションを無効化
+        
+        // スクロールページャーをセットアップ
+        setTimeout(() => {
+            setupScrollPager('collabBlogCarousel', 'collabPager');
+        }, 100);
     } catch (error) {
         console.error('コンテンツ取得エラー:', error);
         carousel.innerHTML = `
@@ -1045,6 +1089,11 @@ function setupCollabTabs() {
             if (carousel) {
                 carousel.scrollLeft = 0;
             }
+            
+            // ページャーを更新
+            setTimeout(() => {
+                setupScrollPager('collabBlogCarousel', 'collabPager');
+            }, 100);
         });
     });
 }
