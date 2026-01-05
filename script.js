@@ -935,7 +935,7 @@ async function loadCollabAndBlogs() {
         currentCollabPage = 0;
         renderCollabCarousel();
         setupCollabTabs();
-        setupCollabNavigation();
+        // setupCollabNavigation(); // ナビゲーションを無効化
     } catch (error) {
         console.error('コンテンツ取得エラー:', error);
         carousel.innerHTML = `

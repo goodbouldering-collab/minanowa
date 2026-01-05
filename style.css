@@ -5278,7 +5278,7 @@ section {
     overflow-x: auto;
     overflow-y: hidden;
     gap: 20px;
-    scroll-behavior: smooth;
+    scroll-behavior: auto; /* Disable smooth scrolling */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
     padding-bottom: 10px;
