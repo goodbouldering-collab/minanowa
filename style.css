@@ -2934,6 +2934,462 @@ section {
 }
 
 /* ============================================
+   Compact About Section - New Design
+   ============================================ */
+
+/* 2カラムレイアウト */
+.about-compact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* 左カラム：ミッション＋統計 */
+.about-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* コンパクトミッション */
+.mission-compact {
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.08) 0%, rgba(212, 168, 75, 0.08) 100%);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    border: 2px solid rgba(45, 90, 39, 0.15);
+}
+
+.mission-header-compact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.mission-header-compact i {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+.mission-header-compact h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.mission-desc-compact {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.mission-desc-compact strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* クイック統計 */
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.quick-stat-item {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid rgba(45, 90, 39, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.quick-stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(45, 90, 39, 0.15);
+}
+
+.stat-icon-compact {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--white);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.quick-stat-item:hover .stat-icon-compact {
+    transform: rotate(360deg) scale(1.1);
+}
+
+.stat-info-compact {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value-compact {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stat-label-compact {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* 右カラム：アコーディオン */
+.about-right-col {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    border: 2px solid rgba(45, 90, 39, 0.08);
+}
+
+/* アコーディオン */
+.accordion-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.accordion-item {
+    border-bottom: 1px solid rgba(45, 90, 39, 0.1);
+    transition: all 0.3s ease;
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 25px;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.accordion-header:hover {
+    background: rgba(45, 90, 39, 0.03);
+}
+
+.accordion-item.active .accordion-header {
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.05) 0%, rgba(212, 168, 75, 0.05) 100%);
+}
+
+.accordion-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.1), rgba(212, 168, 75, 0.1));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--primary);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.accordion-item.active .accordion-icon {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.accordion-title-wrapper {
+    flex: 1;
+}
+
+.accordion-title-wrapper h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.accordion-title-wrapper p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.accordion-toggle {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(45, 90, 39, 0.08);
+    transition: all 0.3s ease;
+}
+
+.accordion-toggle i {
+    color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-toggle i {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 25px;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 500px;
+    padding: 0 25px 25px 25px;
+}
+
+/* 特徴リスト（コンパクト） */
+.feature-list-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.feature-compact {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+    background: rgba(45, 90, 39, 0.02);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--primary);
+    transition: all 0.3s ease;
+}
+
+.feature-compact:hover {
+    transform: translateX(5px);
+    background: rgba(45, 90, 39, 0.05);
+}
+
+.feature-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba(45, 90, 39, 0.2);
+    line-height: 1;
+    min-width: 35px;
+    transition: color 0.3s ease;
+}
+
+.feature-compact:hover .feature-num {
+    color: var(--primary);
+}
+
+.feature-icon-small {
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.feature-compact strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.feature-compact p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* メリットグリッド（コンパクト） */
+.benefits-compact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.benefit-compact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    background: rgba(45, 90, 39, 0.02);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(45, 90, 39, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.benefit-compact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
+    background: rgba(45, 90, 39, 0.05);
+}
+
+.benefit-compact i {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.benefit-compact span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 実績統計（コンパクト） */
+.stats-compact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-compact-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-compact-row > i {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.stat-compact-info {
+    flex: 1;
+}
+
+.stat-compact-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stat-compact-bar {
+    position: relative;
+    height: 24px;
+    background: rgba(45, 90, 39, 0.08);
+    border-radius: 12px;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    padding-right: 50px;
+}
+
+.stat-compact-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 12px;
+    width: 0;
+    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.stat-compact-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+.stat-compact-value {
+    position: absolute;
+    right: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* レスポンシブ */
+@media (max-width: 968px) {
+    .about-compact-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .quick-stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .benefits-compact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-compact {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .feature-num {
+        min-width: auto;
+    }
+}
+
+/* ============================================
    Interview Section
    ============================================ */
 .interview-section {

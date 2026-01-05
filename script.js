@@ -5078,6 +5078,24 @@ function switchAboutTab(tabName) {
     if (selectedPanel) selectedPanel.classList.add('active');
 }
 
+// アコーディオン開閉関数
+function toggleAccordion(header) {
+    const item = header.parentElement;
+    const isActive = item.classList.contains('active');
+    
+    // すべてのアコーディオンを閉じる（オプション：1つだけ開く場合）
+    // document.querySelectorAll('.accordion-item').forEach(i => {
+    //     i.classList.remove('active');
+    // });
+    
+    // クリックされたアイテムをトグル
+    if (isActive) {
+        item.classList.remove('active');
+    } else {
+        item.classList.add('active');
+    }
+}
+
 // ============================================
 // Aboutセクション - データ駆動型アニメーション
 // ============================================
@@ -5150,10 +5168,14 @@ function initAboutDataAnimation() {
                             const monthlyAttendanceBar = document.getElementById('monthlyAttendanceBar');
                             const activeCollabsBar = document.getElementById('activeCollabsBar');
                             const referralCountBar = document.getElementById('referralCountBar');
+                            const satisfactionBar = document.getElementById('satisfactionBar');
+                            const satisfactionRate = document.getElementById('satisfactionRate');
                             
                             if (monthlyAttendanceBar) monthlyAttendanceBar.style.width = `${Math.min((members * 0.6) * 2, 100)}%`;
                             if (activeCollabsBar) activeCollabsBar.style.width = `${Math.min(collabs * 5, 100)}%`;
                             if (referralCountBar) referralCountBar.style.width = `${Math.min((members * 3) / 2, 100)}%`;
+                            if (satisfactionBar) satisfactionBar.style.width = '96%';
+                            if (satisfactionRate) animateCounter(satisfactionRate, 96, 1500, '');
                         }, 500);
                         
                         // プログレスバーのアニメーション

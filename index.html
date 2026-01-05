@@ -167,247 +167,186 @@
                 <p class="section-subtitle">彦根周辺の事業者をつないで広げる</p>
             </div>
             
-            <!-- 事業理念カード -->
-            <div class="mission-card">
-                <div class="mission-icon">
-                    <i class="fas fa-lightbulb"></i>
-                </div>
-                <div class="mission-content">
-                    <h3 class="mission-title">つながりが生み出す、新しいビジネスの可能性</h3>
-                    <p class="mission-text">
-                        彦根市を中心に活動する事業者が集まり、月1回の交流会を通じて<strong>つながり</strong>を深めるコミュニティ。
-                        名刺交換や事業紹介だけでなく、メンバー同士で<strong>事業を紹介し合い</strong>、<strong>コラボレーション</strong>を生み出し、
-                        新しいビジネスの可能性を広げています。
-                    </p>
-                </div>
-            </div>
-            
-            <!-- インタラクティブグリッド -->
-            <div class="about-interactive-grid">
-                <!-- ライブメトリクスダッシュボード -->
-                <div class="metrics-dashboard-enhanced">
-                    <div class="dashboard-header-enhanced">
-                        <div class="pulse-indicator-large"></div>
-                        <div class="header-text">
-                            <h3>リアルタイム統計</h3>
-                            <p>コミュニティの成長を見る</p>
+            <!-- コンパクト2カラムレイアウト -->
+            <div class="about-compact-layout">
+                <!-- 左カラム：ミッション＋クイック統計 -->
+                <div class="about-left-col">
+                    <div class="mission-compact">
+                        <div class="mission-header-compact">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>つながりが生み出す、新しいビジネスの可能性</h3>
                         </div>
+                        <p class="mission-desc-compact">
+                            彦根市を中心に、月1回の交流会で<strong>つながり</strong>を深め、
+                            <strong>コラボレーション</strong>を通じて新しいビジネスチャンスを創出するコミュニティです。
+                        </p>
                     </div>
-                    <div class="metrics-grid-enhanced">
-                        <div class="metric-card-interactive" data-metric="members">
-                            <div class="metric-icon-wrapper">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="metric-data-wrapper">
-                                <div class="metric-value-large" id="aboutMemberCount">0</div>
-                                <div class="metric-label-large">登録事業者</div>
-                                <div class="metric-trend">
-                                    <i class="fas fa-arrow-up"></i>
-                                    <span>増加中</span>
-                                </div>
+                    
+                    <!-- クイック統計 -->
+                    <div class="quick-stats">
+                        <div class="quick-stat-item" data-aos="fade-up">
+                            <div class="stat-icon-compact"><i class="fas fa-users"></i></div>
+                            <div class="stat-info-compact">
+                                <div class="stat-value-compact" id="aboutMemberCount">0</div>
+                                <div class="stat-label-compact">事業者</div>
                             </div>
                         </div>
-                        <div class="metric-card-interactive" data-metric="events">
-                            <div class="metric-icon-wrapper">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="metric-data-wrapper">
-                                <div class="metric-value-large" id="aboutEventCount">0</div>
-                                <div class="metric-label-large">開催回数</div>
-                                <div class="metric-trend">
-                                    <i class="fas fa-check"></i>
-                                    <span>継続中</span>
-                                </div>
+                        <div class="quick-stat-item" data-aos="fade-up" data-aos-delay="100">
+                            <div class="stat-icon-compact"><i class="fas fa-calendar-check"></i></div>
+                            <div class="stat-info-compact">
+                                <div class="stat-value-compact" id="aboutEventCount">0</div>
+                                <div class="stat-label-compact">開催回数</div>
                             </div>
                         </div>
-                        <div class="metric-card-interactive" data-metric="collabs">
-                            <div class="metric-icon-wrapper">
-                                <i class="fas fa-handshake"></i>
-                            </div>
-                            <div class="metric-data-wrapper">
-                                <div class="metric-value-large" id="aboutCollabCount">0</div>
-                                <div class="metric-label-large">コラボ事例</div>
-                                <div class="metric-trend">
-                                    <i class="fas fa-fire"></i>
-                                    <span>活発</span>
-                                </div>
+                        <div class="quick-stat-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="stat-icon-compact"><i class="fas fa-handshake"></i></div>
+                            <div class="stat-info-compact">
+                                <div class="stat-value-compact" id="aboutCollabCount">0</div>
+                                <div class="stat-label-compact">コラボ</div>
                             </div>
                         </div>
-                        <div class="metric-card-interactive" data-metric="categories">
-                            <div class="metric-icon-wrapper">
-                                <i class="fas fa-industry"></i>
-                            </div>
-                            <div class="metric-data-wrapper">
-                                <div class="metric-value-large" id="categoryCount">0</div>
-                                <div class="metric-label-large">業種</div>
-                                <div class="metric-trend">
-                                    <i class="fas fa-star"></i>
-                                    <span>多様性</span>
-                                </div>
+                        <div class="quick-stat-item" data-aos="fade-up" data-aos-delay="300">
+                            <div class="stat-icon-compact"><i class="fas fa-industry"></i></div>
+                            <div class="stat-info-compact">
+                                <div class="stat-value-compact" id="categoryCount">0</div>
+                                <div class="stat-label-compact">業種</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- 拡張インタラクティブタブカード -->
-                <div class="about-tabs-card-enhanced">
-                    <div class="about-tabs-enhanced">
-                        <button class="about-tab-enhanced active" data-tab="features" onclick="switchAboutTab('features')">
-                            <div class="tab-icon-wrapper">
-                                <i class="fas fa-star"></i>
+                <!-- 右カラム：アコーディオン式インタラクティブカード -->
+                <div class="about-right-col">
+                    <div class="accordion-wrapper">
+                        <!-- 特徴 -->
+                        <div class="accordion-item active" data-aos="fade-left">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <div class="accordion-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="accordion-title-wrapper">
+                                    <h4>3つの特徴</h4>
+                                    <p>みんなのWAの強み</p>
+                                </div>
+                                <div class="accordion-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
                             </div>
-                            <div class="tab-text-wrapper">
-                                <span class="tab-title">特徴</span>
-                                <span class="tab-desc">3つの強み</span>
+                            <div class="accordion-content">
+                                <div class="feature-list-compact">
+                                    <div class="feature-compact">
+                                        <span class="feature-num">01</span>
+                                        <div class="feature-icon-small"><i class="fas fa-users"></i></div>
+                                        <div>
+                                            <strong>月1回の交流会</strong>
+                                            <p>直接会って関係構築</p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-compact">
+                                        <span class="feature-num">02</span>
+                                        <div class="feature-icon-small"><i class="fas fa-handshake"></i></div>
+                                        <div>
+                                            <strong>コラボ創出</strong>
+                                            <p>異業種間の協業支援</p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-compact">
+                                        <span class="feature-num">03</span>
+                                        <div class="feature-icon-small"><i class="fas fa-rocket"></i></div>
+                                        <div>
+                                            <strong>事業拡大</strong>
+                                            <p>相互紹介で顧客開拓</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </button>
-                        <button class="about-tab-enhanced" data-tab="benefits" onclick="switchAboutTab('benefits')">
-                            <div class="tab-icon-wrapper">
-                                <i class="fas fa-trophy"></i>
+                        </div>
+                        
+                        <!-- メリット -->
+                        <div class="accordion-item" data-aos="fade-left" data-aos-delay="100">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <div class="accordion-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="accordion-title-wrapper">
+                                    <h4>5つのメリット</h4>
+                                    <p>参加で得られる価値</p>
+                                </div>
+                                <div class="accordion-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
                             </div>
-                            <div class="tab-text-wrapper">
-                                <span class="tab-title">メリット</span>
-                                <span class="tab-desc">5つの価値</span>
+                            <div class="accordion-content">
+                                <div class="benefits-compact-grid">
+                                    <div class="benefit-compact">
+                                        <i class="fas fa-network-wired"></i>
+                                        <span>異業種ネットワーク</span>
+                                    </div>
+                                    <div class="benefit-compact">
+                                        <i class="fas fa-user-plus"></i>
+                                        <span>新規顧客獲得</span>
+                                    </div>
+                                    <div class="benefit-compact">
+                                        <i class="fas fa-hands-helping"></i>
+                                        <span>コラボ機会</span>
+                                    </div>
+                                    <div class="benefit-compact">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span>地域情報共有</span>
+                                    </div>
+                                    <div class="benefit-compact">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>成長サポート</span>
+                                    </div>
+                                </div>
                             </div>
-                        </button>
-                        <button class="about-tab-enhanced" data-tab="stats" onclick="switchAboutTab('stats')">
-                            <div class="tab-icon-wrapper">
-                                <i class="fas fa-chart-bar"></i>
+                        </div>
+                        
+                        <!-- 実績 -->
+                        <div class="accordion-item" data-aos="fade-left" data-aos-delay="200">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <div class="accordion-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <div class="accordion-title-wrapper">
+                                    <h4>実績データ</h4>
+                                    <p>数字で見る成果</p>
+                                </div>
+                                <div class="accordion-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
                             </div>
-                            <div class="tab-text-wrapper">
-                                <span class="tab-title">実績</span>
-                                <span class="tab-desc">数字で見る</span>
-                            </div>
-                        </button>
-                    </div>
-                    
-                    <div class="about-tab-content-enhanced">
-                        <!-- 特徴タブ -->
-                        <div class="tab-panel active" id="features-panel">
-                            <div class="features-enhanced">
-                                <div class="feature-item-enhanced">
-                                    <div class="feature-number">01</div>
-                                    <div class="feature-icon-enhanced">
+                            <div class="accordion-content">
+                                <div class="stats-compact-list">
+                                    <div class="stat-compact-row">
                                         <i class="fas fa-users"></i>
+                                        <div class="stat-compact-info">
+                                            <span class="stat-compact-label">月平均参加</span>
+                                            <div class="stat-compact-bar">
+                                                <div class="stat-compact-fill" id="monthlyAttendanceBar" style="width: 0%"></div>
+                                                <span class="stat-compact-value" id="monthlyAttendance">0</span>名
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="feature-text-enhanced">
-                                        <h4>月1回の交流会</h4>
-                                        <p>事業者同士が直接つながり、名刺交換・事業紹介を通じて新しい関係を構築</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item-enhanced">
-                                    <div class="feature-number">02</div>
-                                    <div class="feature-icon-enhanced">
+                                    <div class="stat-compact-row">
                                         <i class="fas fa-handshake"></i>
+                                        <div class="stat-compact-info">
+                                            <span class="stat-compact-label">進行中案件</span>
+                                            <div class="stat-compact-bar">
+                                                <div class="stat-compact-fill" id="activeCollabsBar" style="width: 0%"></div>
+                                                <span class="stat-compact-value" id="activeCollabs">0</span>件
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="feature-text-enhanced">
-                                        <h4>コラボレーション</h4>
-                                        <p>異業種間の協業により、新しいビジネスチャンスと付加価値を創出</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item-enhanced">
-                                    <div class="feature-number">03</div>
-                                    <div class="feature-icon-enhanced">
-                                        <i class="fas fa-rocket"></i>
-                                    </div>
-                                    <div class="feature-text-enhanced">
-                                        <h4>事業拡大支援</h4>
-                                        <p>メンバー間の相互紹介で新規顧客開拓と売上向上をサポート</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- メリットタブ -->
-                        <div class="tab-panel" id="benefits-panel">
-                            <div class="benefits-grid">
-                                <div class="benefit-card">
-                                    <div class="benefit-icon"><i class="fas fa-network-wired"></i></div>
-                                    <h5>異業種ネットワーク</h5>
-                                    <p>多様な業種とつながる</p>
-                                </div>
-                                <div class="benefit-card">
-                                    <div class="benefit-icon"><i class="fas fa-user-plus"></i></div>
-                                    <h5>新規顧客獲得</h5>
-                                    <p>紹介による顧客拡大</p>
-                                </div>
-                                <div class="benefit-card">
-                                    <div class="benefit-icon"><i class="fas fa-hands-helping"></i></div>
-                                    <h5>コラボ機会</h5>
-                                    <p>協業で新事業を創出</p>
-                                </div>
-                                <div class="benefit-card">
-                                    <div class="benefit-icon"><i class="fas fa-info-circle"></i></div>
-                                    <h5>地域情報</h5>
-                                    <p>ビジネス情報を共有</p>
-                                </div>
-                                <div class="benefit-card">
-                                    <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
-                                    <h5>成長サポート</h5>
-                                    <p>事業拡大を支援</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 実績タブ -->
-                        <div class="tab-panel" id="stats-panel">
-                            <div class="stats-enhanced">
-                                <div class="stat-card-enhanced">
-                                    <div class="stat-icon-large"><i class="fas fa-users"></i></div>
-                                    <div class="stat-data-large">
-                                        <span class="stat-value-xl" id="monthlyAttendance">0</span>
-                                        <span class="stat-label-xl">名/月平均参加</span>
-                                    </div>
-                                    <div class="stat-bar-horizontal">
-                                        <div class="stat-fill-horizontal" id="monthlyAttendanceBar" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                                <div class="stat-card-enhanced">
-                                    <div class="stat-icon-large"><i class="fas fa-handshake"></i></div>
-                                    <div class="stat-data-large">
-                                        <span class="stat-value-xl" id="activeCollabs">0</span>
-                                        <span class="stat-label-xl">件の進行中案件</span>
-                                    </div>
-                                    <div class="stat-bar-horizontal">
-                                        <div class="stat-fill-horizontal" id="activeCollabsBar" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                                <div class="stat-card-enhanced">
-                                    <div class="stat-icon-large"><i class="fas fa-award"></i></div>
-                                    <div class="stat-data-large">
-                                        <span class="stat-value-xl" id="referralCount">0</span>
-                                        <span class="stat-label-xl">件の紹介実績</span>
-                                    </div>
-                                    <div class="stat-bar-horizontal">
-                                        <div class="stat-fill-horizontal" id="referralCountBar" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                                <div class="stat-card-enhanced satisfaction">
-                                    <div class="stat-icon-large"><i class="fas fa-star"></i></div>
-                                    <div class="stat-data-large">
-                                        <span class="stat-value-xl">4.8<small>/5.0</small></span>
-                                        <span class="stat-label-xl">参加者満足度</span>
-                                    </div>
-                                    <div class="stat-stars">
+                                    <div class="stat-compact-row">
                                         <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>                                    <div class="stat-bar">
-                                        <div class="stat-fill" style="width: 96%"></div>
-                                    </div>
-                                    <div class="stat-info">
-                                        <span class="stat-value">4.8</span>
-                                        <span class="stat-text">参加者満足度 /5.0</span>
+                                        <div class="stat-compact-info">
+                                            <span class="stat-compact-label">満足度</span>
+                                            <div class="stat-compact-bar">
+                                                <div class="stat-compact-fill" id="satisfactionBar" style="width: 0%"></div>
+                                                <span class="stat-compact-value" id="satisfactionRate">0</span>%
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -417,6 +356,7 @@
             </div>
         </div>
     </section>
+
 
     <section class="collab-section" id="collab">
         <div class="container">
