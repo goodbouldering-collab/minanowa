@@ -873,6 +873,25 @@
                 <h2><i class="fas fa-edit"></i> プロフィール編集</h2>
             </div>
             <form id="editProfileForm" onsubmit="handleEditProfile(event)">
+                <!-- プロフィール写真アップロード -->
+                <div class="form-group avatar-upload-section">
+                    <label>プロフィール写真</label>
+                    <div class="avatar-upload-wrapper">
+                        <div class="avatar-preview">
+                            <img id="avatarPreview" src="" alt="プロフィール写真">
+                            <div class="avatar-overlay">
+                                <i class="fas fa-camera"></i>
+                                <span>写真を変更</span>
+                            </div>
+                        </div>
+                        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarChange(event)" style="display: none;">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('avatarInput').click()">
+                            <i class="fas fa-upload"></i> 写真を選択
+                        </button>
+                        <p class="form-help-text">JPG, PNG形式、最大5MB</p>
+                    </div>
+                </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label for="editName">お名前</label>

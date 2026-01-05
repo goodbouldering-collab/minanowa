@@ -1649,8 +1649,46 @@ function openEditProfileModal() {
     document.getElementById('editSkills').value = (currentUser.skills || []).join(', ');
     document.getElementById('editWebsite').value = currentUser.website || '';
     
+    // アバタープレビューを設定
+    const avatarPreview = document.getElementById('avatarPreview');
+    if (avatarPreview) {
+        avatarPreview.src = currentUser.avatar || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&q=80';
+    }
+    
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+}
+
+// アバター画像変更ハンドラー
+let selectedAvatarFile = null;
+
+function handleAvatarChange(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // ファイルサイズチェック（5MB）
+    if (file.size > 5 * 1024 * 1024) {
+        showNotification('画像ファイルは5MB以下にしてください', 'error');
+        return;
+    }
+    
+    // ファイルタイプチェック
+    if (!file.type.startsWith('image/')) {
+        showNotification('画像ファイルを選択してください', 'error');
+        return;
+    }
+    
+    // プレビュー表示
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const avatarPreview = document.getElementById('avatarPreview');
+        if (avatarPreview) {
+            avatarPreview.src = e.target.result;
+        }
+        selectedAvatarFile = file;
+        showNotification('画像を選択しました。保存ボタンを押してください', 'success');
+    };
+    reader.readAsDataURL(file);
 }
 
 function closeEditProfileModal() {
@@ -1668,25 +1706,50 @@ async function handleEditProfile(event) {
     const skillsInput = form.skills.value;
     const skills = skillsInput ? skillsInput.split(',').map(s => s.trim()).filter(s => s) : [];
     
-    const updateData = {
-        name: form.name.value,
-        furigana: form.furigana.value,
-        business: form.business.value,
-        businessCategory: form.businessCategory.value,
-        phone: form.phone.value,
-        location: form.location.value,
-        introduction: form.introduction.value,
-        skills: skills,
-        website: form.website.value,
-        sessionId: sessionId
-    };
-    
     const submitBtn = form.querySelector('.btn-primary');
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
     
     try {
+        let avatarUrl = currentUser.avatar;
+        
+        // アバター画像がアップロードされている場合
+        if (selectedAvatarFile) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 画像をアップロード中...';
+            
+            // 画像をBase64に変換（実際のプロジェクトではサーバーにアップロード）
+            const reader = new FileReader();
+            avatarUrl = await new Promise((resolve, reject) => {
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(selectedAvatarFile);
+            });
+            
+            // 注: 実際のプロジェクトでは、ここでサーバーに画像をアップロードし、URLを取得
+            // const uploadResponse = await fetch(`${API_BASE}/api/upload/avatar`, {
+            //     method: 'POST',
+            //     body: formData
+            // });
+            // avatarUrl = uploadResponse.data.url;
+        }
+        
+        const updateData = {
+            name: form.name.value,
+            furigana: form.furigana.value,
+            business: form.business.value,
+            businessCategory: form.businessCategory.value,
+            phone: form.phone.value,
+            location: form.location.value,
+            introduction: form.introduction.value,
+            skills: skills,
+            website: form.website.value,
+            avatar: avatarUrl,
+            sessionId: sessionId
+        };
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
+        
         const response = await fetch(`${API_BASE}/api/members/${currentUser.id}`, {
             method: 'PUT',
             headers: { 
@@ -1700,6 +1763,7 @@ async function handleEditProfile(event) {
         
         if (data.success) {
             currentUser = data.member;
+            selectedAvatarFile = null; // リセット
             updateUIForLoggedInUser();
             closeEditProfileModal();
             showNotification('プロフィールを更新しました', 'success');

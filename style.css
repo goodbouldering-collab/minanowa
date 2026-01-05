@@ -5362,6 +5362,76 @@ section {
     color: var(--text-secondary);
 }
 
+/* アバターアップロードセクション */
+.avatar-upload-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, rgba(45, 90, 39, 0.05) 0%, rgba(212, 168, 75, 0.05) 100%);
+    border-radius: var(--radius-lg);
+    border: 2px dashed rgba(45, 90, 39, 0.2);
+}
+
+.avatar-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.avatar-preview {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.avatar-preview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: var(--white);
+    gap: 5px;
+}
+
+.avatar-preview:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.avatar-overlay i {
+    font-size: 1.5rem;
+}
+
+.avatar-overlay span {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.form-help-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
 .required {
     color: #e74c3c;
 }
@@ -6650,6 +6720,18 @@ section {
     
     .feature-number {
         font-size: 1.5rem;
+    }
+    
+    /* アバターアップロード レスポンシブ */
+    .avatar-upload-wrapper {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .avatar-preview {
+        width: 100px;
+        height: 100px;
     }
     
     .interview-content {
