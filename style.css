@@ -4230,7 +4230,6 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
     cursor: pointer;
     border: 1px solid transparent;
     flex-shrink: 0;
@@ -4239,9 +4238,7 @@ section {
 }
 
 .member-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-color: rgba(45, 90, 39, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 .member-card-header {
