@@ -1061,18 +1061,6 @@ function renderCollabItem(item) {
                 </div>
             </div>
         `;
-                    <h3 class="blog-card-title">${blog.title}</h3>
-                    <p class="blog-card-excerpt">${blog.excerpt}</p>
-                    <div class="blog-card-meta">
-                        <div class="blog-card-stats">
-                            <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
-                            <span><i class="fas fa-heart"></i> ${blog.likes || 0}</span>
-                        </div>
-                        <span class="blog-card-link">続きを読む <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </div>
-            </div>
-        `;
     }
 }
 
