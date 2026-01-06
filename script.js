@@ -1015,20 +1015,21 @@ function renderCollabItem(item) {
     if (item.type === 'collab') {
         const collab = item.data;
         return `
-            <div class="collab-card" onclick="openCollabDetail('${collab.id}')">
-                <div class="collab-image">
+            <div class="unified-card" onclick="openCollabDetail('${collab.id}')">
+                <div class="unified-card-image">
                     <img src="${collab.image || collab.coverImageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80'}" alt="${collab.title}">
+                    <span class="unified-card-category">${collab.category || 'コラボ事例'}</span>
                 </div>
-                <div class="collab-content">
-                    <div class="collab-members">
-                        ${collab.members ? collab.members.slice(0, 2).map((member, idx) => 
-                            `${idx > 0 ? '<span class="plus">×</span>' : ''}<img src="${member.avatar}" alt="${member.name}">`
-                        ).join('') : ''}
-                    </div>
-                    <h3>${collab.title}</h3>
-                    <p>${collab.description}</p>
-                    <div class="collab-result">
-                        <span><i class="fas fa-chart-line"></i> ${collab.result || '成果'}</span>
+                <div class="unified-card-content">
+                    <h3 class="unified-card-title">${collab.title}</h3>
+                    <p class="unified-card-description">${collab.description}</p>
+                    <div class="unified-card-meta">
+                        <div class="unified-card-members">
+                            ${collab.members ? collab.members.slice(0, 2).map((member, idx) => 
+                                `<img src="${member.avatar}" alt="${member.name}" title="${member.name}">`
+                            ).join('') : ''}
+                        </div>
+                        ${collab.result ? `<span class="unified-card-badge"><i class="fas fa-chart-line"></i> ${collab.result}</span>` : ''}
                     </div>
                     <button class="read-more-btn" onclick="event.stopPropagation(); openCollabDetail('${collab.id}')">
                         続きを読む <i class="fas fa-arrow-right"></i>
@@ -1039,19 +1040,27 @@ function renderCollabItem(item) {
     } else {
         const blog = item.data;
         return `
-            <div class="blog-card" onclick="openBlogDetail('${blog.slug}')">
-                <div class="blog-card-image">
+            <div class="unified-card" onclick="openBlogDetail('${blog.slug}')">
+                <div class="unified-card-image">
                     <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}">
-                    <span class="blog-card-category">${blog.category}</span>
+                    <span class="unified-card-category">${blog.category}</span>
                 </div>
-                <div class="blog-card-content">
-                    <div class="blog-card-author">
-                        <img src="${blog.authorAvatar}" alt="${blog.authorName}">
-                        <div>
-                            <span class="author-name">${blog.authorName}</span>
-                            <span class="blog-card-date">${formatDate(blog.publishDate)}</span>
+                <div class="unified-card-content">
+                    <h3 class="unified-card-title">${blog.title}</h3>
+                    <p class="unified-card-description">${blog.excerpt || blog.description || ''}</p>
+                    <div class="unified-card-meta">
+                        <div class="unified-card-author">
+                            <img src="${blog.authorAvatar}" alt="${blog.authorName}">
+                            <span>${blog.authorName}</span>
                         </div>
+                        <span class="unified-card-date"><i class="far fa-calendar"></i> ${formatDate(blog.publishedAt)}</span>
                     </div>
+                    <button class="read-more-btn" onclick="event.stopPropagation(); openBlogDetail('${blog.slug}')">
+                        続きを読む <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        `;
                     <h3 class="blog-card-title">${blog.title}</h3>
                     <p class="blog-card-excerpt">${blog.excerpt}</p>
                     <div class="blog-card-meta">
@@ -1081,8 +1090,16 @@ function setupCollabTabs() {
                 filteredCollabItems = [...allCollabItems];
             } else if (filter === 'collab') {
                 filteredCollabItems = allCollabItems.filter(item => item.type === 'collab');
+            } else if (filter === 'news') {
+                // お知らせカテゴリのブログを表示
+                filteredCollabItems = allCollabItems.filter(item => 
+                    item.type === 'blog' && item.data.category === 'お知らせ'
+                );
             } else if (filter === 'blog') {
-                filteredCollabItems = allCollabItems.filter(item => item.type === 'blog');
+                // お知らせ以外のブログを表示
+                filteredCollabItems = allCollabItems.filter(item => 
+                    item.type === 'blog' && item.data.category !== 'お知らせ'
+                );
             }
             
             renderCollabCarousel();
