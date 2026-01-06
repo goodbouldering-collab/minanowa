@@ -3896,8 +3896,7 @@ section {
     -ms-overflow-style: none;
     touch-action: pan-x;
     -webkit-overflow-scrolling: touch;
-    padding: 0 4px;
-    padding-top: 12px; /* 次回バッジのスペース確保 */
+    padding: 0 4px; /* 上部のpaddingを削除 */
     padding-bottom: 15px; /* ページャーのスペース確保 */
 }
 
@@ -4243,10 +4242,9 @@ section {
     margin-top: 0;
 }
 
-/* シンプルなホバー効果 */
+/* ホバー効果を削除 - スライドのみ */
 .event-carousel-slide .event-compact-card:hover {
-    box-shadow: 0 8px 28px rgba(45, 90, 39, 0.15),
-                0 4px 10px rgba(199, 123, 48, 0.1);
+    /* ホバーアニメーションなし */
 }
 
 .event-carousel-slide .event-compact-card:focus,
@@ -4506,15 +4504,13 @@ section {
     border-radius: 20px;
     border: 2px solid rgba(45, 90, 39, 0.1);
     overflow: hidden;
-    margin-bottom: 20px;
+    margin: 0; /* 上部のマージンを削除 */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: all var(--transition-normal);
+    transition: none; /* アニメーションを削除 */
 }
 
 .event-compact-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(45, 90, 39, 0.2);
-    border-color: var(--primary);
+    /* ホバーアニメーションを削除 - スライドのみ */
 }
 
 /* イベントヘッダー（コンパクト） */
@@ -4544,20 +4540,19 @@ section {
 }
 
 .event-image-wrapper:hover::before {
-    opacity: 0;
+    /* オーバーレイのホバーアニメーションを削除 */
 }
 
 .event-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none; /* アニメーションを削除 */
     filter: brightness(0.95) contrast(1.05);
 }
 
 .event-compact-card:hover .event-image {
-    transform: scale(1.08) rotate(1deg);
-    filter: brightness(1) contrast(1.1);
+    /* 画像のホバーアニメーションを削除 */
 }
 
 .event-image-overlay {
