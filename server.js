@@ -1479,6 +1479,54 @@ app.put('/api/admin/about-image', (req, res) => {
     }
 });
 
+// ページコンテンツ更新
+app.put('/api/admin/page-content', checkAdmin, (req, res) => {
+    try {
+        const { section, data } = req.body;
+        
+        if (!section || !data) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'セクションとデータが必要です' 
+            });
+        }
+        
+        // pageContentの初期化
+        if (!appData.pageContent) {
+            appData.pageContent = {
+                hero: {},
+                about: {},
+                connect: {},
+                contact: {}
+            };
+        }
+        
+        // セクションごとに更新
+        appData.pageContent[section] = {
+            ...(appData.pageContent[section] || {}),
+            ...data,
+            updatedAt: new Date().toISOString()
+        };
+        
+        // データを保存
+        saveData();
+        
+        console.log(`✅ ページコンテンツ更新成功 - セクション: ${section}`);
+        res.json({ 
+            success: true, 
+            section,
+            content: appData.pageContent[section] 
+        });
+    } catch (error) {
+        console.error('ページコンテンツ更新エラー:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'ページコンテンツの更新に失敗しました',
+            error: error.message
+        });
+    }
+});
+
 // ============================================
 // サーバー起動
 // ============================================

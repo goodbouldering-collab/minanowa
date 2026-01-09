@@ -2274,7 +2274,9 @@ function switchAdminTab(tab) {
             'events': 'イベント',
             'testimonials': '会員の声',
             'collaborations': 'コラボ',
-            'images': '画像'
+            'images': '画像',
+            'pageContent': 'ページ内容',
+            'faqs': 'FAQ'
         };
         btn.classList.toggle('active', btn.textContent.includes(tabNames[tab]));
     });
@@ -2301,6 +2303,12 @@ function switchAdminTab(tab) {
             break;
         case 'images':
             loadAdminImages();
+            break;
+        case 'pageContent':
+            loadAdminPageContent();
+            break;
+        case 'faqs':
+            loadAdminFAQs();
             break;
     }
 }
@@ -5192,3 +5200,143 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     initAboutDataAnimation();
 });
+
+// 管理者: ページ内容管理
+async function loadAdminPageContent() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+    `;
+    
+    try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`./data.json?t=${timestamp}`);
+        const data = await response.json();
+        const pageContent = data.pageContent || {};
+        
+        adminContent.innerHTML = `
+            <div class="admin-toolbar">
+                <h3>ページ内容管理</h3>
+            </div>
+            
+            <div class="page-content-sections">
+                <!-- Hero Section -->
+                <div class="content-section-card">
+                    <h4><i class="fas fa-home"></i> ヒーローセクション</h4>
+                    <form onsubmit="savePageContent(event, 'hero')" class="content-form">
+                        <div class="form-group">
+                            <label>タイトル</label>
+                            <input type="text" name="title" class="glass-input" value="${pageContent.hero?.title || ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>サブタイトル</label>
+                            <input type="text" name="subtitle" class="glass-input" value="${pageContent.hero?.subtitle || ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>説明文</label>
+                            <textarea name="description" class="glass-input" rows="3" required>${pageContent.hero?.description || ''}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `;
+    } catch (error) {
+        console.error('ページコンテンツ取得エラー:', error);
+        adminContent.innerHTML = `<p>ページコンテンツの取得に失敗しました</p>`;
+    }
+}
+
+async function savePageContent(event, section) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/page-content`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId
+            },
+            body: JSON.stringify({ section, data })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            showNotification(`${section}セクションを更新しました`, 'success');
+            await loadPageContent(); // トップページ更新
+        } else {
+            throw new Error(result.message || '保存に失敗しました');
+        }
+    } catch (error) {
+        console.error('保存エラー:', error);
+        showNotification('保存に失敗しました', 'error');
+    }
+}
+
+// 管理者: FAQ管理
+async function loadAdminFAQs() {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+    
+    adminContent.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+    `;
+    
+    try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`./data.json?t=${timestamp}`);
+        const data = await response.json();
+        const faqs = data.faqs || [];
+        
+        adminContent.innerHTML = `
+            <div class="admin-toolbar">
+                <h3>FAQ管理 (${faqs.length}件)</h3>
+                <button class="btn glass-btn-primary" onclick="showFAQEditor()">
+                    <i class="fas fa-plus"></i> 新規作成
+                </button>
+            </div>
+            
+            <div class="admin-faq-list">
+                ${faqs.length === 0 ? `
+                    <p style="text-align: center; color: var(--text-muted); padding: 40px;">
+                        FAQがありません
+                    </p>
+                ` : faqs.map(faq => `
+                    <div class="admin-faq-item">
+                        <div class="faq-info">
+                            <div class="faq-category">${faq.category}</div>
+                            <div class="faq-question">${faq.question}</div>
+                            <div class="faq-answer">${faq.answer.substring(0, 100)}...</div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="btn-edit" onclick="editFAQ('${faq.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-delete" onclick="deleteFAQ('${faq.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } catch (error) {
+        console.error('FAQ取得エラー:', error);
+        adminContent.innerHTML = `<p>FAQの取得に失敗しました</p>`;
+    }
+}
