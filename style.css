@@ -90,7 +90,7 @@ a:focus,
 }
 
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     font-size: 16px;
     overflow-x: hidden;
     width: 100%;
@@ -107,7 +107,7 @@ html:not(.ready) {
 /* ページロード時のちらつき防止 */
 body {
     opacity: 0;
-    transition: opacity 0.3s ease-in;
+    transition: none;
 }
 
 body:not(.loaded) {
@@ -151,7 +151,7 @@ img {
 a {
     text-decoration: none;
     color: inherit;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 button {
@@ -289,7 +289,7 @@ ul {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
+    transition: none;
 }
 
 .btn:hover::before {
@@ -314,7 +314,7 @@ ul {
     bottom: 0;
     background: linear-gradient(135deg, transparent 0%, rgba(45, 90, 39, 0.05) 100%);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: none;
     pointer-events: none;
     border-radius: inherit;
 }
@@ -346,12 +346,12 @@ ul {
         transparent 70%
     );
     transform: rotate(45deg);
-    transition: transform 0.5s ease;
+    transition: none;
     pointer-events: none;
 }
 
 .glass-card:hover::after {
-    transform: rotate(45deg) translate(100%, 100%);
+    /* transform removed */
 }
 
 /* 入力フォーカス効果 */
@@ -375,11 +375,11 @@ ul {
     background: var(--accent);
     transform: scaleX(0);
     transform-origin: right;
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .nav-menu a:not(.nav-btn):hover::before {
-    transform: scaleX(1);
+    /* transform removed */
     transform-origin: left;
 }
 
@@ -416,13 +416,13 @@ ul {
 
 /* スキルタグのホバー */
 .skill-tag {
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .skill-tag:hover {
     background: var(--primary);
     color: var(--white);
-    transform: scale(1.05);
+    /* transform removed */
 }
 
 /* 統計数字のカウントアップ効果用 */
@@ -469,7 +469,7 @@ ul {
 
 /* イベントセクションの背景パララックス */
 .parallax-bg {
-    transition: transform 0.1s ease;
+    transition: none;
 }
 
 /* フォーカス状態の強調 */
@@ -508,7 +508,7 @@ ul {
     padding: 14px 18px;
     font-size: 1rem;
     width: 100%;
-    transition: var(--transition-fast);
+    transition: none;
     color: var(--text-primary);
 }
 
@@ -528,7 +528,7 @@ ul {
     right: 0;
     z-index: 1000;
     background: transparent;
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .navbar.scrolled {
@@ -554,13 +554,13 @@ ul {
     font-weight: 700;
     font-size: 1.4rem;
     color: var(--white);
-    transition: var(--transition-fast);
+    transition: none;
     text-decoration: none;
 }
 
 .nav-logo:hover {
     opacity: 0.9;
-    transform: translateY(-1px);
+    /* transform removed */
 }
 
 .navbar.scrolled .nav-logo {
@@ -576,7 +576,7 @@ ul {
     height: 38px;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .navbar.scrolled .logo-img {
@@ -626,7 +626,7 @@ ul {
     width: 0;
     height: 2px;
     background: var(--accent);
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .nav-menu a:not(.nav-btn):hover::after {
@@ -638,7 +638,7 @@ ul {
     border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.95rem;
-    transition: var(--transition-fast);
+    transition: none;
     margin-left: 8px;
 }
 
@@ -670,7 +670,7 @@ ul {
 
 .nav-cta:hover {
     background: var(--secondary-light);
-    transform: translateY(-2px);
+    /* transform removed */
 }
 
 .nav-toggle {
@@ -684,7 +684,7 @@ ul {
     width: 28px;
     height: 2px;
     background: var(--white);
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .navbar.scrolled .nav-toggle span {
@@ -705,7 +705,7 @@ ul {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-full);
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: none;
     color: var(--white);
 }
 
@@ -745,7 +745,7 @@ ul {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: var(--transition-fast);
+    transition: none;
     z-index: 1001;
     overflow: hidden;
 }
@@ -805,7 +805,7 @@ ul {
     background-size: cover;
     background-position: center;
     opacity: 0;
-    transition: opacity 1.5s ease;
+    transition: none;
 }
 
 .hero-slider .slide.active {
@@ -911,7 +911,7 @@ ul {
     border: 1px solid rgba(255, 255, 255, 0.25);
     color: var(--white);
     opacity: 0.8;
-    transition: all 0.3s ease;
+    transition: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -919,9 +919,9 @@ ul {
     opacity: 1;
     background: rgba(255, 255, 255, 0.18);
     border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-1px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -983,7 +983,7 @@ ul {
     color: var(--text-secondary);
     cursor: pointer;
     min-width: 130px;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .hero-search-filters select:focus {
@@ -1020,12 +1020,12 @@ ul {
     border-radius: var(--radius-full);
     color: var(--white);
     font-size: 0.9rem;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .hero-quick-tags button:hover {
     background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
+    /* transform removed */
 }
 
 .hero-stats {
@@ -1147,14 +1147,14 @@ ul {
     border-radius: 20px;
     padding: 18px 30px;
     box-shadow: 0 10px 40px rgba(255, 215, 0, 0.25);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: none;
     position: relative;
     margin-bottom: 8px;
     overflow: visible;
 }
 
 .next-event-preview:hover {
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 12px 48px rgba(255, 215, 0, 0.35);
     border-color: rgba(255, 215, 0, 0.5);
 }
@@ -1193,7 +1193,7 @@ ul {
 }
 
 .next-event-preview:hover {
-    transform: translateY(-5px);
+    /* transform removed */
     box-shadow: 0 12px 48px rgba(255, 215, 0, 0.35);
     border-color: rgba(255, 215, 0, 0.5);
 }
@@ -1282,7 +1282,7 @@ ul {
     background: rgba(255, 255, 255, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .slider-dots .dot.active {
@@ -1303,7 +1303,7 @@ ul {
     font-size: 1rem;
     font-weight: 600;
     border-radius: var(--radius-full);
-    transition: var(--transition-normal);
+    transition: none;
     cursor: pointer;
     border: none;
 }
@@ -1315,7 +1315,7 @@ ul {
 
 .btn-primary:hover {
     background: var(--secondary-light);
-    transform: translateY(-3px);
+    /* transform removed */
     box-shadow: 0 15px 40px rgba(199, 123, 48, 0.35);
 }
 
@@ -1328,7 +1328,7 @@ ul {
 
 .btn-glass:hover {
     background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-3px);
+    /* transform removed */
 }
 
 .btn-outline {
@@ -1427,7 +1427,7 @@ section {
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1436,7 +1436,7 @@ section {
 
 .event-nav-btn-top:hover {
     background: var(--secondary);
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
@@ -1531,12 +1531,12 @@ section {
     padding: 20px 15px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03) 0%, rgba(212, 168, 75, 0.03) 100%);
     border-radius: var(--radius-md);
-    transition: all 0.3s ease;
+    transition: none;
     cursor: pointer;
 }
 
 .metric-compact:hover {
-    transform: translateY(-3px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
 }
 
@@ -1551,11 +1551,11 @@ section {
     margin: 0 auto 12px;
     font-size: 1.3rem;
     color: var(--white);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .metric-compact:hover .metric-icon-circle {
-    transform: rotate(360deg) scale(1.1);
+    /* transform removed */
 }
 
 .metric-value {
@@ -1600,7 +1600,7 @@ section {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-secondary);
-    transition: all 0.3s ease;
+    transition: none;
     position: relative;
 }
 
@@ -1661,11 +1661,11 @@ section {
     padding: 15px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03) 0%, rgba(212, 168, 75, 0.03) 100%);
     border-radius: var(--radius-md);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .feature-item:hover {
-    transform: translateX(5px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.1);
 }
 
@@ -1710,11 +1710,11 @@ section {
     padding: 15px;
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03) 0%, rgba(212, 168, 75, 0.03) 100%);
     border-radius: var(--radius-md);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .benefit-item:hover {
-    transform: translateX(5px);
+    /* transform removed */
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.08) 0%, rgba(212, 168, 75, 0.08) 100%);
 }
 
@@ -1756,7 +1756,7 @@ section {
     height: 100%;
     background: linear-gradient(90deg, var(--primary), var(--accent));
     border-radius: 50px;
-    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none;
     position: relative;
     overflow: hidden;
 }
@@ -1814,11 +1814,11 @@ section {
     position: relative;
     overflow: hidden;
     grid-row: 1 / 3;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .about-hero-card:hover {
-    transform: translateY(-4px);
+    /* transform removed */
     box-shadow: 0 25px 70px rgba(45, 90, 39, 0.4);
 }
 
@@ -1877,12 +1877,12 @@ section {
     backdrop-filter: blur(10px);
     border-radius: var(--radius-md);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .metric-item:hover {
     background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.05);
+    /* transform removed */
 }
 
 .metric-icon {
@@ -1926,7 +1926,7 @@ section {
     border-radius: var(--radius-lg);
     padding: 25px;
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    transition: none;
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
@@ -1939,7 +1939,7 @@ section {
     left: 0;
     width: 4px;
     height: 100%;
-    transition: width 0.3s ease;
+    transition: none;
 }
 
 .stat-card-primary::before { background: var(--primary); }
@@ -1948,7 +1948,7 @@ section {
 .stat-card-info::before { background: #17a2b8; }
 
 .stat-card:hover {
-    transform: translateY(-4px);
+    /* transform removed */
     box-shadow: var(--shadow-md);
     border-color: rgba(45, 90, 39, 0.1);
 }
@@ -2014,7 +2014,7 @@ section {
     height: 100%;
     background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
     border-radius: 50px;
-    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none;
 }
 
 /* インタラクティブ特徴グリッド */
@@ -2032,13 +2032,13 @@ section {
     padding: 30px 25px;
     text-align: center;
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    transition: none;
     border: 2px solid transparent;
     position: relative;
 }
 
 .feature-interactive-card:hover {
-    transform: translateY(-4px);
+    /* transform removed */
     box-shadow: var(--shadow-md);
     border-color: var(--primary);
 }
@@ -2054,11 +2054,11 @@ section {
     margin: 0 auto 20px;
     font-size: 1.8rem;
     color: var(--white);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .feature-interactive-card:hover .feature-icon-animated {
-    transform: scale(1.1) rotate(5deg);
+    /* transform removed */
     box-shadow: 0 10px 30px rgba(45, 90, 39, 0.3);
 }
 
@@ -2224,12 +2224,12 @@ section {
     background: var(--white);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: none;
     cursor: pointer;
 }
 
 .about-stat-item:hover {
-    transform: translateY(-6px) rotateY(5deg);
+    /* transform removed */
     box-shadow: var(--shadow-xl);
 }
 
@@ -2274,13 +2274,13 @@ section {
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: var(--shadow-2xl);
-    transition: all 0.4s ease;
+    transition: none;
     background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary-light) 100%);
     min-height: 300px;
 }
 
 .about-image-card:hover {
-    transform: translateY(-10px) scale(1.02);
+    /* transform removed */
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
@@ -2290,11 +2290,11 @@ section {
     min-height: 300px;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: none;
 }
 
 .about-image-card:hover img {
-    transform: scale(1.1);
+    /* transform removed */
 }
 
 .image-overlay {
@@ -2305,7 +2305,7 @@ section {
     align-items: flex-end;
     padding: 30px;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: none;
 }
 
 .about-image-card:hover .image-overlay {
@@ -2343,11 +2343,11 @@ section {
     display: flex;
     gap: 20px;
     align-items: flex-start;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .mission-card:hover {
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 8px 24px rgba(45, 90, 39, 0.15);
     border-color: rgba(45, 90, 39, 0.25);
 }
@@ -2459,7 +2459,7 @@ section {
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.03) 0%, rgba(212, 168, 75, 0.03) 100%);
     border-radius: var(--radius-md);
     border: 2px solid rgba(45, 90, 39, 0.08);
-    transition: all 0.3s ease;
+    transition: none;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -2467,7 +2467,7 @@ section {
 }
 
 .metric-card-interactive:hover {
-    transform: translateY(-4px);
+    /* transform removed */
     box-shadow: 0 6px 20px rgba(45, 90, 39, 0.15);
     border-color: rgba(45, 90, 39, 0.2);
 }
@@ -2483,11 +2483,11 @@ section {
     font-size: 1.5rem;
     color: var(--white);
     flex-shrink: 0;
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .metric-card-interactive:hover .metric-icon-wrapper {
-    transform: rotate(360deg) scale(1.1);
+    /* transform removed */
 }
 
 .metric-data-wrapper {
@@ -2557,7 +2557,7 @@ section {
     display: flex;
     align-items: center;
     gap: 12px;
-    transition: all 0.3s ease;
+    transition: none;
     position: relative;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
@@ -2592,7 +2592,7 @@ section {
     font-size: 1.1rem;
     color: var(--primary);
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .about-tab-enhanced.active .tab-icon-wrapper {
@@ -2633,7 +2633,7 @@ section {
     background: linear-gradient(135deg, rgba(45, 90, 39, 0.02) 0%, rgba(255, 255, 255, 0.8) 100%);
     border-radius: var(--radius-md);
     border: 2px solid rgba(45, 90, 39, 0.08);
-    transition: all 0.3s ease;
+    transition: none;
     position: relative;
     overflow: hidden;
 }
@@ -2647,15 +2647,15 @@ section {
     width: 4px;
     background: linear-gradient(180deg, var(--primary), var(--accent));
     transform: scaleY(0);
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .feature-item-enhanced:hover::before {
-    transform: scaleY(1);
+    /* transform removed */
 }
 
 .feature-item-enhanced:hover {
-    transform: translateX(5px);
+    /* transform removed */
     box-shadow: 0 4px 16px rgba(45, 90, 39, 0.12);
     border-color: rgba(45, 90, 39, 0.15);
 }
@@ -2668,12 +2668,12 @@ section {
     flex-shrink: 0;
     width: 60px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .feature-item-enhanced:hover .feature-number {
     color: var(--primary);
-    transform: scale(1.2);
+    /* transform removed */
 }
 
 .feature-icon-enhanced {
@@ -2721,12 +2721,12 @@ section {
     border-radius: var(--radius-md);
     border: 2px solid rgba(45, 90, 39, 0.08);
     text-align: center;
-    transition: all 0.3s ease;
+    transition: none;
     cursor: pointer;
 }
 
 .benefit-card:hover {
-    transform: translateY(-5px);
+    /* transform removed */
     box-shadow: 0 6px 20px rgba(45, 90, 39, 0.15);
     border-color: rgba(45, 90, 39, 0.2);
 }
@@ -2742,11 +2742,11 @@ section {
     font-size: 1.3rem;
     color: var(--white);
     margin: 0 auto 12px;
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .benefit-card:hover .benefit-icon {
-    transform: rotate(360deg) scale(1.15);
+    /* transform removed */
 }
 
 .benefit-card h5 {
@@ -2777,14 +2777,14 @@ section {
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
     border: 2px solid rgba(45, 90, 39, 0.08);
-    transition: all 0.3s ease;
+    transition: none;
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
 .stat-card-enhanced:hover {
-    transform: translateY(-3px);
+    /* transform removed */
     box-shadow: 0 6px 20px rgba(45, 90, 39, 0.15);
     border-color: rgba(45, 90, 39, 0.15);
 }
@@ -2837,7 +2837,7 @@ section {
     background: linear-gradient(90deg, var(--primary), var(--accent));
     border-radius: 10px;
     width: 0;
-    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: none;
     position: relative;
     overflow: hidden;
 }
@@ -2955,11 +2955,11 @@ section {
     border-radius: var(--radius-xl);
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    transition: all 0.4s ease;
+    transition: none;
 }
 
 .video-frame:hover {
-    transform: translateY(-10px);
+    /* transform removed */
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
 }
 
@@ -2994,7 +2994,7 @@ section {
     justify-content: center;
     background: rgba(0, 0, 0, 0.3);
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: none;
 }
 
 .video-play-overlay i {
@@ -3067,11 +3067,11 @@ section {
     text-align: center;
     border: 1.5px solid rgba(45, 90, 39, 0.1);
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .team-compact-card:hover {
-    transform: translateY(-3px);
+    /* transform removed */
     box-shadow: 0 6px 18px rgba(45, 90, 39, 0.12);
     border-color: rgba(45, 90, 39, 0.2);
 }
@@ -3143,7 +3143,7 @@ section {
    運営チームセクション（旧・非使用）
    =========================== */
 .team-section {
-    padding: 60px 0;
+    padding: 30px 0;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
 }
 
@@ -3163,11 +3163,11 @@ section {
     text-align: center;
     border: 2px solid rgba(45, 90, 39, 0.1);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .team-card:hover {
-    transform: translateY(-5px);
+    /* transform removed */
     box-shadow: 0 8px 24px rgba(45, 90, 39, 0.15);
     border-color: rgba(45, 90, 39, 0.25);
 }
@@ -3266,11 +3266,11 @@ section {
     background: linear-gradient(135deg, #f8f9fa, #fff);
     border-radius: var(--radius-lg);
     border-left: 4px solid var(--accent);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .highlight-item:hover {
-    transform: translateX(10px);
+    /* transform removed */
     box-shadow: var(--shadow-lg);
 }
 
@@ -3316,13 +3316,13 @@ section {
     border-radius: var(--radius-lg);
     text-align: center;
     box-shadow: var(--shadow-sm);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: none;
     border: 1px solid transparent;
     cursor: pointer;
 }
 
 .feature-card:hover {
-    transform: translateY(-6px) rotateY(5deg);
+    /* transform removed */
     box-shadow: var(--shadow-lg);
     border-color: rgba(45, 90, 39, 0.2);
 }
@@ -3336,11 +3336,11 @@ section {
     align-items: center;
     justify-content: center;
     margin: 0 auto 25px;
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .feature-card:hover .feature-icon {
-    transform: scale(1.1) rotate(5deg);
+    /* transform removed */
 }
 
 .feature-icon i {
@@ -3411,7 +3411,7 @@ section {
     color: var(--primary);
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all var(--transition-normal);
+    transition: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     outline: none;
     position: relative;
@@ -3421,7 +3421,7 @@ section {
 
 .smart-nav-btn:hover:not(:disabled) {
     background: rgba(45, 90, 39, 0.1);
-    transform: scale(1.08);
+    /* transform removed */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
@@ -3444,7 +3444,7 @@ section {
     gap: 8px;
     overflow-x: auto;
     overflow-y: visible; /* 次回バッジを表示するため */
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     touch-action: pan-x;
@@ -3474,7 +3474,7 @@ section {
     border-radius: 12px 12px 0 0;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
     position: relative;
-    transition: all var(--transition-fast);
+    transition: none;
     cursor: pointer;
     border: 2px solid rgba(45, 90, 39, 0.1);
     border-bottom: none;
@@ -3494,17 +3494,17 @@ section {
     border-radius: 12px;
     z-index: -1;
     opacity: 0;
-    transition: opacity var(--transition-normal);
+    transition: none;
 }
 
 .event-tab-badge:hover:not(:disabled):not(.active) {
-    transform: translateY(-2px) scale(1.05);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     background: rgba(255, 255, 255, 1);
 }
 
 .event-tab-badge.active:hover {
-    transform: translateY(-2px) scale(1.05);
+    /* transform removed */
     box-shadow: 0 6px 18px rgba(45, 90, 39, 0.5),
                 0 3px 8px rgba(199, 123, 48, 0.4);
 }
@@ -3582,7 +3582,7 @@ section {
     overflow-x: auto;
     padding: 15px 0;
     margin-bottom: 25px;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) rgba(0, 0, 0, 0.1);
 }
@@ -3609,7 +3609,7 @@ section {
     border: 2px solid rgba(45, 90, 39, 0.2);
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     text-align: center;
     outline: none;
 }
@@ -3621,7 +3621,7 @@ section {
 
 .event-tab-item:hover {
     border-color: var(--primary);
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
 }
 
@@ -3693,7 +3693,7 @@ section {
 }
 
 .carousel-nav-btn {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 50px;
@@ -3704,7 +3704,7 @@ section {
     color: var(--primary);
     font-size: 1.3rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: none;
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
     outline: none;
 }
@@ -3717,7 +3717,7 @@ section {
 .carousel-nav-btn:hover:not(:disabled) {
     background: var(--primary);
     color: var(--white);
-    transform: scale(1.1);
+    /* transform removed */
     box-shadow: 0 6px 20px rgba(45, 90, 39, 0.3);
 }
 
@@ -3740,7 +3740,7 @@ section {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     outline: none;
 }
 
@@ -3751,7 +3751,7 @@ section {
 
 .carousel-dot:hover {
     background: rgba(45, 90, 39, 0.5);
-    transform: scale(1.2);
+    /* transform removed */
 }
 
 .carousel-dot.active {
@@ -3770,7 +3770,7 @@ section {
 
 .event-carousel-track {
     display: flex;
-    transition: transform 0.3s ease-out;
+    transition: none;
     touch-action: pan-y;
 }
 
@@ -3791,7 +3791,7 @@ section {
     overflow: hidden;
     outline: none;
     position: relative;
-    transition: all var(--transition-normal);
+    transition: none;
     margin-top: 0;
 }
 
@@ -3840,14 +3840,14 @@ section {
     color: var(--primary);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     font-size: 1.2rem;
 }
 
 .timeline-nav-btn:hover:not(:disabled) {
     background: var(--primary);
     color: var(--white);
-    transform: scale(1.1);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
 }
 
@@ -3917,12 +3917,12 @@ section {
     border-radius: 12px;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .event-list-item:hover {
     border-color: var(--primary);
-    transform: translateX(5px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
 }
 
@@ -4021,7 +4021,7 @@ section {
     font-weight: 600;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -4031,7 +4031,7 @@ section {
 .event-tab:hover {
     border-color: var(--primary);
     color: var(--primary);
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.15);
 }
 
@@ -4060,11 +4060,11 @@ section {
     overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: all var(--transition-normal);
+    transition: none;
 }
 
 .event-compact-card:hover {
-    transform: translateY(-6px);
+    /* transform removed */
     box-shadow: 0 12px 40px rgba(45, 90, 39, 0.2);
     border-color: var(--primary);
 }
@@ -4092,7 +4092,7 @@ section {
                 transparent 60%, 
                 rgba(199, 123, 48, 0.1) 100%);
     z-index: 1;
-    transition: opacity var(--transition-normal);
+    transition: none;
 }
 
 .event-image-wrapper:hover::before {
@@ -4103,12 +4103,12 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none;
     filter: brightness(0.95) contrast(1.05);
 }
 
 .event-compact-card:hover .event-image {
-    transform: scale(1.08) rotate(1deg);
+    /* transform removed */
     filter: brightness(1) contrast(1.1);
 }
 
@@ -4152,7 +4152,7 @@ section {
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(45, 90, 39, 0.3);
     position: relative;
-    transition: all var(--transition-fast);
+    transition: none;
 }
 
 .event-date-inline::before {
@@ -4166,11 +4166,11 @@ section {
     border-radius: 18px;
     z-index: -1;
     opacity: 0;
-    transition: opacity var(--transition-normal);
+    transition: none;
 }
 
 .event-title-row:hover .event-date-inline {
-    transform: translateY(-2px) scale(1.05);
+    /* transform removed */
     box-shadow: 0 12px 32px rgba(45, 90, 39, 0.4),
                 0 6px 12px rgba(199, 123, 48, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -4255,7 +4255,7 @@ section {
     margin-left: 10px;
     vertical-align: middle;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: all var(--transition-fast);
+    transition: none;
     position: relative;
 }
 
@@ -4267,7 +4267,7 @@ section {
 
 .event-status-inline.upcoming:hover {
     background: #4a8c3f;
-    transform: scale(1.05);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.3);
 }
 
@@ -4279,7 +4279,7 @@ section {
 
 .event-status-inline.completed:hover {
     background: #999;
-    transform: scale(1.05);
+    /* transform removed */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -4515,7 +4515,7 @@ section {
     font-weight: 700;
     font-size: 0.95rem;
     text-decoration: none;
-    transition: all var(--transition-normal);
+    transition: none;
     box-shadow: 0 4px 14px rgba(45, 90, 39, 0.3),
                 0 2px 5px rgba(199, 123, 48, 0.2);
     position: relative;
@@ -4533,7 +4533,7 @@ section {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
+    transition: none;
 }
 
 .event-action-btn:hover::before {
@@ -4542,7 +4542,7 @@ section {
 }
 
 .event-action-btn:hover {
-    transform: translateY(-4px) scale(1.05);
+    /* transform removed */
     box-shadow: 0 12px 32px rgba(45, 90, 39, 0.45),
                 0 6px 16px rgba(199, 123, 48, 0.3);
 }
@@ -4553,11 +4553,11 @@ section {
 
 .event-action-btn i {
     font-size: 1.1rem;
-    transition: transform var(--transition-fast);
+    transition: none;
 }
 
 .event-action-btn:hover i {
-    transform: translateX(4px);
+    /* transform removed */
 }
 
 .event-section-old {
@@ -4806,7 +4806,7 @@ section {
     font-weight: 600;
     color: var(--text-primary);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: none;
 }
 
 .collab-tab:hover {
@@ -4833,7 +4833,7 @@ section {
     overflow-x: auto;
     overflow-y: hidden;
     gap: 20px;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
     padding-bottom: 10px;
@@ -4852,12 +4852,12 @@ section {
     background: var(--white);
     border: 2px solid rgba(45, 90, 39, 0.2);
     border-radius: 50%;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 2;
-    transition: all 0.3s ease;
+    transition: none;
     box-shadow: var(--shadow-md);
 }
 
@@ -4882,14 +4882,14 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    transition: none;
     min-width: 280px;
     width: 280px;
     flex-shrink: 0;
 }
 
 .collab-card:hover {
-    transform: translateY(-4px);
+    /* transform removed */
     box-shadow: var(--shadow-md);
 }
 
@@ -4990,7 +4990,7 @@ section {
     border: 2px solid var(--gray-200);
     border-radius: var(--radius-md);
     padding: 5px 20px;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .search-input-wrapper:focus-within {
@@ -5023,12 +5023,12 @@ section {
     border-radius: var(--radius-md);
     font-weight: 600;
     font-size: 1rem;
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .search-btn:hover {
     background: var(--primary-light);
-    transform: translateY(-2px);
+    /* transform removed */
 }
 
 .search-filters {
@@ -5089,7 +5089,7 @@ section {
     font-size: 0.9rem;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .quick-tag:hover {
@@ -5132,7 +5132,7 @@ section {
     gap: 20px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     padding-bottom: 10px;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
@@ -5275,7 +5275,7 @@ section {
     margin-bottom: 12px;
     word-break: break-all;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: none;
 }
 
 .member-card-url:hover {
@@ -5315,7 +5315,7 @@ section {
     border-radius: var(--radius-sm);
     font-size: 0.85rem;
     font-weight: 500;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .member-card-btn:hover {
@@ -5408,11 +5408,11 @@ section {
     justify-content: center;
     margin: 0 auto 20px;
     box-shadow: var(--shadow-md);
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .connect-step:hover .step-icon {
-    transform: scale(1.1);
+    /* transform removed */
     box-shadow: var(--shadow-lg);
 }
 
@@ -5481,7 +5481,7 @@ section {
     opacity: 0;
     visibility: hidden;
     transform: translateX(30px);
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .testimonial-card.active {
@@ -5537,7 +5537,7 @@ section {
     background: var(--gray-300);
     border: none;
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .testimonial-dots .dot.active {
@@ -5582,7 +5582,7 @@ section {
     gap: 20px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     padding-bottom: 20px;
     scrollbar-width: thin;
     scrollbar-color: rgba(45, 90, 39, 0.3) rgba(0, 0, 0, 0.05);
@@ -5611,7 +5611,7 @@ section {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    transition: none;
     cursor: pointer;
     flex-shrink: 0;
     width: 280px;
@@ -5622,7 +5622,7 @@ section {
 }
 
 .blog-card:hover {
-    transform: translateY(-4px);
+    /* transform removed */
     box-shadow: var(--shadow-md);
 }
 
@@ -5867,7 +5867,7 @@ section {
     padding: 8px 16px;
     background: var(--gray-100);
     border-radius: var(--radius-sm);
-    transition: var(--transition-fast);
+    transition: none;
     cursor: pointer;
     border: none;
 }
@@ -5890,7 +5890,7 @@ section {
    お問い合わせフォーム
    ============================================ */
 .contact-section {
-    padding: 80px 0;
+    padding: 40px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
@@ -5934,7 +5934,7 @@ section {
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: var(--radius-md);
     font-size: 0.95rem;
-    transition: all 0.3s ease;
+    transition: none;
     font-family: inherit;
 }
 
@@ -5961,7 +5961,7 @@ section {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5969,7 +5969,7 @@ section {
 }
 
 .contact-submit-btn:hover {
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: 0 8px 20px rgba(45, 90, 39, 0.3);
 }
 
@@ -6029,12 +6029,12 @@ section {
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .btn-back:hover {
     background: var(--primary-dark);
-    transform: translateY(-2px);
+    /* transform removed */
 }
 
 /* ============================================
@@ -6043,7 +6043,7 @@ section {
 .footer {
     background: linear-gradient(135deg, var(--dark) 0%, #0f1f0d 100%);
     color: var(--white);
-    padding: 80px 0 30px;
+    padding: 40px 0 30px;
 }
 
 .footer-grid {
@@ -6062,7 +6062,7 @@ section {
     color: var(--white);
     margin-bottom: 15px;
     text-decoration: none;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .footer-logo:hover {
@@ -6104,7 +6104,7 @@ section {
     align-items: center;
     justify-content: center;
     color: var(--gray-400);
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .footer-social a:hover {
@@ -6163,7 +6163,7 @@ section {
     font-size: 1.2rem;
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition-normal);
+    transition: none;
     z-index: 999;
     box-shadow: var(--shadow-lg);
 }
@@ -6175,7 +6175,7 @@ section {
 
 .scroll-top:hover {
     background: var(--primary-light);
-    transform: translateY(-5px);
+    /* transform removed */
 }
 
 /* ============================================
@@ -6192,7 +6192,7 @@ section {
     z-index: 2000;
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition-normal);
+    transition: none;
     padding: 20px;
 }
 
@@ -6208,7 +6208,7 @@ section {
     max-height: 90vh;
     overflow-y: auto;
     transform: scale(0.95) translateY(20px);
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .modal.active .modal-content {
@@ -6235,7 +6235,7 @@ section {
     border: none;
     z-index: 10;
     line-height: 1;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .modal-close:hover {
@@ -6306,11 +6306,11 @@ section {
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .avatar-preview:hover {
-    transform: scale(1.05);
+    /* transform removed */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -6329,7 +6329,7 @@ section {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: none;
     color: var(--white);
     gap: 5px;
 }
@@ -6582,7 +6582,7 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: var(--transition-fast);
+    transition: none;
     text-align: left;
     border: none;
     cursor: pointer;
@@ -6598,7 +6598,7 @@ section {
 .admin-tab:hover {
     background: rgba(74, 140, 63, 0.1);
     color: var(--primary);
-    transform: translateX(3px);
+    /* transform removed */
 }
 
 .admin-tab.active {
@@ -6812,11 +6812,11 @@ section {
     border-radius: var(--radius-lg);
     border-left: 4px solid var(--primary);
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .admin-stat-card:hover {
-    transform: translateY(-5px);
+    /* transform removed */
     box-shadow: var(--shadow-md);
 }
 
@@ -6954,7 +6954,7 @@ section {
     height: 100%;
     background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
     border-radius: 5px;
-    transition: width 0.8s ease;
+    transition: none;
 }
 
 .admin-category-count {
@@ -6978,7 +6978,7 @@ section {
     padding: 12px;
     background: var(--gray-100);
     border-radius: var(--radius-md);
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .admin-activity-item:hover {
@@ -7031,7 +7031,7 @@ section {
     padding: 20px;
     background: var(--gray-100);
     border-radius: var(--radius-md);
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .admin-event-item:hover {
@@ -7160,7 +7160,7 @@ section {
     border-radius: var(--radius-md);
     margin-bottom: 10px;
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .message-thread:hover,
@@ -7292,7 +7292,7 @@ section {
     border: 2px solid var(--gray-200);
     border-radius: var(--radius-full);
     outline: none;
-    transition: var(--transition-fast);
+    transition: none;
 }
 
 .messages-input input:focus {
@@ -7437,7 +7437,7 @@ section {
     height: 100%;
     background: var(--primary);
     border-radius: 4px;
-    transition: width 0.5s ease;
+    transition: none;
 }
 
 .event-detail-actions {
@@ -7545,7 +7545,7 @@ section {
         opacity: 0;
         visibility: hidden;
         transform: translateY(-20px);
-        transition: var(--transition-normal);
+        transition: none;
     }
     
     .nav-menu.active {
@@ -7918,7 +7918,7 @@ section {
     border: none;
     box-shadow: var(--shadow-sm);
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: none;
     position: relative;
     min-width: 280px;
     width: 280px;
@@ -7926,7 +7926,7 @@ section {
 }
 
 .event-card:hover {
-    transform: translateY(-6px) rotateY(5deg);
+    /* transform removed */
     box-shadow: var(--shadow-lg);
 }
 
@@ -7940,11 +7940,11 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: none;
 }
 
 .event-card:hover .event-card-image img {
-    transform: scale(1.05);
+    /* transform removed */
 }
 
 .event-status-badge {
@@ -8228,14 +8228,14 @@ section {
     justify-content: center;
     font-size: 1.2rem;
     color: var(--primary);
-    transition: all 0.3s ease;
+    transition: none;
     z-index: 10;
 }
 
 .event-nav-btn:hover {
     background: var(--primary);
     color: var(--white);
-    transform: translateY(-50%) scale(1.1);
+    /* transform removed */
 }
 
 .event-nav-btn.prev {
@@ -8270,7 +8270,7 @@ section {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     font-size: 1.2rem;
     color: var(--text-muted);
 }
@@ -8278,7 +8278,7 @@ section {
 .timeline-dot:hover {
     border-color: var(--primary);
     color: var(--primary);
-    transform: scale(1.1);
+    /* transform removed */
 }
 
 .timeline-dot.active {
@@ -8597,12 +8597,12 @@ section {
     border-radius: var(--radius-lg);
     padding: 20px;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition-normal);
+    transition: none;
 }
 
 .admin-item:hover {
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    /* transform removed */
 }
 
 .admin-item-header {
@@ -8759,7 +8759,7 @@ section {
 
 .btn-danger:hover {
     background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-    transform: translateY(-2px);
+    /* transform removed */
     box-shadow: var(--shadow-md);
 }
 
@@ -8813,7 +8813,7 @@ section {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-    transition: left 0.5s ease;
+    transition: none;
 }
 
 .member-card:hover::before,
@@ -8842,7 +8842,7 @@ section {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: none;
 }
 
 .glass-card:hover::before {
@@ -8865,7 +8865,7 @@ section {
     height: 4px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     border-radius: 2px;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: none;
 }
 
 .section-header:hover .section-title::after {
@@ -8889,7 +8889,7 @@ section {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
+    transition: none;
 }
 
 .btn-primary:hover::before {
@@ -8901,7 +8901,7 @@ section {
 .member-card:hover,
 .blog-card:hover,
 .collab-card:hover {
-    transform: translateY(-8px) rotateX(2deg);
+    /* transform removed */
     box-shadow: 0 20px 40px rgba(45, 90, 39, 0.2);
 }
 
@@ -8909,12 +8909,12 @@ section {
 .section-tag i,
 .btn i {
     display: inline-block;
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .section-header:hover .section-tag i,
 .btn:hover i {
-    transform: rotate(360deg);
+    /* transform removed */
 }
 
 /* スクロール時のフェードイン */
@@ -8970,7 +8970,7 @@ section {
 .collab-result span:hover {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     color: var(--white);
-    transform: scale(1.05);
+    /* transform removed */
     cursor: pointer;
 }
 
@@ -8978,12 +8978,12 @@ section {
 .member-card-avatar,
 .collab-members img {
     position: relative;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .member-card:hover .member-card-avatar,
 .collab-card:hover .collab-members img {
-    transform: scale(1.1) rotate(5deg);
+    /* transform removed */
     box-shadow: 0 8px 20px rgba(45, 90, 39, 0.3);
 }
 
@@ -9000,7 +9000,7 @@ section {
 
 /* スムーズなページトランジション */
 section {
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 /* インタラクティブな背景パターン */
@@ -9023,7 +9023,7 @@ section {
                       radial-gradient(circle at 80% 80%, rgba(212, 168, 75, 0.05) 0%, transparent 50%);
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: none;
 }
 
 .hero:hover::before,
@@ -9075,12 +9075,12 @@ section {
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 [data-tooltip]:hover::after {
     opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
+    /* transform removed */
 }
 
 /* レスポンシブ対応 */
@@ -9088,7 +9088,7 @@ section {
     .member-card:hover,
     .blog-card:hover,
     .collab-card:hover {
-        transform: translateY(-4px);
+        /* transform removed */
     }
     
     /* お問い合わせフォームのモバイル対応 */
@@ -9126,5 +9126,236 @@ section {
     .admin-content {
         border-radius: 0 0 var(--radius-lg) var(--radius-lg);
         padding: 20px 15px;
+    }
+}
+
+/* ============================================
+   包括的なデザイン改善（2026-01-09）
+   ============================================ */
+
+/* カードの高さ統一とスクロール */
+.member-card,
+.blog-card,
+.event-card,
+.collab-card,
+.activity-card {
+    height: 400px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* カルーセルのスクロールバー表示 */
+.event-carousel-track,
+.carousel-track,
+.members-grid,
+.activity-grid {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* スクロールバーのスタイル */
+.event-carousel-track::-webkit-scrollbar,
+.carousel-track::-webkit-scrollbar,
+.members-grid::-webkit-scrollbar,
+.activity-grid::-webkit-scrollbar {
+    height: 8px;
+    background: #f0f0f0;
+}
+
+.event-carousel-track::-webkit-scrollbar-thumb,
+.carousel-track::-webkit-scrollbar-thumb,
+.members-grid::-webkit-scrollbar-thumb,
+.activity-grid::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+/* 矢印ナビゲーションを完全に非表示 */
+.carousel-nav,
+.event-carousel-nav,
+.carousel-btn,
+.event-carousel-btn {
+    display: none !important;
+}
+
+/* すべてのホバーアニメーションを無効化 */
+*:hover {
+    transform: none !important;
+}
+
+/* カード内のアニメーション無効化 */
+.member-card *,
+.blog-card *,
+.event-card *,
+.collab-card *,
+.activity-card * {
+    transition: none !important;
+    animation: none !important;
+}
+
+
+/* FAQ Section Styles */
+.faq-section {
+    padding: 40px 0;
+    background: #f8f9fa;
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: #2d5a27;
+}
+
+.faq-question:hover {
+    background: #f0f0f0;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.faq-answer.active {
+    max-height: 500px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+
+/* ============================================
+   FAQセクション - よくある質問
+   ============================================ */
+.faq-section {
+    padding: 40px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.faq-categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.faq-category {
+    padding: 8px 20px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.faq-category.active,
+.faq-category:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.faq-item {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.faq-question {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: background 0.2s ease;
+}
+
+.faq-question:hover {
+    background: var(--gray-50);
+}
+
+.faq-question i {
+    color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 24px;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 0 24px 20px 24px;
+}
+
+.faq-answer p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.faq-loading,
+.faq-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .faq-section {
+        padding: 30px 0;
+    }
+    
+    .faq-question {
+        padding: 16px 20px;
+        font-size: 0.95rem;
+    }
+    
+    .faq-answer {
+        padding: 0 20px;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 0 20px 16px 20px;
     }
 }

@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const backupSystem = require('./backup_system');
 
 const app = express();
 const PORT = 3000;
@@ -70,6 +71,10 @@ function loadData() {
 
 function saveData(data) {
     try {
+        // バックアップを作成
+        backupSystem.createBackup();
+        
+        // データを保存
         fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
         return true;
     } catch (error) {
@@ -1528,8 +1533,88 @@ app.put('/api/admin/page-content', checkAdmin, (req, res) => {
 });
 
 // ============================================
+
+// ============================================
+// バックアップ管理API
+// ============================================
+
+// バックアップ一覧を取得
+app.get('/api/admin/backups', checkAdmin, (req, res) => {
+    try {
+        const backups = backupSystem.listBackups();
+        res.json({ 
+            success: true, 
+            backups,
+            message: `${backups.length}件のバックアップがあります`
+        });
+    } catch (error) {
+        console.error('バックアップ一覧取得エラー:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'バックアップ一覧の取得に失敗しました' 
+        });
+    }
+});
+
+// 手動バックアップを作成
+app.post('/api/admin/backups', checkAdmin, (req, res) => {
+    try {
+        const backupFile = backupSystem.createBackup();
+        res.json({ 
+            success: true, 
+            backup: backupFile,
+            message: 'バックアップを作成しました'
+        });
+    } catch (error) {
+        console.error('バックアップ作成エラー:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'バックアップの作成に失敗しました' 
+        });
+    }
+});
+
+// バックアップから復元
+app.post('/api/admin/backups/restore', checkAdmin, (req, res) => {
+    try {
+        const { backupFile } = req.body;
+        
+        if (!backupFile) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'バックアップファイルを指定してください' 
+            });
+        }
+        
+        const result = backupSystem.restoreBackup(backupFile);
+        
+        if (result) {
+            // データを再読み込み
+            appData = loadData();
+            res.json({ 
+                success: true, 
+                message: 'バックアップから復元しました'
+            });
+        } else {
+            res.status(500).json({ 
+                success: false, 
+                message: 'バックアップの復元に失敗しました' 
+            });
+        }
+    } catch (error) {
+        console.error('バックアップ復元エラー:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'バックアップの復元に失敗しました' 
+        });
+    }
+});
+
 // サーバー起動
 // ============================================
+
+// 自動バックアップを開始
+backupSystem.startAutoBackup();
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🌸 みんなのWA サーバー起動`);

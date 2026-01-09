@@ -5340,3 +5340,49 @@ async function loadAdminFAQs() {
         adminContent.innerHTML = `<p>FAQの取得に失敗しました</p>`;
     }
 }
+
+// FAQ表示機能
+async function loadFAQs() {
+    const faqContainer = document.getElementById('faqContainer');
+    if (!faqContainer) return;
+    
+    try {
+        const timestamp = new Date().getTime();
+        const response = await fetch(`./data.json?t=${timestamp}`);
+        const data = await response.json();
+        const faqs = data.faqs || [];
+        
+        if (faqs.length === 0) {
+            faqContainer.innerHTML = '<p style="text-align:center;color:#999;">FAQはまだありません</p>';
+            return;
+        }
+        
+        faqContainer.innerHTML = faqs.map((faq, index) => `
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(${index})">
+                    <span>${faq.question}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer" id="faq-answer-${index}">
+                    ${faq.answer}
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('FAQ読み込みエラー:', error);
+        faqContainer.innerHTML = '<p style="text-align:center;color:#999;">FAQの読み込みに失敗しました</p>';
+    }
+}
+
+function toggleFAQ(index) {
+    const answer = document.getElementById(`faq-answer-${index}`);
+    if (answer) {
+        answer.classList.toggle('active');
+    }
+}
+
+// 初期化時にFAQを読み込む
+document.addEventListener('DOMContentLoaded', () => {
+    loadFAQs();
+});
+
