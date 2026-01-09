@@ -6569,6 +6569,7 @@ section {
     background: var(--bg-primary);
     border-right: 1px solid rgba(0,0,0,0.1);
     overflow-y: auto;
+    min-height: 0;
 }
 
 .admin-tab {
@@ -6607,8 +6608,9 @@ section {
 }
 
 .admin-content {
-    min-height: 400px;
+    min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 30px;
     background: var(--white);
     border-radius: 0 0 var(--radius-lg) 0;
