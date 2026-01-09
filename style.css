@@ -9359,3 +9359,20 @@ section {
         padding: 0 20px 16px 20px;
     }
 }
+
+/* グループチャットボタン */
+.btn-success {
+    background: linear-gradient(135deg, #06C755 0%, #05A847 100%);
+    color: var(--white);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #05A847 0%, #058C3A 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(6, 199, 85, 0.3);
+}
+
+.btn-success i {
+    font-size: 1.2em;
+}
