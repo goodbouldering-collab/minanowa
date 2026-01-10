@@ -11837,3 +11837,376 @@ section {
         min-height: 450px;
     }
 }
+/* ===================================
+   イベントカルーセルの完全再構築
+   =================================== */
+
+/* カルーセルコンテナ - 1つのカードのみ表示 */
+.event-carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 500px;
+}
+
+/* カルーセルトラック - 横並び */
+.event-carousel-track {
+    display: flex !important;
+    flex-direction: row !important;
+    transition: transform 0.4s ease-in-out;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    height: 100%;
+}
+
+/* 各スライド - 100%幅で1つずつ表示 */
+.event-carousel-slide {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 100%;
+}
+
+/* イベントカード */
+.event-compact-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+}
+
+/* タブエリア */
+#eventTabsSmart {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* タブのスクロールバー */
+#eventTabsSmart::-webkit-scrollbar {
+    height: 8px;
+}
+
+#eventTabsSmart::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+#eventTabsSmart::-webkit-scrollbar-thumb {
+    background: rgba(45, 90, 39, 0.3);
+    border-radius: 4px;
+}
+
+#eventTabsSmart::-webkit-scrollbar-thumb:hover {
+    background: rgba(45, 90, 39, 0.5);
+}
+
+/* イベントタブバッジ */
+.event-tab-badge {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 12px 10px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    text-align: center;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+    cursor: pointer;
+    border: 2px solid rgba(45, 90, 39, 0.1);
+    border-bottom: none;
+    margin-bottom: 0 !important;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* アクティブなタブ */
+.event-tab-badge.active {
+    background: linear-gradient(135deg, #2d5a27 0%, #4a8c3f 50%, #c77b30 100%);
+    color: var(--white);
+    box-shadow: 0 -4px 12px rgba(45, 90, 39, 0.3);
+    border-color: transparent;
+    z-index: 10;
+    margin-bottom: 0 !important;
+    transform: none !important;
+}
+
+/* 完了済みイベント */
+.event-tab-badge.completed {
+    opacity: 0.5;
+}
+
+/* タブとカードの間隔を削除 */
+.carousel-wrapper-smart {
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* ナビゲーションボタン */
+.smart-carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    transition: none !important;
+}
+
+.smart-carousel-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.smart-carousel-nav.prev {
+    left: 20px;
+}
+
+.smart-carousel-nav.next {
+    right: 20px;
+}
+
+.smart-carousel-nav i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* 次回バッジ */
+.next-badge-mini {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff6b6b;
+    color: white;
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.5);
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* イベントカードのアニメーション削除 */
+.event-compact-card,
+.event-compact-card *,
+.event-card,
+.event-card * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .event-carousel-container {
+        min-height: 400px;
+    }
+    
+    .event-tab-badge {
+        min-width: 70px;
+        padding: 10px 8px;
+    }
+    
+    .smart-carousel-nav {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .smart-carousel-nav.prev {
+        left: 10px;
+    }
+    
+    .smart-carousel-nav.next {
+        right: 10px;
+    }
+}
+/* ===========================================
+   イベントカルーセル完全再構築 CSS
+   各タブクリックで1つのイベントカードのみを表示
+   =========================================== */
+
+/* カルーセルコンテナ - 1つのカードのみを表示 */
+.event-carousel-container {
+    width: 100%;
+    overflow: visible !important;
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* カルーセルラッパー - スクロール禁止 */
+.event-carousel-wrapper {
+    width: 100%;
+    overflow: visible !important;
+    position: relative;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* カルーセルトラック - 1つのスライドのみ */
+.event-carousel-track {
+    display: flex !important;
+    width: 100% !important;
+    transform: translateX(0) !important;
+    transition: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* スライド - 1つのカードが全幅を占める */
+.event-carousel-slide {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+.event-carousel-slide.active {
+    display: block !important;
+}
+
+/* イベントカード本体 */
+.event-card {
+    width: 100% !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* タブナビゲーション - 日付バッジとカードの間隔を0に */
+#eventTabsSmart {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px 0 20px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(45, 90, 39, 0.3) rgba(0, 0, 0, 0.05);
+    margin-bottom: 0 !important;
+    border-bottom: 2px solid rgba(45, 90, 39, 0.1);
+}
+
+#eventTabsSmart::-webkit-scrollbar {
+    height: 8px;
+}
+
+#eventTabsSmart::-webkit-scrollbar-track {
+    background: linear-gradient(to right, #fff8e1, #e8f5e9, #e3f2fd);
+    border-radius: 10px;
+}
+
+#eventTabsSmart::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ff9800, #4caf50, #2196f3);
+    border-radius: 10px;
+}
+
+#eventTabsSmart::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #f57c00, #388e3c, #1976d2);
+}
+
+/* Firefox用 */
+#eventTabsSmart {
+    scrollbar-width: thin;
+    scrollbar-color: #ff9800 #fff8e1;
+}
+
+/* イベントタブとカードの間の余白を完全削除 */
+.events-section {
+    padding: 0 !important;
+}
+
+.event-carousel-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* カルーセルドット */
+.carousel-dots-bottom {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(45, 90, 39, 0.3);
+}
+
+.carousel-dot:hover:not(.active) {
+    background: rgba(45, 90, 39, 0.2);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .event-card {
+        max-width: 100% !important;
+        border-radius: 16px;
+    }
+    
+    #eventTabsSmart {
+        padding: 0 10px 0 10px !important;
+        gap: 6px;
+    }
+}
+
+/* アニメーション削除 */
+.event-carousel-track,
+.event-carousel-slide,
+.event-card {
+    transition: none !important;
+    animation: none !important;
+}

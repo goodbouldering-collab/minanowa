@@ -4108,34 +4108,29 @@ function navigateCarousel(direction) {
 // タブクリックでカルーセル移動（画面ジャンプなし）
 function jumpToEvent(index) {
     if (!allEvents || allEvents.length === 0) return;
+    
+    // インデックスを更新
     currentCarouselIndex = index;
-    renderCarousel();
-    // スクロールは行わない（画面位置を維持）
+    
+    // 選択されたイベントのみを表示
+    renderSingleEventCard();
 }
 
-// カルーセル表示を描画
-function renderCarousel() {
-    console.log('🎠 renderCarousel 呼び出し - イベント数:', allEvents?.length);
+// 単一イベントカードのみをレンダリング
+function renderSingleEventCard() {
+    console.log('🎯 renderSingleEventCard - インデックス:', currentCarouselIndex);
     
     if (!allEvents || allEvents.length === 0) {
         console.error('❌ allEventsが空です');
         return;
     }
     
-    // スマートナビゲーション要素を使用
+    // 要素取得
     const tabsSmart = document.getElementById('eventTabsSmart');
     const carouselTrack = document.getElementById('eventCarouselTrack');
     const dotsBottom = document.getElementById('carouselDotsBottom');
     const prevBtn = document.getElementById('smartPrevBtn');
     const nextBtn = document.getElementById('smartNextBtn');
-    
-    console.log('🔍 要素チェック:', {
-        tabsSmart: !!tabsSmart,
-        carouselTrack: !!carouselTrack,
-        dotsBottom: !!dotsBottom,
-        prevBtn: !!prevBtn,
-        nextBtn: !!nextBtn
-    });
     
     if (!tabsSmart || !carouselTrack) {
         console.error('❌ カルーセル要素が見つかりません');
@@ -4146,10 +4141,18 @@ function renderCarousel() {
     if (prevBtn) prevBtn.disabled = currentCarouselIndex === 0;
     if (nextBtn) nextBtn.disabled = currentCarouselIndex === allEvents.length - 1;
     
-    // ヒーローバッジ更新（次回イベント）
+    // 現在選択されているイベントを取得
+    const currentEvent = allEvents[currentCarouselIndex];
+    
+    if (!currentEvent) {
+        console.error('❌ 選択されたイベントが見つかりません:', currentCarouselIndex);
+        return;
+    }
+    
+    // ヒーローバッジ更新
     updateHeroEventBadge();
     
-    // 次回イベントのインデックスを取得（今日以降の最も近いイベント）
+    // 次回イベントのインデックスを取得
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -4159,7 +4162,7 @@ function renderCarousel() {
         return eventDate >= today;
     });
     
-    // スマートタブ表示（日付バッジデザイン）
+    // タブを再描画（全イベントのタブを表示）
     tabsSmart.innerHTML = allEvents.map((e, index) => {
         const eventDate = new Date(e.date);
         const month = (eventDate.getMonth() + 1).toString().padStart(2, '0');
@@ -4173,7 +4176,9 @@ function renderCarousel() {
         
         return `
             <button class="event-tab-badge ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isNextEvent ? 'next-event' : ''}" 
-                    onclick="jumpToEvent(${index})" title="${e.title}">
+                    onclick="jumpToEvent(${index})" 
+                    title="${e.title}"
+                    aria-label="${e.title}">
                 ${isNextEvent ? '<span class="next-badge-mini">次回</span>' : ''}
                 <span class="badge-date-main">${month}/${day}</span>
                 <span class="badge-date-sub">${year}(${weekday})</span>
@@ -4189,15 +4194,16 @@ function renderCarousel() {
         }
     }, 100);
     
-    // カルーセルスライド
-    console.log('📋 カルーセルスライド生成開始');
-    carouselTrack.innerHTML = allEvents.map((e, index) => {
-        return `<div class="event-carousel-slide">${renderCarouselCard(e)}</div>`;
-    }).join('');
+    // **重要: 選択されたイベントのカードのみを表示**
+    console.log('📋 選択されたイベントカード生成:', currentEvent.title);
+    carouselTrack.innerHTML = `
+        <div class="event-carousel-slide active">
+            ${renderCarouselCard(currentEvent)}
+        </div>
+    `;
     
-    // カルーセル位置更新
-    carouselTrack.style.transform = `translateX(-${currentCarouselIndex * 100}%)`;
-    console.log('📍 カルーセル位置:', currentCarouselIndex, 'transform:', carouselTrack.style.transform);
+    // トランスフォームをリセット（1つのカードしかないため移動不要）
+    carouselTrack.style.transform = 'translateX(0)';
     
     // ドット表示（下部）
     if (dotsBottom) {
@@ -4206,12 +4212,14 @@ function renderCarousel() {
                      onclick="jumpToEvent(${index})" 
                      aria-label="イベント ${index + 1}"></button>`
         ).join('');
-        console.log('🔘 ドット生成完了:', allEvents.length, '個');
     }
     
-    // タッチスワイプ対応（カードタップは無効化）
-    setupCarouselSwipe();
-    console.log('✅ renderCarousel 完了');
+    console.log('✅ renderSingleEventCard 完了');
+}
+
+// カルーセル表示を描画（renderCarousel を renderSingleEventCard にリダイレクト）
+function renderCarousel() {
+    renderSingleEventCard();
 }
 
 // ヒーローセクションの次回イベントバッジを更新
