@@ -5438,3 +5438,423 @@ function updateCompactAboutStats() {
 document.addEventListener('DOMContentLoaded', function() {
     updateCompactAboutStats();
 });
+
+// ============================================
+// 管理画面: 会員の声管理
+// ============================================
+
+async function loadAdminTestimonials() {
+    const content = document.getElementById('adminContent');
+    content.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>読み込み中...</p></div>';
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/testimonials`, {
+            headers: { 'x-session-id': sessionStorage.getItem('sessionId') }
+        });
+        
+        if (!response.ok) throw new Error('Failed to fetch testimonials');
+        
+        const data = await response.json();
+        renderAdminTestimonials(data.testimonials || []);
+    } catch (error) {
+        console.error('会員の声取得エラー:', error);
+        content.innerHTML = '<p style="text-align:center;color:var(--error);padding:40px;">会員の声の取得に失敗しました</p>';
+    }
+}
+
+function renderAdminTestimonials(testimonials) {
+    const content = document.getElementById('adminContent');
+    
+    let html = `
+        <div class="admin-toolbar">
+            <h3>会員の声一覧 (${testimonials.length}件)</h3>
+            <button class="btn btn-primary" onclick="showTestimonialEditor()">
+                <i class="fas fa-plus"></i> 新規作成
+            </button>
+        </div>
+        <div class="admin-list">
+    `;
+    
+    if (testimonials.length === 0) {
+        html += '<p style="text-align:center;padding:40px;color:var(--text-secondary);">会員の声がまだありません</p>';
+    } else {
+        testimonials.forEach(item => {
+            html += `
+                <div class="admin-list-item">
+                    <div class="admin-item-content">
+                        <h4>${item.name || '名前なし'}</h4>
+                        <p class="admin-item-meta">${item.company || '会社名なし'} - ${item.role || '役職なし'}</p>
+                        <p class="admin-item-text">${(item.content || '').substring(0, 100)}...</p>
+                    </div>
+                    <div class="admin-item-actions">
+                        <button class="btn btn-sm btn-secondary" onclick='editTestimonial(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
+                            <i class="fas fa-edit"></i> 編集
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteTestimonial('${item.id}')">
+                            <i class="fas fa-trash"></i> 削除
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    html += '</div>';
+    content.innerHTML = html;
+}
+
+function showTestimonialEditor(testimonial = null) {
+    const content = document.getElementById('adminContent');
+    const isEdit = testimonial !== null;
+    
+    content.innerHTML = `
+        <div class="admin-form-container">
+            <div class="admin-form-header">
+                <h3><i class="fas fa-comments"></i> ${isEdit ? '会員の声を編集' : '会員の声を作成'}</h3>
+                <button class="btn btn-secondary" onclick="loadAdminTestimonials()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+            </div>
+            <form onsubmit="saveTestimonial(event, ${isEdit ? `'${testimonial.id}'` : 'null'})">
+                <div class="form-group">
+                    <label>名前 *</label>
+                    <input type="text" name="name" value="${testimonial?.name || ''}" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>会社名</label>
+                    <input type="text" name="company" value="${testimonial?.company || ''}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>役職</label>
+                    <input type="text" name="role" value="${testimonial?.role || ''}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>コメント *</label>
+                    <textarea name="content" rows="6" required class="form-control">${testimonial?.content || ''}</textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="loadAdminTestimonials()">
+                        キャンセル
+                    </button>
+                </div>
+            </form>
+        </div>
+    `;
+}
+
+async function saveTestimonial(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const url = id 
+            ? `${API_BASE}/api/admin/testimonials/${id}`
+            : `${API_BASE}/api/admin/testimonials`;
+        
+        const response = await fetch(url, {
+            method: id ? 'PUT' : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) throw new Error('Failed to save');
+        
+        showNotification('会員の声を保存しました', 'success');
+        loadAdminTestimonials();
+    } catch (error) {
+        console.error('保存エラー:', error);
+        showNotification('保存に失敗しました', 'error');
+    }
+}
+
+function editTestimonial(testimonial) {
+    showTestimonialEditor(testimonial);
+}
+
+async function deleteTestimonial(id) {
+    if (!confirm('この会員の声を削除しますか？')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/testimonials/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-session-id': sessionStorage.getItem('sessionId') }
+        });
+        
+        if (!response.ok) throw new Error('Failed to delete');
+        
+        showNotification('削除しました', 'success');
+        loadAdminTestimonials();
+    } catch (error) {
+        console.error('削除エラー:', error);
+        showNotification('削除に失敗しました', 'error');
+    }
+}
+
+// ============================================
+// 管理画面: コラボ事例管理
+// ============================================
+
+async function loadAdminCollaborations() {
+    const content = document.getElementById('adminContent');
+    content.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>読み込み中...</p></div>';
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/collaborations`, {
+            headers: { 'x-session-id': sessionStorage.getItem('sessionId') }
+        });
+        
+        if (!response.ok) throw new Error('Failed to fetch collaborations');
+        
+        const data = await response.json();
+        renderAdminCollaborations(data.collaborations || []);
+    } catch (error) {
+        console.error('コラボ事例取得エラー:', error);
+        content.innerHTML = '<p style="text-align:center;color:var(--error);padding:40px;">コラボ事例の取得に失敗しました</p>';
+    }
+}
+
+function renderAdminCollaborations(collaborations) {
+    const content = document.getElementById('adminContent');
+    
+    let html = `
+        <div class="admin-toolbar">
+            <h3>コラボ事例一覧 (${collaborations.length}件)</h3>
+            <button class="btn btn-primary" onclick="showCollaborationEditor()">
+                <i class="fas fa-plus"></i> 新規作成
+            </button>
+        </div>
+        <div class="admin-list">
+    `;
+    
+    if (collaborations.length === 0) {
+        html += '<p style="text-align:center;padding:40px;color:var(--text-secondary);">コラボ事例がまだありません</p>';
+    } else {
+        collaborations.forEach(item => {
+            html += `
+                <div class="admin-list-item">
+                    ${item.image ? `<img src="${item.image}" alt="${item.title}" class="admin-item-image">` : ''}
+                    <div class="admin-item-content">
+                        <h4>${item.title || 'タイトルなし'}</h4>
+                        <p class="admin-item-text">${(item.description || '').substring(0, 100)}...</p>
+                    </div>
+                    <div class="admin-item-actions">
+                        <button class="btn btn-sm btn-secondary" onclick='editCollaboration(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
+                            <i class="fas fa-edit"></i> 編集
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCollaboration('${item.id}')">
+                            <i class="fas fa-trash"></i> 削除
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    html += '</div>';
+    content.innerHTML = html;
+}
+
+function showCollaborationEditor(collaboration = null) {
+    const content = document.getElementById('adminContent');
+    const isEdit = collaboration !== null;
+    
+    content.innerHTML = `
+        <div class="admin-form-container">
+            <div class="admin-form-header">
+                <h3><i class="fas fa-handshake"></i> ${isEdit ? 'コラボ事例を編集' : 'コラボ事例を作成'}</h3>
+                <button class="btn btn-secondary" onclick="loadAdminCollaborations()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+            </div>
+            <form onsubmit="saveCollaboration(event, ${isEdit ? `'${collaboration.id}'` : 'null'})">
+                <div class="form-group">
+                    <label>タイトル *</label>
+                    <input type="text" name="title" value="${collaboration?.title || ''}" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>説明 *</label>
+                    <textarea name="description" rows="4" required class="form-control">${collaboration?.description || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>画像URL</label>
+                    <input type="url" name="image" value="${collaboration?.image || ''}" class="form-control" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>カテゴリー</label>
+                    <input type="text" name="category" value="${collaboration?.category || ''}" class="form-control" placeholder="例: ビジネス、地域">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="loadAdminCollaborations()">
+                        キャンセル
+                    </button>
+                </div>
+            </form>
+        </div>
+    `;
+}
+
+async function saveCollaboration(event, id) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const url = id 
+            ? `${API_BASE}/api/admin/collaborations/${id}`
+            : `${API_BASE}/api/admin/collaborations`;
+        
+        const response = await fetch(url, {
+            method: id ? 'PUT' : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) throw new Error('Failed to save');
+        
+        showNotification('コラボ事例を保存しました', 'success');
+        loadAdminCollaborations();
+    } catch (error) {
+        console.error('保存エラー:', error);
+        showNotification('保存に失敗しました', 'error');
+    }
+}
+
+function editCollaboration(collaboration) {
+    showCollaborationEditor(collaboration);
+}
+
+async function deleteCollaboration(id) {
+    if (!confirm('このコラボ事例を削除しますか？')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/collaborations/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-session-id': sessionStorage.getItem('sessionId') }
+        });
+        
+        if (!response.ok) throw new Error('Failed to delete');
+        
+        showNotification('削除しました', 'success');
+        loadAdminCollaborations();
+    } catch (error) {
+        console.error('削除エラー:', error);
+        showNotification('削除に失敗しました', 'error');
+    }
+}
+
+// ============================================
+// 管理画面: 画像管理
+// ============================================
+
+async function loadAdminImages() {
+    const content = document.getElementById('adminContent');
+    content.innerHTML = `
+        <div class="admin-toolbar">
+            <h3>画像管理</h3>
+        </div>
+        <div class="admin-image-uploader">
+            <h4>画像をアップロード</h4>
+            <form onsubmit="uploadImage(event)" class="upload-form">
+                <div class="form-group">
+                    <label>画像ファイル *</label>
+                    <input type="file" name="image" accept="image/*" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>画像の種類</label>
+                    <select name="type" class="form-control">
+                        <option value="hero">ヒーロー画像</option>
+                        <option value="event">イベント画像</option>
+                        <option value="member">メンバー画像</option>
+                        <option value="other">その他</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> アップロード
+                </button>
+            </form>
+            <div id="uploadedImages" class="uploaded-images-grid"></div>
+        </div>
+    `;
+    
+    loadUploadedImages();
+}
+
+async function uploadImage(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/upload-image`, {
+            method: 'POST',
+            headers: { 'x-session-id': sessionStorage.getItem('sessionId') },
+            body: formData
+        });
+        
+        if (!response.ok) throw new Error('Upload failed');
+        
+        const data = await response.json();
+        showNotification('画像をアップロードしました', 'success');
+        event.target.reset();
+        loadUploadedImages();
+    } catch (error) {
+        console.error('アップロードエラー:', error);
+        showNotification('アップロードに失敗しました', 'error');
+    }
+}
+
+async function loadUploadedImages() {
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/images`, {
+            headers: { 'x-session-id': sessionStorage.getItem('sessionId') }
+        });
+        
+        if (!response.ok) return;
+        
+        const data = await response.json();
+        const container = document.getElementById('uploadedImages');
+        
+        if (!data.images || data.images.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">アップロードされた画像はありません</p>';
+            return;
+        }
+        
+        let html = '<h4>アップロード済み画像</h4><div class="image-grid">';
+        data.images.forEach(img => {
+            html += `
+                <div class="image-item">
+                    <img src="${img.url}" alt="${img.name}">
+                    <div class="image-info">
+                        <p class="image-name">${img.name}</p>
+                        <button class="btn btn-sm btn-secondary" onclick="copyImageUrl('${img.url}')">
+                            <i class="fas fa-copy"></i> URLコピー
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('画像一覧取得エラー:', error);
+    }
+}
+
+function copyImageUrl(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        showNotification('URLをコピーしました', 'success');
+    });
+}
+

@@ -1,134 +1,111 @@
 {
   "members": [
     {
-      "id": "new-member-003",
-      "email": "matsumoto@example.com",
-      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
-      "name": "松本 直樹",
-      "furigana": "まつもと なおき",
-      "phone": "090-0123-4567",
-      "business": "農業・農産物加工",
-      "businessCategory": "農業・食品",
-      "introduction": "無農薬野菜の栽培と、自家製野菜を使ったジャムや漬物の加工販売を行っています。地産地消を大切にしています。",
-      "avatar": "https://i.pravatar.cc/200?img=33",
-      "location": "長浜市",
+      "id": "okura-yuki-001",
+      "email": "okura@minanowa.com",
+      "password": "$2b$10$defaultpasswordhash",
+      "name": "大倉 ゆき",
+      "furigana": "おおくら ゆき",
+      "phone": "090-0000-0000",
+      "business": "t-3cパーソナルコーチ",
+      "businessCategory": "コンサルティング・コーチング",
+      "introduction": "パーソナルコーチングを通じて、個人の可能性を最大限に引き出すサポートをしています。みんなのWAの運営を通じて、地域の事業者同士のつながりを育んでいます。",
+      "avatar": "https://i.pravatar.cc/200?img=45",
+      "location": "彦根市",
       "website": "",
       "sns": {
-        "instagram": "matsumoto_farm"
+        "twitter": "",
+        "instagram": ""
       },
       "skills": [
-        "有機農業",
-        "食品加工",
-        "商品開発",
-        "直売"
+        "パーソナルコーチング",
+        "コミュニティ運営",
+        "目標達成支援",
+        "組織開発"
       ],
-      "joinDate": "2024-09-05",
-      "isPublic": false,
-      "isAdmin": false
-    },
-    {
-      "id": "new-member-002",
-      "email": "takahashi@example.com",
-      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
-      "name": "高橋 美咲",
-      "furigana": "たかはし みさき",
-      "phone": "090-9012-3456",
-      "business": "英会話教室運営",
-      "businessCategory": "教育・研修",
-      "introduction": "子供から大人まで楽しく学べる英会話教室を運営しています。ビジネス英語から日常会話まで対応可能です。",
-      "avatar": "https://i.pravatar.cc/200?img=32",
-      "location": "米原市",
-      "website": "https://example.com",
-      "sns": {
-        "twitter": "@takahashi_english",
-        "instagram": "misaki_english"
-      },
-      "skills": [
-        "英語教育",
-        "TOEIC対策",
-        "ビジネス英語",
-        "子供英語"
-      ],
-      "joinDate": "2024-08-20",
+      "joinDate": "2023-01-01",
       "isPublic": true,
-      "isAdmin": false
+      "isAdmin": true,
+      "role": "代表"
     },
     {
-      "id": "new-member-001",
-      "email": "kimura@example.com",
-      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
-      "name": "木村 健二",
-      "furigana": "きむら けんじ",
-      "phone": "090-8901-2345",
-      "business": "写真スタジオ経営",
-      "businessCategory": "デザイン・アート",
-      "introduction": "家族写真から商業撮影まで幅広く対応しています。特に地域のイベント撮影を得意としており、10年以上の実績があります。",
-      "avatar": "https://i.pravatar.cc/200?img=15",
+      "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
+      "email": "tanaka@example.com",
+      "password": "$2b$10$Uf4vBf4hTOdc3xkG2ElWk.V52mQksgolLiqW3Efi/vFBNhVDTQzTu",
+      "name": "田中 美香",
+      "furigana": "たなか みか",
+      "phone": "090-1234-5678",
+      "business": "手作り石鹸職人",
+      "businessCategory": "製造・クラフト",
+      "introduction": "彦根市で手作り石鹸を製造・販売しています。地元の素材を使った自然派石鹸が人気です。ワークショップも開催中！",
+      "avatar": "https://i.pravatar.cc/200?img=1",
       "location": "彦根市",
       "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
       "sns": {
-        "instagram": "kimura_photo",
-        "facebook": "kimura.kenji"
+        "twitter": "@tanaka_soap",
+        "instagram": "tanaka_handmade"
       },
       "skills": [
-        "写真撮影",
-        "動画編集",
-        "イベント撮影",
-        "商品撮影"
+        "石鹸づくり",
+        "ワークショップ運営",
+        "商品開発"
       ],
-      "joinDate": "2024-07-15",
+      "joinDate": "2024-01-15",
+      "isPublic": false,
+      "isAdmin": false,
+      "lastLogin": "2025-12-16T17:28:01.985Z"
+    },
+    {
+      "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
+      "email": "suzuki@example.com",
+      "password": "$2b$10$iBLpd02A5Go/ij9ncj0Qm.3cEGM7jIyk86ILAUFVyoAQSxE.CgoPa",
+      "name": "鈴木 健太",
+      "furigana": "すずき けんた",
+      "phone": "090-2345-6789",
+      "business": "ITコンサルタント",
+      "businessCategory": "IT・デジタル",
+      "introduction": "地域のDX推進をサポートしています。伝統産業のデジタル化や、小規模事業者のIT導入支援が専門です。",
+      "avatar": "https://i.pravatar.cc/200?img=13",
+      "location": "彦根市",
+      "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+      "sns": {
+        "twitter": "@suzuki_it",
+        "facebook": "suzuki.kenta"
+      },
+      "skills": [
+        "DX推進",
+        "Web制作",
+        "システム開発",
+        "IT研修"
+      ],
+      "joinDate": "2024-02-20",
       "isPublic": false,
       "isAdmin": false
     },
     {
-      "id": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
-      "email": "watanabe@example.com",
-      "password": "$2b$10$Eg67Rn/bcitdxdtUaZRmI.BrMw9VzK3KNujwrh666ad0r6oTw.jwC",
-      "name": "渡辺 真理",
-      "furigana": "わたなべ まり",
-      "phone": "090-6789-0123",
-      "business": "カフェオーナー",
+      "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
+      "email": "sato@example.com",
+      "password": "$2b$10$U0LQd4rMBuYKYfe1EqdoE.rtgJTOq0m8ekPd7YeA6V79PpZCSnWXi",
+      "name": "佐藤 和也",
+      "furigana": "さとう かずや",
+      "phone": "090-3456-7890",
+      "business": "和菓子職人",
       "businessCategory": "飲食・食品",
-      "introduction": "地元食材を使ったオーガニックカフェを経営。コミュニティの交流の場として、イベントも定期開催しています。",
-      "avatar": "https://i.pravatar.cc/200?img=47",
-      "location": "長浜市",
-      "website": "https://example.com",
-      "sns": {
-        "instagram": "watanabe_cafe",
-        "twitter": "@mari_cafe"
-      },
-      "skills": [
-        "カフェ経営",
-        "オーガニック料理",
-        "イベント企画"
-      ],
-      "joinDate": "2024-06-01",
-      "isPublic": false,
-      "isAdmin": false
-    },
-    {
-      "id": "9955d037-e001-47c4-afb2-7a5a5adb34ac",
-      "email": "ito@example.com",
-      "password": "$2b$10$FAIiCvvQ1bXAiExT2ooVyO5lHOsBuWNSYHVaoDVmSdKJ/l2/d2GsS",
-      "name": "伊藤 大輔",
-      "furigana": "いとう だいすけ",
-      "phone": "090-5678-9012",
-      "business": "建築士",
-      "businessCategory": "建築・不動産",
-      "introduction": "地元の木材を使ったエコ住宅の設計を専門としています。自然と調和する住まいづくりをモットーに。",
-      "avatar": "https://i.pravatar.cc/200?img=12",
+      "introduction": "創業80年の和菓子店の3代目。季節を感じる和菓子づくりを心がけています。地元産の素材にこだわっています。",
+      "avatar": "https://i.pravatar.cc/200?img=14",
       "location": "彦根市",
-      "website": "https://example.com",
-      "websiteOgpImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+      "website": "",
       "sns": {
-        "facebook": "ito.daisuke.arch"
+        "instagram": "sato_wagashi"
       },
       "skills": [
-        "建築設計",
-        "エコ住宅",
-        "リノベーション"
+        "和菓子製造",
+        "伝統技術",
+        "商品企画"
       ],
-      "joinDate": "2024-05-12",
+      "joinDate": "2024-03-10",
       "isPublic": false,
       "isAdmin": false
     },
@@ -160,85 +137,85 @@
       "isAdmin": false
     },
     {
-      "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
-      "email": "sato@example.com",
-      "password": "$2b$10$U0LQd4rMBuYKYfe1EqdoE.rtgJTOq0m8ekPd7YeA6V79PpZCSnWXi",
-      "name": "佐藤 和也",
-      "furigana": "さとう かずや",
-      "phone": "090-3456-7890",
-      "business": "和菓子職人",
+      "id": "9955d037-e001-47c4-afb2-7a5a5adb34ac",
+      "email": "ito@example.com",
+      "password": "$2b$10$FAIiCvvQ1bXAiExT2ooVyO5lHOsBuWNSYHVaoDVmSdKJ/l2/d2GsS",
+      "name": "伊藤 大輔",
+      "furigana": "いとう だいすけ",
+      "phone": "090-5678-9012",
+      "business": "建築士",
+      "businessCategory": "建築・不動産",
+      "introduction": "地元の木材を使ったエコ住宅の設計を専門としています。自然と調和する住まいづくりをモットーに。",
+      "avatar": "https://i.pravatar.cc/200?img=12",
+      "location": "彦根市",
+      "website": "https://example.com",
+      "websiteOgpImage": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80",
+      "sns": {
+        "facebook": "ito.daisuke.arch"
+      },
+      "skills": [
+        "建築設計",
+        "エコ住宅",
+        "リノベーション"
+      ],
+      "joinDate": "2024-05-12",
+      "isPublic": false,
+      "isAdmin": false
+    },
+    {
+      "id": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
+      "email": "watanabe@example.com",
+      "password": "$2b$10$Eg67Rn/bcitdxdtUaZRmI.BrMw9VzK3KNujwrh666ad0r6oTw.jwC",
+      "name": "渡辺 真理",
+      "furigana": "わたなべ まり",
+      "phone": "090-6789-0123",
+      "business": "カフェオーナー",
       "businessCategory": "飲食・食品",
-      "introduction": "創業80年の和菓子店の3代目。季節を感じる和菓子づくりを心がけています。地元産の素材にこだわっています。",
-      "avatar": "https://i.pravatar.cc/200?img=14",
-      "location": "彦根市",
-      "website": "",
+      "introduction": "地元食材を使ったオーガニックカフェを経営。コミュニティの交流の場として、イベントも定期開催しています。",
+      "avatar": "https://i.pravatar.cc/200?img=47",
+      "location": "長浜市",
+      "website": "https://example.com",
       "sns": {
-        "instagram": "sato_wagashi"
+        "instagram": "watanabe_cafe",
+        "twitter": "@mari_cafe"
       },
       "skills": [
-        "和菓子製造",
-        "伝統技術",
-        "商品企画"
+        "カフェ経営",
+        "オーガニック料理",
+        "イベント企画"
       ],
-      "joinDate": "2024-03-10",
+      "joinDate": "2024-06-01",
       "isPublic": false,
       "isAdmin": false
     },
     {
-      "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
-      "email": "suzuki@example.com",
-      "password": "$2b$10$iBLpd02A5Go/ij9ncj0Qm.3cEGM7jIyk86ILAUFVyoAQSxE.CgoPa",
-      "name": "鈴木 健太",
-      "furigana": "すずき けんた",
-      "phone": "090-2345-6789",
-      "business": "ITコンサルタント",
+      "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+      "email": "admin@minanowa.com",
+      "password": "password123",
+      "name": "由井 辰美",
+      "furigana": "ゆい たつみ",
+      "phone": "08038283985",
+      "business": "デジタル戦略家",
       "businessCategory": "IT・デジタル",
-      "introduction": "地域のDX推進をサポートしています。伝統産業のデジタル化や、小規模事業者のIT導入支援が専門です。",
-      "avatar": "https://i.pravatar.cc/200?img=13",
+      "introduction": "ボルダリングジムやエステの店舗経営、金属加工の現場、そしてソフトウェア開発。アナログとデジタルの垣根を越えた多角的な視点で、彦根のビジネスと人材育成を加速させます。",
+      "avatar": "https://i.pravatar.cc/200?img=68",
       "location": "彦根市",
-      "website": "https://example.com",
-      "websiteOgpImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+      "website": "https://goodbouldering.com/",
       "sns": {
-        "twitter": "@suzuki_it",
-        "facebook": "suzuki.kenta"
+        "twitter": "@nakamura_npo",
+        "facebook": "nakamura.seiichi"
       },
       "skills": [
-        "DX推進",
-        "Web制作",
-        "システム開発",
-        "IT研修"
+        "AI講座、起業コンサル",
+        "EC構築、製品開発",
+        "人材育成",
+        "地域活性"
       ],
-      "joinDate": "2024-02-20",
-      "isPublic": false,
-      "isAdmin": false
-    },
-    {
-      "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
-      "email": "tanaka@example.com",
-      "password": "$2b$10$Uf4vBf4hTOdc3xkG2ElWk.V52mQksgolLiqW3Efi/vFBNhVDTQzTu",
-      "name": "田中 美香",
-      "furigana": "たなか みか",
-      "phone": "090-1234-5678",
-      "business": "手作り石鹸職人",
-      "businessCategory": "製造・クラフト",
-      "introduction": "彦根市で手作り石鹸を製造・販売しています。地元の素材を使った自然派石鹸が人気です。ワークショップも開催中！",
-      "avatar": "https://i.pravatar.cc/200?img=1",
-      "location": "彦根市",
-      "website": "https://example.com",
-      "websiteOgpImage": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
-      "sns": {
-        "twitter": "@tanaka_soap",
-        "instagram": "tanaka_handmade"
-      },
-      "skills": [
-        "石鹸づくり",
-        "ワークショップ運営",
-        "商品開発"
-      ],
-      "joinDate": "2024-01-15",
-      "isPublic": false,
-      "isAdmin": false,
-      "lastLogin": "2025-12-16T17:28:01.985Z"
+      "joinDate": "2023-01-01",
+      "isPublic": true,
+      "isAdmin": true,
+      "role": "サポート",
+      "lastLogin": "2026-01-05T11:29:09.295Z"
     },
     {
       "id": "ueda-eikichi-001",
@@ -269,61 +246,84 @@
       "role": "サポート"
     },
     {
-      "id": "okura-yuki-001",
-      "email": "okura@minanowa.com",
-      "password": "$2b$10$defaultpasswordhash",
-      "name": "大倉 ゆき",
-      "furigana": "おおくら ゆき",
-      "phone": "090-0000-0000",
-      "business": "t-3cパーソナルコーチ",
-      "businessCategory": "コンサルティング・コーチング",
-      "introduction": "パーソナルコーチングを通じて、個人の可能性を最大限に引き出すサポートをしています。みんなのWAの運営を通じて、地域の事業者同士のつながりを育んでいます。",
-      "avatar": "https://i.pravatar.cc/200?img=45",
+      "id": "new-member-001",
+      "email": "kimura@example.com",
+      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
+      "name": "木村 健二",
+      "furigana": "きむら けんじ",
+      "phone": "090-8901-2345",
+      "business": "写真スタジオ経営",
+      "businessCategory": "デザイン・アート",
+      "introduction": "家族写真から商業撮影まで幅広く対応しています。特に地域のイベント撮影を得意としており、10年以上の実績があります。",
+      "avatar": "https://i.pravatar.cc/200?img=15",
       "location": "彦根市",
-      "website": "",
+      "website": "https://example.com",
       "sns": {
-        "twitter": "",
-        "instagram": ""
+        "instagram": "kimura_photo",
+        "facebook": "kimura.kenji"
       },
       "skills": [
-        "パーソナルコーチング",
-        "コミュニティ運営",
-        "目標達成支援",
-        "組織開発"
+        "写真撮影",
+        "動画編集",
+        "イベント撮影",
+        "商品撮影"
       ],
-      "joinDate": "2023-01-01",
-      "isPublic": true,
-      "isAdmin": true,
-      "role": "代表"
+      "joinDate": "2024-07-15",
+      "isPublic": false,
+      "isAdmin": false
     },
     {
-      "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-      "email": "admin@minanowa.com",
-      "password": "password123",
-      "name": "由井 辰美",
-      "furigana": "ゆい たつみ",
-      "phone": "08038283985",
-      "business": "デジタル戦略家",
-      "businessCategory": "IT・デジタル",
-      "introduction": "ボルダリングジムやエステの店舗経営、金属加工の現場、そしてソフトウェア開発。アナログとデジタルの垣根を越えた多角的な視点で、彦根のビジネスと人材育成を加速させます。",
-      "avatar": "https://i.pravatar.cc/200?img=68",
-      "location": "彦根市",
-      "website": "https://goodbouldering.com/",
+      "id": "new-member-002",
+      "email": "takahashi@example.com",
+      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
+      "name": "高橋 美咲",
+      "furigana": "たかはし みさき",
+      "phone": "090-9012-3456",
+      "business": "英会話教室運営",
+      "businessCategory": "教育・研修",
+      "introduction": "子供から大人まで楽しく学べる英会話教室を運営しています。ビジネス英語から日常会話まで対応可能です。",
+      "avatar": "https://i.pravatar.cc/200?img=32",
+      "location": "米原市",
+      "website": "https://example.com",
       "sns": {
-        "twitter": "@nakamura_npo",
-        "facebook": "nakamura.seiichi"
+        "twitter": "@takahashi_english",
+        "instagram": "misaki_english"
       },
       "skills": [
-        "AI講座、起業コンサル",
-        "EC構築、製品開発",
-        "人材育成",
-        "地域活性"
+        "英語教育",
+        "TOEIC対策",
+        "ビジネス英語",
+        "子供英語"
       ],
-      "joinDate": "2023-01-01",
+      "joinDate": "2024-08-20",
       "isPublic": true,
-      "isAdmin": true,
-      "role": "サポート",
-      "lastLogin": "2026-01-10T08:50:16.144Z"
+      "isAdmin": false
+    },
+    {
+      "id": "new-member-003",
+      "email": "matsumoto@example.com",
+      "password": "$2b$10$W/eTVL2iEEBSfcz3jDXJbeFgtbRFtbWZZbnR29aoG6ggsqOY3rRDm",
+      "name": "松本 直樹",
+      "furigana": "まつもと なおき",
+      "phone": "090-0123-4567",
+      "business": "農業・農産物加工",
+      "businessCategory": "農業・食品",
+      "introduction": "無農薬野菜の栽培と、自家製野菜を使ったジャムや漬物の加工販売を行っています。地産地消を大切にしています。",
+      "avatar": "https://i.pravatar.cc/200?img=33",
+      "location": "長浜市",
+      "website": "",
+      "sns": {
+        "instagram": "matsumoto_farm"
+      },
+      "skills": [
+        "有機農業",
+        "食品加工",
+        "商品開発",
+        "直売"
+      ],
+      "joinDate": "2024-09-05",
+      "isPublic": false,
+      "isAdmin": false
     }
   ],
   "sessions": {
@@ -342,36 +342,9 @@
     "5cb1cd18-08e0-423b-84f6-ca2e836a518f": {
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2026-01-05T11:29:09.296Z"
-    },
-    "372611e3-69d6-41b1-a045-ea695a6fd690": {
-      "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-      "createdAt": "2026-01-10T08:50:16.144Z"
     }
   },
   "blogs": [
-    {
-      "id": "blog-new-001",
-      "title": "交流会から生まれたコラボ商品が完成！",
-      "slug": "collab-product-release-2024",
-      "content": "みんなのWA交流会で出会った田中さんと佐藤さんのコラボ商品が完成しました！\n\n## 商品概要\n\n和菓子職人の佐藤さんと、石鹸職人の田中さんが手を組み、「彦根の贈り物」というギフトセットを開発。和菓子と手作り石鹸を組み合わせた、新しいタイプのお土産です。",
-      "excerpt": "交流会で出会った事業者同士のコラボ商品が完成。和菓子と手作り石鹸を組み合わせた新しいギフトセット...",
-      "authorId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-      "authorName": "中村 誠一",
-      "authorAvatar": "https://i.pravatar.cc/200?img=68",
-      "category": "コラボ事例",
-      "tags": [
-        "コラボ",
-        "商品開発",
-        "地域活性",
-        "お土産"
-      ],
-      "featuredImage": "https://images.unsplash.com/photo-1549388604-817d0e85c6db?w=800&q=80",
-      "publishedAt": "2024-12-01T10:00:00Z",
-      "updatedAt": "2024-12-01T10:00:00Z",
-      "status": "published",
-      "views": 413,
-      "likes": 67
-    },
     {
       "id": "313bb485-f193-413e-bcb1-199dbd660f16",
       "title": "新商品開発のお知らせ：地元柚子の石鹸",
@@ -442,27 +415,27 @@
       "likes": 45
     },
     {
-      "id": "blog-new-003",
-      "title": "地域ビジネス成功事例：オーガニックカフェの挑戦",
-      "slug": "organic-cafe-success-story-2024",
-      "content": "渡辺さんのオーガニックカフェが1周年を迎えました！\n\n## オープンまでの道のり\n\n渡辺さんは、みんなのWAに参加する前から「地域の人が集まれるカフェを作りたい」という夢を持っていました。",
-      "excerpt": "みんなのWA会員・渡辺さんのオーガニックカフェが1周年！交流会での出会いを活かした成功事例をご紹介...",
+      "id": "blog-new-001",
+      "title": "交流会から生まれたコラボ商品が完成！",
+      "slug": "collab-product-release-2024",
+      "content": "みんなのWA交流会で出会った田中さんと佐藤さんのコラボ商品が完成しました！\n\n## 商品概要\n\n和菓子職人の佐藤さんと、石鹸職人の田中さんが手を組み、「彦根の贈り物」というギフトセットを開発。和菓子と手作り石鹸を組み合わせた、新しいタイプのお土産です。",
+      "excerpt": "交流会で出会った事業者同士のコラボ商品が完成。和菓子と手作り石鹸を組み合わせた新しいギフトセット...",
       "authorId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "authorName": "中村 誠一",
       "authorAvatar": "https://i.pravatar.cc/200?img=68",
-      "category": "成功事例",
+      "category": "コラボ事例",
       "tags": [
-        "カフェ",
-        "起業",
-        "成功事例",
-        "オーガニック"
+        "コラボ",
+        "商品開発",
+        "地域活性",
+        "お土産"
       ],
-      "featuredImage": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
-      "publishedAt": "2024-11-15T11:00:00Z",
-      "updatedAt": "2024-11-15T11:00:00Z",
+      "featuredImage": "https://images.unsplash.com/photo-1549388604-817d0e85c6db?w=800&q=80",
+      "publishedAt": "2024-12-01T10:00:00Z",
+      "updatedAt": "2024-12-01T10:00:00Z",
       "status": "published",
-      "views": 679,
-      "likes": 102
+      "views": 413,
+      "likes": 67
     },
     {
       "id": "blog-new-002",
@@ -486,6 +459,29 @@
       "status": "published",
       "views": 535,
       "likes": 89
+    },
+    {
+      "id": "blog-new-003",
+      "title": "地域ビジネス成功事例：オーガニックカフェの挑戦",
+      "slug": "organic-cafe-success-story-2024",
+      "content": "渡辺さんのオーガニックカフェが1周年を迎えました！\n\n## オープンまでの道のり\n\n渡辺さんは、みんなのWAに参加する前から「地域の人が集まれるカフェを作りたい」という夢を持っていました。",
+      "excerpt": "みんなのWA会員・渡辺さんのオーガニックカフェが1周年！交流会での出会いを活かした成功事例をご紹介...",
+      "authorId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+      "authorName": "中村 誠一",
+      "authorAvatar": "https://i.pravatar.cc/200?img=68",
+      "category": "成功事例",
+      "tags": [
+        "カフェ",
+        "起業",
+        "成功事例",
+        "オーガニック"
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
+      "publishedAt": "2024-11-15T11:00:00Z",
+      "updatedAt": "2024-11-15T11:00:00Z",
+      "status": "published",
+      "views": 679,
+      "likes": 102
     }
   ],
   "events": [

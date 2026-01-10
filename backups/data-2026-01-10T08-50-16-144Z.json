@@ -323,7 +323,7 @@
       "isPublic": true,
       "isAdmin": true,
       "role": "サポート",
-      "lastLogin": "2026-01-10T08:50:16.144Z"
+      "lastLogin": "2026-01-10T08:41:19.983Z"
     }
   ],
   "sessions": {
@@ -342,10 +342,6 @@
     "5cb1cd18-08e0-423b-84f6-ca2e836a518f": {
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2026-01-05T11:29:09.296Z"
-    },
-    "372611e3-69d6-41b1-a045-ea695a6fd690": {
-      "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-      "createdAt": "2026-01-10T08:50:16.144Z"
     }
   },
   "blogs": [

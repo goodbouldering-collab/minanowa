@@ -9695,3 +9695,190 @@ section {
 .about-section:not(.about-section-compact) {
     display: none !important;
 }
+
+/* 満足度カードのハイライト */
+.stat-item-compact.stat-highlight {
+    background: linear-gradient(135deg, #fff9e6 0%, #fff4d9 100%);
+    border: 2px solid #ffc107;
+}
+
+.stat-item-compact.stat-highlight .stat-icon {
+    color: #ffc107;
+}
+
+.stat-item-compact.stat-highlight .stat-value {
+    color: #ffc107;
+}
+
+.stat-subvalue {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-left: 3px;
+}
+
+/* すべてのカードコンテナに統一スクロールバー */
+.members-section .container > div,
+.collab-section .container > div,
+.blog-section .container > div,
+.activity-section .container > div {
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* スクロールバーの表示を強制 */
+.event-carousel-container,
+.members-grid,
+.activity-cards,
+.blog-list,
+.collab-list,
+.carousel-track {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) #f1f1f1;
+}
+
+/* ============================================
+   管理画面追加スタイル
+   ============================================ */
+
+/* 管理画面リスト */
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-list-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.admin-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
+
+.admin-item-content {
+    flex: 1;
+}
+
+.admin-item-content h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-primary);
+}
+
+.admin-item-meta {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.admin-item-text {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.admin-item-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* 管理画面フォーム */
+.admin-form-container {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+}
+
+.admin-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.admin-form-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+/* 画像管理 */
+.admin-image-uploader {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+}
+
+.upload-form {
+    background: var(--gray-50);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin-bottom: 30px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.image-item {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.image-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.image-info {
+    padding: 15px;
+}
+
+.image-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.uploaded-images-grid h4 {
+    color: var(--primary);
+    margin: 0 0 15px 0;
+}
