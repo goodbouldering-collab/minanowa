@@ -9951,3 +9951,164 @@ section {
     margin: 5px 0 0 0;
     font-size: 0.9rem;
 }
+
+/* 事業者検索のスクロール完全削除 */
+.members-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 20px;
+    overflow: visible !important;
+}
+
+.members-grid::-webkit-scrollbar {
+    display: none !important;
+}
+
+.members-section .container > * {
+    overflow: visible !important;
+}
+
+/* 事業者カードの高さ調整 */
+.member-card {
+    height: auto !important;
+    min-height: 500px !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.member-card-content {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.member-card-info {
+    overflow: visible !important;
+}
+
+/* ============================================
+   URL表示（固定表示）
+   ============================================ */
+.url-display-fixed {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    z-index: 9999;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    max-width: 600px;
+    animation: slideInRight 0.3s ease;
+}
+
+.url-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.url-content i {
+    font-size: 1.2rem;
+}
+
+.url-text {
+    font-family: monospace;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+}
+
+.url-copy-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    color: var(--white);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.url-copy-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* バックアップ表示 */
+.backup-display-fixed {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #4a8c3f 0%, #3d7334 100%);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    animation: slideInRight 0.3s ease 0.2s both;
+}
+
+.backup-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.backup-content i {
+    font-size: 1rem;
+}
+
+.backup-count {
+    background: rgba(255,255,255,0.2);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .url-display-fixed {
+        bottom: 50px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        padding: 10px 15px;
+    }
+    
+    .url-text {
+        max-width: 200px;
+        font-size: 0.8rem;
+    }
+    
+    .url-copy-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .backup-display-fixed {
+        bottom: 5px;
+        right: 10px;
+        left: 10px;
+        padding: 8px 15px;
+    }
+    
+    .backup-content {
+        font-size: 0.8rem;
+        justify-content: space-between;
+    }
+}

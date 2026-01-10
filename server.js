@@ -1625,3 +1625,28 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`💬 会員の声: ${appData.testimonials?.length || 0}`);
     console.log(`🤝 コラボ事例: ${appData.collaborations?.length || 0}`);
 });
+
+// ============================================
+// バックアップステータスAPI
+// ============================================
+
+app.get('/api/backup/status', (req, res) => {
+    try {
+        const backups = backupSystem.listBackups();
+        const lastBackup = backups.length > 0 ? backups[0].created : null;
+        
+        res.json({
+            success: true,
+            count: backups.length,
+            lastBackup: lastBackup,
+            backups: backups.slice(0, 5) // 最新5件
+        });
+    } catch (error) {
+        console.error('バックアップステータス取得エラー:', error);
+        res.status(500).json({
+            success: false,
+            message: 'バックアップステータスの取得に失敗しました'
+        });
+    }
+});
+

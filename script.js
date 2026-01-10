@@ -5914,3 +5914,81 @@ function copyImageUrl(url) {
     });
 }
 
+
+// ============================================
+// URL表示とバックアップ自動化
+// ============================================
+
+// URLを常に表示
+function displayCurrentUrl() {
+    const url = window.location.href;
+    console.log('📍 現在のURL:', url);
+    
+    // URLをページ下部に表示
+    let urlDisplay = document.getElementById('urlDisplay');
+    if (!urlDisplay) {
+        urlDisplay = document.createElement('div');
+        urlDisplay.id = 'urlDisplay';
+        urlDisplay.className = 'url-display-fixed';
+        document.body.appendChild(urlDisplay);
+    }
+    
+    urlDisplay.innerHTML = `
+        <div class="url-content">
+            <i class="fas fa-link"></i>
+            <span class="url-text">${url}</span>
+            <button class="url-copy-btn" onclick="copyCurrentUrl()">
+                <i class="fas fa-copy"></i> コピー
+            </button>
+        </div>
+    `;
+}
+
+// URLをコピー
+function copyCurrentUrl() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        showNotification('URLをコピーしました', 'success');
+    });
+}
+
+// バックアップステータス表示
+function displayBackupStatus() {
+    fetch(`${API_BASE}/api/backup/status`)
+        .then(res => res.json())
+        .then(data => {
+            console.log('💾 バックアップ状況:', data);
+            
+            let backupDisplay = document.getElementById('backupDisplay');
+            if (!backupDisplay) {
+                backupDisplay = document.createElement('div');
+                backupDisplay.id = 'backupDisplay';
+                backupDisplay.className = 'backup-display-fixed';
+                document.body.appendChild(backupDisplay);
+            }
+            
+            const lastBackup = data.lastBackup ? new Date(data.lastBackup).toLocaleString('ja-JP') : '未実施';
+            backupDisplay.innerHTML = `
+                <div class="backup-content">
+                    <i class="fas fa-save"></i>
+                    <span class="backup-text">最終バックアップ: ${lastBackup}</span>
+                    <span class="backup-count">${data.count || 0}件保存</span>
+                </div>
+            `;
+        })
+        .catch(err => console.log('バックアップ状況取得エラー:', err));
+}
+
+// 初期化時に実行
+document.addEventListener('DOMContentLoaded', function() {
+    displayCurrentUrl();
+    displayBackupStatus();
+    
+    // 5分ごとにバックアップステータスを更新
+    setInterval(displayBackupStatus, 5 * 60 * 1000);
+});
+
+// URL変更時にも更新
+window.addEventListener('hashchange', displayCurrentUrl);
+window.addEventListener('popstate', displayCurrentUrl);
+
