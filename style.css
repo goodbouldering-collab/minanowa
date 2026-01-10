@@ -9882,3 +9882,72 @@ section {
     color: var(--primary);
     margin: 0 0 15px 0;
 }
+
+/* 事業者検索バーのスクロールバーを非表示 */
+.members-section .member-filters,
+.members-section .search-bar,
+.members-section .filter-buttons {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
+.members-section .search-bar::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* イベントカードの表示修正 */
+.event-carousel-container {
+    min-height: 400px !important;
+}
+
+.event-carousel-track {
+    min-height: 400px !important;
+}
+
+.event-carousel-slide {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.event-compact-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 350px !important;
+}
+
+/* ページ内容管理 */
+.page-content-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.content-section-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.content-section-card h4 {
+    margin: 0 0 20px 0;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+}
+
+.content-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-subtitle {
+    color: var(--text-secondary);
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+}

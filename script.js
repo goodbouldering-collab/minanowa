@@ -5202,6 +5202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 管理者: ページ内容管理
+// ページ内容管理の拡張版
 async function loadAdminPageContent() {
     const adminContent = document.getElementById('adminContent');
     if (!adminContent) return;
@@ -5221,7 +5222,8 @@ async function loadAdminPageContent() {
         
         adminContent.innerHTML = `
             <div class="admin-toolbar">
-                <h3>ページ内容管理</h3>
+                <h3>トップページ内容管理</h3>
+                <p class="admin-subtitle">トップページの各セクションの内容を編集できます</p>
             </div>
             
             <div class="page-content-sections">
@@ -5230,16 +5232,70 @@ async function loadAdminPageContent() {
                     <h4><i class="fas fa-home"></i> ヒーローセクション</h4>
                     <form onsubmit="savePageContent(event, 'hero')" class="content-form">
                         <div class="form-group">
-                            <label>タイトル</label>
-                            <input type="text" name="title" class="glass-input" value="${pageContent.hero?.title || ''}" required>
+                            <label>メインタイトル</label>
+                            <input type="text" name="title" class="form-control" value="${pageContent.hero?.title || ''}" required>
                         </div>
                         <div class="form-group">
                             <label>サブタイトル</label>
-                            <input type="text" name="subtitle" class="glass-input" value="${pageContent.hero?.subtitle || ''}" required>
+                            <input type="text" name="subtitle" class="form-control" value="${pageContent.hero?.subtitle || ''}" required>
                         </div>
                         <div class="form-group">
                             <label>説明文</label>
-                            <textarea name="description" class="glass-input" rows="3" required>${pageContent.hero?.description || ''}</textarea>
+                            <textarea name="description" class="form-control" rows="3" required>${pageContent.hero?.description || ''}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </form>
+                </div>
+
+                <!-- About Section -->
+                <div class="content-section-card">
+                    <h4><i class="fas fa-info-circle"></i> みんなのWAとは</h4>
+                    <form onsubmit="savePageContent(event, 'about')" class="content-form">
+                        <div class="form-group">
+                            <label>セクションタイトル</label>
+                            <input type="text" name="title" class="form-control" value="${pageContent.about?.title || 'みんなのWAとは'}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>サブタイトル</label>
+                            <input type="text" name="subtitle" class="form-control" value="${pageContent.about?.subtitle || '彦根周辺の事業者をつないで広げる'}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Member Section -->
+                <div class="content-section-card">
+                    <h4><i class="fas fa-users"></i> 事業者を探す</h4>
+                    <form onsubmit="savePageContent(event, 'members')" class="content-form">
+                        <div class="form-group">
+                            <label>セクションタイトル</label>
+                            <input type="text" name="title" class="form-control" value="${pageContent.members?.title || '事業者を探す'}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>説明文</label>
+                            <textarea name="description" class="form-control" rows="2">${pageContent.members?.description || ''}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Event Section -->
+                <div class="content-section-card">
+                    <h4><i class="fas fa-calendar"></i> 交流会・イベント</h4>
+                    <form onsubmit="savePageContent(event, 'events')" class="content-form">
+                        <div class="form-group">
+                            <label>セクションタイトル</label>
+                            <input type="text" name="title" class="form-control" value="${pageContent.events?.title || '交流会・イベント'}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>説明文</label>
+                            <textarea name="description" class="form-control" rows="2">${pageContent.events?.description || ''}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> 保存
@@ -5250,7 +5306,7 @@ async function loadAdminPageContent() {
         `;
     } catch (error) {
         console.error('ページコンテンツ取得エラー:', error);
-        adminContent.innerHTML = `<p>ページコンテンツの取得に失敗しました</p>`;
+        adminContent.innerHTML = `<p style="text-align:center;color:var(--error);padding:40px;">ページコンテンツの取得に失敗しました</p>`;
     }
 }
 
