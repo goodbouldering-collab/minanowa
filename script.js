@@ -513,13 +513,9 @@ function executeHeroSearch() {
     
     searchMembers(query, category, location);
     
-    // メンバーセクションへスクロール
-    const membersSection = document.getElementById('members');
-    if (membersSection) {
-        setTimeout(() => {
-            membersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-    }
+    // メンバーセクションへのスクロール無効化（検索パネルが動かないように）
+    // const membersSection = document.getElementById('members');
+    // スクロール機能を完全に削除
 }
 
 function quickSearch(keyword) {
@@ -588,7 +584,7 @@ async function loadMembers() {
             allMembers = data.members;
             renderMembers(data.members);
             updateResultsCount(data.total);
-            setupMembersNavigation(); // スワイプとナビゲーションを設定
+            setupMembersNavigation(); // スワイプとナビゲーションを設定 - 無効化（グリッド表示のため不要）
         }
     } catch (error) {
         console.error('メンバー読み込みエラー:', error);
@@ -606,8 +602,9 @@ async function searchMembers(query = '', category = 'all', location = 'all') {
     const membersGrid = document.getElementById('membersGrid');
     if (!membersGrid) return;
     
+    // シンプルなローディング表示
     membersGrid.innerHTML = `
-        <div class="loading-spinner glass-card">
+        <div class="loading-spinner glass-card" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
             <div class="spinner"></div>
             <p>検索中...</p>
         </div>
@@ -627,7 +624,7 @@ async function searchMembers(query = '', category = 'all', location = 'all') {
             renderMembers(data.members);
             updateResultsCount(data.total, query);
             
-            // タイトル更新
+            // タイトル更新（スムーズに）
             const resultsTitle = document.getElementById('resultsTitle');
             if (resultsTitle) {
                 resultsTitle.textContent = query ? `「${query}」の検索結果` : '事業者を探す';
@@ -723,78 +720,8 @@ function updateResultsCount(count, query = '') {
 
 // メンバーグリッドのナビゲーションとスワイプ設定
 function setupMembersNavigation() {
-    const membersGrid = document.getElementById('membersGrid');
-    const prevBtn = document.getElementById('membersPrev');
-    const nextBtn = document.getElementById('membersNext');
-    
-    if (!membersGrid) return;
-    
-    // カスタムスムーススクロール関数（高速化）
-    function smoothScroll(element, targetLeft, duration = 400) {
-        const startLeft = element.scrollLeft;
-        const distance = targetLeft - startLeft;
-        const startTime = performance.now();
-        
-        // イージング関数（スムーズな動き）
-        function easeInOutQuad(t) {
-            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-        }
-        
-        function animation(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easedProgress = easeInOutQuad(progress);
-            
-            element.scrollLeft = startLeft + distance * easedProgress;
-            
-            if (progress < 1) {
-                requestAnimationFrame(animation);
-            }
-        }
-        
-        requestAnimationFrame(animation);
-    }
-    
-    // ナビゲーションボタン
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            smoothScroll(membersGrid, membersGrid.scrollLeft - 300);
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            smoothScroll(membersGrid, membersGrid.scrollLeft + 300);
-        });
-    }
-    
-    // スワイプ機能
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    membersGrid.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    membersGrid.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleMemberSwipe();
-    }, { passive: true });
-    
-    function handleMemberSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartX - touchEndX;
-        
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // 左スワイプ（次へ）
-                smoothScroll(membersGrid, membersGrid.scrollLeft + 300);
-            } else {
-                // 右スワイプ（前へ）
-                smoothScroll(membersGrid, membersGrid.scrollLeft - 300);
-            }
-        }
-    }
+    // この関数は無効化されています - メンバーグリッドは横スクロールではなく通常のグリッド表示になりました
+    return;
 }
 
 // ============================================
