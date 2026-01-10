@@ -78,7 +78,7 @@ async function initApp() {
     // データ読み込み（並列）
     await Promise.all([
         loadStats(),
-        loadMembers(),
+        loadMembersRebuild(),
         loadCollabAndBlogs(),
         loadNextEvent()
     ]);
@@ -6052,3 +6052,188 @@ if (document.querySelector('.about-compact-new')) {
         if (window.location.hash === '#about') updateCompactAboutStats();
     });
 }
+// ============================================
+// 事業者検索セクション - 完全再構築
+// ============================================
+
+let allMembersRebuild = [];
+
+// 初期ロード
+async function loadMembersRebuild() {
+    const membersGrid = document.getElementById('membersGrid');
+    if (!membersGrid) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/members`);
+        const data = await response.json();
+        
+        if (data.success) {
+            allMembersRebuild = data.members;
+            renderMembersRebuild(data.members);
+            updateResultsCountRebuild(data.total);
+        }
+    } catch (error) {
+        console.error('メンバー読み込みエラー:', error);
+        membersGrid.innerHTML = `
+            <div class="no-results-rebuild">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>読み込みエラー</h3>
+                <p>メンバー情報を取得できませんでした</p>
+            </div>
+        `;
+    }
+}
+
+// メンバー表示
+function renderMembersRebuild(members) {
+    const membersGrid = document.getElementById('membersGrid');
+    if (!membersGrid) return;
+    
+    if (!members || members.length === 0) {
+        membersGrid.innerHTML = `
+            <div class="no-results-rebuild">
+                <i class="fas fa-search"></i>
+                <h3>メンバーが見つかりません</h3>
+                <p>検索条件を変更してお試しください</p>
+            </div>
+        `;
+        return;
+    }
+    
+    membersGrid.innerHTML = members.map(member => {
+        // OGP画像のURLを取得
+        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+        
+        // URLからドメインを抽出
+        const websiteUrl = member.website || '';
+        const displayUrl = websiteUrl ? websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+        
+        return `
+            <div class="member-card-rebuild" onclick="openMemberDetail('${member.id}')">
+                <div class="member-card-rebuild-image">
+                    <img src="${ogpImage}" alt="${member.name}" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                    <span class="member-card-rebuild-category">${member.businessCategory || 'その他'}</span>
+                </div>
+                <div class="member-card-rebuild-body">
+                    <h3 class="member-card-rebuild-name">${member.name}</h3>
+                    <p class="member-card-rebuild-business">${member.business}</p>
+                    ${websiteUrl ? `
+                        <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" class="member-card-rebuild-url" onclick="event.stopPropagation()">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>${displayUrl}</span>
+                        </a>
+                    ` : ''}
+                    <p class="member-card-rebuild-intro">${member.introduction || '自己紹介文がありません'}</p>
+                    ${(member.skills && member.skills.length > 0) ? `
+                        <div class="member-card-rebuild-skills">
+                            ${member.skills.slice(0, 3).map(skill => 
+                                `<span class="skill-tag-rebuild">${skill}</span>`
+                            ).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="member-card-rebuild-footer">
+                        <span class="member-card-rebuild-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${member.location || '未設定'}
+                        </span>
+                        <button class="member-card-rebuild-btn">詳細を見る</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 検索実行
+async function performSearchRebuild() {
+    const query = document.getElementById('searchInput')?.value || '';
+    const category = document.getElementById('categoryFilter')?.value || 'all';
+    const location = document.getElementById('locationFilter')?.value || 'all';
+    
+    const membersGrid = document.getElementById('membersGrid');
+    if (!membersGrid) return;
+    
+    // ローディング表示
+    membersGrid.innerHTML = `
+        <div class="loading-spinner-rebuild">
+            <div class="spinner"></div>
+            <p>検索中...</p>
+        </div>
+    `;
+    
+    try {
+        const params = new URLSearchParams();
+        if (query) params.append('q', query);
+        if (category !== 'all') params.append('category', category);
+        if (location !== 'all') params.append('location', location);
+        
+        const response = await fetch(`${API_BASE}/api/members/search?${params}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            allMembersRebuild = data.members;
+            renderMembersRebuild(data.members);
+            updateResultsCountRebuild(data.total, query);
+            
+            // タイトル更新
+            const resultsTitle = document.getElementById('resultsTitle');
+            if (resultsTitle) {
+                resultsTitle.textContent = query ? `「${query}」の検索結果` : '事業者を探す';
+            }
+        }
+    } catch (error) {
+        console.error('検索エラー:', error);
+        membersGrid.innerHTML = `
+            <div class="no-results-rebuild">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>検索エラー</h3>
+                <p>検索中にエラーが発生しました</p>
+            </div>
+        `;
+    }
+}
+
+// クイック検索
+function setQuickSearchRebuild(keyword) {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.value = keyword;
+    }
+    performSearchRebuild();
+}
+
+// 結果件数更新
+function updateResultsCountRebuild(count, query = '') {
+    const resultsCount = document.getElementById('resultsCount');
+    if (resultsCount) {
+        if (query) {
+            resultsCount.textContent = `${count}件の結果`;
+        } else {
+            resultsCount.textContent = `全${count}名`;
+        }
+    }
+}
+
+// Enterキーで検索
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                performSearchRebuild();
+            }
+        });
+    }
+    
+    // フィルター変更時に自動検索
+    const categoryFilter = document.getElementById('categoryFilter');
+    const locationFilter = document.getElementById('locationFilter');
+    
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', performSearchRebuild);
+    }
+    
+    if (locationFilter) {
+        locationFilter.addEventListener('change', performSearchRebuild);
+    }
+});

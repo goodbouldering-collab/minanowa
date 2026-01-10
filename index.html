@@ -332,7 +332,7 @@
     </section>
 
     <!-- コラボレーション事例 -->
-    <section class="members-section" id="members">
+    <section class="members-section-rebuild" id="members">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Find Members</span>
@@ -340,22 +340,23 @@
                 <p class="section-subtitle">名前・職業・スキルで検索してつながろう</p>
             </div>
             
-            <div class="search-panel glass-card">
-                <div class="search-main">
-                    <div class="search-input-wrapper">
+            <!-- 検索パネル -->
+            <div class="search-panel-rebuild">
+                <div class="search-main-rebuild">
+                    <div class="search-input-wrapper-rebuild">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." onkeydown="handleSearch(event)" autocomplete="off">
+                        <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." autocomplete="off">
                     </div>
-                    <button class="search-btn" onclick="performSearch()">
+                    <button class="search-btn-rebuild" onclick="performSearchRebuild()">
                         <i class="fas fa-search"></i>
                         検索
                     </button>
                 </div>
                 
-                <div class="search-filters">
-                    <div class="filter-group">
+                <div class="search-filters-rebuild">
+                    <div class="filter-group-rebuild">
                         <label><i class="fas fa-tag"></i> カテゴリー</label>
-                        <select id="categoryFilter" onchange="performSearch()">
+                        <select id="categoryFilter">
                             <option value="all">すべて</option>
                             <option value="製造・クラフト">製造・クラフト</option>
                             <option value="IT・デジタル">IT・デジタル</option>
@@ -366,9 +367,9 @@
                             <option value="その他">その他</option>
                         </select>
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group-rebuild">
                         <label><i class="fas fa-map-marker-alt"></i> 地域</label>
-                        <select id="locationFilter" onchange="performSearch()">
+                        <select id="locationFilter">
                             <option value="all">すべて</option>
                             <option value="彦根市">彦根市</option>
                             <option value="米原市">米原市</option>
@@ -378,41 +379,25 @@
                     </div>
                 </div>
                 
-                <div class="quick-search">
-                    <span class="quick-label">人気の検索:</span>
-                    <button class="quick-tag" onclick="setQuickSearch('IT')">IT・Web</button>
-                    <button class="quick-tag" onclick="setQuickSearch('デザイン')">デザイン</button>
-                    <button class="quick-tag" onclick="setQuickSearch('飲食')">飲食店</button>
-                    <button class="quick-tag" onclick="setQuickSearch('手作り')">手作り</button>
+                <div class="quick-search-rebuild">
+                    <span class="quick-label-rebuild">人気の検索:</span>
+                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('IT')">IT・Web</button>
+                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('デザイン')">デザイン</button>
+                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('飲食')">飲食店</button>
+                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('手作り')">手作り</button>
                 </div>
             </div>
             
-            <div class="search-results">
-                <div class="results-header">
-                    <span id="resultsCount">全7名</span>
-                    <select id="sortSelect" onchange="sortResults()">
-                        <option value="newest">新着順</option>
-                        <option value="name">名前順</option>
-                        <option value="category">カテゴリー順</option>
-                    </select>
-                </div>
-                
-                <!-- メンバーカルーセルラッパー -->
-                <div class="carousel-wrapper">
-                    <button class="carousel-nav carousel-prev" id="membersPrev">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    
-                    <div class="members-grid" id="membersGrid">
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <p>読み込み中...</p>
-                        </div>
-                    </div>
-                    
-                    <button class="carousel-nav carousel-next" id="membersNext">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+            <!-- 結果表示 -->
+            <div class="results-info-rebuild">
+                <span id="resultsCount">読み込み中...</span>
+            </div>
+            
+            <!-- メンバーグリッド -->
+            <div class="members-grid-rebuild" id="membersGrid">
+                <div class="loading-spinner-rebuild">
+                    <div class="spinner"></div>
+                    <p>読み込み中...</p>
                 </div>
             </div>
         </div>
