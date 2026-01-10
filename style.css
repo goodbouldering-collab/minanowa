@@ -9376,3 +9376,322 @@ section {
 .btn-success i {
     font-size: 1.2em;
 }
+/* ============================================
+   カード横スクロール修正
+   ============================================ */
+
+/* イベントカルーセル */
+.event-carousel-container {
+    position: relative;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+.event-carousel-track {
+    display: flex !important;
+    gap: 20px;
+    padding: 10px 0;
+    transition: none !important;
+}
+
+.event-carousel-slide {
+    flex: 0 0 350px !important;
+    width: 350px !important;
+    min-width: 350px !important;
+}
+
+/* メンバーカード */
+.members-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    gap: 20px;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.member-card {
+    flex: 0 0 300px !important;
+    width: 300px !important;
+    min-width: 300px !important;
+    height: 400px !important;
+}
+
+/* アクティビティカード */
+.activity-cards {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    gap: 20px;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.activity-card {
+    flex: 0 0 320px !important;
+    width: 320px !important;
+    min-width: 320px !important;
+    height: 400px !important;
+}
+
+/* ブログ・コラボカード */
+.blog-list,
+.collab-list {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    gap: 20px;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.blog-card,
+.collab-card {
+    flex: 0 0 350px !important;
+    width: 350px !important;
+    min-width: 350px !important;
+    height: 400px !important;
+}
+
+/* スクロールバースタイル統一 */
+.event-carousel-container::-webkit-scrollbar,
+.members-grid::-webkit-scrollbar,
+.activity-cards::-webkit-scrollbar,
+.blog-list::-webkit-scrollbar,
+.collab-list::-webkit-scrollbar {
+    height: 12px;
+}
+
+.event-carousel-container::-webkit-scrollbar-track,
+.members-grid::-webkit-scrollbar-track,
+.activity-cards::-webkit-scrollbar-track,
+.blog-list::-webkit-scrollbar-track,
+.collab-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.event-carousel-container::-webkit-scrollbar-thumb,
+.members-grid::-webkit-scrollbar-thumb,
+.activity-cards::-webkit-scrollbar-thumb,
+.blog-list::-webkit-scrollbar-thumb,
+.collab-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 10px;
+}
+
+.event-carousel-container::-webkit-scrollbar-thumb:hover,
+.members-grid::-webkit-scrollbar-thumb:hover,
+.activity-cards::-webkit-scrollbar-thumb:hover,
+.blog-list::-webkit-scrollbar-thumb:hover,
+.collab-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, #2d4a27 100%);
+}
+
+/* ナビゲーション矢印を完全に非表示 */
+.smart-nav-btn,
+.carousel-nav,
+.carousel-prev,
+.carousel-next {
+    display: none !important;
+}
+
+/* カード内の縦スクロール */
+.event-card-content,
+.member-card-content,
+.blog-card-content,
+.collab-card-content,
+.activity-card-content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* ============================================
+   コンパクトAboutセクション
+   ============================================ */
+.about-section-compact {
+    padding: 40px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* 統計カード */
+.about-stats-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.stat-item-compact {
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+}
+
+.stat-item-compact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.stat-item-compact .stat-icon {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.stat-item-compact .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+    counter-reset: count;
+}
+
+.stat-item-compact .stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* タブボタン */
+.about-tabs-compact {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0 20px 0;
+}
+
+.about-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.about-tab-btn i {
+    font-size: 1.1rem;
+}
+
+.about-tab-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.about-tab-btn.active {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+/* タブコンテンツ */
+.about-content-compact {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    min-height: 200px;
+}
+
+.about-panel {
+    display: none;
+}
+
+.about-panel.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.about-panel h3 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.about-panel p {
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.feature-list-compact {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.feature-list-compact li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+}
+
+.feature-list-compact li:last-child {
+    border-bottom: none;
+}
+
+.feature-list-compact li i {
+    color: var(--primary);
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .about-section-compact {
+        padding: 30px 0;
+    }
+    
+    .about-stats-compact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .about-tabs-compact {
+        flex-wrap: wrap;
+    }
+    
+    .about-tab-btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .about-content-compact {
+        padding: 20px;
+    }
+}
+
+/* 古いAboutセクションを非表示 */
+.about-section:not(.about-section-compact) {
+    display: none !important;
+}

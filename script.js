@@ -5386,3 +5386,55 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFAQs();
 });
 
+
+// ============================================
+// コンパクトAboutセクション
+// ============================================
+
+function switchAboutTabCompact(tab) {
+    // タブボタンを更新
+    document.querySelectorAll('.about-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.about-tab-btn').classList.add('active');
+    
+    // パネルを更新
+    document.querySelectorAll('.about-panel').forEach(panel => {
+        panel.classList.remove('active');
+    });
+    document.getElementById('panel-' + tab).classList.add('active');
+}
+
+// 統計データを更新
+function updateCompactAboutStats() {
+    fetch('./data.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            // メンバー数
+            const memberCount = data.members ? data.members.filter(m => m.public !== false).length : 0;
+            document.getElementById('aboutMemberCountCompact').textContent = memberCount;
+            
+            // イベント数
+            const eventCount = data.events ? data.events.length : 0;
+            document.getElementById('aboutEventCountCompact').textContent = eventCount;
+            
+            // コラボ数
+            const collabCount = data.collaborations ? data.collaborations.length : 0;
+            document.getElementById('aboutCollabCountCompact').textContent = collabCount;
+            
+            // 業種数
+            const categories = new Set();
+            if (data.members) {
+                data.members.forEach(member => {
+                    if (member.category) categories.add(member.category);
+                });
+            }
+            document.getElementById('categoryCountCompact').textContent = categories.size;
+        })
+        .catch(err => console.error('統計データ取得エラー:', err));
+}
+
+// DOMContentLoadedに追加
+document.addEventListener('DOMContentLoaded', function() {
+    updateCompactAboutStats();
+});
