@@ -5981,14 +5981,6 @@ function displayBackupStatus() {
 
 // 初期化時に実行
 document.addEventListener('DOMContentLoaded', function() {
-    displayCurrentUrl();
-    displayBackupStatus();
-    
-    // 5分ごとにバックアップステータスを更新
-    setInterval(displayBackupStatus, 5 * 60 * 1000);
+
+    // スクリプト初期化完了
 });
-
-// URL変更時にも更新
-window.addEventListener('hashchange', displayCurrentUrl);
-window.addEventListener('popstate', displayCurrentUrl);
-

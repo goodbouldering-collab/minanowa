@@ -10112,3 +10112,121 @@ section {
         justify-content: space-between;
     }
 }
+
+/* URL表示とバックアップ表示を非表示 */
+.url-display-fixed,
+.backup-display-fixed {
+    display: none !important;
+}
+
+/* 事業者カードを横スクロールに変更 */
+.members-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 20px;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    grid-template-columns: unset !important;
+}
+
+.members-grid::-webkit-scrollbar {
+    height: 12px;
+    display: block !important;
+}
+
+.members-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.members-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 10px;
+}
+
+.members-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, #2d4a27 100%);
+}
+
+.member-card {
+    flex: 0 0 320px !important;
+    width: 320px !important;
+    min-width: 320px !important;
+    height: 450px !important;
+    min-height: 450px !important;
+    max-height: 450px !important;
+}
+
+.member-card-content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: calc(100% - 80px) !important;
+}
+/* 事業者カードを横スクロールのカルーセルに変更 */
+.members-section .carousel-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* ナビゲーション矢印を非表示 */
+.members-section .carousel-nav {
+    display: none !important;
+}
+
+/* メンバーグリッドを横スクロールに変更 */
+.members-section .members-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+/* Webkit用スクロールバースタイル */
+.members-section .members-grid::-webkit-scrollbar {
+    height: 12px;
+    display: block !important;
+}
+
+.members-section .members-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.members-section .members-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
+}
+
+.members-section .members-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+/* Firefox用スクロールバー */
+.members-section .members-grid {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #f1f1f1;
+}
+
+/* メンバーカード固定幅 */
+.members-section .member-card {
+    flex: 0 0 350px;
+    min-width: 350px;
+    max-width: 350px;
+    height: auto;
+    min-height: 500px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .members-section .member-card {
+        flex: 0 0 280px;
+        min-width: 280px;
+        max-width: 280px;
+        min-height: 450px;
+    }
+}
