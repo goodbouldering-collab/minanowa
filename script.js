@@ -5984,3 +5984,91 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // スクリプト初期化完了
 });
+
+// ========================================
+// みんなのWAとは - 最新モダンセクション
+// ========================================
+
+// 統計情報を更新
+async function updateModernAboutStats() {
+    try {
+        const response = await fetch(`./data.json?t=${Date.now()}`);
+        const data = await response.json();
+        
+        // メンバー数（公開されているメンバーのみ）
+        const memberCount = data.members?.filter(m => m.public !== false).length || 0;
+        
+        // イベント数
+        const eventCount = data.events?.length || 0;
+        
+        // コラボ事例数
+        const collabCount = data.collaborations?.length || 0;
+        
+        // カウントアップアニメーション
+        animateCount('aboutMemberCountModern', memberCount);
+        animateCount('aboutEventCountModern', eventCount);
+        animateCount('aboutCollabCountModern', collabCount);
+        
+    } catch (err) {
+        console.error('統計データ取得エラー:', err);
+    }
+}
+
+// カウントアップアニメーション
+function animateCount(elementId, target) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    const duration = 1500;
+    const steps = 60;
+    const increment = target / steps;
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = target;
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current);
+        }
+    }, duration / steps);
+}
+
+// タブ切り替え
+document.addEventListener('DOMContentLoaded', function() {
+    // 統計情報を更新
+    updateModernAboutStats();
+    
+    // タブボタンにイベントリスナーを追加
+    const tabButtons = document.querySelectorAll('.tab-btn-modern');
+    const tabPanels = document.querySelectorAll('.tab-panel-modern');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            
+            // すべてのタブとパネルから active クラスを削除
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            
+            // クリックされたタブと対応するパネルに active クラスを追加
+            this.classList.add('active');
+            const targetPanel = document.querySelector(`[data-panel="${tabName}"]`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        });
+    });
+    
+    // 統計カードにホバーエフェクト
+    const statCards = document.querySelectorAll('.stat-card-modern');
+    statCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+});
