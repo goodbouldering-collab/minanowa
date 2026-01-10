@@ -12264,3 +12264,28 @@ section {
     gap: 25px !important;
     overflow: visible !important;
 }
+
+/* ============================================
+   Members Section - Completely disable scroll
+   ============================================ */
+.members-section,
+.members-section *,
+.search-panel,
+.search-panel *,
+.members-grid,
+.members-grid *,
+.carousel-wrapper,
+.carousel-wrapper * {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    scroll-behavior: auto !important;
+}
+.members-section .carousel-wrapper {
+    overflow: visible !important;
+}
+.members-section #membersGrid {
+    overflow: visible !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+}
