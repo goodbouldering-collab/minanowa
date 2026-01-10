@@ -11209,3 +11209,208 @@ section {
         width: 100%;
     }
 }
+/* ===================================
+   事業者カードを活動レポートと同じデザインに
+   =================================== */
+
+/* 検索パネルを完全固定 */
+.members-section .search-panel {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 0;
+}
+
+/* コンテンツをパネルの下に配置 */
+.members-section .search-results {
+    margin-top: 280px; /* 検索パネルの高さ分 */
+}
+
+/* 結果ヘッダーも固定 */
+.members-section .results-header {
+    position: fixed;
+    top: 240px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: white;
+    padding: 16px 20px;
+    margin: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* メンバーグリッド - 横スクロールのみ、縦スクロールなし */
+.members-section .members-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: auto;
+    padding: 0 20px 20px 20px;
+    margin: 0;
+    width: calc(100% - 40px);
+    height: auto;
+}
+
+/* カラフルなスクロールバー - 事業者カード */
+.members-section .members-grid::-webkit-scrollbar {
+    height: 12px;
+}
+
+.members-section .members-grid::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, #fff8e1, #e8f5e9, #e3f2fd);
+    border-radius: 6px;
+}
+
+.members-section .members-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ffa726, #66bb6a, #42a5f5);
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.members-section .members-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #ff9800, #4caf50, #2196f3);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Firefox用 */
+.members-section .members-grid {
+    scrollbar-width: thin;
+    scrollbar-color: #66bb6a #e8f5e9;
+}
+
+/* メンバーカードを活動レポートと同じデザインに */
+.members-section .member-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    
+    /* 固定幅 */
+    flex: 0 0 320px;
+    min-width: 320px;
+    max-width: 320px;
+    width: 320px;
+    height: auto;
+    min-height: 480px;
+    
+    /* 縦スクロールなし */
+    overflow: visible;
+}
+
+/* ホバー時もアニメーションなし */
+.members-section .member-card:hover {
+    transform: none !important;
+    animation: none !important;
+    box-shadow: var(--shadow-md);
+}
+
+/* カード内のすべての要素からアニメーションを削除 */
+.members-section .member-card * {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* メンバーカードのヘッダー画像 */
+.members-section .member-card-header {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.members-section .member-card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* メンバーカードのコンテンツ */
+.members-section .member-card-content {
+    padding: 20px;
+    height: auto;
+    overflow: visible;
+}
+
+/* メンバー情報 */
+.members-section .member-card-info {
+    height: auto;
+    overflow: visible;
+}
+
+/* カルーセルラッパー */
+.members-section .carousel-wrapper {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+}
+
+/* ナビゲーション矢印を非表示 */
+.members-section .carousel-nav {
+    display: none !important;
+}
+
+/* カラフルなスクロールバー - 活動レポート（コラボ） */
+.collab-grid::-webkit-scrollbar {
+    height: 12px !important;
+}
+
+.collab-grid::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, #fff8e1, #e8f5e9, #e3f2fd);
+    border-radius: 6px;
+}
+
+.collab-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ffa726, #66bb6a, #42a5f5);
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.collab-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #ff9800, #4caf50, #2196f3);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Firefox用 */
+.collab-grid {
+    scrollbar-width: thin;
+    scrollbar-color: #66bb6a #e8f5e9;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .members-section .search-panel {
+        top: 60px;
+        padding: 16px;
+    }
+    
+    .members-section .results-header {
+        top: 220px;
+    }
+    
+    .members-section .search-results {
+        margin-top: 260px;
+    }
+    
+    .members-section .member-card {
+        flex: 0 0 280px;
+        min-width: 280px;
+        max-width: 280px;
+        width: 280px;
+        min-height: 450px;
+    }
+    
+    .members-section .members-grid {
+        padding: 0 16px 20px 16px;
+    }
+}
