@@ -6521,3 +6521,183 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('✅ Members carousel script loaded');
+/* ===============================================
+   みんなのWAとは - 究極のインタラクティブ機能
+   =============================================== */
+
+// 統計カウントアップアニメーション
+function animateStatCount(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 16);
+}
+
+// 統計カードのプログレスバーアニメーション
+function animateStatCards() {
+    const statCards = document.querySelectorAll('.stat-card-interactive');
+    
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('animated');
+            
+            const progressBar = card.querySelector('.progress-bar');
+            if (progressBar) {
+                const progress = progressBar.getAttribute('data-progress');
+                progressBar.style.transform = `scaleX(${progress / 100})`;
+            }
+        }, index * 150);
+    });
+}
+
+// 統計データを読み込んで表示
+async function loadAboutInteractiveStats() {
+    try {
+        const response = await fetch(`${API_BASE}/api/data`);
+        if (!response.ok) throw new Error('Failed to load data');
+        
+        const data = await response.json();
+        
+        // 事業者数
+        const memberCount = data.members ? data.members.filter(m => m.isPublic).length : 0;
+        const memberEl = document.getElementById('aboutMemberCountInteractive');
+        if (memberEl) {
+            animateStatCount(memberEl, memberCount);
+        }
+        
+        // イベント数
+        const eventCount = data.events ? data.events.length : 0;
+        const eventEl = document.getElementById('aboutEventCountInteractive');
+        if (eventEl) {
+            animateStatCount(eventEl, eventCount);
+        }
+        
+        // コラボ数
+        const collabCount = data.collaborations ? data.collaborations.length : 0;
+        const collabEl = document.getElementById('aboutCollabCountInteractive');
+        if (collabEl) {
+            animateStatCount(collabEl, collabCount);
+        }
+        
+        console.log('✅ About interactive stats loaded:', { memberCount, eventCount, collabCount });
+        
+    } catch (error) {
+        console.error('❌ Error loading about interactive stats:', error);
+    }
+}
+
+// コアタブ切り替え
+function switchCoreTab(coreId) {
+    console.log(`🔄 Switching to core tab: ${coreId}`);
+    
+    // タブのアクティブ状態更新
+    const tabs = document.querySelectorAll('.core-tab');
+    tabs.forEach(tab => {
+        if (tab.getAttribute('data-core') === coreId) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+    
+    // コンテンツのアクティブ状態更新
+    const contents = document.querySelectorAll('.core-content');
+    contents.forEach(content => {
+        if (content.getAttribute('data-content') === coreId) {
+            content.classList.add('active');
+        } else {
+            content.classList.remove('active');
+        }
+    });
+}
+
+// サイクルステップのハイライト
+function highlightCycleStep(stepNum) {
+    const steps = document.querySelectorAll('.cycle-step');
+    steps.forEach((step, index) => {
+        if (index + 1 === stepNum) {
+            step.classList.add('highlighted');
+        }
+    });
+}
+
+function unhighlightCycleSteps() {
+    const steps = document.querySelectorAll('.cycle-step');
+    steps.forEach(step => {
+        step.classList.remove('highlighted');
+    });
+}
+
+// セクションへスクロール
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+// Intersection Observer でアニメーション発火
+function setupAboutInteractiveObserver() {
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('about-interactive-ultimate')) {
+                        // 統計カードアニメーション
+                        animateStatCards();
+                        
+                        // 統計データ読み込み
+                        loadAboutInteractiveStats();
+                        
+                        // 一度だけ実行
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
+        },
+        { threshold: 0.2 }
+    );
+    
+    const aboutSection = document.querySelector('.about-interactive-ultimate');
+    if (aboutSection) {
+        observer.observe(aboutSection);
+    }
+}
+
+// 初期化
+document.addEventListener('DOMContentLoaded', () => {
+    setupAboutInteractiveObserver();
+    
+    // 統計カードのホバー効果
+    const statCards = document.querySelectorAll('.stat-card-interactive');
+    statCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.zIndex = '10';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.zIndex = '1';
+        });
+    });
+    
+    console.log('✅ About interactive initialized');
+});
+
+// ウィンドウリサイズ時の処理
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        // 必要に応じてレイアウト調整
+    }, 250);
+});
+
+console.log('✅ About interactive script loaded');

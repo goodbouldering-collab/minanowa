@@ -163,47 +163,207 @@
         </div>
     </section>
     <!-- つながるセクション -->
-    <section class="about-compact-new" id="about">
+    <!-- みんなのWAとは - 究極のインタラクティブセクション -->
+    <section class="about-interactive-ultimate" id="about">
         <div class="container">
-            <h2 class="section-title-compact">みんなのWAとは</h2>
-            <p class="about-lead">ギブから始まる信頼で、自然に人と仕事がつながる実践型コミュニティ</p>
+            <div class="section-header">
+                <span class="section-tag">About</span>
+                <h2 class="section-title">みんなのWAとは</h2>
+                <p class="section-subtitle">ギブから始まる信頼で、自然に人と仕事がつながる実践型コミュニティ</p>
+            </div>
             
-            <!-- 統計カード -->
-            <div class="stats-compact">
-                <div class="stat-item">
-                    <div class="stat-number" id="aboutMemberCount">0</div>
-                    <div class="stat-label">事業者</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="aboutEventCount">0</div>
-                    <div class="stat-label">開催回数</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="aboutCollabCount">0</div>
-                    <div class="stat-label">コラボ</div>
-                </div>
-                <div class="stat-item highlight">
-                    <div class="stat-number">4.8</div>
-                    <div class="stat-label">満足度</div>
+            <!-- インタラクティブヒーロー -->
+            <div class="interactive-hero">
+                <div class="hero-visual">
+                    <div class="floating-circles">
+                        <div class="circle circle-1"></div>
+                        <div class="circle circle-2"></div>
+                        <div class="circle circle-3"></div>
+                    </div>
+                    <div class="hero-message">
+                        <div class="message-line">奪い合うのではなく</div>
+                        <div class="message-line highlight">与え合う</div>
+                    </div>
                 </div>
             </div>
             
-            <!-- コア3要素 -->
-            <div class="core-three">
-                <div class="core-card" data-core="give">
-                    <i class="fas fa-heart"></i>
-                    <h3>与え合う</h3>
-                    <p>経験・知恵を惜しみなく提供し、長期的な信頼関係を構築</p>
+            <!-- 統計カード - インタラクティブ -->
+            <div class="stats-interactive">
+                <div class="stat-card-interactive" data-stat="members">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number-interactive" id="aboutMemberCountInteractive">0</div>
+                    <div class="stat-label-interactive">事業者</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar" data-progress="85"></div>
+                    </div>
                 </div>
-                <div class="core-card" data-core="connect">
-                    <i class="fas fa-comments"></i>
-                    <h3>つながる</h3>
-                    <p>オンライン×リアルで温度感ある異業種交流</p>
+                <div class="stat-card-interactive" data-stat="events">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-number-interactive" id="aboutEventCountInteractive">0</div>
+                    <div class="stat-label-interactive">開催回数</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar" data-progress="92"></div>
+                    </div>
                 </div>
-                <div class="core-card" data-core="grow">
-                    <i class="fas fa-infinity"></i>
-                    <h3>育てる</h3>
-                    <p>文化と価値観を維持し、質の高いコミュニティを継続</p>
+                <div class="stat-card-interactive" data-stat="collabs">
+                    <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+                    <div class="stat-number-interactive" id="aboutCollabCountInteractive">0</div>
+                    <div class="stat-label-interactive">コラボ事例</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar" data-progress="78"></div>
+                    </div>
+                </div>
+                <div class="stat-card-interactive highlight-card" data-stat="satisfaction">
+                    <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-number-interactive">4.8</div>
+                    <div class="stat-label-interactive">満足度</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar" data-progress="96"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3つのコア価値 - インタラクティブタブ -->
+            <div class="core-values-interactive">
+                <div class="core-tabs">
+                    <button class="core-tab active" data-core="give" onclick="switchCoreTab('give')">
+                        <i class="fas fa-heart"></i>
+                        <span>与え合う</span>
+                    </button>
+                    <button class="core-tab" data-core="connect" onclick="switchCoreTab('connect')">
+                        <i class="fas fa-comments"></i>
+                        <span>つながる</span>
+                    </button>
+                    <button class="core-tab" data-core="grow" onclick="switchCoreTab('grow')">
+                        <i class="fas fa-infinity"></i>
+                        <span>育てる</span>
+                    </button>
+                </div>
+                
+                <div class="core-content-area">
+                    <!-- Give コンテンツ -->
+                    <div class="core-content active" data-content="give">
+                        <div class="content-visual">
+                            <div class="visual-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                        </div>
+                        <div class="content-text">
+                            <h3>ギブの文化 - 与え合いの精神</h3>
+                            <p class="content-lead">経験・知恵・失敗談を惜しみなく共有し、長期的な信頼関係を構築します。</p>
+                            <div class="content-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>日常的な情報共有と助け合い</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>失敗談・成功体験の共有</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>専門知識の惜しみない提供</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Connect コンテンツ -->
+                    <div class="core-content" data-content="connect">
+                        <div class="content-visual">
+                            <div class="visual-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                        </div>
+                        <div class="content-text">
+                            <h3>深まる交流 - オンライン×リアル</h3>
+                            <p class="content-lead">月1回のリアル交流会で、オンラインでは得られない温度感ある繋がりを育みます。</p>
+                            <div class="content-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>月1回のリアル交流会</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>異業種視点での新たな発見</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>顔の見える信頼関係</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grow コンテンツ -->
+                    <div class="core-content" data-content="grow">
+                        <div class="content-visual">
+                            <div class="visual-icon">
+                                <i class="fas fa-infinity"></i>
+                            </div>
+                        </div>
+                        <div class="content-text">
+                            <h3>持続的成長 - 文化を守る</h3>
+                            <p class="content-lead">規模拡大より文化・価値観の維持を優先し、質の高いコミュニティを継続します。</p>
+                            <div class="content-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>信頼・実践・継続の3軸</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>誠実で利他的な文化</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>学びの循環システム</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 活動サイクル - インタラクティブフロー -->
+            <div class="activity-cycle-interactive">
+                <h3 class="cycle-title">活動の循環サイクル</h3>
+                <div class="cycle-diagram">
+                    <div class="cycle-step" data-step="1" onmouseenter="highlightCycleStep(1)" onmouseleave="unhighlightCycleSteps()">
+                        <div class="step-number">1</div>
+                        <div class="step-icon"><i class="fas fa-laptop-code"></i></div>
+                        <div class="step-title">日常のギブ</div>
+                        <div class="step-desc">オンラインで気軽に情報共有</div>
+                    </div>
+                    <div class="cycle-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="cycle-step" data-step="2" onmouseenter="highlightCycleStep(2)" onmouseleave="unhighlightCycleSteps()">
+                        <div class="step-number">2</div>
+                        <div class="step-icon"><i class="fas fa-users"></i></div>
+                        <div class="step-title">深まる交流</div>
+                        <div class="step-desc">月1回のリアル交流会</div>
+                    </div>
+                    <div class="cycle-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="cycle-step" data-step="3" onmouseenter="highlightCycleStep(3)" onmouseleave="unhighlightCycleSteps()">
+                        <div class="step-number">3</div>
+                        <div class="step-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="step-title">実践と循環</div>
+                        <div class="step-desc">成果をコミュニティへ還元</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA - 参加への誘導 -->
+            <div class="about-cta-interactive">
+                <div class="cta-content">
+                    <h3>あなたも「みんなのWA」の一員に</h3>
+                    <p>心地よい循環の中で、自分らしく働き、自然に人と仕事が結びつく場所</p>
+                    <button class="cta-btn-interactive" onclick="scrollToSection('event')">
+                        <span>次回イベントを見る</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </div>

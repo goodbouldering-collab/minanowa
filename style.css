@@ -13181,3 +13181,658 @@ section {
         font-size: 16px;
     }
 }
+/* ===============================================
+   みんなのWAとは - 究極のインタラクティブセクション
+   =============================================== */
+
+.about-interactive-ultimate {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* インタラクティブヒーロー */
+.interactive-hero {
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+    padding: 60px 0;
+}
+
+.hero-visual {
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-circles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(76,175,80,0.15), rgba(76,175,80,0.05));
+    animation: float 6s ease-in-out infinite;
+}
+
+.circle-1 {
+    width: 120px;
+    height: 120px;
+    top: 10%;
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.circle-2 {
+    width: 180px;
+    height: 180px;
+    top: 50%;
+    right: 10%;
+    animation-delay: 2s;
+}
+
+.circle-3 {
+    width: 100px;
+    height: 100px;
+    bottom: 10%;
+    left: 50%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.1); }
+}
+
+.hero-message {
+    position: relative;
+    z-index: 2;
+}
+
+.message-line {
+    font-size: 42px;
+    font-weight: 300;
+    color: #495057;
+    margin: 8px 0;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.message-line:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.message-line:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.message-line.highlight {
+    font-size: 56px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 統計カード - インタラクティブ */
+.stats-interactive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 80px;
+}
+
+.stat-card-interactive {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card-interactive::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.stat-card-interactive:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 16px 36px rgba(76,175,80,0.2);
+}
+
+.stat-card-interactive:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-card-interactive.highlight-card {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+}
+
+.stat-icon {
+    font-size: 48px;
+    color: #4CAF50;
+    margin-bottom: 16px;
+    transition: transform 0.4s ease;
+}
+
+.stat-card-interactive.highlight-card .stat-icon {
+    color: white;
+}
+
+.stat-card-interactive:hover .stat-icon {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.stat-number-interactive {
+    font-size: 48px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 8px;
+}
+
+.stat-card-interactive.highlight-card .stat-number-interactive {
+    color: white;
+}
+
+.stat-label-interactive {
+    font-size: 16px;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 16px;
+}
+
+.stat-card-interactive.highlight-card .stat-label-interactive {
+    color: rgba(255,255,255,0.9);
+}
+
+.stat-progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(76,175,80,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stat-card-interactive.highlight-card .stat-progress {
+    background: rgba(255,255,255,0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    border-radius: 3px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card-interactive.highlight-card .progress-bar {
+    background: white;
+}
+
+.stat-card-interactive.animated .progress-bar {
+    transform: scaleX(1);
+}
+
+/* コア価値 - インタラクティブタブ */
+.core-values-interactive {
+    margin-bottom: 80px;
+}
+
+.core-tabs {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 48px;
+}
+
+.core-tab {
+    flex: 1;
+    max-width: 300px;
+    padding: 20px 32px;
+    background: white;
+    border: 3px solid #e9ecef;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.core-tab i {
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.core-tab:hover {
+    border-color: #4CAF50;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(76,175,80,0.15);
+}
+
+.core-tab:hover i {
+    transform: scale(1.2);
+}
+
+.core-tab.active {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border-color: #4CAF50;
+    color: white;
+    box-shadow: 0 8px 24px rgba(76,175,80,0.3);
+}
+
+.core-content-area {
+    position: relative;
+    min-height: 400px;
+}
+
+.core-content {
+    display: none;
+    animation: fadeInSlide 0.6s ease;
+}
+
+.core-content.active {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    background: white;
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-icon {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.visual-icon i {
+    font-size: 80px;
+    color: white;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76,175,80,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(76,175,80,0); }
+}
+
+.content-text h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 16px;
+}
+
+.content-lead {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #6c757d;
+    margin-bottom: 32px;
+}
+
+.content-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: #495057;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    padding-left: 8px;
+    color: #4CAF50;
+}
+
+.feature-item i {
+    font-size: 20px;
+    color: #4CAF50;
+}
+
+/* 活動サイクル - インタラクティブフロー */
+.activity-cycle-interactive {
+    margin-bottom: 80px;
+}
+
+.cycle-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 48px;
+}
+
+.cycle-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 48px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.cycle-step {
+    flex: 1;
+    max-width: 280px;
+    text-align: center;
+    padding: 32px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 20px;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.cycle-step::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 3px solid #4CAF50;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.cycle-step:hover {
+    transform: scale(1.08);
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.cycle-step:hover::after {
+    opacity: 1;
+}
+
+.cycle-step.highlighted {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    transform: scale(1.08);
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 auto 16px;
+    transition: background 0.4s ease;
+}
+
+.cycle-step:hover .step-number {
+    background: white;
+    color: #4CAF50;
+}
+
+.step-icon {
+    font-size: 48px;
+    color: #4CAF50;
+    margin-bottom: 16px;
+    transition: color 0.4s ease;
+}
+
+.cycle-step:hover .step-icon {
+    color: white;
+}
+
+.step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 8px;
+    transition: color 0.4s ease;
+}
+
+.cycle-step:hover .step-title {
+    color: white;
+}
+
+.step-desc {
+    font-size: 14px;
+    color: #6c757d;
+    transition: color 0.4s ease;
+}
+
+.cycle-step:hover .step-desc {
+    color: rgba(255,255,255,0.9);
+}
+
+.cycle-arrow {
+    font-size: 32px;
+    color: #4CAF50;
+    animation: arrowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(8px); opacity: 1; }
+}
+
+/* CTA - 参加誘導 */
+.about-cta-interactive {
+    text-align: center;
+    padding: 60px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border-radius: 24px;
+    box-shadow: 0 12px 32px rgba(76,175,80,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-cta-interactive::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-content h3 {
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.cta-content p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 32px;
+}
+
+.cta-btn-interactive {
+    padding: 18px 48px;
+    background: white;
+    color: #4CAF50;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.cta-btn-interactive:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
+
+.cta-btn-interactive i {
+    transition: transform 0.4s ease;
+}
+
+.cta-btn-interactive:hover i {
+    transform: translateX(8px);
+}
+
+/* レスポンシブ */
+@media (max-width: 1024px) {
+    .core-content.active {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .cycle-diagram {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .cycle-arrow {
+        transform: rotate(90deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-interactive-ultimate {
+        padding: 60px 0;
+    }
+    
+    .message-line {
+        font-size: 28px;
+    }
+    
+    .message-line.highlight {
+        font-size: 36px;
+    }
+    
+    .stats-interactive {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .core-tabs {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .core-tab {
+        max-width: 100%;
+    }
+    
+    .core-content.active {
+        padding: 32px;
+    }
+    
+    .visual-icon {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .visual-icon i {
+        font-size: 60px;
+    }
+    
+    .cycle-step {
+        max-width: 100%;
+    }
+    
+    .about-cta-interactive {
+        padding: 40px 24px;
+    }
+    
+    .cta-content h3 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-interactive {
+        grid-template-columns: 1fr;
+    }
+}
