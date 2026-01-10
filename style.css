@@ -12240,3 +12240,27 @@ section {
 .section-title-compact{font-size:1.6rem}
 .about-lead{font-size:1rem;margin-bottom:30px}
 }
+
+/* ============================================
+   Members Section - Remove borders and scroll
+   ============================================ */
+.members-section {
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+.search-panel {
+    border: none !important;
+    box-shadow: none !important;
+}
+.members-grid {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+.members-section .members-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 25px !important;
+    overflow: visible !important;
+}
