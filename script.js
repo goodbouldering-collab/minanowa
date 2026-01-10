@@ -78,7 +78,7 @@ async function initApp() {
     // データ読み込み（並列）
     await Promise.all([
         loadStats(),
-        loadMembersRebuild(),
+        loadMembersCarousel(),
         loadCollabAndBlogs(),
         loadNextEvent()
     ]);
@@ -6237,3 +6237,287 @@ document.addEventListener('DOMContentLoaded', () => {
         locationFilter.addEventListener('change', performSearchRebuild);
     }
 });
+/* ===============================================
+   事業者検索カルーセル - レポートと同じ横スライド
+   =============================================== */
+
+let membersCarouselData = [];
+let currentMemberSlide = 0;
+let cardsPerSlide = 3;
+
+// メンバー検索とカルーセル読み込み
+async function loadMembersCarousel() {
+    console.log('🎠 Loading members carousel...');
+    try {
+        const response = await fetch(`${API_BASE}/api/members`);
+        if (!response.ok) throw new Error('Failed to load members');
+        
+        const data = await response.json();
+        membersCarouselData = data.filter(m => m.isPublic);
+        
+        console.log(`✅ Loaded ${membersCarouselData.length} public members`);
+        
+        renderMembersCarousel();
+        updateMemberResultsCount(membersCarouselData.length, '');
+        updateCarouselNavigation();
+        renderMemberCarouselDots();
+        
+    } catch (error) {
+        console.error('❌ Error loading members:', error);
+        const track = document.getElementById('membersCarouselTrack');
+        if (track) {
+            track.innerHTML = `
+                <div class="loading-spinner-carousel">
+                    <p style="color: #dc3545;">⚠️ 読み込みエラー</p>
+                </div>
+            `;
+        }
+    }
+}
+
+// カルーセルレンダリング
+function renderMembersCarousel() {
+    const track = document.getElementById('membersCarouselTrack');
+    if (!track) return;
+    
+    if (membersCarouselData.length === 0) {
+        track.innerHTML = `
+            <div class="loading-spinner-carousel">
+                <p>該当する事業者が見つかりませんでした</p>
+            </div>
+        `;
+        return;
+    }
+    
+    track.innerHTML = membersCarouselData.map(member => {
+        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+        const displayUrl = member.website ? new URL(member.website).hostname.replace('www.', '') : '';
+        const skillsToShow = member.skills ? member.skills.slice(0, 3) : [];
+        
+        return `
+            <div class="member-card-carousel">
+                <div style="position: relative;">
+                    <img src="${ogpImage}" alt="${member.name}" class="member-card-image-carousel" 
+                         onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                    <div class="member-card-badge-carousel">${member.category || '事業者'}</div>
+                </div>
+                <div class="member-card-body-carousel">
+                    <div class="member-card-name-carousel">${member.name}</div>
+                    <div class="member-card-business-carousel">${member.business}</div>
+                    ${member.website ? `
+                        <a href="${member.website}" target="_blank" rel="noopener noreferrer" class="member-card-url-carousel">
+                            <i class="fas fa-external-link-alt"></i>
+                            ${displayUrl}
+                        </a>
+                    ` : ''}
+                    <div class="member-card-intro-carousel">${member.introduction || 'まだ自己紹介がありません'}</div>
+                    ${skillsToShow.length > 0 ? `
+                        <div class="member-card-skills-carousel">
+                            ${skillsToShow.map(skill => `<span class="member-skill-tag-carousel">${skill}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="member-card-location-carousel">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${member.location || '滋賀県'}
+                    </div>
+                    <button class="member-card-action-carousel" onclick="showMemberDetail('${member.id}')">
+                        詳細を見る
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // カルーセル位置を更新
+    updateCarouselPosition();
+}
+
+// カルーセル位置更新
+function updateCarouselPosition() {
+    const track = document.getElementById('membersCarouselTrack');
+    if (!track) return;
+    
+    // カードの幅と間隔を計算
+    const container = document.getElementById('membersCarouselContainer');
+    if (!container) return;
+    
+    const containerWidth = container.offsetWidth;
+    
+    // レスポンシブ: カードの数を調整
+    if (window.innerWidth <= 768) {
+        cardsPerSlide = 1;
+    } else if (window.innerWidth <= 1200) {
+        cardsPerSlide = 2;
+    } else {
+        cardsPerSlide = 3;
+    }
+    
+    // 1スライドの移動距離 = コンテナ幅
+    const slideDistance = containerWidth;
+    const offset = -currentMemberSlide * slideDistance;
+    
+    track.style.transform = `translateX(${offset}px)`;
+    
+    console.log(`🎠 Carousel position: slide ${currentMemberSlide}, offset ${offset}px`);
+}
+
+// スライド移動
+function slideMembersCarousel(direction) {
+    const totalSlides = Math.ceil(membersCarouselData.length / cardsPerSlide);
+    
+    currentMemberSlide += direction;
+    
+    // 範囲チェック
+    if (currentMemberSlide < 0) {
+        currentMemberSlide = 0;
+    } else if (currentMemberSlide >= totalSlides) {
+        currentMemberSlide = totalSlides - 1;
+    }
+    
+    updateCarouselPosition();
+    updateCarouselNavigation();
+    updateMemberCarouselDots();
+    
+    console.log(`🎠 Slid to slide ${currentMemberSlide}`);
+}
+
+// ナビゲーションボタン更新
+function updateCarouselNavigation() {
+    const prevBtn = document.getElementById('membersPrev');
+    const nextBtn = document.getElementById('membersNext');
+    
+    if (!prevBtn || !nextBtn) return;
+    
+    const totalSlides = Math.ceil(membersCarouselData.length / cardsPerSlide);
+    
+    prevBtn.disabled = currentMemberSlide === 0;
+    nextBtn.disabled = currentMemberSlide >= totalSlides - 1;
+}
+
+// ドットナビゲーション
+function renderMemberCarouselDots() {
+    const dotsContainer = document.getElementById('memberCarouselDots');
+    if (!dotsContainer) return;
+    
+    const totalSlides = Math.ceil(membersCarouselData.length / cardsPerSlide);
+    
+    if (totalSlides <= 1) {
+        dotsContainer.innerHTML = '';
+        return;
+    }
+    
+    dotsContainer.innerHTML = Array.from({ length: totalSlides }, (_, i) => 
+        `<div class="carousel-dot-member ${i === currentMemberSlide ? 'active' : ''}" 
+              onclick="jumpToMemberSlide(${i})"></div>`
+    ).join('');
+}
+
+function updateMemberCarouselDots() {
+    const dots = document.querySelectorAll('.carousel-dot-member');
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentMemberSlide);
+    });
+}
+
+function jumpToMemberSlide(slideIndex) {
+    currentMemberSlide = slideIndex;
+    updateCarouselPosition();
+    updateCarouselNavigation();
+    updateMemberCarouselDots();
+    console.log(`🎯 Jumped to slide ${slideIndex}`);
+}
+
+// 検索実行
+async function performMemberSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const locationFilter = document.getElementById('locationFilter');
+    
+    const query = searchInput ? searchInput.value.trim() : '';
+    const category = categoryFilter ? categoryFilter.value : 'all';
+    const location = locationFilter ? locationFilter.value : 'all';
+    
+    console.log(`🔍 Searching: query="${query}", category="${category}", location="${location}"`);
+    
+    try {
+        const params = new URLSearchParams();
+        if (query) params.append('q', query);
+        if (category !== 'all') params.append('category', category);
+        if (location !== 'all') params.append('location', location);
+        
+        const response = await fetch(`${API_BASE}/api/members/search?${params}`);
+        if (!response.ok) throw new Error('Search failed');
+        
+        const data = await response.json();
+        membersCarouselData = data;
+        currentMemberSlide = 0;
+        
+        renderMembersCarousel();
+        updateMemberResultsCount(data.length, query);
+        updateCarouselNavigation();
+        renderMemberCarouselDots();
+        
+        console.log(`✅ Search complete: ${data.length} results`);
+        
+    } catch (error) {
+        console.error('❌ Search error:', error);
+    }
+}
+
+// クイック検索
+function setMemberQuickSearch(keyword) {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.value = keyword;
+        performMemberSearch();
+    }
+}
+
+// 結果カウント更新
+function updateMemberResultsCount(count, query) {
+    const resultsCount = document.getElementById('resultsCount');
+    if (!resultsCount) return;
+    
+    if (query) {
+        resultsCount.textContent = `"${query}" の検索結果: ${count}件`;
+    } else {
+        resultsCount.textContent = `全${count}名の事業者`;
+    }
+}
+
+// イベントリスナー
+document.addEventListener('DOMContentLoaded', () => {
+    // 検索入力でEnterキー
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performMemberSearch();
+            }
+        });
+    }
+    
+    // フィルター変更時に自動検索
+    const categoryFilter = document.getElementById('categoryFilter');
+    const locationFilter = document.getElementById('locationFilter');
+    
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', performMemberSearch);
+    }
+    
+    if (locationFilter) {
+        locationFilter.addEventListener('change', performMemberSearch);
+    }
+    
+    // ウィンドウリサイズ時にカルーセル再計算
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            updateCarouselPosition();
+            renderMemberCarouselDots();
+        }, 250);
+    });
+});
+
+console.log('✅ Members carousel script loaded');

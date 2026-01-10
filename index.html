@@ -332,7 +332,7 @@
     </section>
 
     <!-- コラボレーション事例 -->
-    <section class="members-section-rebuild" id="members">
+    <section class="members-section-carousel" id="members">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Find Members</span>
@@ -341,20 +341,20 @@
             </div>
             
             <!-- 検索パネル -->
-            <div class="search-panel-rebuild">
-                <div class="search-main-rebuild">
-                    <div class="search-input-wrapper-rebuild">
+            <div class="search-panel-carousel">
+                <div class="search-main-carousel">
+                    <div class="search-input-wrapper-carousel">
                         <i class="fas fa-search"></i>
                         <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." autocomplete="off">
                     </div>
-                    <button class="search-btn-rebuild" onclick="performSearchRebuild()">
+                    <button class="search-btn-carousel" onclick="performMemberSearch()">
                         <i class="fas fa-search"></i>
                         検索
                     </button>
                 </div>
                 
-                <div class="search-filters-rebuild">
-                    <div class="filter-group-rebuild">
+                <div class="search-filters-carousel">
+                    <div class="filter-group-carousel">
                         <label><i class="fas fa-tag"></i> カテゴリー</label>
                         <select id="categoryFilter">
                             <option value="all">すべて</option>
@@ -367,7 +367,7 @@
                             <option value="その他">その他</option>
                         </select>
                     </div>
-                    <div class="filter-group-rebuild">
+                    <div class="filter-group-carousel">
                         <label><i class="fas fa-map-marker-alt"></i> 地域</label>
                         <select id="locationFilter">
                             <option value="all">すべて</option>
@@ -379,27 +379,42 @@
                     </div>
                 </div>
                 
-                <div class="quick-search-rebuild">
-                    <span class="quick-label-rebuild">人気の検索:</span>
-                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('IT')">IT・Web</button>
-                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('デザイン')">デザイン</button>
-                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('飲食')">飲食店</button>
-                    <button class="quick-tag-rebuild" onclick="setQuickSearchRebuild('手作り')">手作り</button>
+                <div class="quick-search-carousel">
+                    <span class="quick-label-carousel">人気の検索:</span>
+                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('IT')">IT・Web</button>
+                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('デザイン')">デザイン</button>
+                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('飲食')">飲食店</button>
+                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('手作り')">手作り</button>
                 </div>
             </div>
             
             <!-- 結果表示 -->
-            <div class="results-info-rebuild">
+            <div class="results-info-carousel">
                 <span id="resultsCount">読み込み中...</span>
             </div>
             
-            <!-- メンバーグリッド -->
-            <div class="members-grid-rebuild" id="membersGrid">
-                <div class="loading-spinner-rebuild">
-                    <div class="spinner"></div>
-                    <p>読み込み中...</p>
+            <!-- メンバーカルーセル -->
+            <div class="members-carousel-wrapper">
+                <button class="carousel-nav-btn carousel-prev" id="membersPrev" onclick="slideMembersCarousel(-1)" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="members-carousel-container" id="membersCarouselContainer">
+                    <div class="members-carousel-track" id="membersCarouselTrack">
+                        <div class="loading-spinner-carousel">
+                            <div class="spinner"></div>
+                            <p>読み込み中...</p>
+                        </div>
+                    </div>
                 </div>
+                
+                <button class="carousel-nav-btn carousel-next" id="membersNext" onclick="slideMembersCarousel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
+            
+            <!-- カルーセルドット -->
+            <div class="carousel-dots-member" id="memberCarouselDots"></div>
         </div>
     </section>
     <section class="connect-section" id="connect">
