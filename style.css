@@ -11557,3 +11557,283 @@ section {
         min-height: 450px;
     }
 }
+/* ===================================
+   事業者セクション - スクロール完全禁止
+   =================================== */
+
+/* 事業者セクション全体のスクロール禁止 */
+.members-section {
+    overflow: visible !important;
+}
+
+/* 検索パネルのスクロール禁止 */
+.members-section .search-panel {
+    overflow: visible !important;
+}
+
+.members-section .search-panel * {
+    overflow: visible !important;
+}
+
+/* 検索入力エリア */
+.members-section .search-main,
+.members-section .search-input-wrapper,
+.members-section .search-filters,
+.members-section .filter-group,
+.members-section .quick-search {
+    overflow: visible !important;
+}
+
+/* 検索結果エリア */
+.members-section .search-results {
+    overflow: visible !important;
+}
+
+/* 結果ヘッダー */
+.members-section .results-header {
+    overflow: visible !important;
+}
+
+/* カルーセルラッパー - スクロール禁止 */
+.members-section .carousel-wrapper {
+    overflow: visible !important;
+}
+
+/* メンバーグリッド - 横スクロールのみ（カラフルスクロールバー） */
+.members-section .members-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: auto;
+    padding: 0 0 20px 0;
+    margin: 0;
+    width: 100%;
+    height: auto;
+}
+
+/* カラフルなスクロールバー - 事業者カード */
+.members-section .members-grid::-webkit-scrollbar {
+    height: 12px;
+}
+
+.members-section .members-grid::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, #fff8e1, #e8f5e9, #e3f2fd);
+    border-radius: 6px;
+}
+
+.members-section .members-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ffa726, #66bb6a, #42a5f5);
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.members-section .members-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #ff9800, #4caf50, #2196f3);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Firefox用 */
+.members-section .members-grid {
+    scrollbar-width: thin;
+    scrollbar-color: #66bb6a #e8f5e9;
+}
+
+/* ===================================
+   すべてのカードアニメーション完全削除
+   =================================== */
+
+/* メンバーカード */
+.members-section .member-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    
+    /* アニメーション完全無効化 */
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    will-change: auto !important;
+    
+    /* 固定幅 */
+    flex: 0 0 320px;
+    min-width: 320px;
+    max-width: 320px;
+    width: 320px;
+    height: auto;
+    min-height: 480px;
+}
+
+.members-section .member-card:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    box-shadow: var(--shadow-md);
+}
+
+/* カード内のすべての要素 */
+.members-section .member-card *,
+.members-section .member-card *::before,
+.members-section .member-card *::after {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
+/* メンバーカードのヘッダー */
+.members-section .member-card-header {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.members-section .member-card-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* メンバーカードのコンテンツ */
+.members-section .member-card-content {
+    padding: 20px;
+    height: auto;
+    overflow: visible;
+}
+
+/* メンバー情報 */
+.members-section .member-card-info {
+    height: auto;
+    overflow: visible;
+}
+
+/* メンバーカードのボタン */
+.members-section .member-card button,
+.members-section .member-card a {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.members-section .member-card button:hover,
+.members-section .member-card a:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* ナビゲーション矢印を非表示 */
+.members-section .carousel-nav {
+    display: none !important;
+}
+
+/* ===================================
+   他のカードのアニメーション削除
+   =================================== */
+
+/* ブログカード */
+.blog-card,
+.blog-card * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.blog-card:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* コラボカード（活動レポート） */
+.collab-card,
+.collab-card *,
+.collab-card::before,
+.collab-card::after {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.collab-card:hover,
+.collab-card:hover::before {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* イベントカード */
+.event-card,
+.event-compact-card,
+.event-card *,
+.event-compact-card * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.event-card:hover,
+.event-compact-card:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* 会員の声カード */
+.testimonial-card,
+.testimonial-card * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.testimonial-card:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* FAQカード */
+.faq-item,
+.faq-item * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.faq-item:hover,
+.faq-item.active {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* 運営メンバーカード */
+.team-member-compact,
+.team-member-compact * {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.team-member-compact:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .members-section .member-card {
+        flex: 0 0 280px;
+        min-width: 280px;
+        max-width: 280px;
+        width: 280px;
+        min-height: 450px;
+    }
+}
