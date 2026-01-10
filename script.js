@@ -6080,3 +6080,48 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Compact About Section
+function updateCompactAboutStats() {
+    fetch(`${API_BASE}/api/data?_=${Date.now()}`)
+        .then(res => res.json())
+        .then(data => {
+            const memberCount = data.members?.filter(m => m.isPublic !== false).length || 0;
+            const eventCount = data.events?.length || 0;
+            const collabCount = data.collaborations?.length || 0;
+            
+            animateNumber('aboutMemberCount', memberCount);
+            animateNumber('aboutEventCount', eventCount);
+            animateNumber('aboutCollabCount', collabCount);
+        })
+        .catch(error => console.error('Stats error:', error));
+}
+
+function animateNumber(elementId, target) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    
+    let current = 0;
+    const duration = 1000;
+    const step = target / (duration / 16);
+    
+    const animate = () => {
+        current += step;
+        if (current >= target) {
+            el.textContent = target;
+        } else {
+            el.textContent = Math.floor(current);
+            requestAnimationFrame(animate);
+        }
+    };
+    
+    animate();
+}
+
+// Init compact about
+if (document.querySelector('.about-compact-new')) {
+    document.addEventListener('DOMContentLoaded', updateCompactAboutStats);
+    window.addEventListener('hashchange', () => {
+        if (window.location.hash === '#about') updateCompactAboutStats();
+    });
+}
