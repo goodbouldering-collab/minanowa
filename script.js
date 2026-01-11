@@ -6830,3 +6830,123 @@ window.addEventListener('resize', () => {
 });
 
 console.log('✅ Admin tab slider script loaded');
+/* ===============================================
+   みんなのWAとは - コアタブの横スクロール機能追加
+   =============================================== */
+
+// コアタブの横スクロール初期化
+function initCoreTabsCarousel() {
+    const tabsContainer = document.querySelector('.core-tabs-carousel-container');
+    if (!tabsContainer) {
+        console.log('⚠️ Core tabs container not found, wrapping...');
+        const coreTabsElement = document.querySelector('.core-tabs');
+        if (coreTabsElement && !coreTabsElement.closest('.core-tabs-carousel-container')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'core-tabs-carousel-wrapper';
+            const container = document.createElement('div');
+            container.className = 'core-tabs-carousel-container';
+            
+            coreTabsElement.parentNode.insertBefore(wrapper, coreTabsElement);
+            wrapper.appendChild(container);
+            container.appendChild(coreTabsElement);
+            
+            console.log('✅ Core tabs wrapped in carousel container');
+        }
+    }
+    
+    // スクロール位置を調整する関数
+    const scrollActiveTabIntoViewCore = () => {
+        const activeTab = document.querySelector('.core-tab.active');
+        const container = document.querySelector('.core-tabs-carousel-container');
+        
+        if (!activeTab || !container) return;
+        
+        const tabRect = activeTab.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        if (tabRect.left < containerRect.left) {
+            container.scrollLeft -= (containerRect.left - tabRect.left + 20);
+        } else if (tabRect.right > containerRect.right) {
+            container.scrollLeft += (tabRect.right - containerRect.right + 20);
+        }
+    };
+    
+    // タブクリック時にスクロール
+    const coreTabs = document.querySelectorAll('.core-tab');
+    coreTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            setTimeout(scrollActiveTabIntoViewCore, 100);
+        });
+    });
+    
+    console.log('✅ Core tabs carousel initialized');
+}
+
+// switchCoreTab関数を拡張
+const originalSwitchCoreTab = window.switchCoreTab;
+window.switchCoreTab = function(coreId) {
+    if (originalSwitchCoreTab) {
+        originalSwitchCoreTab(coreId);
+    } else {
+        console.log(`🔄 Switching to core tab: ${coreId}`);
+        
+        // タブのアクティブ状態更新
+        const tabs = document.querySelectorAll('.core-tab');
+        tabs.forEach(tab => {
+            if (tab.getAttribute('data-core') === coreId) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+        
+        // コンテンツのアクティブ状態更新
+        const contents = document.querySelectorAll('.core-content');
+        contents.forEach(content => {
+            if (content.getAttribute('data-content') === coreId) {
+                content.classList.add('active');
+            } else {
+                content.classList.remove('active');
+            }
+        });
+    }
+    
+    // アクティブタブを表示領域にスクロール
+    setTimeout(() => {
+        const activeTab = document.querySelector('.core-tab.active');
+        const container = document.querySelector('.core-tabs-carousel-container');
+        
+        if (!activeTab || !container) return;
+        
+        const tabRect = activeTab.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        if (tabRect.left < containerRect.left) {
+            container.scrollLeft -= (containerRect.left - tabRect.left + 20);
+        } else if (tabRect.right > containerRect.right) {
+            container.scrollLeft += (tabRect.right - containerRect.right + 20);
+        }
+    }, 50);
+};
+
+// 初期化
+document.addEventListener('DOMContentLoaded', () => {
+    initCoreTabsCarousel();
+});
+
+// About sectionが表示されたら初期化
+const aboutObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            initCoreTabsCarousel();
+            aboutObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+const aboutSection = document.querySelector('.about-interactive-ultimate');
+if (aboutSection) {
+    aboutObserver.observe(aboutSection);
+}
+
+console.log('✅ About mobile optimization script loaded');
