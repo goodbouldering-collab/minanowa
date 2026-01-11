@@ -15495,3 +15495,684 @@ section {
         justify-content: center;
     }
 }
+/* ===================================================
+   統一カードデザイン - 最終調整（幅260px統一）
+   =================================================== */
+
+/* 全カードの幅を260pxに統一 */
+.collab-card,
+.member-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
+    flex-shrink: 0;
+    cursor: pointer;
+    height: 480px;
+}
+
+/* ホバー時の統一エフェクト */
+.collab-card:hover,
+.member-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.18);
+}
+
+/* トップバー（グリーン） */
+.collab-card::before,
+.member-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4CAF50 0%, #45a049 100%);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+
+.collab-card:hover::before,
+.member-card:hover::before {
+    transform: scaleX(1.1);
+}
+
+/* 画像エリア統一 - 高さ170px */
+.collab-image,
+.member-card-ogp,
+.member-card-header {
+    position: relative;
+    width: 100%;
+    height: 170px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.collab-image img,
+.member-card-ogp img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collab-card:hover .collab-image img,
+.member-card:hover .member-card-ogp img {
+    transform: scale(1.08);
+}
+
+/* アバター表示（事業者カードのみ） */
+.member-card-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.member-card-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 10px;
+    transition: transform 0.4s ease;
+}
+
+.member-card:hover .member-card-avatar {
+    transform: scale(1.1);
+}
+
+.member-card-name {
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.member-card-business {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* バッジ統一 */
+.collab-badge,
+.member-card-category {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #4CAF50;
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 2;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* コンテンツエリア統一 */
+.collab-content,
+.member-card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* メンバー表示（活動レポート） */
+.collab-members {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.collab-avatars {
+    display: flex;
+    margin-left: -6px;
+}
+
+.collab-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -6px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.collab-card:hover .collab-avatar {
+    transform: scale(1.1);
+}
+
+.collab-names {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 600;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* タイトル統一 */
+.collab-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 42px;
+}
+
+/* 説明文統一 */
+.collab-description,
+.member-card-intro {
+    font-size: 12px;
+    color: #6c757d;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 54px;
+}
+
+/* URL表示（事業者カード） */
+.member-card-url {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #4CAF50;
+    margin-bottom: 4px;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.member-card-url:hover {
+    text-decoration: underline;
+}
+
+/* スキルタグ統一 */
+.collab-tags,
+.member-card-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.collab-tag,
+.member-card-skill {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* メタ情報（日付・場所） */
+.collab-meta,
+.member-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+.collab-meta i,
+.member-card-meta i {
+    color: #4CAF50;
+    font-size: 10px;
+}
+
+/* フッター（ボタンエリア） */
+.collab-footer,
+.member-card-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #e9ecef;
+    margin-top: auto;
+}
+
+.collab-btn,
+.member-card-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.collab-btn:hover,
+.member-card-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.35);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1400px) {
+    .collab-card,
+    .member-card {
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
+    }
+}
+
+@media (max-width: 768px) {
+    .collab-card,
+    .member-card {
+        width: 240px;
+        min-width: 240px;
+        max-width: 240px;
+        height: 460px;
+    }
+    
+    .collab-image,
+    .member-card-ogp,
+    .member-card-header {
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .collab-card,
+    .member-card {
+        width: 220px;
+        min-width: 220px;
+        max-width: 220px;
+        height: 440px;
+    }
+    
+    .collab-image,
+    .member-card-ogp,
+    .member-card-header {
+        height: 130px;
+    }
+}
+/* ===================================================
+   管理者パネル - 広々表示とタブ横スライド最適化
+   =================================================== */
+
+/* モーダル全画面表示の最適化 */
+.modal-fullscreen {
+    width: 98vw !important;
+    height: 95vh !important;
+    max-width: 98vw !important;
+    max-height: 95vh !important;
+    margin: 2.5vh 1vw !important;
+    padding: 0 !important;
+}
+
+/* 管理者パネル全体 */
+#adminModal .modal-content {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ヘッダー部分 */
+#adminModal .modal-header {
+    padding: 16px 24px !important;
+    border-bottom: 2px solid #e9ecef;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+}
+
+#adminModal .modal-header h2 {
+    font-size: 20px !important;
+    margin: 0 !important;
+    font-weight: 700;
+}
+
+#adminModal .modal-close {
+    top: 16px !important;
+    right: 24px !important;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    color: white;
+    opacity: 0.9;
+}
+
+#adminModal .modal-close:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* タブラッパー */
+.admin-tabs-wrapper {
+    position: relative;
+    background: white;
+    border-bottom: 2px solid #e9ecef;
+    flex-shrink: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* タブコンテナ - 横スクロール */
+.admin-tabs-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 60px;
+}
+
+.admin-tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* タブ */
+.admin-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 12px 8px;
+    min-width: min-content;
+}
+
+.admin-tab {
+    flex-shrink: 0;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border-radius: 8px 8px 0 0;
+}
+
+.admin-tab i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.admin-tab:hover {
+    color: #4CAF50;
+    background: rgba(76,175,80,0.05);
+    transform: translateY(-2px);
+}
+
+.admin-tab:hover i {
+    transform: scale(1.2);
+}
+
+.admin-tab.active {
+    color: #4CAF50;
+    border-bottom-color: #4CAF50;
+    background: rgba(76,175,80,0.1);
+}
+
+.admin-tab.active i {
+    transform: scale(1.15);
+}
+
+/* ナビゲーションボタン */
+.admin-tabs-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 2px solid #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.admin-tabs-nav:hover:not(.disabled) {
+    background: #4CAF50;
+    color: white;
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+}
+
+.admin-tabs-nav.disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    border-color: #ccc;
+}
+
+.admin-tabs-nav-left {
+    left: 12px;
+}
+
+.admin-tabs-nav-right {
+    right: 12px;
+}
+
+.admin-tabs-nav i {
+    font-size: 14px;
+    color: #4CAF50;
+    transition: color 0.3s ease;
+}
+
+.admin-tabs-nav:hover:not(.disabled) i {
+    color: white;
+}
+
+/* インジケーター */
+.admin-tabs-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 0;
+    background: #f8f9fa;
+}
+
+.admin-tabs-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-tabs-dot:hover {
+    background: #adb5bd;
+    transform: scale(1.3);
+}
+
+.admin-tabs-dot.active {
+    background: #4CAF50;
+    width: 20px;
+    border-radius: 3px;
+}
+
+/* コンテンツエリア */
+.admin-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px !important;
+    background: #f8f9fa;
+}
+
+.admin-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.admin-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.admin-content::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 5px;
+}
+
+.admin-content::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+/* 管理者パネル内のカード */
+#adminModal .glass-card {
+    margin-bottom: 16px !important;
+    padding: 20px !important;
+}
+
+/* 管理者パネル内のフォーム */
+#adminModal .form-group {
+    margin-bottom: 16px !important;
+}
+
+#adminModal .glass-input,
+#adminModal textarea {
+    padding: 10px 12px !important;
+}
+
+/* 管理者パネル内のボタン */
+#adminModal .btn {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1400px) {
+    .modal-fullscreen {
+        width: 98vw !important;
+        height: 94vh !important;
+        margin: 3vh 1vw !important;
+    }
+    
+    .admin-tabs-container {
+        padding: 0 50px;
+    }
+    
+    .admin-tab {
+        padding: 10px 18px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .admin-tabs-container {
+        padding: 0 48px;
+    }
+    
+    .admin-tabs-nav {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .admin-tabs-nav-left {
+        left: 10px;
+    }
+    
+    .admin-tabs-nav-right {
+        right: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-fullscreen {
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+    
+    #adminModal .modal-header {
+        padding: 12px 16px !important;
+    }
+    
+    #adminModal .modal-header h2 {
+        font-size: 18px !important;
+    }
+    
+    .admin-tabs-container {
+        padding: 0 40px;
+    }
+    
+    .admin-tabs {
+        padding: 8px 4px;
+    }
+    
+    .admin-tab {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .admin-tab i {
+        font-size: 14px;
+    }
+    
+    .admin-tabs-nav {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .admin-tabs-nav i {
+        font-size: 12px;
+    }
+    
+    .admin-content {
+        padding: 12px !important;
+    }
+}
