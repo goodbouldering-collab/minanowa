@@ -6701,3 +6701,132 @@ window.addEventListener('resize', () => {
 });
 
 console.log('✅ About interactive script loaded');
+/* ===============================================
+   管理者パネル - タブスライド機能
+   =============================================== */
+
+// タブスライドナビゲーション
+function initAdminTabSlider() {
+    const tabsContainer = document.querySelector('.admin-tabs-container');
+    if (!tabsContainer) return;
+    
+    // ナビゲーションボタンを追加
+    const wrapper = tabsContainer.parentElement;
+    if (!wrapper.querySelector('.admin-tabs-nav')) {
+        const leftNav = document.createElement('div');
+        leftNav.className = 'admin-tabs-nav left disabled';
+        leftNav.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        leftNav.onclick = () => slideAdminTabs('left');
+        
+        const rightNav = document.createElement('div');
+        rightNav.className = 'admin-tabs-nav right';
+        rightNav.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        rightNav.onclick = () => slideAdminTabs('right');
+        
+        wrapper.appendChild(leftNav);
+        wrapper.appendChild(rightNav);
+    }
+    
+    // スクロールイベントでナビボタンの状態を更新
+    tabsContainer.addEventListener('scroll', updateAdminTabNavButtons);
+    
+    // 初期状態の更新
+    updateAdminTabNavButtons();
+    
+    console.log('✅ Admin tab slider initialized');
+}
+
+// タブスライド実行
+function slideAdminTabs(direction) {
+    const container = document.querySelector('.admin-tabs-container');
+    if (!container) return;
+    
+    const slideAmount = 300; // スライド量（px）
+    
+    if (direction === 'left') {
+        container.scrollLeft -= slideAmount;
+    } else {
+        container.scrollLeft += slideAmount;
+    }
+}
+
+// ナビボタンの状態更新
+function updateAdminTabNavButtons() {
+    const container = document.querySelector('.admin-tabs-container');
+    const leftNav = document.querySelector('.admin-tabs-nav.left');
+    const rightNav = document.querySelector('.admin-tabs-nav.right');
+    
+    if (!container || !leftNav || !rightNav) return;
+    
+    // 左端にいる場合
+    if (container.scrollLeft <= 10) {
+        leftNav.classList.add('disabled');
+    } else {
+        leftNav.classList.remove('disabled');
+    }
+    
+    // 右端にいる場合
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    if (container.scrollLeft >= maxScroll - 10) {
+        rightNav.classList.add('disabled');
+    } else {
+        rightNav.classList.remove('disabled');
+    }
+}
+
+// アクティブタブを表示領域にスクロール
+function scrollActiveTabIntoView() {
+    const activeTab = document.querySelector('.admin-tab.active');
+    const container = document.querySelector('.admin-tabs-container');
+    
+    if (!activeTab || !container) return;
+    
+    const tabRect = activeTab.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    
+    // タブが表示領域外にある場合、スクロール
+    if (tabRect.left < containerRect.left) {
+        container.scrollLeft -= (containerRect.left - tabRect.left + 20);
+    } else if (tabRect.right > containerRect.right) {
+        container.scrollLeft += (tabRect.right - containerRect.right + 20);
+    }
+}
+
+// 管理者パネルを開く時に初期化
+const originalOpenAdminPanel = window.openAdminPanel;
+window.openAdminPanel = function() {
+    if (originalOpenAdminPanel) {
+        originalOpenAdminPanel();
+    }
+    
+    // タブスライダーを初期化
+    setTimeout(() => {
+        initAdminTabSlider();
+        scrollActiveTabIntoView();
+    }, 100);
+};
+
+// タブ切り替え時にスクロール
+const originalSwitchAdminTab = window.switchAdminTab;
+window.switchAdminTab = function(tabName) {
+    if (originalSwitchAdminTab) {
+        originalSwitchAdminTab(tabName);
+    }
+    
+    // アクティブタブを表示領域にスクロール
+    setTimeout(() => {
+        scrollActiveTabIntoView();
+        updateAdminTabNavButtons();
+    }, 50);
+};
+
+// ウィンドウリサイズ時にナビボタン更新
+let adminResizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(adminResizeTimer);
+    adminResizeTimer = setTimeout(() => {
+        updateAdminTabNavButtons();
+    }, 250);
+});
+
+console.log('✅ Admin tab slider script loaded');

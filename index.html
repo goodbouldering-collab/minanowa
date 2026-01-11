@@ -1069,34 +1069,38 @@
                 <div class="admin-header">
                     <h2><i class="fas fa-cog"></i> 管理者パネル</h2>
                 </div>
-                <div class="admin-tabs">
-                    <button class="admin-tab active" onclick="switchAdminTab('dashboard')">
-                        <i class="fas fa-chart-line"></i> ダッシュボード
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('members')">
-                        <i class="fas fa-users"></i> メンバー管理
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('blogs')">
-                        <i class="fas fa-blog"></i> ブログ管理
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('events')">
-                        <i class="fas fa-calendar"></i> イベント管理
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('testimonials')">
-                        <i class="fas fa-comments"></i> 会員の声
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('collaborations')">
-                        <i class="fas fa-handshake"></i> コラボ事例
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('images')">
-                        <i class="fas fa-images"></i> 画像管理
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('pageContent')">
-                        <i class="fas fa-file-alt"></i> ページ内容管理
-                    </button>
-                    <button class="admin-tab" onclick="switchAdminTab('faqs')">
-                        <i class="fas fa-question-circle"></i> FAQ管理
-                    </button>
+                <div class="admin-tabs-wrapper">
+                    <div class="admin-tabs-container">
+                        <div class="admin-tabs">
+                            <button class="admin-tab active" onclick="switchAdminTab('dashboard')">
+                                <i class="fas fa-chart-line"></i> ダッシュボード
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('members')">
+                                <i class="fas fa-users"></i> メンバー管理
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('blogs')">
+                                <i class="fas fa-blog"></i> ブログ管理
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('events')">
+                                <i class="fas fa-calendar"></i> イベント管理
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('testimonials')">
+                                <i class="fas fa-comments"></i> 会員の声
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('collaborations')">
+                                <i class="fas fa-handshake"></i> コラボ事例
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('images')">
+                                <i class="fas fa-images"></i> 画像管理
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('pageContent')">
+                                <i class="fas fa-file-alt"></i> ページ内容管理
+                            </button>
+                            <button class="admin-tab" onclick="switchAdminTab('faqs')">
+                                <i class="fas fa-question-circle"></i> FAQ管理
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="admin-content" id="adminContent"></div>
             </div>
