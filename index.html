@@ -492,7 +492,7 @@
     </section>
 
     <!-- コラボレーション事例 -->
-    <section class="members-section-carousel" id="members">
+    <section class="members-section" id="members">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Find Members</span>
@@ -500,21 +500,21 @@
                 <p class="section-subtitle">名前・職業・スキルで検索してつながろう</p>
             </div>
             
-            <!-- 検索パネル -->
-            <div class="search-panel-carousel">
-                <div class="search-main-carousel">
-                    <div class="search-input-wrapper-carousel">
+            <!-- 検索パネル（シンプル版） -->
+            <div class="search-panel">
+                <div class="search-main">
+                    <div class="search-input-wrapper">
                         <i class="fas fa-search"></i>
                         <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." autocomplete="off">
                     </div>
-                    <button class="search-btn-carousel" onclick="performMemberSearch()">
+                    <button class="search-btn" onclick="performMemberSearch()">
                         <i class="fas fa-search"></i>
                         検索
                     </button>
                 </div>
                 
-                <div class="search-filters-carousel">
-                    <div class="filter-group-carousel">
+                <div class="search-filters">
+                    <div class="filter-group">
                         <label><i class="fas fa-tag"></i> カテゴリー</label>
                         <select id="categoryFilter">
                             <option value="all">すべて</option>
@@ -527,7 +527,7 @@
                             <option value="その他">その他</option>
                         </select>
                     </div>
-                    <div class="filter-group-carousel">
+                    <div class="filter-group">
                         <label><i class="fas fa-map-marker-alt"></i> 地域</label>
                         <select id="locationFilter">
                             <option value="all">すべて</option>
@@ -539,17 +539,17 @@
                     </div>
                 </div>
                 
-                <div class="quick-search-carousel">
-                    <span class="quick-label-carousel">人気の検索:</span>
-                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('IT')">IT・Web</button>
-                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('デザイン')">デザイン</button>
-                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('飲食')">飲食店</button>
-                    <button class="quick-tag-carousel" onclick="setMemberQuickSearch('手作り')">手作り</button>
+                <div class="quick-search">
+                    <span class="quick-label">人気の検索:</span>
+                    <button class="quick-tag" onclick="setMemberQuickSearch('IT')">IT・Web</button>
+                    <button class="quick-tag" onclick="setMemberQuickSearch('デザイン')">デザイン</button>
+                    <button class="quick-tag" onclick="setMemberQuickSearch('飲食')">飲食店</button>
+                    <button class="quick-tag" onclick="setMemberQuickSearch('手作り')">手作り</button>
                 </div>
             </div>
             
             <!-- 結果表示 -->
-            <div class="results-info-carousel">
+            <div class="results-info">
                 <span id="resultsCount">読み込み中...</span>
             </div>
             
@@ -561,7 +561,7 @@
                 
                 <div class="members-carousel-container" id="membersCarouselContainer">
                     <div class="members-carousel-track" id="membersCarouselTrack">
-                        <div class="loading-spinner-carousel">
+                        <div class="loading-spinner">
                             <div class="spinner"></div>
                             <p>読み込み中...</p>
                         </div>
