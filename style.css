@@ -14571,3 +14571,282 @@ section {
         letter-spacing: 4px;
     }
 }
+/* ===================================================
+   管理者パネル - カルーセルナビゲーション強化
+   =================================================== */
+
+/* タブラッパーにカルーセルナビゲーションを追加 */
+.admin-tabs-wrapper {
+    position: relative;
+    background: white;
+    border-bottom: 3px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+/* 左右ナビゲーションボタン */
+.admin-tabs-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 2px solid #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.admin-tabs-nav:hover:not(.disabled) {
+    background: #4CAF50;
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+}
+
+.admin-tabs-nav.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #ccc;
+}
+
+.admin-tabs-nav-left {
+    left: 8px;
+}
+
+.admin-tabs-nav-right {
+    right: 8px;
+}
+
+.admin-tabs-nav i {
+    font-size: 16px;
+    color: #4CAF50;
+    transition: color 0.3s ease;
+}
+
+.admin-tabs-nav:hover:not(.disabled) i {
+    color: white;
+}
+
+/* タブコンテナのスクロール改善 */
+.admin-tabs-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #4CAF50 #f8f9fa;
+    position: relative;
+    padding: 0 56px; /* ナビボタンのスペース確保 */
+}
+
+/* スクロールバーの非表示（ナビボタンで操作） */
+.admin-tabs-container::-webkit-scrollbar {
+    height: 0;
+    display: none;
+}
+
+/* タブのスタイル調整 */
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 16px 8px;
+    min-width: min-content;
+}
+
+.admin-tab {
+    flex-shrink: 0;
+    padding: 14px 28px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 8px 8px 0 0;
+}
+
+.admin-tab i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.admin-tab:hover {
+    color: #4CAF50;
+    background: rgba(76,175,80,0.05);
+}
+
+.admin-tab:hover i {
+    transform: scale(1.15);
+}
+
+.admin-tab.active {
+    color: #4CAF50;
+    border-bottom-color: #4CAF50;
+    background: rgba(76,175,80,0.08);
+}
+
+.admin-tab.active i {
+    transform: scale(1.1);
+}
+
+/* インジケーター（ドット） */
+.admin-tabs-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    background: #f8f9fa;
+}
+
+.admin-tabs-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-tabs-dot:hover {
+    background: #adb5bd;
+    transform: scale(1.2);
+}
+
+.admin-tabs-dot.active {
+    background: #4CAF50;
+    width: 24px;
+    border-radius: 4px;
+}
+
+/* スクロールヒント（オプション） */
+.admin-tabs-scroll-hint {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(76,175,80,0.9);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.admin-tabs-scroll-hint.show {
+    opacity: 1;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1200px) {
+    .admin-tabs-container {
+        padding: 0 48px;
+    }
+    
+    .admin-tabs-nav {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .admin-tabs-nav-left {
+        left: 6px;
+    }
+    
+    .admin-tabs-nav-right {
+        right: 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-tabs-container {
+        padding: 0 44px;
+    }
+    
+    .admin-tabs-nav {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .admin-tabs-nav i {
+        font-size: 14px;
+    }
+    
+    .admin-tabs-nav-left {
+        left: 4px;
+    }
+    
+    .admin-tabs-nav-right {
+        right: 4px;
+    }
+    
+    .admin-tab {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .admin-tab i {
+        font-size: 16px;
+    }
+    
+    .admin-tabs-indicators {
+        padding: 6px 0;
+    }
+    
+    .admin-tabs-dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .admin-tabs-dot.active {
+        width: 18px;
+    }
+}
+
+/* アニメーション */
+@keyframes tabSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.admin-tab {
+    animation: tabSlideIn 0.3s ease;
+}
+
+/* スムーススクロール効果 */
+.admin-tabs-container.scrolling {
+    scroll-behavior: smooth;
+}
+
+/* タッチデバイス用の改善 */
+@media (hover: none) and (pointer: coarse) {
+    .admin-tabs-container {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .admin-tabs-nav:hover {
+        transform: translateY(-50%);
+    }
+}

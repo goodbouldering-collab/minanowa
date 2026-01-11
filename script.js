@@ -7468,3 +7468,326 @@ if (!document.getElementById('password-reset-animations')) {
     `;
     document.head.appendChild(style);
 }
+/* ===================================================
+   管理者パネル - カルーセルナビゲーション機能
+   =================================================== */
+
+// 管理者タブカルーセルの初期化
+let adminTabsCurrentPage = 0;
+let adminTabsPerPage = 3;
+let adminTabsScrolling = false;
+
+function initAdminTabsCarousel() {
+    const tabsContainer = document.querySelector('.admin-tabs-container');
+    const tabs = document.querySelectorAll('.admin-tab');
+    
+    if (!tabsContainer || tabs.length === 0) return;
+    
+    // 左右ナビゲーションボタンを追加
+    createAdminNavButtons();
+    
+    // インジケーター（ドット）を追加
+    createAdminTabsIndicators();
+    
+    // スクロールイベントリスナー
+    tabsContainer.addEventListener('scroll', debounce(updateAdminNavButtons, 100));
+    
+    // ウィンドウリサイズ時
+    window.addEventListener('resize', debounce(() => {
+        updateTabsPerPage();
+        updateAdminNavButtons();
+        updateAdminTabsIndicators();
+    }, 250));
+    
+    // 初期状態の設定
+    updateTabsPerPage();
+    updateAdminNavButtons();
+    updateAdminTabsIndicators();
+    
+    // タブクリック時にスクロール
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => {
+            scrollTabIntoView(index);
+        });
+    });
+    
+    console.log('✅ 管理者タブカルーセル初期化完了');
+}
+
+// 左右ナビゲーションボタンを作成
+function createAdminNavButtons() {
+    const wrapper = document.querySelector('.admin-tabs-wrapper');
+    if (!wrapper || wrapper.querySelector('.admin-tabs-nav')) return;
+    
+    // 左ボタン
+    const leftNav = document.createElement('button');
+    leftNav.className = 'admin-tabs-nav admin-tabs-nav-left';
+    leftNav.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    leftNav.onclick = () => slideAdminTabsLeft();
+    
+    // 右ボタン
+    const rightNav = document.createElement('button');
+    rightNav.className = 'admin-tabs-nav admin-tabs-nav-right';
+    rightNav.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    rightNav.onclick = () => slideAdminTabsRight();
+    
+    wrapper.appendChild(leftNav);
+    wrapper.appendChild(rightNav);
+}
+
+// インジケーター（ドット）を作成
+function createAdminTabsIndicators() {
+    const wrapper = document.querySelector('.admin-tabs-wrapper');
+    const tabs = document.querySelectorAll('.admin-tab');
+    
+    if (!wrapper || tabs.length === 0 || wrapper.querySelector('.admin-tabs-indicators')) return;
+    
+    const indicators = document.createElement('div');
+    indicators.className = 'admin-tabs-indicators';
+    
+    // タブグループ数を計算
+    const groupCount = Math.ceil(tabs.length / adminTabsPerPage);
+    
+    for (let i = 0; i < groupCount; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'admin-tabs-dot';
+        if (i === 0) dot.classList.add('active');
+        dot.onclick = () => scrollToTabGroup(i);
+        indicators.appendChild(dot);
+    }
+    
+    wrapper.appendChild(indicators);
+}
+
+// 画面幅に応じてタブ表示数を更新
+function updateTabsPerPage() {
+    const width = window.innerWidth;
+    
+    if (width >= 1400) {
+        adminTabsPerPage = 5;
+    } else if (width >= 1200) {
+        adminTabsPerPage = 4;
+    } else if (width >= 992) {
+        adminTabsPerPage = 3;
+    } else if (width >= 768) {
+        adminTabsPerPage = 2;
+    } else {
+        adminTabsPerPage = 1;
+    }
+}
+
+// 左にスライド
+function slideAdminTabsLeft() {
+    if (adminTabsScrolling) return;
+    
+    const container = document.querySelector('.admin-tabs-container');
+    if (!container) return;
+    
+    adminTabsScrolling = true;
+    const scrollAmount = container.offsetWidth * 0.8;
+    
+    container.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+    });
+    
+    setTimeout(() => {
+        adminTabsScrolling = false;
+        updateAdminTabsIndicators();
+    }, 500);
+}
+
+// 右にスライド
+function slideAdminTabsRight() {
+    if (adminTabsScrolling) return;
+    
+    const container = document.querySelector('.admin-tabs-container');
+    if (!container) return;
+    
+    adminTabsScrolling = true;
+    const scrollAmount = container.offsetWidth * 0.8;
+    
+    container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+    });
+    
+    setTimeout(() => {
+        adminTabsScrolling = false;
+        updateAdminTabsIndicators();
+    }, 500);
+}
+
+// ナビゲーションボタンの有効/無効を更新
+function updateAdminNavButtons() {
+    const container = document.querySelector('.admin-tabs-container');
+    const leftNav = document.querySelector('.admin-tabs-nav-left');
+    const rightNav = document.querySelector('.admin-tabs-nav-right');
+    
+    if (!container || !leftNav || !rightNav) return;
+    
+    const scrollLeft = container.scrollLeft;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+    
+    // 左ボタン
+    if (scrollLeft <= 10) {
+        leftNav.classList.add('disabled');
+    } else {
+        leftNav.classList.remove('disabled');
+    }
+    
+    // 右ボタン
+    if (scrollLeft + clientWidth >= scrollWidth - 10) {
+        rightNav.classList.add('disabled');
+    } else {
+        rightNav.classList.remove('disabled');
+    }
+}
+
+// インジケーターを更新
+function updateAdminTabsIndicators() {
+    const container = document.querySelector('.admin-tabs-container');
+    const tabs = document.querySelectorAll('.admin-tab');
+    const dots = document.querySelectorAll('.admin-tabs-dot');
+    
+    if (!container || tabs.length === 0 || dots.length === 0) return;
+    
+    const scrollLeft = container.scrollLeft;
+    const containerWidth = container.clientWidth;
+    const groupCount = Math.ceil(tabs.length / adminTabsPerPage);
+    
+    // 現在のグループを計算
+    let currentGroup = 0;
+    
+    tabs.forEach((tab, index) => {
+        const tabLeft = tab.offsetLeft - container.offsetLeft;
+        const tabRight = tabLeft + tab.offsetWidth;
+        
+        if (tabLeft <= scrollLeft + containerWidth / 2) {
+            currentGroup = Math.floor(index / adminTabsPerPage);
+        }
+    });
+    
+    // ドットを更新
+    dots.forEach((dot, index) => {
+        if (index === currentGroup) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+// 特定のタブグループにスクロール
+function scrollToTabGroup(groupIndex) {
+    const container = document.querySelector('.admin-tabs-container');
+    const tabs = document.querySelectorAll('.admin-tab');
+    
+    if (!container || tabs.length === 0) return;
+    
+    const targetTabIndex = groupIndex * adminTabsPerPage;
+    const targetTab = tabs[targetTabIndex];
+    
+    if (targetTab) {
+        const scrollLeft = targetTab.offsetLeft - container.offsetLeft - 60;
+        
+        container.scrollTo({
+            left: scrollLeft,
+            behavior: 'smooth'
+        });
+        
+        setTimeout(() => {
+            updateAdminNavButtons();
+            updateAdminTabsIndicators();
+        }, 500);
+    }
+}
+
+// 特定のタブを表示領域にスクロール
+function scrollTabIntoView(tabIndex) {
+    const container = document.querySelector('.admin-tabs-container');
+    const tabs = document.querySelectorAll('.admin-tab');
+    
+    if (!container || !tabs[tabIndex]) return;
+    
+    const tab = tabs[tabIndex];
+    const tabLeft = tab.offsetLeft - container.offsetLeft;
+    const tabWidth = tab.offsetWidth;
+    const containerWidth = container.clientWidth;
+    const scrollLeft = container.scrollLeft;
+    
+    // タブが左側に隠れている場合
+    if (tabLeft < scrollLeft + 60) {
+        container.scrollTo({
+            left: tabLeft - 60,
+            behavior: 'smooth'
+        });
+    }
+    // タブが右側に隠れている場合
+    else if (tabLeft + tabWidth > scrollLeft + containerWidth - 60) {
+        container.scrollTo({
+            left: tabLeft + tabWidth - containerWidth + 60,
+            behavior: 'smooth'
+        });
+    }
+    
+    setTimeout(() => {
+        updateAdminNavButtons();
+        updateAdminTabsIndicators();
+    }, 500);
+}
+
+// 管理者パネルを開いた時にカルーセルを初期化（既存の関数を拡張）
+if (typeof window.openAdminPanel === 'function') {
+    const originalFunc = window.openAdminPanel;
+    window.openAdminPanel = function() {
+        originalFunc();
+        setTimeout(() => {
+            if (typeof initAdminTabsCarousel === 'function') {
+                initAdminTabsCarousel();
+            }
+        }, 100);
+    };
+}
+
+// デバウンス関数（重複チェック）
+if (typeof debounce === 'undefined') {
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+}
+
+// ページ読み込み時に初期化（管理者パネルが開いている場合）
+document.addEventListener('DOMContentLoaded', () => {
+    // 管理者パネルの観察
+    const adminModal = document.getElementById('adminModal');
+    if (adminModal) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    if (adminModal.classList.contains('show')) {
+                        setTimeout(() => {
+                            initAdminTabsCarousel();
+                        }, 100);
+                    }
+                }
+            });
+        });
+        
+        observer.observe(adminModal, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+});
+
+console.log('✅ 管理者タブカルーセルスクリプト読み込み完了');
