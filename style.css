@@ -15411,3 +15411,87 @@ section {
         padding: 0 8px;
     }
 }
+/* ===================================================
+   ヒーローセクション - ボタンスタイル調整
+   =================================================== */
+
+/* ヒーローボタンのスタイル統一 */
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 32px;
+}
+
+.hero-buttons .btn {
+    transition: all 0.3s ease;
+}
+
+/* グループチャットボタン */
+#heroGroupChatBtn {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#heroGroupChatBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+}
+
+/* 会員登録ボタン */
+#heroRegisterBtn {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#heroRegisterBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* アニメーション */
+#heroGroupChatBtn,
+#heroRegisterBtn {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    #heroGroupChatBtn,
+    #heroRegisterBtn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}

@@ -246,6 +246,16 @@ function clearSession() {
     sessionId = null;
     localStorage.removeItem('sessionId');
     updateUIForLoggedOutUser();
+    
+    // ヒーローボタンを更新
+    if (typeof updateHeroButtons === 'function') {
+        updateHeroButtons();
+    }
+    
+    // グループチャットボタンの表示を更新
+    if (typeof updateGroupChatButtonVisibility === 'function') {
+        updateGroupChatButtonVisibility();
+    }
 }
 
 // ============================================
@@ -1459,6 +1469,16 @@ async function handleLogin(event) {
             closeLoginModal();
             updateUIForLoggedInUser();
             
+            // ヒーローボタンを更新
+            if (typeof updateHeroButtons === 'function') {
+                updateHeroButtons();
+            }
+            
+            // グループチャットボタンの表示を更新
+            if (typeof updateGroupChatButtonVisibility === 'function') {
+                updateGroupChatButtonVisibility();
+            }
+            
             // ページ最上部へスクロール
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
@@ -1534,6 +1554,11 @@ function updateUIForLoggedInUser() {
     if (adminLink) {
         adminLink.style.display = currentUser.isAdmin ? 'flex' : 'none';
     }
+    
+    // ヒーローボタンを更新
+    if (typeof updateHeroButtons === 'function') {
+        updateHeroButtons();
+    }
 }
 
 // UI更新: ログアウト状態
@@ -1545,6 +1570,11 @@ function updateUIForLoggedOutUser() {
     if (authButtons) authButtons.style.display = 'flex';
     if (userMenu) userMenu.style.display = 'none';
     if (adminLink) adminLink.style.display = 'none';
+    
+    // ヒーローボタンを更新
+    if (typeof updateHeroButtons === 'function') {
+        updateHeroButtons();
+    }
 }
 
 // ユーザードロップダウン
@@ -7811,3 +7841,119 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('✅ 管理者タブカルーセルスクリプト読み込み完了');
+/* ===================================================
+   ヒーローセクション - ログイン状態によるボタン表示制御
+   =================================================== */
+
+// ヒーローセクションのボタン表示を更新
+function updateHeroButtons() {
+    const heroGroupChatBtn = document.getElementById('heroGroupChatBtn');
+    const heroRegisterBtn = document.getElementById('heroRegisterBtn');
+    
+    if (!heroGroupChatBtn || !heroRegisterBtn) {
+        console.warn('⚠️ Hero buttons not found');
+        return;
+    }
+    
+    const sessionId = localStorage.getItem('sessionId');
+    
+    if (sessionId) {
+        // ログイン中：グループチャット表示、会員登録非表示
+        heroGroupChatBtn.style.display = 'inline-flex';
+        heroRegisterBtn.style.display = 'none';
+        console.log('✅ Hero: グループチャットボタン表示（ログイン中）');
+    } else {
+        // 非ログイン：会員登録表示、グループチャット非表示
+        heroGroupChatBtn.style.display = 'none';
+        heroRegisterBtn.style.display = 'inline-flex';
+        console.log('✅ Hero: 会員登録ボタン表示（非ログイン）');
+    }
+}
+
+// ページ読み込み時に実行
+document.addEventListener('DOMContentLoaded', () => {
+    // 初期表示の更新
+    updateHeroButtons();
+    
+    // セッション確認後に再度更新
+    const sessionId = localStorage.getItem('sessionId');
+    if (sessionId) {
+        fetch(`/api/session/${sessionId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.valid) {
+                    updateHeroButtons();
+                }
+            })
+            .catch(error => {
+                console.error('Session check error:', error);
+            });
+    }
+});
+
+// ログイン時に呼び出される関数を拡張
+const originalHandleLoginSuccess = window.handleLoginSuccess;
+if (typeof originalHandleLoginSuccess === 'function') {
+    window.handleLoginSuccess = function(data) {
+        originalHandleLoginSuccess(data);
+        updateHeroButtons();
+    };
+} else {
+    // handleLoginSuccess関数が存在しない場合の定義
+    window.handleLoginSuccess = function(data) {
+        console.log('✅ Login success:', data);
+        updateHeroButtons();
+    };
+}
+
+// ログアウト時に呼び出される関数を拡張
+const originalHandleLogout = window.handleLogout;
+if (typeof originalHandleLogout === 'function') {
+    window.handleLogout = function() {
+        originalHandleLogout();
+        updateHeroButtons();
+    };
+} else {
+    // handleLogout関数が存在しない場合の定義
+    window.handleLogout = function() {
+        localStorage.removeItem('sessionId');
+        localStorage.removeItem('currentMember');
+        console.log('✅ Logged out');
+        updateHeroButtons();
+    };
+}
+
+// 監視：localStorageの変化を検知してボタンを更新
+window.addEventListener('storage', (e) => {
+    if (e.key === 'sessionId') {
+        updateHeroButtons();
+    }
+});
+
+// MutationObserver: ログイン状態の変化を監視
+const observeLoginState = () => {
+    const userMenu = document.getElementById('userMenu');
+    const authButtons = document.getElementById('authButtons');
+    
+    if (!userMenu || !authButtons) return;
+    
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'style') {
+                updateHeroButtons();
+            }
+        });
+    });
+    
+    observer.observe(userMenu, { attributes: true });
+    observer.observe(authButtons, { attributes: true });
+};
+
+// DOM読み込み後に監視開始
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', observeLoginState);
+} else {
+    observeLoginState();
+}
+
+console.log('✅ Hero button controller loaded');

@@ -119,10 +119,18 @@
                     <i class="fas fa-search"></i>
                     事業者を探す
                 </a>
-                <a href="https://line.me/ti/g/YOUR_LINE_GROUP_ID" target="_blank" class="btn btn-success btn-large">
-                    <i class="fab fa-line"></i>
+                
+                <!-- ログイン時のみ表示：グループチャット -->
+                <button id="heroGroupChatBtn" class="btn btn-success btn-large" onclick="openGroupChat()" style="display: none;">
+                    <i class="fas fa-comments"></i>
                     グループチャット
-                </a>
+                </button>
+                
+                <!-- 非ログイン時のみ表示：会員登録 -->
+                <button id="heroRegisterBtn" class="btn btn-success btn-large" onclick="openRegisterModal()">
+                    <i class="fas fa-user-plus"></i>
+                    会員登録
+                </button>
                 <button onclick="openRegisterModal()" class="btn btn-glass btn-large">
                     <i class="fas fa-user-plus"></i>
                     会員登録
