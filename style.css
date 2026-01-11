@@ -12788,6 +12788,8 @@ section {
 .member-card {
     flex: 0 0 340px;
     min-width: 340px;
+    max-height: 520px;
+    height: 520px;
     background: white;
     border-radius: 16px;
     overflow: hidden;
@@ -12796,6 +12798,8 @@ section {
     scroll-snap-align: start;
     position: relative;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
 
 .member-card::before {
@@ -12847,21 +12851,25 @@ section {
 }
 
 .member-card-body {
-    padding: 24px;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .member-card-name {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #212529;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .member-card-business {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: #4CAF50;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .member-card-url {
@@ -12884,21 +12892,21 @@ section {
 }
 
 .member-card-intro {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.5;
     color: #6c757d;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 
 .member-card-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .member-meta-item {
@@ -12920,8 +12928,8 @@ section {
 .member-card-skills {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 16px;
+    gap: 5px;
+    margin-bottom: 10px;
 }
 
 .member-skill-tag {
@@ -12936,7 +12944,8 @@ section {
 .member-card-footer {
     display: flex;
     gap: 8px;
-    padding-top: 16px;
+    padding-top: 12px;
+    margin-top: auto;
     border-top: 1px solid #e9ecef;
 }
 
