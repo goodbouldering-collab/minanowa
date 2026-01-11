@@ -6252,7 +6252,8 @@ async function loadMembersCarousel() {
         const response = await fetch(`${API_BASE}/api/members`);
         if (!response.ok) throw new Error('Failed to load members');
         
-        const data = await response.json();
+        const result = await response.json();
+        const data = result.members || result;
         membersCarouselData = data.filter(m => m.isPublic);
         
         console.log(`✅ Loaded ${membersCarouselData.length} public members`);
@@ -6448,7 +6449,8 @@ async function performMemberSearch() {
         const response = await fetch(`${API_BASE}/api/members/search?${params}`);
         if (!response.ok) throw new Error('Search failed');
         
-        const data = await response.json();
+        const result = await response.json();
+        const data = result.members || result;
         membersCarouselData = data;
         currentMemberSlide = 0;
         
