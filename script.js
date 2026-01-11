@@ -7283,3 +7283,188 @@ document.addEventListener('DOMContentLoaded', () => {
 window.renderMembersCarousel = renderMembersCarouselUnified;
 
 console.log('✅ Members carousel unified with activity report style');
+/* ===================================================
+   パスワードリセット機能
+   =================================================== */
+
+let resetEmail = '';
+
+// パスワードリセットモーダルを開く
+function openPasswordResetModal() {
+    closeLoginModal();
+    document.getElementById('passwordResetModal').classList.add('show');
+    document.getElementById('passwordResetStep1').style.display = 'block';
+    document.getElementById('passwordResetStep2').style.display = 'none';
+    document.getElementById('resetEmail').value = '';
+    resetEmail = '';
+}
+
+// パスワードリセットモーダルを閉じる
+function closePasswordResetModal() {
+    document.getElementById('passwordResetModal').classList.remove('show');
+    document.getElementById('passwordResetStep1').style.display = 'block';
+    document.getElementById('passwordResetStep2').style.display = 'none';
+    document.getElementById('resetEmail').value = '';
+    document.getElementById('resetCode').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    resetEmail = '';
+}
+
+// パスワードリセットリクエストを送信
+async function handlePasswordResetRequest(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('resetEmail').value.trim();
+    resetEmail = email;
+    
+    try {
+        const response = await fetch('/api/password-reset/request', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // ステップ2へ移行
+            document.getElementById('passwordResetStep1').style.display = 'none';
+            document.getElementById('passwordResetStep2').style.display = 'block';
+            
+            // デモ用：コンソールにリセットコードを表示
+            if (result.resetCode) {
+                console.log('🔑 パスワードリセットコード:', result.resetCode);
+                console.log('💡 このコードを入力してパスワードをリセットしてください');
+            }
+            
+            showNotification('リセットコードをメールに送信しました', 'success');
+        } else {
+            showNotification(result.message || 'メールアドレスが見つかりませんでした', 'error');
+        }
+    } catch (error) {
+        console.error('Password reset request error:', error);
+        showNotification('エラーが発生しました', 'error');
+    }
+}
+
+// パスワードをリセット
+async function handlePasswordReset(event) {
+    event.preventDefault();
+    
+    const code = document.getElementById('resetCode').value.trim();
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    // パスワード確認
+    if (newPassword !== confirmPassword) {
+        showNotification('パスワードが一致しません', 'error');
+        return;
+    }
+    
+    // パスワードの長さチェック
+    if (newPassword.length < 8) {
+        showNotification('パスワードは8文字以上にしてください', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/password-reset/confirm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: resetEmail,
+                code,
+                newPassword
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            closePasswordResetModal();
+            showSuccessModal('パスワードリセット完了', 'パスワードが正常にリセットされました。<br>新しいパスワードでログインしてください。');
+            
+            // 3秒後にログインモーダルを開く
+            setTimeout(() => {
+                closeSuccessModal();
+                openLoginModal();
+            }, 3000);
+        } else {
+            showNotification(result.message || 'リセットコードが無効です', 'error');
+        }
+    } catch (error) {
+        console.error('Password reset error:', error);
+        showNotification('エラーが発生しました', 'error');
+    }
+}
+
+// 通知を表示（既存の関数があれば使用、なければこれを使用）
+function showNotification(message, type = 'info') {
+    // 既存の通知システムがあればそれを使用
+    if (typeof showToast === 'function') {
+        showToast(message, type);
+        return;
+    }
+    
+    // シンプルな通知を作成
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 100000;
+        animation: slideIn 0.3s ease;
+        max-width: 400px;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// アニメーション用のスタイルを追加
+if (!document.getElementById('password-reset-animations')) {
+    const style = document.createElement('style');
+    style.id = 'password-reset-animations';
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}

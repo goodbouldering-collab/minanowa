@@ -322,6 +322,156 @@ app.post('/api/logout', (req, res) => {
     res.json({ success: true, message: 'ログアウトしました' });
 });
 
+// パスワードリセットリクエスト
+app.post('/api/password-reset/request', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: 'メールアドレスを入力してください'
+            });
+        }
+
+        appData = loadData();
+        const member = appData.members.find(m => m.email === email);
+
+        if (!member) {
+            // セキュリティのため、存在しない場合でも成功を返す
+            return res.json({
+                success: true,
+                message: 'リセットコードを送信しました'
+            });
+        }
+
+        // 6桁のリセットコードを生成
+        const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const resetExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30分後
+
+        // リセット情報を保存
+        if (!appData.passwordResets) {
+            appData.passwordResets = {};
+        }
+        
+        appData.passwordResets[email] = {
+            code: resetCode,
+            expiry: resetExpiry,
+            attempts: 0
+        };
+        
+        saveData(appData);
+
+        console.log(`🔑 パスワードリセットコード生成: ${email} -> ${resetCode}`);
+
+        // 本番環境ではここでメールを送信
+        // await sendResetEmail(email, resetCode);
+
+        res.json({
+            success: true,
+            message: 'リセットコードを送信しました',
+            resetCode: resetCode // デモ用のみ（本番では削除）
+        });
+
+    } catch (error) {
+        console.error('パスワードリセットリクエストエラー:', error);
+        res.status(500).json({ success: false, message: 'サーバーエラーが発生しました' });
+    }
+});
+
+// パスワードリセット実行
+app.post('/api/password-reset/confirm', async (req, res) => {
+    try {
+        const { email, code, newPassword } = req.body;
+
+        if (!email || !code || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: '必要な情報が不足しています'
+            });
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(400).json({
+                success: false,
+                message: 'パスワードは8文字以上にしてください'
+            });
+        }
+
+        appData = loadData();
+        
+        // リセット情報の確認
+        if (!appData.passwordResets || !appData.passwordResets[email]) {
+            return res.status(400).json({
+                success: false,
+                message: 'リセットコードが無効または期限切れです'
+            });
+        }
+
+        const resetInfo = appData.passwordResets[email];
+        
+        // 試行回数チェック（5回まで）
+        if (resetInfo.attempts >= 5) {
+            delete appData.passwordResets[email];
+            saveData(appData);
+            return res.status(400).json({
+                success: false,
+                message: '試行回数が上限に達しました。再度リセットをリクエストしてください'
+            });
+        }
+
+        // 期限チェック
+        if (new Date() > new Date(resetInfo.expiry)) {
+            delete appData.passwordResets[email];
+            saveData(appData);
+            return res.status(400).json({
+                success: false,
+                message: 'リセットコードの期限が切れています'
+            });
+        }
+
+        // コード確認
+        if (resetInfo.code !== code) {
+            resetInfo.attempts += 1;
+            saveData(appData);
+            return res.status(400).json({
+                success: false,
+                message: 'リセットコードが正しくありません'
+            });
+        }
+
+        // パスワードをハッシュ化
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // パスワードを更新
+        const memberIndex = appData.members.findIndex(m => m.email === email);
+        if (memberIndex === -1) {
+            return res.status(404).json({
+                success: false,
+                message: 'ユーザーが見つかりませんでした'
+            });
+        }
+
+        appData.members[memberIndex].password = hashedPassword;
+        
+        // リセット情報を削除
+        delete appData.passwordResets[email];
+        
+        saveData(appData);
+
+        console.log(`✅ パスワードリセット完了: ${email}`);
+
+        res.json({
+            success: true,
+            message: 'パスワードが正常にリセットされました'
+        });
+
+    } catch (error) {
+        console.error('パスワードリセットエラー:', error);
+        res.status(500).json({ success: false, message: 'サーバーエラーが発生しました' });
+    }
+});
+
 app.get('/api/session/:sessionId', (req, res) => {
     const { sessionId } = req.params;
     appData = loadData();

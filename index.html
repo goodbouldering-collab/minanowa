@@ -922,6 +922,9 @@
                 <div class="form-group">
                     <label for="loginPassword">パスワード</label>
                     <input type="password" id="loginPassword" name="password" required placeholder="パスワード" class="glass-input" autocomplete="current-password">
+                    <div class="password-reset-link">
+                        <a href="#" onclick="openPasswordResetModal(); return false;">パスワードをお忘れの方</a>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-full btn-submit">
                     <i class="fas fa-sign-in-alt"></i> ログイン
@@ -1152,6 +1155,48 @@
                         </button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- パスワードリセットモーダル -->
+    <div class="modal" id="passwordResetModal">
+        <div class="modal-content glass-modal">
+            <button class="modal-close" onclick="closePasswordResetModal()">&times;</button>
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> パスワードのリセット</h2>
+            </div>
+            <div id="passwordResetStep1" class="password-reset-step">
+                <p class="text-muted">登録されているメールアドレスを入力してください。<br>リセット用のコードを送信します。</p>
+                <form id="passwordResetRequestForm" onsubmit="handlePasswordResetRequest(event)">
+                    <div class="form-group">
+                        <label for="resetEmail">メールアドレス</label>
+                        <input type="email" id="resetEmail" name="email" required placeholder="example@email.com" class="glass-input" autocomplete="email">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-paper-plane"></i> リセットコードを送信
+                    </button>
+                </form>
+            </div>
+            <div id="passwordResetStep2" class="password-reset-step" style="display: none;">
+                <p class="text-muted">メールに送信されたリセットコードと新しいパスワードを入力してください。</p>
+                <form id="passwordResetForm" onsubmit="handlePasswordReset(event)">
+                    <div class="form-group">
+                        <label for="resetCode">リセットコード</label>
+                        <input type="text" id="resetCode" name="code" required placeholder="6桁のコード" class="glass-input" maxlength="6" pattern="[0-9]{6}">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">新しいパスワード</label>
+                        <input type="password" id="newPassword" name="password" required placeholder="8文字以上" class="glass-input" minlength="8" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">パスワード確認</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="もう一度入力" class="glass-input" minlength="8" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-check"></i> パスワードをリセット
+                    </button>
+                </form>
             </div>
         </div>
     </div>

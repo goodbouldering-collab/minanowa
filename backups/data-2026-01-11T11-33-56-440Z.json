@@ -238,7 +238,7 @@
       "joinDate": "2024-01-15",
       "isPublic": false,
       "isAdmin": false,
-      "lastLogin": "2025-12-16T17:28:01.985Z"
+      "lastLogin": "2026-01-11T11:32:57.833Z"
     },
     {
       "id": "ueda-eikichi-001",
@@ -346,6 +346,10 @@
     "372611e3-69d6-41b1-a045-ea695a6fd690": {
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2026-01-10T08:50:16.144Z"
+    },
+    "53c6de44-3c37-4463-956b-66d06aac3286": {
+      "memberId": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
+      "createdAt": "2026-01-11T11:32:57.833Z"
     }
   },
   "blogs": [
@@ -438,7 +442,7 @@
       "publishedAt": "2024-11-26T09:00:00Z",
       "updatedAt": "2024-11-26T09:00:00Z",
       "status": "published",
-      "views": 289,
+      "views": 290,
       "likes": 45
     },
     {
