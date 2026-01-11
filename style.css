@@ -14394,3 +14394,288 @@ section {
         grid-template-columns: 1fr;
     }
 }
+/* ===============================================
+   グループチャットボタン & モーダル
+   =============================================== */
+
+/* ナビゲーションのチャットボタン */
+.nav-chat {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-chat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76,175,80,0.3);
+}
+
+.nav-chat i {
+    font-size: 16px;
+}
+
+/* モーダル大サイズ */
+.modal-large {
+    max-width: 900px;
+    width: 90vw;
+    max-height: 85vh;
+    padding: 0;
+}
+
+/* チャットコンテナ */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    max-height: calc(85vh - 120px);
+}
+
+/* チャットメッセージエリア */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    background: #f8f9fa;
+    scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #e9ecef;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+/* メッセージローディング */
+.chat-message-loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.chat-message-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+.chat-message-loading p {
+    color: #6c757d;
+    font-size: 15px;
+}
+
+/* チャットメッセージ */
+.chat-message {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    animation: fadeInMessage 0.3s ease;
+}
+
+@keyframes fadeInMessage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message.own-message {
+    flex-direction: row-reverse;
+}
+
+.chat-message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.chat-message-content {
+    flex: 1;
+    max-width: 70%;
+}
+
+.chat-message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.chat-message-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #212529;
+}
+
+.chat-message-time {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.chat-message-bubble {
+    background: white;
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.chat-message.own-message .chat-message-bubble {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+}
+
+.chat-message.own-message .chat-message-header {
+    flex-direction: row-reverse;
+}
+
+/* チャット入力エリア */
+.chat-input-container {
+    padding: 20px 24px;
+    background: white;
+    border-top: 2px solid #e9ecef;
+}
+
+#chatForm {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 15px;
+    resize: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+#chatInput:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 4px rgba(76,175,80,0.1);
+}
+
+.chat-send-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.chat-send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76,175,80,0.3);
+}
+
+.chat-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 空の状態 */
+.chat-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.chat-empty-state i {
+    font-size: 64px;
+    color: #dee2e6;
+    margin-bottom: 16px;
+}
+
+.chat-empty-state h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+.chat-empty-state p {
+    font-size: 15px;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .modal-large {
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    
+    .chat-container {
+        height: calc(100vh - 80px);
+        max-height: calc(100vh - 80px);
+    }
+    
+    .chat-messages {
+        padding: 16px;
+    }
+    
+    .chat-input-container {
+        padding: 16px;
+    }
+    
+    .chat-message-content {
+        max-width: 80%;
+    }
+    
+    #chatForm {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .chat-send-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav-chat {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

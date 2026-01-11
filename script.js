@@ -6952,3 +6952,224 @@ if (aboutSection) {
 }
 
 console.log('✅ About mobile optimization script loaded');
+/* ===============================================
+   グループチャット機能
+   =============================================== */
+
+let groupChatMessages = [];
+let chatPollingInterval = null;
+
+// グループチャットモーダルを開く
+function openGroupChatModal() {
+    const modal = document.getElementById('groupChatModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        loadGroupChatMessages();
+        // 5秒ごとに新しいメッセージをチェック
+        chatPollingInterval = setInterval(loadGroupChatMessages, 5000);
+    }
+}
+
+// グループチャットモーダルを閉じる
+function closeGroupChatModal() {
+    const modal = document.getElementById('groupChatModal');
+    if (modal) {
+        modal.style.display = 'none';
+        // ポーリングを停止
+        if (chatPollingInterval) {
+            clearInterval(chatPollingInterval);
+            chatPollingInterval = null;
+        }
+    }
+}
+
+// グループチャットメッセージを読み込み
+async function loadGroupChatMessages() {
+    try {
+        const response = await fetch(`${API_BASE}/api/group-chat`, {
+            headers: {
+                'x-session-id': sessionStorage.getItem('sessionId')
+            }
+        });
+        
+        if (!response.ok) throw new Error('Failed to load messages');
+        
+        const data = await response.json();
+        groupChatMessages = data.messages || [];
+        
+        renderGroupChatMessages();
+        
+    } catch (error) {
+        console.error('❌ Error loading group chat:', error);
+        const messagesContainer = document.getElementById('chatMessages');
+        if (messagesContainer) {
+            messagesContainer.innerHTML = `
+                <div class="chat-empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>メッセージの読み込みに失敗しました</h3>
+                    <p>もう一度お試しください</p>
+                </div>
+            `;
+        }
+    }
+}
+
+// グループチャットメッセージを表示
+function renderGroupChatMessages() {
+    const messagesContainer = document.getElementById('chatMessages');
+    if (!messagesContainer) return;
+    
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    
+    if (groupChatMessages.length === 0) {
+        messagesContainer.innerHTML = `
+            <div class="chat-empty-state">
+                <i class="fas fa-comments"></i>
+                <h3>まだメッセージがありません</h3>
+                <p>最初のメッセージを送信して会話を始めましょう！</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const messagesHTML = groupChatMessages.map(msg => {
+        const isOwnMessage = msg.memberId === currentUser.id;
+        const messageTime = new Date(msg.createdAt).toLocaleString('ja-JP', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        return `
+            <div class="chat-message ${isOwnMessage ? 'own-message' : ''}">
+                <img src="${msg.memberAvatar || 'https://i.pravatar.cc/200?img=1'}" 
+                     alt="${msg.memberName}" 
+                     class="chat-message-avatar">
+                <div class="chat-message-content">
+                    <div class="chat-message-header">
+                        <span class="chat-message-name">${msg.memberName}</span>
+                        <span class="chat-message-time">${messageTime}</span>
+                    </div>
+                    <div class="chat-message-bubble">
+                        ${msg.message}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    const shouldScroll = messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 100;
+    
+    messagesContainer.innerHTML = messagesHTML;
+    
+    // 新しいメッセージがある場合、または最初の読み込み時に一番下までスクロール
+    if (shouldScroll || groupChatMessages.length === 1) {
+        setTimeout(() => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, 100);
+    }
+}
+
+// グループチャットメッセージを送信
+async function sendChatMessage(event) {
+    event.preventDefault();
+    
+    const chatInput = document.getElementById('chatInput');
+    const message = chatInput.value.trim();
+    
+    if (!message) return;
+    
+    const sendBtn = event.target.querySelector('.chat-send-btn');
+    sendBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/group-chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: JSON.stringify({ message })
+        });
+        
+        if (!response.ok) throw new Error('Failed to send message');
+        
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        
+        // すぐに新しいメッセージを読み込む
+        await loadGroupChatMessages();
+        
+    } catch (error) {
+        console.error('❌ Error sending message:', error);
+        alert('メッセージの送信に失敗しました');
+    } finally {
+        sendBtn.disabled = false;
+        chatInput.focus();
+    }
+}
+
+// テキストエリアの自動リサイズ
+document.addEventListener('DOMContentLoaded', () => {
+    const chatInput = document.getElementById('chatInput');
+    if (chatInput) {
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Enterキーで送信（Shift+Enterで改行）
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const form = this.closest('form');
+                if (form) {
+                    form.dispatchEvent(new Event('submit', { cancelable: true }));
+                }
+            }
+        });
+    }
+});
+
+// ログイン状態が変わったときにグループチャットボタンを表示/非表示
+function updateGroupChatButtonVisibility() {
+    const groupChatButton = document.getElementById('groupChatButton');
+    const currentUser = sessionStorage.getItem('currentUser');
+    
+    if (groupChatButton) {
+        if (currentUser) {
+            groupChatButton.style.display = 'block';
+        } else {
+            groupChatButton.style.display = 'none';
+        }
+    }
+}
+
+// ログイン時に呼び出す（既存のログイン関数に追加）
+const originalUpdateUIAfterLogin = window.updateUIAfterLogin;
+window.updateUIAfterLogin = function(user) {
+    if (originalUpdateUIAfterLogin) {
+        originalUpdateUIAfterLogin(user);
+    }
+    updateGroupChatButtonVisibility();
+};
+
+// ログアウト時に呼び出す（既存のログアウト関数に追加）
+const originalLogout = window.logout;
+window.logout = function() {
+    // チャットモーダルを閉じる
+    closeGroupChatModal();
+    
+    if (originalLogout) {
+        originalLogout();
+    }
+    updateGroupChatButtonVisibility();
+};
+
+// ページ読み込み時にチェック
+document.addEventListener('DOMContentLoaded', () => {
+    updateGroupChatButtonVisibility();
+});
+
+console.log('✅ Group chat functionality loaded');
