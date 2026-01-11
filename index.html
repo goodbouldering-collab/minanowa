@@ -501,11 +501,11 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Find Members</span>
-                <h2 class="section-title" id="resultsTitle">事業者を探す</h2>
+                <h2 class="section-title">事業者を探す</h2>
                 <p class="section-subtitle">名前・職業・スキルで検索してつながろう</p>
             </div>
             
-            <!-- 検索パネル（シンプル版） -->
+            <!-- 検索パネル -->
             <div class="search-panel">
                 <div class="search-main">
                     <div class="search-input-wrapper">
@@ -558,28 +558,23 @@
                 <span id="resultsCount">読み込み中...</span>
             </div>
             
-            <!-- メンバーカルーセル -->
+            <!-- メンバーカルーセル（活動レポートと同じ構造） -->
             <div class="members-carousel-wrapper">
-                <button class="carousel-nav-btn carousel-prev" id="membersPrev" onclick="slideMembersCarousel(-1)" disabled>
+                <button class="carousel-nav carousel-prev" id="membersPrev" onclick="slideMembersCarousel(-1)" disabled>
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 
-                <div class="members-carousel-container" id="membersCarouselContainer">
-                    <div class="members-carousel-track" id="membersCarouselTrack">
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <p>読み込み中...</p>
-                        </div>
+                <div class="members-carousel" id="membersCarousel">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>読み込み中...</p>
                     </div>
                 </div>
                 
-                <button class="carousel-nav-btn carousel-next" id="membersNext" onclick="slideMembersCarousel(1)">
+                <button class="carousel-nav carousel-next" id="membersNext" onclick="slideMembersCarousel(1)">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            
-            <!-- カルーセルドット -->
-            <div class="carousel-dots-member" id="memberCarouselDots"></div>
         </div>
     </section>
     <section class="connect-section" id="connect">

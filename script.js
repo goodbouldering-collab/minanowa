@@ -7173,3 +7173,113 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('✅ Group chat functionality loaded');
+/* ===============================================
+   事業者カルーセル - 活動レポートと統一（修正版）
+   =============================================== */
+
+// カルーセルのHTML要素IDを更新
+function renderMembersCarouselUnified() {
+    const carousel = document.getElementById('membersCarousel');
+    if (!carousel) {
+        console.warn('⚠️ Members carousel element not found');
+        return;
+    }
+    
+    if (membersCarouselData.length === 0) {
+        carousel.innerHTML = `
+            <div class="loading-spinner">
+                <p>該当する事業者が見つかりませんでした</p>
+            </div>
+        `;
+        return;
+    }
+    
+    carousel.innerHTML = membersCarouselData.map(member => {
+        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+        const displayUrl = member.website ? new URL(member.website).hostname.replace('www.', '') : '';
+        const skillsToShow = member.skills ? member.skills.slice(0, 3) : [];
+        
+        return `
+            <div class="member-card" onclick="showMemberDetail('${member.id}')">
+                <div style="position: relative; overflow: hidden;">
+                    <img src="${ogpImage}" alt="${member.name}" class="member-card-image" 
+                         onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                    <div class="member-card-badge">${member.category || '事業者'}</div>
+                </div>
+                <div class="member-card-body">
+                    <div class="member-card-name">${member.name}</div>
+                    <div class="member-card-business">${member.business}</div>
+                    ${member.website ? `
+                        <a href="${member.website}" target="_blank" rel="noopener noreferrer" 
+                           class="member-card-url" onclick="event.stopPropagation()">
+                            <i class="fas fa-external-link-alt"></i>
+                            ${displayUrl}
+                        </a>
+                    ` : ''}
+                    <div class="member-card-intro">${member.introduction || 'まだ自己紹介がありません'}</div>
+                    <div class="member-card-meta">
+                        <div class="member-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${member.location || '滋賀県'}
+                        </div>
+                    </div>
+                    ${skillsToShow.length > 0 ? `
+                        <div class="member-card-skills">
+                            ${skillsToShow.map(skill => `<span class="member-skill-tag">${skill}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="member-card-footer">
+                        <button class="member-card-btn" onclick="event.stopPropagation(); showMemberDetail('${member.id}')">
+                            <i class="fas fa-user"></i>
+                            詳細を見る
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    updateMembersCarouselNav();
+}
+
+// カルーセルナビゲーション更新
+function updateMembersCarouselNav() {
+    const carousel = document.getElementById('membersCarousel');
+    const prevBtn = document.getElementById('membersPrev');
+    const nextBtn = document.getElementById('membersNext');
+    
+    if (!carousel || !prevBtn || !nextBtn) return;
+    
+    // スクロール位置でボタンの有効/無効を切り替え
+    prevBtn.disabled = carousel.scrollLeft <= 0;
+    nextBtn.disabled = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 10;
+}
+
+// カルーセルスライド
+function slideMembersCarousel(direction) {
+    const carousel = document.getElementById('membersCarousel');
+    if (!carousel) return;
+    
+    const cardWidth = 340 + 24; // カード幅 + gap
+    const scrollAmount = cardWidth * 3; // 3カード分スクロール
+    
+    carousel.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+    
+    setTimeout(updateMembersCarouselNav, 300);
+}
+
+// スクロールイベントでナビゲーション更新
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.getElementById('membersCarousel');
+    if (carousel) {
+        carousel.addEventListener('scroll', updateMembersCarouselNav);
+    }
+});
+
+// 既存の関数を上書き
+window.renderMembersCarousel = renderMembersCarouselUnified;
+
+console.log('✅ Members carousel unified with activity report style');
