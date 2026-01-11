@@ -12718,28 +12718,188 @@ section {
     }
 }
 /* ===============================================
-/* ===============================================
-   事業者検索カルーセル - 表示修正
+   事業者検索カルーセル - レポートと同じ横スライド
    =============================================== */
 
-/* カルーセルコンテナ - 修正 */
+.members-section-carousel {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.search-panel-carousel {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.search-main-carousel {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.search-input-wrapper-carousel {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper-carousel i {
+    position: absolute;
+    left: 16px;
+    color: #6c757d;
+    font-size: 18px;
+}
+
+.search-input-wrapper-carousel input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-input-wrapper-carousel input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 4px rgba(76,175,80,0.1);
+}
+
+.search-btn-carousel {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.search-btn-carousel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76,175,80,0.3);
+}
+
+.search-btn-carousel i {
+    margin-right: 8px;
+}
+
+.search-filters-carousel {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.filter-group-carousel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group-carousel label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-group-carousel label i {
+    color: #4CAF50;
+}
+
+.filter-group-carousel select {
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.filter-group-carousel select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 4px rgba(76,175,80,0.1);
+}
+
+.quick-search-carousel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-label-carousel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.quick-tag-carousel {
+    padding: 8px 18px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-tag-carousel:hover {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.results-info-carousel {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.results-info-carousel span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* カルーセルラッパー */
+.members-carousel-wrapper {
+    position: relative;
+    padding: 0 60px;
+    margin-bottom: 32px;
+}
+
 .members-carousel-container {
     overflow: hidden;
     border-radius: 16px;
-    width: 100%;
 }
 
 .members-carousel-track {
     display: flex;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     gap: 24px;
-    width: 100%;
 }
 
-/* メンバーカード - 修正（3カードずつ表示） */
+/* メンバーカード */
 .member-card-carousel {
-    flex: 0 0 calc((100% - 48px) / 3);
-    min-width: 320px;
+    flex: 0 0 calc(33.333% - 16px);
+    min-width: 340px;
     background: white;
     border-radius: 16px;
     overflow: hidden;
@@ -12820,10 +12980,6 @@ section {
     color: #6c757d;
     margin-bottom: 16px;
     flex: 1;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
 }
 
 .member-card-skills-carousel {
@@ -12866,7 +13022,6 @@ section {
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
-    width: 100%;
 }
 
 .member-card-action-carousel:hover {
@@ -12874,24 +13029,159 @@ section {
     box-shadow: 0 6px 16px rgba(76,175,80,0.3);
 }
 
-/* レスポンシブ調整 */
+/* ナビゲーションボタン */
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.carousel-nav-btn:hover:not(:disabled) {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+    box-shadow: 0 6px 20px rgba(76,175,80,0.3);
+}
+
+.carousel-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-prev {
+    left: 0;
+}
+
+.carousel-next {
+    right: 0;
+}
+
+.carousel-nav-btn i {
+    font-size: 20px;
+}
+
+/* カルーセルドット */
+.carousel-dots-member {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.carousel-dot-member {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot-member.active {
+    background: #4CAF50;
+    width: 32px;
+    border-radius: 6px;
+}
+
+.carousel-dot-member:hover {
+    background: #4CAF50;
+}
+
+/* ローディングスピナー */
+.loading-spinner-carousel {
+    text-align: center;
+    padding: 60px 20px;
+    width: 100%;
+}
+
+.loading-spinner-carousel .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner-carousel p {
+    font-size: 16px;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+/* レスポンシブ */
 @media (max-width: 1200px) {
     .member-card-carousel {
-        flex: 0 0 calc((100% - 24px) / 2);
+        flex: 0 0 calc(50% - 12px);
         min-width: 300px;
     }
 }
 
 @media (max-width: 768px) {
-    .member-card-carousel {
-        flex: 0 0 100%;
-        min-width: 280px;
+    .members-section-carousel {
+        padding: 60px 0;
+    }
+    
+    .search-panel-carousel {
+        padding: 24px;
+    }
+    
+    .search-main-carousel {
+        flex-direction: column;
+    }
+    
+    .search-filters-carousel {
+        flex-direction: column;
     }
     
     .members-carousel-wrapper {
         padding: 0 48px;
     }
+    
+    .member-card-carousel {
+        flex: 0 0 100%;
+        min-width: 280px;
+    }
+    
+    .carousel-nav-btn {
+        width: 40px;
+        height: 40px;
+    }
 }
+
+@media (max-width: 480px) {
+    .members-carousel-wrapper {
+        padding: 0 40px;
+    }
+    
+    .carousel-nav-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .carousel-nav-btn i {
+        font-size: 16px;
+    }
+}
+/* ===============================================
    みんなのWAとは - 究極のインタラクティブセクション
    =============================================== */
 
