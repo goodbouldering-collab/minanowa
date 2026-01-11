@@ -14850,3 +14850,564 @@ section {
         transform: translateY(-50%);
     }
 }
+/* ===================================================
+   統一カードデザイン - 活動レポート＆事業者
+   =================================================== */
+
+/* 共通カードベーススタイル */
+.collab-card,
+.member-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    min-width: 280px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* ホバー時の統一エフェクト */
+.collab-card:hover,
+.member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+/* トップバー（グリーン） */
+.collab-card::before,
+.member-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4CAF50 0%, #45a049 100%);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.collab-card:hover::before,
+.member-card:hover::before {
+    transform: scaleX(1.05);
+}
+
+/* 画像エリア統一 */
+.collab-image,
+.member-card-ogp,
+.member-card-header {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.collab-image img,
+.member-card-ogp img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.collab-card:hover .collab-image img,
+.member-card:hover .member-card-ogp img {
+    transform: scale(1.05);
+}
+
+/* アバター表示（事業者カードのみ） */
+.member-card-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.member-card-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 12px;
+}
+
+.member-card-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.member-card-business {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    text-align: center;
+}
+
+/* バッジ統一 */
+.collab-badge,
+.member-card-category {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #4CAF50;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 2;
+}
+
+/* コンテンツエリア統一 */
+.collab-content,
+.member-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+/* メンバー表示（活動レポート） */
+.collab-members {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.collab-avatars {
+    display: flex;
+    margin-left: -8px;
+}
+
+.collab-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -8px;
+    object-fit: cover;
+}
+
+.collab-names {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+/* タイトル統一 */
+.collab-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 説明文統一 */
+.collab-description,
+.member-card-intro {
+    font-size: 13px;
+    color: #6c757d;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* URL表示（事業者カード） */
+.member-card-url {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #4CAF50;
+    margin-bottom: 8px;
+    text-decoration: none;
+}
+
+.member-card-url:hover {
+    text-decoration: underline;
+}
+
+/* スキルタグ統一 */
+.collab-tags,
+.member-card-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.collab-tag,
+.member-card-skill {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* メタ情報（日付・場所） */
+.collab-meta,
+.member-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 8px;
+}
+
+.collab-meta i,
+.member-card-meta i {
+    color: #4CAF50;
+}
+
+/* フッター（ボタンエリア） */
+.collab-footer,
+.member-card-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e9ecef;
+    margin-top: auto;
+}
+
+.collab-btn,
+.member-card-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.collab-btn:hover,
+.member-card-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* カルーセルコンテナ統一 */
+.collab-carousel,
+.members-carousel {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 0;
+}
+
+.collab-carousel::-webkit-scrollbar,
+.members-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.collab-carousel::-webkit-scrollbar-track,
+.members-carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.collab-carousel::-webkit-scrollbar-thumb,
+.members-carousel::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 4px;
+}
+
+.collab-carousel::-webkit-scrollbar-thumb:hover,
+.members-carousel::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+.collab-card,
+.member-card {
+    scroll-snap-align: start;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1400px) {
+    .collab-card,
+    .member-card {
+        width: 260px;
+        min-width: 260px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .collab-card,
+    .member-card {
+        width: 280px;
+        min-width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .collab-card,
+    .member-card {
+        width: 260px;
+        min-width: 260px;
+    }
+    
+    .collab-image,
+    .member-card-ogp,
+    .member-card-header {
+        height: 160px;
+    }
+    
+    .collab-content,
+    .member-card-body {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .collab-card,
+    .member-card {
+        width: 240px;
+        min-width: 240px;
+    }
+    
+    .collab-image,
+    .member-card-ogp,
+    .member-card-header {
+        height: 140px;
+    }
+}
+/* ===================================================
+   カルーセル動作の統一（活動レポート＆事業者）
+   =================================================== */
+
+/* カルーセルコンテナ */
+.members-carousel,
+.collab-carousel,
+#membersCarousel,
+#collabBlogCarousel {
+    display: flex !important;
+    gap: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #4CAF50 #f1f1f1;
+}
+
+/* スクロールバースタイル */
+.members-carousel::-webkit-scrollbar,
+.collab-carousel::-webkit-scrollbar,
+#membersCarousel::-webkit-scrollbar,
+#collabBlogCarousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.members-carousel::-webkit-scrollbar-track,
+.collab-carousel::-webkit-scrollbar-track,
+#membersCarousel::-webkit-scrollbar-track,
+#collabBlogCarousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.members-carousel::-webkit-scrollbar-thumb,
+.collab-carousel::-webkit-scrollbar-thumb,
+#membersCarousel::-webkit-scrollbar-thumb,
+#collabBlogCarousel::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 4px;
+}
+
+.members-carousel::-webkit-scrollbar-thumb:hover,
+.collab-carousel::-webkit-scrollbar-thumb:hover,
+#membersCarousel::-webkit-scrollbar-thumb:hover,
+#collabBlogCarousel::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+/* カードのスナップ */
+.collab-card,
+.member-card {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* ナビゲーションボタンの統一 */
+.carousel-nav,
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-prev {
+    left: -60px;
+}
+
+.carousel-next {
+    right: -60px;
+}
+
+.carousel-nav:hover:not(:disabled) {
+    background: #4CAF50;
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.carousel-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #ccc;
+    color: #ccc;
+}
+
+/* カルーセルラッパー */
+.members-carousel-wrapper,
+.collab-carousel-wrapper {
+    position: relative;
+    padding: 0 60px;
+}
+
+/* ドットナビゲーション */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.carousel-dot,
+.carousel-dot-member {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot:hover,
+.carousel-dot-member:hover {
+    background: #adb5bd;
+    transform: scale(1.2);
+}
+
+.carousel-dot.active,
+.carousel-dot-member.active {
+    background: #4CAF50;
+    width: 24px;
+    border-radius: 4px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1200px) {
+    .carousel-prev {
+        left: -48px;
+    }
+    
+    .carousel-next {
+        right: -48px;
+    }
+    
+    .members-carousel-wrapper,
+    .collab-carousel-wrapper {
+        padding: 0 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .carousel-prev {
+        left: -40px;
+    }
+    
+    .carousel-next {
+        right: -40px;
+    }
+    
+    .members-carousel-wrapper,
+    .collab-carousel-wrapper {
+        padding: 0 42px;
+    }
+    
+    .members-carousel,
+    .collab-carousel,
+    #membersCarousel,
+    #collabBlogCarousel {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    .carousel-prev {
+        left: 4px;
+    }
+    
+    .carousel-next {
+        right: 4px;
+    }
+    
+    .members-carousel-wrapper,
+    .collab-carousel-wrapper {
+        padding: 0 8px;
+    }
+}

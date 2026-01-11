@@ -884,50 +884,61 @@ function renderCollabCarousel() {
 function renderCollabItem(item) {
     if (item.type === 'collab') {
         const collab = item.data;
+        const memberAvatars = collab.members ? collab.members.slice(0, 3).map(m => 
+            `<img src="${m.avatar}" alt="${m.name}" class="collab-avatar">`
+        ).join('') : '';
+        const memberNames = collab.members ? collab.members.slice(0, 2).map(m => m.name).join(' × ') : '';
+        
         return `
             <div class="collab-card">
                 <div class="collab-image">
                     <img src="${collab.image || collab.coverImageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80'}" alt="${collab.title}">
+                    <span class="collab-badge">コラボ</span>
                 </div>
                 <div class="collab-content">
                     <div class="collab-members">
-                        ${collab.members ? collab.members.slice(0, 2).map((member, idx) => 
-                            `${idx > 0 ? '<span class="plus">×</span>' : ''}<img src="${member.avatar}" alt="${member.name}">`
-                        ).join('') : ''}
+                        <div class="collab-avatars">${memberAvatars}</div>
+                        <div class="collab-names">${memberNames}</div>
                     </div>
-                    <h3>${collab.title}</h3>
-                    <p>${collab.description}</p>
-                    <div class="collab-result">
-                        <span><i class="fas fa-chart-line"></i> ${collab.result || '成果'}</span>
+                    <h3 class="collab-title">${collab.title}</h3>
+                    <p class="collab-description">${collab.description}</p>
+                    <div class="collab-tags">
+                        ${collab.result ? `<span class="collab-tag"><i class="fas fa-chart-line"></i> ${collab.result}</span>` : ''}
                     </div>
+                </div>
+                <div class="collab-footer">
+                    <button class="collab-btn" onclick="showCollabDetail('${collab.id}')">
+                        <i class="fas fa-eye"></i> 詳細を見る
+                    </button>
                 </div>
             </div>
         `;
     } else {
         const blog = item.data;
         return `
-            <div class="blog-card" onclick="openBlogDetail('${blog.slug}')">
-                <div class="blog-card-image">
+            <div class="collab-card" onclick="openBlogDetail('${blog.slug}')">
+                <div class="collab-image">
                     <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}">
-                    <span class="blog-card-category">${blog.category}</span>
+                    <span class="collab-badge">${blog.category}</span>
                 </div>
-                <div class="blog-card-content">
-                    <div class="blog-card-author">
-                        <img src="${blog.authorAvatar}" alt="${blog.authorName}">
-                        <div>
-                            <span class="author-name">${blog.authorName}</span>
-                            <span class="blog-card-date">${formatDate(blog.publishDate)}</span>
+                <div class="collab-content">
+                    <div class="collab-members">
+                        <div class="collab-avatars">
+                            <img src="${blog.authorAvatar}" alt="${blog.authorName}" class="collab-avatar">
                         </div>
+                        <div class="collab-names">${blog.authorName}</div>
                     </div>
-                    <h3 class="blog-card-title">${blog.title}</h3>
-                    <p class="blog-card-excerpt">${blog.excerpt}</p>
-                    <div class="blog-card-meta">
-                        <div class="blog-card-stats">
-                            <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
-                            <span><i class="fas fa-heart"></i> ${blog.likes || 0}</span>
-                        </div>
-                        <span class="blog-card-link">続きを読む <i class="fas fa-arrow-right"></i></span>
+                    <h3 class="collab-title">${blog.title}</h3>
+                    <p class="collab-description">${blog.excerpt}</p>
+                    <div class="collab-meta">
+                        <span><i class="fas fa-calendar"></i> ${formatDate(blog.publishDate)}</span>
+                        <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
                     </div>
+                </div>
+                <div class="collab-footer">
+                    <button class="collab-btn">
+                        <i class="fas fa-arrow-right"></i> 続きを読む
+                    </button>
                 </div>
             </div>
         `;
@@ -6278,7 +6289,7 @@ async function loadMembersCarousel() {
 
 // カルーセルレンダリング
 function renderMembersCarousel() {
-    const track = document.getElementById('membersCarouselTrack');
+    const track = document.getElementById('membersCarousel');
     if (!track) return;
     
     if (membersCarouselData.length === 0) {
@@ -6296,33 +6307,42 @@ function renderMembersCarousel() {
         const skillsToShow = member.skills ? member.skills.slice(0, 3) : [];
         
         return `
-            <div class="member-card-carousel">
-                <div style="position: relative;">
-                    <img src="${ogpImage}" alt="${member.name}" class="member-card-image-carousel" 
-                         onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
-                    <div class="member-card-badge-carousel">${member.category || '事業者'}</div>
-                </div>
-                <div class="member-card-body-carousel">
-                    <div class="member-card-name-carousel">${member.name}</div>
-                    <div class="member-card-business-carousel">${member.business}</div>
+            <div class="member-card">
+                ${ogpImage === member.websiteOgpImage || ogpImage.includes('unsplash') ? `
+                    <div class="member-card-ogp">
+                        <img src="${ogpImage}" alt="${member.name}" 
+                             onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                        <span class="member-card-category">${member.category || '事業者'}</span>
+                    </div>
+                ` : `
+                    <div class="member-card-header">
+                        <img src="${member.avatar}" alt="${member.name}" class="member-card-avatar"
+                             onerror="this.src='https://via.placeholder.com/80'">
+                        <div class="member-card-name">${member.name}</div>
+                        <div class="member-card-business">${member.business}</div>
+                    </div>
+                `}
+                <div class="member-card-body">
                     ${member.website ? `
-                        <a href="${member.website}" target="_blank" rel="noopener noreferrer" class="member-card-url-carousel">
+                        <a href="${member.website}" target="_blank" rel="noopener noreferrer" class="member-card-url" onclick="event.stopPropagation();">
                             <i class="fas fa-external-link-alt"></i>
                             ${displayUrl}
                         </a>
                     ` : ''}
-                    <div class="member-card-intro-carousel">${member.introduction || 'まだ自己紹介がありません'}</div>
+                    <p class="member-card-intro">${member.introduction || 'まだ自己紹介がありません'}</p>
                     ${skillsToShow.length > 0 ? `
-                        <div class="member-card-skills-carousel">
-                            ${skillsToShow.map(skill => `<span class="member-skill-tag-carousel">${skill}</span>`).join('')}
+                        <div class="member-card-skills">
+                            ${skillsToShow.map(skill => `<span class="member-card-skill">${skill}</span>`).join('')}
                         </div>
                     ` : ''}
-                    <div class="member-card-location-carousel">
+                    <div class="member-card-meta">
                         <i class="fas fa-map-marker-alt"></i>
                         ${member.location || '滋賀県'}
                     </div>
-                    <button class="member-card-action-carousel" onclick="showMemberDetail('${member.id}')">
-                        詳細を見る
+                </div>
+                <div class="member-card-footer">
+                    <button class="member-card-btn" onclick="showMemberDetail('${member.id}')">
+                        <i class="fas fa-eye"></i> 詳細を見る
                     </button>
                 </div>
             </div>
@@ -6335,11 +6355,11 @@ function renderMembersCarousel() {
 
 // カルーセル位置更新
 function updateCarouselPosition() {
-    const track = document.getElementById('membersCarouselTrack');
+    const track = document.getElementById('membersCarousel');
     if (!track) return;
     
     // カードの幅と間隔を計算
-    const container = document.getElementById('membersCarouselContainer');
+    const container = document.querySelector('.members-carousel-wrapper');
     if (!container) return;
     
     const containerWidth = container.offsetWidth;
