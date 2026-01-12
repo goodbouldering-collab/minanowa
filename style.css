@@ -17370,3 +17370,381 @@ section + section {
         font-size: 10px !important;
     }
 }
+/* ============================================
+   「みんなのWAとは」セクション - 1画面表示圧縮版
+   ============================================ */
+
+/* セクション全体の圧縮 */
+.about-interactive-ultimate {
+    padding: 30px 0 30px 0 !important; /* 上下パディングを削減 */
+    min-height: auto !important;
+}
+
+/* ヘッダー部分の圧縮 */
+.about-interactive-ultimate .section-header {
+    margin-bottom: 20px !important; /* 40px → 20px */
+}
+
+.about-interactive-ultimate .section-title {
+    font-size: 1.8rem !important; /* 2.4rem → 1.8rem */
+    margin-bottom: 8px !important; /* 10px → 8px */
+}
+
+.about-interactive-ultimate .section-subtitle {
+    font-size: 0.95rem !important; /* 1.1rem → 0.95rem */
+    margin-bottom: 0 !important;
+}
+
+/* インタラクティブヒーローの圧縮 */
+.interactive-hero {
+    height: 180px !important; /* 300px → 180px */
+    margin-bottom: 20px !important; /* 40px → 20px */
+}
+
+.floating-circles {
+    transform: scale(0.7) !important; /* 円のサイズを70%に */
+}
+
+.hero-message {
+    transform: translateY(-10px) !important;
+}
+
+.message-line {
+    font-size: 1.4rem !important; /* 2rem → 1.4rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.message-line.highlight {
+    font-size: 2rem !important; /* 3rem → 2rem */
+}
+
+/* 統計カードの圧縮 */
+.stats-interactive {
+    gap: 12px !important; /* 20px → 12px */
+    margin-bottom: 25px !important; /* 40px → 25px */
+}
+
+.stat-card-interactive {
+    padding: 16px 12px !important; /* 24px 16px → 16px 12px */
+    min-height: auto !important;
+}
+
+.stat-icon {
+    width: 40px !important; /* 56px → 40px */
+    height: 40px !important;
+    font-size: 18px !important; /* 24px → 18px */
+    margin-bottom: 8px !important; /* 12px → 8px */
+}
+
+.stat-number-interactive {
+    font-size: 2rem !important; /* 2.8rem → 2rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.stat-label-interactive {
+    font-size: 0.8rem !important; /* 0.95rem → 0.8rem */
+    margin-bottom: 8px !important; /* 12px → 8px */
+}
+
+.stat-progress {
+    height: 4px !important; /* 6px → 4px */
+}
+
+/* コア価値タブの圧縮 */
+.core-values-interactive {
+    margin-bottom: 25px !important; /* 50px → 25px */
+}
+
+.core-tabs {
+    gap: 8px !important; /* 12px → 8px */
+    margin-bottom: 20px !important; /* 30px → 20px */
+}
+
+.core-tab {
+    padding: 10px 16px !important; /* 14px 24px → 10px 16px */
+    font-size: 0.9rem !important; /* 1rem → 0.9rem */
+}
+
+.core-tab i {
+    font-size: 1rem !important; /* 1.3rem → 1rem */
+    margin-right: 6px !important; /* 8px → 6px */
+}
+
+/* コア価値コンテンツの圧縮 */
+.core-content {
+    padding: 20px !important; /* 30px → 20px */
+    gap: 20px !important; /* 30px → 20px */
+}
+
+.content-visual {
+    width: 100px !important; /* 140px → 100px */
+    height: 100px !important;
+}
+
+.visual-icon {
+    font-size: 2.5rem !important; /* 3.5rem → 2.5rem */
+}
+
+.content-text h3 {
+    font-size: 1.3rem !important; /* 1.6rem → 1.3rem */
+    margin-bottom: 8px !important; /* 12px → 8px */
+}
+
+.content-lead {
+    font-size: 0.95rem !important; /* 1.05rem → 0.95rem */
+    margin-bottom: 12px !important; /* 16px → 12px */
+    line-height: 1.5 !important; /* 1.6 → 1.5 */
+}
+
+.content-features {
+    gap: 8px !important; /* 12px → 8px */
+}
+
+.feature-item {
+    font-size: 0.85rem !important; /* 0.95rem → 0.85rem */
+    padding: 8px !important; /* 10px → 8px */
+}
+
+.feature-item i {
+    font-size: 0.9rem !important; /* 1rem → 0.9rem */
+}
+
+/* 活動サイクルの圧縮 */
+.activity-cycle-interactive {
+    margin-bottom: 25px !important; /* 40px → 25px */
+    padding: 20px !important; /* 30px → 20px */
+}
+
+.cycle-title {
+    font-size: 1.3rem !important; /* 1.6rem → 1.3rem */
+    margin-bottom: 20px !important; /* 30px → 20px */
+}
+
+.cycle-diagram {
+    gap: 12px !important; /* 20px → 12px */
+}
+
+.cycle-step {
+    padding: 16px 12px !important; /* 20px 16px → 16px 12px */
+}
+
+.step-number {
+    width: 32px !important; /* 40px → 32px */
+    height: 32px !important;
+    font-size: 1rem !important; /* 1.2rem → 1rem */
+    margin-bottom: 8px !important; /* 12px → 8px */
+}
+
+.step-icon {
+    font-size: 1.8rem !important; /* 2.5rem → 1.8rem */
+    margin-bottom: 8px !important; /* 12px → 8px */
+}
+
+.step-title {
+    font-size: 1rem !important; /* 1.2rem → 1rem */
+    margin-bottom: 4px !important; /* 6px → 4px */
+}
+
+.step-desc {
+    font-size: 0.8rem !important; /* 0.9rem → 0.8rem */
+}
+
+.cycle-arrow {
+    font-size: 1.2rem !important; /* 1.5rem → 1.2rem */
+}
+
+/* CTAボタンの圧縮 */
+.about-cta-interactive {
+    padding: 25px !important; /* 40px → 25px */
+    margin-top: 0 !important;
+}
+
+.about-cta-interactive h3 {
+    font-size: 1.4rem !important; /* 1.8rem → 1.4rem */
+    margin-bottom: 8px !important; /* 12px → 8px */
+}
+
+.about-cta-interactive p {
+    font-size: 0.95rem !important; /* 1.05rem → 0.95rem */
+    margin-bottom: 16px !important; /* 20px → 16px */
+}
+
+.cta-btn-interactive {
+    padding: 12px 28px !important; /* 16px 36px → 12px 28px */
+    font-size: 1rem !important; /* 1.1rem → 1rem */
+}
+
+/* ============================================
+   モバイル対応（さらに圧縮）
+   ============================================ */
+
+@media screen and (max-width: 768px) {
+    .about-interactive-ultimate {
+        padding: 20px 0 20px 0 !important;
+    }
+    
+    .about-interactive-ultimate .section-header {
+        margin-bottom: 15px !important;
+    }
+    
+    .interactive-hero {
+        height: 140px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .message-line {
+        font-size: 1.2rem !important;
+    }
+    
+    .message-line.highlight {
+        font-size: 1.6rem !important;
+    }
+    
+    .stats-interactive {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .stat-card-interactive {
+        padding: 12px 10px !important;
+    }
+    
+    .stat-icon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
+    }
+    
+    .stat-number-interactive {
+        font-size: 1.6rem !important;
+    }
+    
+    .core-values-interactive {
+        margin-bottom: 20px !important;
+    }
+    
+    .core-tabs {
+        flex-direction: row !important;
+        gap: 6px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .core-tab {
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .core-content {
+        flex-direction: column !important;
+        padding: 15px !important;
+        gap: 15px !important;
+    }
+    
+    .content-visual {
+        width: 80px !important;
+        height: 80px !important;
+        margin: 0 auto !important;
+    }
+    
+    .visual-icon {
+        font-size: 2rem !important;
+    }
+    
+    .content-text h3 {
+        font-size: 1.1rem !important;
+        text-align: center !important;
+    }
+    
+    .content-lead {
+        font-size: 0.85rem !important;
+        text-align: center !important;
+    }
+    
+    .feature-item {
+        font-size: 0.8rem !important;
+        padding: 6px !important;
+    }
+    
+    .activity-cycle-interactive {
+        padding: 15px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .cycle-title {
+        font-size: 1.1rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .cycle-diagram {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .cycle-step {
+        padding: 12px 10px !important;
+    }
+    
+    .cycle-arrow {
+        transform: rotate(90deg) !important;
+        margin: 0 !important;
+    }
+    
+    .about-cta-interactive {
+        padding: 20px !important;
+    }
+    
+    .about-cta-interactive h3 {
+        font-size: 1.2rem !important;
+    }
+    
+    .about-cta-interactive p {
+        font-size: 0.85rem !important;
+    }
+    
+    .cta-btn-interactive {
+        padding: 10px 24px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .about-interactive-ultimate {
+        padding: 15px 0 15px 0 !important;
+    }
+    
+    .interactive-hero {
+        height: 120px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .floating-circles {
+        transform: scale(0.5) !important;
+    }
+    
+    .stats-interactive {
+        gap: 8px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .stat-card-interactive {
+        padding: 10px 8px !important;
+    }
+    
+    .stat-number-interactive {
+        font-size: 1.4rem !important;
+    }
+    
+    .stat-label-interactive {
+        font-size: 0.75rem !important;
+    }
+    
+    .core-tab {
+        padding: 6px 10px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .core-tab i {
+        margin-right: 4px !important;
+    }
+}
