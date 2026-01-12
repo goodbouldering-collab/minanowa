@@ -17917,3 +17917,47 @@ section + section {
         font-size: 0.7rem;
     }
 }
+/* ============================================
+   交流会CTA文字色修正
+   ============================================ */
+
+/* connect-cta内のテキストを明確に表示 */
+.connect-cta.glass-card .cta-content h3 {
+    color: #2d5a27 !important; /* ダークグリーン */
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+}
+
+.connect-cta.glass-card .cta-content p {
+    color: #333 !important; /* ダークグレー */
+    font-weight: 500 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 背景の透明度を調整してテキストを読みやすく */
+.connect-cta.glass-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 768px) {
+    .connect-cta.glass-card .cta-content h3 {
+        font-size: 1.3rem !important;
+    }
+    
+    .connect-cta.glass-card .cta-content p {
+        font-size: 0.95rem !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .connect-cta.glass-card .cta-content h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .connect-cta.glass-card .cta-content p {
+        font-size: 0.85rem !important;
+    }
+}
