@@ -6587,8 +6587,10 @@ async function loadAboutInteractiveStats() {
             animateStatCount(memberEl, memberCount);
         }
         
-        // イベント数
-        const eventCount = data.events ? data.events.length : 0;
+        // イベント数（過去の開催回数を含む）
+        const statsResponse = await fetch(`${API_BASE}/api/stats`);
+        const statsData = await statsResponse.json();
+        const eventCount = statsData.success ? statsData.stats.totalEventCount : 0;
         const eventEl = document.getElementById('aboutEventCountInteractive');
         if (eventEl) {
             animateStatCount(eventEl, eventCount);

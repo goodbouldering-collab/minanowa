@@ -17961,3 +17961,388 @@ section + section {
         font-size: 0.85rem !important;
     }
 }
+/* ============================================
+   「みんなのWAとは」セクション - 超コンパクト版（半分に集約）
+   ============================================ */
+
+/* セクション全体を超圧縮 */
+.about-interactive-ultimate {
+    padding: 15px 0 15px 0 !important; /* 30px → 15px */
+}
+
+/* ヘッダー部分を大幅削減 */
+.about-interactive-ultimate .section-header {
+    margin-bottom: 12px !important; /* 20px → 12px */
+}
+
+.about-interactive-ultimate .section-title {
+    font-size: 1.5rem !important; /* 1.8rem → 1.5rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.about-interactive-ultimate .section-subtitle {
+    font-size: 0.85rem !important; /* 0.95rem → 0.85rem */
+    margin-bottom: 0 !important;
+}
+
+/* インタラクティブヒーローを削除または最小化 */
+.interactive-hero {
+    display: none !important; /* 完全に非表示にして高さを0に */
+}
+
+/* 統計カードを横並び＋超コンパクト */
+.stats-interactive {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important; /* 12px → 8px */
+    margin-bottom: 12px !important; /* 25px → 12px */
+}
+
+.stat-card-interactive {
+    padding: 10px 8px !important; /* 16px 12px → 10px 8px */
+    min-height: auto !important;
+}
+
+.stat-icon {
+    width: 32px !important; /* 40px → 32px */
+    height: 32px !important;
+    font-size: 14px !important; /* 18px → 14px */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.stat-number-interactive {
+    font-size: 1.5rem !important; /* 2rem → 1.5rem */
+    margin-bottom: 2px !important; /* 4px → 2px */
+}
+
+.stat-label-interactive {
+    font-size: 0.7rem !important; /* 0.8rem → 0.7rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.stat-progress {
+    height: 3px !important; /* 4px → 3px */
+}
+
+/* コア価値タブを超コンパクト化 */
+.core-values-interactive {
+    margin-bottom: 12px !important; /* 25px → 12px */
+}
+
+.core-tabs {
+    gap: 6px !important; /* 8px → 6px */
+    margin-bottom: 10px !important; /* 20px → 10px */
+}
+
+.core-tab {
+    padding: 6px 12px !important; /* 10px 16px → 6px 12px */
+    font-size: 0.8rem !important; /* 0.9rem → 0.8rem */
+}
+
+.core-tab i {
+    font-size: 0.85rem !important; /* 1rem → 0.85rem */
+    margin-right: 4px !important; /* 6px → 4px */
+}
+
+/* コア価値コンテンツを超コンパクト化 */
+.core-content {
+    padding: 12px !important; /* 20px → 12px */
+    gap: 12px !important; /* 20px → 12px */
+}
+
+.content-visual {
+    display: none !important; /* アイコンを非表示にしてスペース節約 */
+}
+
+.content-text {
+    width: 100% !important;
+}
+
+.content-text h3 {
+    font-size: 1.1rem !important; /* 1.3rem → 1.1rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.content-lead {
+    font-size: 0.85rem !important; /* 0.95rem → 0.85rem */
+    margin-bottom: 8px !important; /* 12px → 8px */
+    line-height: 1.4 !important; /* 1.5 → 1.4 */
+}
+
+.content-features {
+    gap: 4px !important; /* 8px → 4px */
+}
+
+.feature-item {
+    font-size: 0.75rem !important; /* 0.85rem → 0.75rem */
+    padding: 4px !important; /* 8px → 4px */
+}
+
+.feature-item i {
+    font-size: 0.75rem !important; /* 0.9rem → 0.75rem */
+}
+
+/* 活動サイクルを超コンパクト化 */
+.activity-cycle-interactive {
+    margin-bottom: 12px !important; /* 25px → 12px */
+    padding: 12px !important; /* 20px → 12px */
+}
+
+.cycle-title {
+    font-size: 1.1rem !important; /* 1.3rem → 1.1rem */
+    margin-bottom: 10px !important; /* 20px → 10px */
+}
+
+.cycle-diagram {
+    gap: 8px !important; /* 12px → 8px */
+}
+
+.cycle-step {
+    padding: 10px 8px !important; /* 16px 12px → 10px 8px */
+}
+
+.step-number {
+    width: 24px !important; /* 32px → 24px */
+    height: 24px !important;
+    font-size: 0.85rem !important; /* 1rem → 0.85rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.step-icon {
+    font-size: 1.4rem !important; /* 1.8rem → 1.4rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.step-title {
+    font-size: 0.85rem !important; /* 1rem → 0.85rem */
+    margin-bottom: 2px !important; /* 4px → 2px */
+}
+
+.step-desc {
+    font-size: 0.7rem !important; /* 0.8rem → 0.7rem */
+}
+
+.cycle-arrow {
+    font-size: 1rem !important; /* 1.2rem → 1rem */
+}
+
+/* CTAボタンを超コンパクト化 */
+.about-cta-interactive {
+    padding: 15px !important; /* 25px → 15px */
+    margin-top: 0 !important;
+}
+
+.about-cta-interactive h3 {
+    font-size: 1.2rem !important; /* 1.4rem → 1.2rem */
+    margin-bottom: 4px !important; /* 8px → 4px */
+}
+
+.about-cta-interactive p {
+    font-size: 0.85rem !important; /* 0.95rem → 0.85rem */
+    margin-bottom: 10px !important; /* 16px → 10px */
+}
+
+.cta-btn-interactive {
+    padding: 8px 20px !important; /* 12px 28px → 8px 20px */
+    font-size: 0.9rem !important; /* 1rem → 0.9rem */
+}
+
+/* ============================================
+   モバイル対応（さらに超圧縮）
+   ============================================ */
+
+@media screen and (max-width: 768px) {
+    .about-interactive-ultimate {
+        padding: 12px 0 12px 0 !important; /* 20px → 12px */
+    }
+    
+    .about-interactive-ultimate .section-header {
+        margin-bottom: 10px !important;
+    }
+    
+    .about-interactive-ultimate .section-title {
+        font-size: 1.3rem !important;
+    }
+    
+    .about-interactive-ultimate .section-subtitle {
+        font-size: 0.8rem !important;
+    }
+    
+    /* 統計カードを2列表示 */
+    .stats-interactive {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .stat-card-interactive {
+        padding: 8px 6px !important;
+    }
+    
+    .stat-icon {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 12px !important;
+    }
+    
+    .stat-number-interactive {
+        font-size: 1.3rem !important;
+    }
+    
+    .stat-label-interactive {
+        font-size: 0.65rem !important;
+    }
+    
+    .core-values-interactive {
+        margin-bottom: 10px !important;
+    }
+    
+    .core-tabs {
+        gap: 4px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .core-tab {
+        padding: 5px 10px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .core-tab i {
+        font-size: 0.75rem !important;
+        margin-right: 3px !important;
+    }
+    
+    .core-content {
+        padding: 10px !important;
+        gap: 10px !important;
+    }
+    
+    .content-text h3 {
+        font-size: 1rem !important;
+    }
+    
+    .content-lead {
+        font-size: 0.8rem !important;
+    }
+    
+    .feature-item {
+        font-size: 0.7rem !important;
+        padding: 3px !important;
+    }
+    
+    .activity-cycle-interactive {
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .cycle-title {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .cycle-diagram {
+        flex-direction: column !important;
+        gap: 6px !important;
+    }
+    
+    .cycle-step {
+        padding: 8px 6px !important;
+    }
+    
+    .step-number {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .step-icon {
+        font-size: 1.2rem !important;
+    }
+    
+    .step-title {
+        font-size: 0.8rem !important;
+    }
+    
+    .step-desc {
+        font-size: 0.65rem !important;
+    }
+    
+    .cycle-arrow {
+        transform: rotate(90deg) !important;
+        margin: 0 !important;
+    }
+    
+    .about-cta-interactive {
+        padding: 12px !important;
+    }
+    
+    .about-cta-interactive h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .about-cta-interactive p {
+        font-size: 0.8rem !important;
+    }
+    
+    .cta-btn-interactive {
+        padding: 7px 16px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .about-interactive-ultimate {
+        padding: 10px 0 10px 0 !important;
+    }
+    
+    .about-interactive-ultimate .section-title {
+        font-size: 1.2rem !important;
+    }
+    
+    .stats-interactive {
+        gap: 5px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .stat-card-interactive {
+        padding: 6px 4px !important;
+    }
+    
+    .stat-number-interactive {
+        font-size: 1.1rem !important;
+    }
+    
+    .stat-label-interactive {
+        font-size: 0.6rem !important;
+    }
+    
+    .core-tab {
+        padding: 4px 8px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .content-text h3 {
+        font-size: 0.95rem !important;
+    }
+    
+    .content-lead {
+        font-size: 0.75rem !important;
+    }
+    
+    .feature-item {
+        font-size: 0.65rem !important;
+        padding: 2px !important;
+    }
+    
+    .cycle-title {
+        font-size: 0.9rem !important;
+    }
+    
+    .step-title {
+        font-size: 0.75rem !important;
+    }
+    
+    .step-desc {
+        font-size: 0.6rem !important;
+    }
+}
