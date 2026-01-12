@@ -18346,3 +18346,84 @@ section + section {
         font-size: 0.6rem !important;
     }
 }
+/* ============================================
+   「みんなのWAとは」統計カードを完全横一列表示
+   ============================================ */
+
+/* 統計カードを完全横一列に強制 */
+.stats-interactive {
+    display: flex !important; /* gridからflexに変更 */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+}
+
+/* スクロールバーを非表示 */
+.stats-interactive::-webkit-scrollbar {
+    display: none !important;
+}
+
+.stats-interactive {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+/* 統計カードを均等幅に */
+.stat-card-interactive {
+    flex: 0 0 auto !important;
+    min-width: 120px !important;
+    max-width: 160px !important;
+    padding: 10px 8px !important;
+}
+
+/* デスクトップでも横一列 */
+@media screen and (min-width: 769px) {
+    .stats-interactive {
+        gap: 15px !important;
+    }
+    
+    .stat-card-interactive {
+        min-width: 140px !important;
+        max-width: 180px !important;
+        padding: 12px 10px !important;
+    }
+}
+
+/* タブレット */
+@media screen and (max-width: 768px) {
+    .stats-interactive {
+        gap: 8px !important;
+    }
+    
+    .stat-card-interactive {
+        min-width: 110px !important;
+        max-width: 140px !important;
+        padding: 10px 8px !important;
+    }
+}
+
+/* モバイル */
+@media screen and (max-width: 480px) {
+    .stats-interactive {
+        gap: 6px !important;
+        justify-content: flex-start !important;
+    }
+    
+    .stat-card-interactive {
+        min-width: 90px !important;
+        max-width: 110px !important;
+        padding: 8px 6px !important;
+    }
+    
+    .stat-number-interactive {
+        font-size: 1.2rem !important;
+    }
+    
+    .stat-label-interactive {
+        font-size: 0.65rem !important;
+    }
+}
