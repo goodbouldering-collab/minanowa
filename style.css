@@ -17041,3 +17041,123 @@ section {
         grid-template-columns: 1fr;
     }
 }
+/* ============================================
+   イベントセクションとカード間の隙間削除
+   ============================================ */
+
+/* イベントセクションのパディングを削除 */
+.event-section {
+    padding: 30px 0 0 0 !important; /* 下のパディングを削除 */
+    margin-bottom: 0 !important;
+}
+
+/* セクションヘッダーのマージンを最小化 */
+.event-section .section-header {
+    margin-bottom: 15px !important;
+}
+
+/* イベントカルーセルラッパーのマージンを削除 */
+.event-carousel-wrapper {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* スマートナビゲーションのマージンを削除 */
+.smart-event-nav {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 8px !important;
+}
+
+/* イベントタブのマージンを調整 */
+.event-tabs-smart {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 12px !important; /* 次回バッジのスペース維持 */
+    padding-bottom: 0 !important;
+}
+
+/* イベントカードコンテナ */
+.event-carousel {
+    margin-top: 8px !important; /* スマートナビとカードの最小限のギャップ */
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+}
+
+/* イベントカードのマージンを削除 */
+.event-card {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-top: none !important;
+}
+
+/* イベントカードの最初の要素の上部マージンを削除 */
+.event-card:first-child {
+    margin-top: 0 !important;
+    border-top: none !important;
+}
+
+/* イベントカードの最後の要素の下部マージンを削除 */
+.event-card:last-child {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+/* コンテナの下部パディングを削除 */
+.event-section .container {
+    padding-bottom: 0 !important;
+}
+
+/* ============================================
+   次のセクション（メンバー等）との隙間を最小化
+   ============================================ */
+
+/* メンバーセクションの上部マージンを削除 */
+.members-section {
+    margin-top: 0 !important;
+    padding-top: 30px !important;
+}
+
+/* その他セクションとの隙間を統一 */
+section + section {
+    margin-top: 0 !important;
+}
+
+/* ============================================
+   レスポンシブ調整
+   ============================================ */
+
+@media screen and (max-width: 768px) {
+    .event-section {
+        padding: 20px 0 0 0 !important;
+    }
+    
+    .event-section .section-header {
+        margin-bottom: 12px !important;
+    }
+    
+    .event-carousel {
+        margin-top: 6px !important;
+    }
+    
+    .smart-event-nav {
+        padding-bottom: 6px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .event-section {
+        padding: 15px 0 0 0 !important;
+    }
+    
+    .event-section .section-header {
+        margin-bottom: 10px !important;
+    }
+    
+    .event-carousel {
+        margin-top: 4px !important;
+    }
+}
