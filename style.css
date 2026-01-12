@@ -17748,3 +17748,172 @@ section + section {
         margin-right: 4px !important;
     }
 }
+/* ============================================
+   コラボ編集：画像アップロード機能CSS
+   ============================================ */
+
+/* 画像アップロードコンテナ */
+.image-upload-container {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background: #f9f9f9;
+}
+
+/* 画像プレビューエリア */
+.image-preview-area {
+    margin-bottom: 15px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    padding: 30px;
+}
+
+.image-preview-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+.image-preview-placeholder p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* 画像アップロードオプション */
+.image-upload-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-help-text {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    margin: 0;
+}
+
+/* 複数画像アップロード */
+.multi-image-upload {
+    margin-top: 10px;
+}
+
+.content-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.content-image-item {
+    position: relative;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    aspect-ratio: 1;
+}
+
+.content-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image-btn,
+.copy-url-btn {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.remove-image-btn {
+    top: 5px;
+    right: 5px;
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+}
+
+.remove-image-btn:hover {
+    background: rgba(220, 53, 69, 1);
+    transform: scale(1.1);
+}
+
+.copy-url-btn {
+    bottom: 5px;
+    right: 5px;
+    background: rgba(40, 167, 69, 0.9);
+    color: white;
+}
+
+.copy-url-btn:hover {
+    background: rgba(40, 167, 69, 1);
+    transform: scale(1.1);
+}
+
+.image-uploading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.image-uploading i {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 768px) {
+    .content-images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+    
+    .image-upload-container {
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .content-images-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .remove-image-btn,
+    .copy-url-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+}

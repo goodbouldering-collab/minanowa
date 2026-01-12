@@ -5657,7 +5657,7 @@ function renderAdminCollaborations(collaborations) {
     
     let html = `
         <div class="admin-toolbar">
-            <h3>コラボ事例一覧 (${collaborations.length}件)</h3>
+            <h3>お知らせ・レポート・コラボ一覧 (${collaborations.length}件)</h3>
             <button class="btn btn-primary" onclick="showCollaborationEditor()">
                 <i class="fas fa-plus"></i> 新規作成
             </button>
@@ -5666,7 +5666,7 @@ function renderAdminCollaborations(collaborations) {
     `;
     
     if (collaborations.length === 0) {
-        html += '<p style="text-align:center;padding:40px;color:var(--text-secondary);">コラボ事例がまだありません</p>';
+        html += '<p style="text-align:center;padding:40px;color:var(--text-secondary);">お知らせ・レポート・コラボがまだありません</p>';
     } else {
         collaborations.forEach(item => {
             html += `
@@ -5694,45 +5694,7 @@ function renderAdminCollaborations(collaborations) {
 }
 
 function showCollaborationEditor(collaboration = null) {
-    const content = document.getElementById('adminContent');
-    const isEdit = collaboration !== null;
-    
-    content.innerHTML = `
-        <div class="admin-form-container">
-            <div class="admin-form-header">
-                <h3><i class="fas fa-handshake"></i> ${isEdit ? 'コラボ事例を編集' : 'コラボ事例を作成'}</h3>
-                <button class="btn btn-secondary" onclick="loadAdminCollaborations()">
-                    <i class="fas fa-arrow-left"></i> 戻る
-                </button>
-            </div>
-            <form onsubmit="saveCollaboration(event, ${isEdit ? `'${collaboration.id}'` : 'null'})">
-                <div class="form-group">
-                    <label>タイトル *</label>
-                    <input type="text" name="title" value="${collaboration?.title || ''}" required class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>説明 *</label>
-                    <textarea name="description" rows="4" required class="form-control">${collaboration?.description || ''}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>画像URL</label>
-                    <input type="url" name="image" value="${collaboration?.image || ''}" class="form-control" placeholder="https://...">
-                </div>
-                <div class="form-group">
-                    <label>カテゴリー</label>
-                    <input type="text" name="category" value="${collaboration?.category || ''}" class="form-control" placeholder="例: ビジネス、地域">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> 保存
-                    </button>
-                    <button type="button" class="btn btn-secondary" onclick="loadAdminCollaborations()">
-                        キャンセル
-                    </button>
-                </div>
-            </form>
-        </div>
-    `;
+    showCollaborationEditorWithUpload(collaboration);
 }
 
 async function saveCollaboration(event, id) {
@@ -8112,3 +8074,282 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('✅ Clean admin tabs script loaded');
+// 画像アップロード機能付きコラボ編集フォーム
+
+function showCollaborationEditorWithUpload(collaboration = null) {
+    const content = document.getElementById('adminContent');
+    const isEdit = collaboration !== null;
+    
+    content.innerHTML = `
+        <div class="admin-form-container">
+            <div class="admin-form-header">
+                <h3><i class="fas fa-handshake"></i> ${isEdit ? 'お知らせ・レポート・コラボを編集' : 'お知らせ・レポート・コラボを作成'}</h3>
+                <button class="btn btn-secondary" onclick="loadAdminCollaborations()">
+                    <i class="fas fa-arrow-left"></i> 戻る
+                </button>
+            </div>
+            <form id="collabForm" onsubmit="saveCollaborationWithImage(event, ${isEdit ? `'${collaboration.id}'` : 'null'})">
+                <div class="form-group">
+                    <label>タイトル *</label>
+                    <input type="text" name="title" value="${collaboration?.title || ''}" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label>説明 *</label>
+                    <textarea name="description" rows="4" required class="form-control">${collaboration?.description || ''}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>メイン画像（キャッチ画像）</label>
+                    <div class="image-upload-container">
+                        <div class="image-preview-area">
+                            ${collaboration?.image ? `
+                                <img id="mainImagePreview" src="${collaboration.image}" alt="プレビュー" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                            ` : `
+                                <div id="mainImagePreview" class="image-preview-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <p>画像を選択してください</p>
+                                </div>
+                            `}
+                        </div>
+                        <div class="image-upload-options">
+                            <input type="file" id="mainImageFile" name="mainImage" accept="image/*" class="form-control" onchange="previewMainImage(event)">
+                            <p class="form-help-text">または</p>
+                            <input type="url" id="mainImageUrl" name="image" value="${collaboration?.image || ''}" class="form-control" placeholder="画像URL: https://..." onchange="previewMainImageUrl(event)">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>コンテンツ内画像（複数選択可）</label>
+                    <div class="multi-image-upload">
+                        <input type="file" id="contentImages" name="contentImages" accept="image/*" multiple class="form-control" onchange="previewContentImages(event)">
+                        <div id="contentImagesPreview" class="content-images-grid">
+                            ${collaboration?.contentImages ? collaboration.contentImages.map((img, idx) => `
+                                <div class="content-image-item" data-url="${img}">
+                                    <img src="${img}" alt="コンテンツ画像${idx + 1}">
+                                    <button type="button" class="remove-image-btn" onclick="removeContentImage('${img}')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button type="button" class="copy-url-btn" onclick="copyImageUrl('${img}')" title="URLをコピー">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                    </div>
+                    <p class="form-help-text">※ 画像URLをコピーして説明欄に挿入できます</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>カテゴリー</label>
+                    <select name="category" class="form-control">
+                        <option value="お知らせ" ${collaboration?.category === 'お知らせ' ? 'selected' : ''}>お知らせ</option>
+                        <option value="レポート" ${collaboration?.category === 'レポート' ? 'selected' : ''}>レポート</option>
+                        <option value="コラボ事例" ${collaboration?.category === 'コラボ事例' ? 'selected' : ''}>コラボ事例</option>
+                        <option value="その他" ${collaboration?.category === 'その他' ? 'selected' : ''}>その他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>タグ（カンマ区切り）</label>
+                    <input type="text" name="tags" value="${collaboration?.tags?.join(', ') || ''}" class="form-control" placeholder="例: ビジネス, 地域, イベント">
+                </div>
+                
+                <input type="hidden" id="contentImageUrls" name="contentImageUrls" value="${collaboration?.contentImages?.join(',') || ''}">
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="loadAdminCollaborations()">
+                        キャンセル
+                    </button>
+                </div>
+            </form>
+        </div>
+    `;
+}
+
+// メイン画像のプレビュー（ファイル選択時）
+function previewMainImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById('mainImagePreview');
+        preview.innerHTML = `<img src="${e.target.result}" alt="プレビュー" style="max-width: 100%; max-height: 200px; border-radius: 8px;">`;
+        
+        // URL入力をクリア
+        document.getElementById('mainImageUrl').value = '';
+    };
+    reader.readAsDataURL(file);
+}
+
+// メイン画像のプレビュー（URL入力時）
+function previewMainImageUrl(event) {
+    const url = event.target.value;
+    if (!url) return;
+    
+    const preview = document.getElementById('mainImagePreview');
+    preview.innerHTML = `<img src="${url}" alt="プレビュー" style="max-width: 100%; max-height: 200px; border-radius: 8px;">`;
+    
+    // ファイル選択をクリア
+    document.getElementById('mainImageFile').value = '';
+}
+
+// コンテンツ内画像のプレビュー
+function previewContentImages(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    
+    const previewContainer = document.getElementById('contentImagesPreview');
+    
+    Array.from(files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imageItem = document.createElement('div');
+            imageItem.className = 'content-image-item';
+            imageItem.setAttribute('data-index', index);
+            imageItem.innerHTML = `
+                <img src="${e.target.result}" alt="コンテンツ画像${index + 1}">
+                <button type="button" class="remove-image-btn" onclick="removeContentImageByIndex(${index})">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="image-uploading">
+                    <i class="fas fa-spinner fa-spin"></i> アップロード準備中...
+                </div>
+            `;
+            previewContainer.appendChild(imageItem);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// コンテンツ画像を削除（URL指定）
+function removeContentImage(url) {
+    const item = document.querySelector(`[data-url="${url}"]`);
+    if (item) {
+        item.remove();
+        updateContentImageUrls();
+    }
+}
+
+// コンテンツ画像を削除（インデックス指定）
+function removeContentImageByIndex(index) {
+    const item = document.querySelector(`[data-index="${index}"]`);
+    if (item) {
+        item.remove();
+    }
+}
+
+// 画像URLをコピー
+function copyImageUrl(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        showNotification('画像URLをコピーしました', 'success');
+    }).catch(err => {
+        console.error('コピー失敗:', err);
+        showNotification('コピーに失敗しました', 'error');
+    });
+}
+
+// コンテンツ画像URLを更新
+function updateContentImageUrls() {
+    const items = document.querySelectorAll('.content-image-item[data-url]');
+    const urls = Array.from(items).map(item => item.getAttribute('data-url'));
+    document.getElementById('contentImageUrls').value = urls.join(',');
+}
+
+// 画像付きでコラボを保存
+async function saveCollaborationWithImage(event, id) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    try {
+        // まず画像をアップロード
+        const mainImageFile = document.getElementById('mainImageFile').files[0];
+        const contentImageFiles = document.getElementById('contentImages').files;
+        
+        let mainImageUrl = formData.get('image'); // URL入力があればそれを使用
+        let contentImageUrls = [];
+        
+        // メイン画像をアップロード
+        if (mainImageFile) {
+            const imgFormData = new FormData();
+            imgFormData.append('image', mainImageFile);
+            imgFormData.append('type', 'collab');
+            
+            const imgResponse = await fetch(`${API_BASE}/api/admin/upload-image`, {
+                method: 'POST',
+                headers: { 'x-session-id': sessionStorage.getItem('sessionId') },
+                body: imgFormData
+            });
+            
+            if (imgResponse.ok) {
+                const imgData = await imgResponse.json();
+                mainImageUrl = imgData.url;
+            }
+        }
+        
+        // コンテンツ画像をアップロード
+        if (contentImageFiles && contentImageFiles.length > 0) {
+            for (const file of contentImageFiles) {
+                const imgFormData = new FormData();
+                imgFormData.append('image', file);
+                imgFormData.append('type', 'content');
+                
+                const imgResponse = await fetch(`${API_BASE}/api/admin/upload-image`, {
+                    method: 'POST',
+                    headers: { 'x-session-id': sessionStorage.getItem('sessionId') },
+                    body: imgFormData
+                });
+                
+                if (imgResponse.ok) {
+                    const imgData = await imgResponse.json();
+                    contentImageUrls.push(imgData.url);
+                }
+            }
+        }
+        
+        // 既存のコンテンツ画像URLを追加
+        const existingUrls = document.getElementById('contentImageUrls').value;
+        if (existingUrls) {
+            contentImageUrls = [...contentImageUrls, ...existingUrls.split(',').filter(url => url.trim())];
+        }
+        
+        // データを準備
+        const data = {
+            title: formData.get('title'),
+            description: formData.get('description'),
+            image: mainImageUrl,
+            contentImages: contentImageUrls,
+            category: formData.get('category'),
+            tags: formData.get('tags') ? formData.get('tags').split(',').map(t => t.trim()) : []
+        };
+        
+        // コラボデータを保存
+        const url = id 
+            ? `${API_BASE}/api/admin/collaborations/${id}`
+            : `${API_BASE}/api/admin/collaborations`;
+        
+        const response = await fetch(url, {
+            method: id ? 'PUT' : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) throw new Error('Failed to save');
+        
+        showNotification('お知らせ・レポート・コラボを保存しました', 'success');
+        loadAdminCollaborations();
+    } catch (error) {
+        console.error('保存エラー:', error);
+        showNotification('保存に失敗しました', 'error');
+    }
+}
