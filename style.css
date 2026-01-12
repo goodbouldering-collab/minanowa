@@ -16704,3 +16704,340 @@ section {
     outline-offset: -2px;
     z-index: 1;
 }
+/* ===================================================
+   管理者ダッシュボード - コンパクト表示
+   =================================================== */
+
+/* ダッシュボード全体 */
+.admin-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 統計カードグリッド - コンパクト化 */
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+/* 統計カード - サイズ削減 */
+.admin-stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 4px solid var(--primary);
+    transition: all 0.3s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.admin-stat-card.secondary {
+    border-left-color: var(--secondary);
+}
+
+.admin-stat-card.accent {
+    border-left-color: var(--accent);
+}
+
+.admin-stat-card.info {
+    border-left-color: #2196F3;
+}
+
+/* アイコン - コンパクト */
+.admin-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    font-size: 18px;
+}
+
+.admin-stat-card.secondary .admin-stat-icon {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+}
+
+.admin-stat-card.accent .admin-stat-icon {
+    background: linear-gradient(135deg, var(--accent) 0%, #f57c00 100%);
+}
+
+.admin-stat-card.info .admin-stat-icon {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+}
+
+/* 数値 - コンパクト */
+.admin-stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1;
+}
+
+/* ラベル - コンパクト */
+.admin-stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 変化表示 - コンパクト */
+.admin-stat-change {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--primary);
+    align-self: flex-start;
+}
+
+.admin-stat-change i {
+    font-size: 10px;
+}
+
+/* 2カラムグリッド - コンパクト */
+.admin-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+/* セクション - コンパクト */
+.admin-section {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* セクションヘッダー - コンパクト */
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.admin-section-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.admin-section-header h3 i {
+    color: var(--primary);
+    font-size: 14px;
+}
+
+/* カテゴリリスト - コンパクト */
+.admin-category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* カテゴリアイテム - コンパクト */
+.admin-category-item {
+    display: grid;
+    grid-template-columns: 100px 1fr 40px;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-category-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* プログレスバー - コンパクト */
+.admin-category-bar {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.admin-category-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-category-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: right;
+}
+
+/* アクティビティリスト - コンパクト */
+.admin-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* アクティビティアイテム - コンパクト */
+.admin-activity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.admin-activity-item:hover {
+    background: #e9ecef;
+    transform: translateX(4px);
+}
+
+/* アバター - コンパクト */
+.admin-activity-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* アクティビティ情報 - コンパクト */
+.admin-activity-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-activity-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-activity-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 時間表示 - コンパクト */
+.admin-activity-time {
+    font-size: 10px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+/* 小ボタン - コンパクト */
+.glass-btn-small {
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: 6px;
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.glass-btn-small:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1400px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .admin-grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-dashboard {
+        gap: 12px;
+    }
+    
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .admin-stat-card {
+        padding: 12px;
+    }
+    
+    .admin-stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+    
+    .admin-stat-value {
+        font-size: 24px;
+    }
+    
+    .admin-section {
+        padding: 12px;
+    }
+    
+    .admin-section-header h3 {
+        font-size: 14px;
+    }
+    
+    .admin-category-item {
+        grid-template-columns: 80px 1fr 35px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
