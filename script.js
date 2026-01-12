@@ -7957,3 +7957,158 @@ if (document.readyState === 'loading') {
 }
 
 console.log('✅ Hero button controller loaded');
+/* ===================================================
+   管理者パネル - クリーンタブのスクロール制御
+   =================================================== */
+
+// スクロールヒントの表示制御
+function updateAdminTabsScrollHint() {
+    const container = document.querySelector('.admin-tabs-container');
+    if (!container) return;
+    
+    const scrollLeft = container.scrollLeft;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+    
+    // スクロール可能かチェック
+    const canScroll = scrollWidth > clientWidth;
+    const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
+    
+    // スクロールヒントを取得または作成
+    let hint = document.querySelector('.admin-tabs-scroll-hint');
+    if (!hint && canScroll) {
+        hint = document.createElement('div');
+        hint.className = 'admin-tabs-scroll-hint';
+        hint.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        document.querySelector('.admin-tabs-wrapper').appendChild(hint);
+    }
+    
+    if (hint) {
+        if (canScroll && !isAtEnd) {
+            hint.classList.add('show');
+        } else {
+            hint.classList.remove('show');
+        }
+    }
+}
+
+// アクティブタブを中央にスクロール
+function scrollActiveTabIntoView() {
+    const activeTab = document.querySelector('.admin-tab.active');
+    const container = document.querySelector('.admin-tabs-container');
+    
+    if (!activeTab || !container) return;
+    
+    const tabRect = activeTab.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const tabCenter = tabRect.left + tabRect.width / 2;
+    const containerCenter = containerRect.left + containerRect.width / 2;
+    const scrollOffset = tabCenter - containerCenter;
+    
+    container.scrollBy({
+        left: scrollOffset,
+        behavior: 'smooth'
+    });
+}
+
+// タブクリック時の処理を拡張
+function enhancedSwitchAdminTab(tabName) {
+    // 既存のswitchAdminTab関数を呼び出し
+    if (typeof switchAdminTab === 'function') {
+        switchAdminTab(tabName);
+    }
+    
+    // アクティブタブをスクロール
+    setTimeout(() => {
+        scrollActiveTabIntoView();
+        updateAdminTabsScrollHint();
+    }, 50);
+}
+
+// 管理者パネルを開いた時の初期化
+function initCleanAdminTabs() {
+    const container = document.querySelector('.admin-tabs-container');
+    if (!container) return;
+    
+    // スクロールイベントリスナー
+    container.addEventListener('scroll', () => {
+        updateAdminTabsScrollHint();
+    });
+    
+    // リサイズイベントリスナー
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            updateAdminTabsScrollHint();
+            scrollActiveTabIntoView();
+        }, 250);
+    });
+    
+    // 初期表示
+    updateAdminTabsScrollHint();
+    scrollActiveTabIntoView();
+    
+    // マウスホイールでの横スクロールを有効化
+    container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            container.scrollBy({
+                left: e.deltaY,
+                behavior: 'auto'
+            });
+        }
+    }, { passive: false });
+    
+    console.log('✅ Clean admin tabs initialized');
+}
+
+// 既存のswitchAdminTab関数をラップ
+if (typeof window.switchAdminTab === 'function') {
+    const originalSwitchAdminTab = window.switchAdminTab;
+    window.switchAdminTab = function(tabName) {
+        originalSwitchAdminTab(tabName);
+        setTimeout(() => {
+            scrollActiveTabIntoView();
+            updateAdminTabsScrollHint();
+        }, 50);
+    };
+}
+
+// 管理者パネルが開かれた時に初期化
+const originalOpenAdminPanelClean = window.openAdminPanel;
+if (typeof originalOpenAdminPanelClean === 'function') {
+    window.openAdminPanel = function() {
+        originalOpenAdminPanelClean();
+        setTimeout(() => {
+            initCleanAdminTabs();
+        }, 100);
+    };
+}
+
+// MutationObserverで管理者モーダルの表示を監視
+const adminModalObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+            const modal = mutation.target;
+            if (modal.classList.contains('show')) {
+                setTimeout(() => {
+                    initCleanAdminTabs();
+                }, 100);
+            }
+        }
+    });
+});
+
+// DOM読み込み後に監視開始
+document.addEventListener('DOMContentLoaded', () => {
+    const adminModal = document.getElementById('adminModal');
+    if (adminModal) {
+        adminModalObserver.observe(adminModal, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+});
+
+console.log('✅ Clean admin tabs script loaded');

@@ -16476,3 +16476,231 @@ section {
         min-height: 42px;
     }
 }
+/* ===================================================
+   管理者パネル - クリーンな横スライドタブ
+   =================================================== */
+
+/* タブラッパー - ボーダーなし */
+.admin-tabs-wrapper {
+    position: relative;
+    background: white;
+    border-bottom: none;
+    flex-shrink: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* タブコンテナ - シンプルな横スクロール */
+.admin-tabs-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0;
+}
+
+.admin-tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* タブ - クリーンなデザイン */
+.admin-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    min-width: min-content;
+}
+
+.admin-tab {
+    flex-shrink: 0;
+    padding: 16px 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border-radius: 0;
+}
+
+/* アクティブタブの下線 */
+.admin-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #4CAF50;
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-tab.active::after {
+    transform: scaleX(1);
+}
+
+.admin-tab i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.admin-tab:hover {
+    color: #4CAF50;
+    background: rgba(76,175,80,0.03);
+}
+
+.admin-tab:hover i {
+    transform: scale(1.15);
+}
+
+.admin-tab.active {
+    color: #4CAF50;
+    background: rgba(76,175,80,0.05);
+}
+
+.admin-tab.active i {
+    transform: scale(1.1);
+}
+
+/* ナビゲーションボタンを非表示 */
+.admin-tabs-nav {
+    display: none !important;
+}
+
+/* インジケーターを非表示 */
+.admin-tabs-indicators {
+    display: none !important;
+}
+
+/* スクロールヒント（オプション） */
+.admin-tabs-scroll-hint {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: linear-gradient(to left, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.admin-tabs-scroll-hint.show {
+    opacity: 1;
+}
+
+.admin-tabs-scroll-hint i {
+    color: #4CAF50;
+    font-size: 14px;
+    animation: slideHint 1.5s ease-in-out infinite;
+}
+
+@keyframes slideHint {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-8px);
+    }
+}
+
+/* タブ間の微妙な区切り線 */
+.admin-tab:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    bottom: 25%;
+    width: 1px;
+    background: rgba(0,0,0,0.05);
+}
+
+.admin-tab.active + .admin-tab::before,
+.admin-tab:has(+ .admin-tab.active)::before {
+    opacity: 0;
+}
+
+/* マウスホイールでの横スクロールを有効化 */
+.admin-tabs-container {
+    scroll-snap-type: none;
+}
+
+/* タッチデバイス用の最適化 */
+@media (hover: none) and (pointer: coarse) {
+    .admin-tab {
+        padding: 18px 28px;
+    }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1400px) {
+    .admin-tab {
+        padding: 14px 22px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .admin-tab {
+        padding: 14px 20px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-tab {
+        padding: 12px 18px;
+        font-size: 12px;
+    }
+    
+    .admin-tab i {
+        font-size: 14px;
+    }
+    
+    .admin-tabs-scroll-hint {
+        width: 60px;
+        padding-right: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-tab {
+        padding: 10px 16px;
+        font-size: 11px;
+    }
+    
+    .admin-tab i {
+        font-size: 13px;
+    }
+}
+
+/* スムーズスクロールの追加機能 */
+.admin-tabs-container.scrolling {
+    scroll-behavior: smooth;
+}
+
+/* アクティブタブへの自動スクロール */
+.admin-tab.active {
+    scroll-margin: 20px;
+}
+
+/* タブのフォーカス状態 */
+.admin-tab:focus-visible {
+    outline: 2px solid #4CAF50;
+    outline-offset: -2px;
+    z-index: 1;
+}
