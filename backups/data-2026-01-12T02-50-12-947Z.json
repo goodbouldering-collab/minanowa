@@ -238,7 +238,7 @@
       "joinDate": "2024-01-15",
       "isPublic": false,
       "isAdmin": false,
-      "lastLogin": "2025-12-16T17:28:01.985Z"
+      "lastLogin": "2026-01-11T11:32:57.833Z"
     },
     {
       "id": "ueda-eikichi-001",
@@ -271,7 +271,7 @@
     {
       "id": "okura-yuki-001",
       "email": "okura@minanowa.com",
-      "password": "$2b$10$defaultpasswordhash",
+      "password": "$2b$10$zfAlc8itKKTYTx5sv31lIuYbVzkUfGo6pMdUFYd2tZ8M5B0k2Jtf2",
       "name": "大倉 ゆき",
       "furigana": "おおくら ゆき",
       "phone": "090-0000-0000",
@@ -294,7 +294,8 @@
       "joinDate": "2023-01-01",
       "isPublic": true,
       "isAdmin": true,
-      "role": "代表"
+      "role": "代表",
+      "lastLogin": "2026-01-11T16:46:03.481Z"
     },
     {
       "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
@@ -343,9 +344,9 @@
       "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
       "createdAt": "2026-01-05T11:29:09.296Z"
     },
-    "372611e3-69d6-41b1-a045-ea695a6fd690": {
-      "memberId": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-      "createdAt": "2026-01-10T08:50:16.144Z"
+    "8bc0267a-c9bf-4a98-aaf5-a11064351118": {
+      "memberId": "okura-yuki-001",
+      "createdAt": "2026-01-11T16:46:03.481Z"
     }
   },
   "blogs": [
