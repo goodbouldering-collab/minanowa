@@ -2897,16 +2897,23 @@ function showMemberEditor(member) {
             </div>
             
             <div class="form-group">
-                <label for="memberAvatar">プロフィール写真URL</label>
-                <div class="avatar-preview-container">
-                    <img id="avatarPreview" src="${member.avatar || 'https://i.pravatar.cc/200?img=1'}" 
-                         alt="プロフィール写真プレビュー" class="avatar-preview-image"
-                         onerror="this.src='https://i.pravatar.cc/200?img=1'">
-                    <div class="avatar-input-group">
+                <label for="memberAvatar">プロフィール写真</label>
+                <div class="image-upload-container">
+                    <div class="image-preview-area">
+                        ${member.avatar ? `
+                            <img id="memberAvatarPreview" src="${member.avatar}" alt="プロフィール写真" style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid var(--primary);">
+                        ` : `
+                            <div id="memberAvatarPreview" class="image-preview-placeholder">
+                                <i class="fas fa-user-circle"></i>
+                                <p>プロフィール写真を選択</p>
+                            </div>
+                        `}
+                    </div>
+                    <div class="image-upload-options">
+                        <input type="file" id="memberAvatarFile" name="avatarFile" accept="image/*" class="form-control" onchange="previewMemberAvatar(event)">
+                        <p class="form-help-text">または</p>
                         <input type="url" id="memberAvatar" name="avatar" class="glass-input"
-                               value="${member.avatar || ''}" placeholder="https://example.com/photo.jpg"
-                               oninput="updateAvatarPreview(this.value)">
-                        <small class="form-help">画像のURLを入力してください（例：https://example.com/photo.jpg）</small>
+                               value="${member.avatar || ''}" placeholder="画像URL: https://..." onchange="previewMemberAvatarUrl(event)">
                     </div>
                 </div>
             </div>
@@ -8524,6 +8531,120 @@ window.saveBlog = async function(event) {
         
         showNotification('活動レポートを保存しました', 'success');
         loadAdminBlogs();
+        
+    } catch (error) {
+        console.error('保存エラー:', error);
+        showNotification(error.message || '保存に失敗しました', 'error');
+    }
+};
+// メンバープロフィール写真アップロード機能
+
+// メンバーアバターのプレビュー（ファイル選択時）
+function previewMemberAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById('memberAvatarPreview');
+        if (preview) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="プロフィール写真" style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid var(--primary);">`;
+        }
+        
+        // URL入力をクリア
+        const urlInput = document.getElementById('memberAvatar');
+        if (urlInput) {
+            urlInput.value = '';
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// メンバーアバターのプレビュー（URL入力時）
+function previewMemberAvatarUrl(event) {
+    const url = event.target.value;
+    if (!url) return;
+    
+    const preview = document.getElementById('memberAvatarPreview');
+    if (preview) {
+        preview.innerHTML = `<img src="${url}" alt="プロフィール写真" style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid var(--primary);">`;
+    }
+    
+    // ファイル選択をクリア
+    const fileInput = document.getElementById('memberAvatarFile');
+    if (fileInput) {
+        fileInput.value = '';
+    }
+}
+
+// saveMemberProfile関数を拡張して画像アップロードに対応
+const originalSaveMemberProfile = window.saveMemberProfile;
+
+window.saveMemberProfile = async function(event, memberId) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    try {
+        // 画像ファイルがある場合はアップロード
+        const avatarFile = document.getElementById('memberAvatarFile')?.files[0];
+        let avatarUrl = formData.get('avatar');
+        
+        if (avatarFile) {
+            const imgFormData = new FormData();
+            imgFormData.append('image', avatarFile);
+            imgFormData.append('type', 'member');
+            
+            const imgResponse = await fetch(`${API_BASE}/api/admin/upload-image`, {
+                method: 'POST',
+                headers: { 'x-session-id': sessionStorage.getItem('sessionId') },
+                body: imgFormData
+            });
+            
+            if (imgResponse.ok) {
+                const imgData = await imgResponse.json();
+                avatarUrl = imgData.url;
+            } else {
+                throw new Error('画像のアップロードに失敗しました');
+            }
+        }
+        
+        // メンバーデータを準備
+        const memberData = {
+            name: formData.get('name'),
+            furigana: formData.get('furigana'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            business: formData.get('business'),
+            businessCategory: formData.get('businessCategory'),
+            introduction: formData.get('introduction'),
+            location: formData.get('location'),
+            avatar: avatarUrl,
+            website: formData.get('website'),
+            sns: {
+                twitter: formData.get('twitter'),
+                instagram: formData.get('instagram')
+            },
+            skills: formData.get('skills') ? formData.get('skills').split(',').map(s => s.trim()) : [],
+            isPublic: formData.get('isPublic') === 'on'
+        };
+        
+        // メンバープロフィールを保存
+        const response = await fetch(`${API_BASE}/api/admin/members/${memberId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: JSON.stringify(memberData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('保存に失敗しました');
+        }
+        
+        showNotification('メンバープロフィールを保存しました', 'success');
+        loadAdminMembers();
         
     } catch (error) {
         console.error('保存エラー:', error);
