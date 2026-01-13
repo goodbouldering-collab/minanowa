@@ -18427,3 +18427,212 @@ section + section {
         font-size: 0.65rem !important;
     }
 }
+/* ============================================
+   活動サイクル - 超コンパクト＆インタラクティブ
+   ============================================ */
+
+/* 活動サイクル全体 */
+.activity-cycle-interactive {
+    margin-bottom: 15px !important;
+    padding: 10px 15px !important; /* 大幅削減 */
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+}
+
+.cycle-title {
+    font-size: 1rem !important; /* 大幅削減 */
+    margin-bottom: 10px !important;
+    text-align: center;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* コンパクトサイクル図 */
+.cycle-diagram-compact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+/* コンパクトステップ */
+.cycle-step-compact {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.cycle-step-compact:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(74, 140, 63, 0.2);
+    transform: translateY(-2px);
+}
+
+.cycle-step-compact.active {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(74, 140, 63, 0.1) 0%, rgba(212, 168, 75, 0.1) 100%);
+    box-shadow: 0 4px 12px rgba(74, 140, 63, 0.3);
+}
+
+/* アイコン */
+.step-icon-compact {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, #5a8c50 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.cycle-step-compact.active .step-icon-compact {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* コンテンツ */
+.step-content-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.step-title-compact {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.step-detail-compact {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
+/* 矢印 */
+.cycle-arrow-compact {
+    color: var(--primary);
+    font-size: 1rem;
+    opacity: 0.6;
+}
+
+/* 詳細説明エリア */
+.cycle-details-area {
+    margin-top: 10px;
+}
+
+.cycle-detail-card {
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(74, 140, 63, 0.05) 0%, rgba(212, 168, 75, 0.05) 100%);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cycle-detail-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.cycle-detail-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 768px) {
+    .cycle-diagram-compact {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .cycle-step-compact {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .cycle-arrow-compact {
+        transform: rotate(90deg);
+        margin: 0;
+    }
+    
+    .step-title-compact {
+        font-size: 0.85rem;
+    }
+    
+    .step-detail-compact {
+        font-size: 0.65rem;
+    }
+    
+    .cycle-detail-card {
+        padding: 10px;
+    }
+    
+    .cycle-detail-card h4 {
+        font-size: 0.9rem;
+    }
+    
+    .cycle-detail-card p {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .activity-cycle-interactive {
+        padding: 8px 10px !important;
+    }
+    
+    .cycle-step-compact {
+        padding: 6px 10px;
+    }
+    
+    .step-icon-compact {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .step-title-compact {
+        font-size: 0.8rem;
+    }
+    
+    .step-detail-compact {
+        font-size: 0.6rem;
+    }
+}

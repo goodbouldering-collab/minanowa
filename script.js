@@ -2491,7 +2491,7 @@ function renderAdminBlogs(blogs) {
     
     adminContent.innerHTML = `
         <div class="admin-toolbar">
-            <h3>ブログ記事一覧 (${blogs.length}件)</h3>
+            <h3>活動レポート一覧 (${blogs.length}件)</h3>
             <button class="btn glass-btn-primary" onclick="showBlogEditor()">
                 <i class="fas fa-plus"></i> 新規作成
             </button>
@@ -2500,7 +2500,7 @@ function renderAdminBlogs(blogs) {
         <div class="admin-blog-list">
             ${blogs.length === 0 ? `
                 <p style="text-align: center; color: var(--text-muted); padding: 40px;">
-                    ブログ記事がありません
+                    活動レポートがありません
                 </p>
             ` : blogs.map(blog => `
                 <div class="admin-blog-item">
@@ -2536,7 +2536,7 @@ function showBlogEditor(blog = null) {
     
     adminContent.innerHTML = `
         <div class="admin-toolbar">
-            <h3>${editingBlogId ? 'ブログ記事を編集' : '新規ブログ記事'}</h3>
+            <h3>${editingBlogId ? '活動レポートを編集' : '新規活動レポート'}</h3>
             <button class="btn glass-btn-small" onclick="loadAdminBlogs()">
                 <i class="fas fa-arrow-left"></i> 戻る
             </button>
@@ -2569,9 +2569,25 @@ function showBlogEditor(blog = null) {
             </div>
             
             <div class="form-group">
-                <label for="blogFeaturedImage">アイキャッチ画像URL</label>
-                <input type="url" id="blogFeaturedImage" name="featuredImage" class="glass-input"
-                       value="${blog?.featuredImage || ''}" placeholder="https://...">
+                <label for="blogFeaturedImage">アイキャッチ画像</label>
+                <div class="image-upload-container">
+                    <div class="image-preview-area">
+                        ${blog?.featuredImage ? `
+                            <img id="blogImagePreview" src="${blog.featuredImage}" alt="プレビュー" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                        ` : `
+                            <div id="blogImagePreview" class="image-preview-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p>画像を選択してください</p>
+                            </div>
+                        `}
+                    </div>
+                    <div class="image-upload-options">
+                        <input type="file" id="blogImageFile" name="featuredImageFile" accept="image/*" class="form-control" onchange="previewBlogImage(event)">
+                        <p class="form-help-text">または</p>
+                        <input type="url" id="blogFeaturedImage" name="featuredImage" class="glass-input"
+                               value="${blog?.featuredImage || ''}" placeholder="画像URL: https://..." onchange="previewBlogImageUrl(event)">
+                    </div>
+                </div>
             </div>
             
             <div class="form-group">
@@ -8355,3 +8371,162 @@ async function saveCollaborationWithImage(event, id) {
         showNotification('保存に失敗しました', 'error');
     }
 }
+// 活動サイクルのインタラクティブ機能
+
+let currentActiveStep = null;
+
+function toggleCycleDetail(stepNumber) {
+    const detailCards = document.querySelectorAll('.cycle-detail-card');
+    const steps = document.querySelectorAll('.cycle-step-compact');
+    const targetDetail = document.querySelector(`.cycle-detail-card[data-detail="${stepNumber}"]`);
+    const targetStep = document.querySelector(`.cycle-step-compact[data-step="${stepNumber}"]`);
+    
+    // 同じステップをクリックした場合は閉じる
+    if (currentActiveStep === stepNumber) {
+        detailCards.forEach(card => {
+            card.style.display = 'none';
+        });
+        steps.forEach(step => {
+            step.classList.remove('active');
+        });
+        currentActiveStep = null;
+        return;
+    }
+    
+    // 全ての詳細カードを非表示にしてactiveクラスを削除
+    detailCards.forEach(card => {
+        card.style.display = 'none';
+    });
+    steps.forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // 選択されたステップの詳細を表示
+    if (targetDetail) {
+        targetDetail.style.display = 'block';
+        targetStep.classList.add('active');
+        currentActiveStep = stepNumber;
+        
+        // スムーズにスクロール
+        setTimeout(() => {
+            targetDetail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+}
+
+// ページロード時に最初のステップを表示（オプション）
+document.addEventListener('DOMContentLoaded', function() {
+    // 初期表示は何も表示しない（ユーザーがクリックするまで）
+    console.log('✅ Activity cycle interactive loaded');
+});
+// ブログ（活動レポート）画像アップロード機能
+
+// ブログ画像のプレビュー（ファイル選択時）
+function previewBlogImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById('blogImagePreview');
+        if (preview) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="プレビュー" style="max-width: 100%; max-height: 200px; border-radius: 8px;">`;
+        }
+        
+        // URL入力をクリア
+        const urlInput = document.getElementById('blogFeaturedImage');
+        if (urlInput) {
+            urlInput.value = '';
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// ブログ画像のプレビュー（URL入力時）
+function previewBlogImageUrl(event) {
+    const url = event.target.value;
+    if (!url) return;
+    
+    const preview = document.getElementById('blogImagePreview');
+    if (preview) {
+        preview.innerHTML = `<img src="${url}" alt="プレビュー" style="max-width: 100%; max-height: 200px; border-radius: 8px;">`;
+    }
+    
+    // ファイル選択をクリア
+    const fileInput = document.getElementById('blogImageFile');
+    if (fileInput) {
+        fileInput.value = '';
+    }
+}
+
+// saveBlog関数を拡張して画像アップロードに対応
+const originalSaveBlog = window.saveBlog;
+
+window.saveBlog = async function(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    try {
+        // 画像ファイルがある場合はアップロード
+        const imageFile = document.getElementById('blogImageFile')?.files[0];
+        let featuredImageUrl = formData.get('featuredImage');
+        
+        if (imageFile) {
+            const imgFormData = new FormData();
+            imgFormData.append('image', imageFile);
+            imgFormData.append('type', 'blog');
+            
+            const imgResponse = await fetch(`${API_BASE}/api/admin/upload-image`, {
+                method: 'POST',
+                headers: { 'x-session-id': sessionStorage.getItem('sessionId') },
+                body: imgFormData
+            });
+            
+            if (imgResponse.ok) {
+                const imgData = await imgResponse.json();
+                featuredImageUrl = imgData.url;
+            } else {
+                throw new Error('画像のアップロードに失敗しました');
+            }
+        }
+        
+        // ブログデータを準備
+        const blogData = {
+            title: formData.get('title'),
+            slug: formData.get('slug'),
+            category: formData.get('category'),
+            featuredImage: featuredImageUrl,
+            content: formData.get('content'),
+            excerpt: formData.get('excerpt'),
+            tags: formData.get('tags') ? formData.get('tags').split(',').map(t => t.trim()) : [],
+            status: formData.get('status')
+        };
+        
+        // ブログを保存
+        const method = editingBlogId ? 'PUT' : 'POST';
+        const url = editingBlogId 
+            ? `${API_BASE}/api/admin/blogs/${editingBlogId}`
+            : `${API_BASE}/api/admin/blogs`;
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: JSON.stringify(blogData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('保存に失敗しました');
+        }
+        
+        showNotification('活動レポートを保存しました', 'success');
+        loadAdminBlogs();
+        
+    } catch (error) {
+        console.error('保存エラー:', error);
+        showNotification(error.message || '保存に失敗しました', 'error');
+    }
+};

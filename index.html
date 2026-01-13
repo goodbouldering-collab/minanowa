@@ -337,33 +337,59 @@
                 </div>
             </div>
             
-            <!-- 活動サイクル - インタラクティブフロー -->
+            <!-- 活動サイクル - 超コンパクト＆インタラクティブ -->
             <div class="activity-cycle-interactive">
-                <h3 class="cycle-title">活動の循環サイクル</h3>
-                <div class="cycle-diagram">
-                    <div class="cycle-step" data-step="1" onmouseenter="highlightCycleStep(1)" onmouseleave="unhighlightCycleSteps()">
-                        <div class="step-number">1</div>
-                        <div class="step-icon"><i class="fas fa-laptop-code"></i></div>
-                        <div class="step-title">日常のギブ</div>
-                        <div class="step-desc">オンラインで気軽に情報共有</div>
+                <h3 class="cycle-title">活動の流れ</h3>
+                <div class="cycle-diagram-compact">
+                    <div class="cycle-step-compact" data-step="1" onclick="toggleCycleDetail(1)">
+                        <div class="step-icon-compact"><i class="fas fa-user-plus"></i></div>
+                        <div class="step-content-compact">
+                            <div class="step-title-compact">1. 申請</div>
+                            <div class="step-detail-compact">事業内容を登録</div>
+                        </div>
                     </div>
-                    <div class="cycle-arrow">
-                        <i class="fas fa-arrow-right"></i>
+                    <div class="cycle-arrow-compact"><i class="fas fa-chevron-right"></i></div>
+                    <div class="cycle-step-compact" data-step="2" onclick="toggleCycleDetail(2)">
+                        <div class="step-icon-compact"><i class="fas fa-calendar-check"></i></div>
+                        <div class="step-content-compact">
+                            <div class="step-title-compact">2. 交流会</div>
+                            <div class="step-detail-compact">月1回・顔合わせ</div>
+                        </div>
                     </div>
-                    <div class="cycle-step" data-step="2" onmouseenter="highlightCycleStep(2)" onmouseleave="unhighlightCycleSteps()">
-                        <div class="step-number">2</div>
-                        <div class="step-icon"><i class="fas fa-users"></i></div>
-                        <div class="step-title">深まる交流</div>
-                        <div class="step-desc">月1回のリアル交流会</div>
+                    <div class="cycle-arrow-compact"><i class="fas fa-chevron-right"></i></div>
+                    <div class="cycle-step-compact" data-step="3" onclick="toggleCycleDetail(3)">
+                        <div class="step-icon-compact"><i class="fas fa-comments"></i></div>
+                        <div class="step-content-compact">
+                            <div class="step-title-compact">3. グループ</div>
+                            <div class="step-detail-compact">LINEで情報共有</div>
+                        </div>
                     </div>
-                    <div class="cycle-arrow">
-                        <i class="fas fa-arrow-right"></i>
+                    <div class="cycle-arrow-compact"><i class="fas fa-chevron-right"></i></div>
+                    <div class="cycle-step-compact" data-step="4" onclick="toggleCycleDetail(4)">
+                        <div class="step-icon-compact"><i class="fas fa-handshake"></i></div>
+                        <div class="step-content-compact">
+                            <div class="step-title-compact">4. 紹介</div>
+                            <div class="step-detail-compact">仕事・人を繋ぐ</div>
+                        </div>
                     </div>
-                    <div class="cycle-step" data-step="3" onmouseenter="highlightCycleStep(3)" onmouseleave="unhighlightCycleSteps()">
-                        <div class="step-number">3</div>
-                        <div class="step-icon"><i class="fas fa-rocket"></i></div>
-                        <div class="step-title">実践と循環</div>
-                        <div class="step-desc">成果をコミュニティへ還元</div>
+                </div>
+                <!-- 詳細説明エリア（クリック時に表示） -->
+                <div class="cycle-details-area">
+                    <div class="cycle-detail-card" data-detail="1" style="display: none;">
+                        <h4>会員登録申請</h4>
+                        <p>事業内容やスキルを登録して検索可能に。交流会参加で正式表示されます。</p>
+                    </div>
+                    <div class="cycle-detail-card" data-detail="2" style="display: none;">
+                        <h4>月1回の交流会</h4>
+                        <p>名刺交換と事業紹介。顔の見える信頼関係を構築します。</p>
+                    </div>
+                    <div class="cycle-detail-card" data-detail="3" style="display: none;">
+                        <h4>LINEグループチャット</h4>
+                        <p>日常的に情報共有。質問・相談・案件紹介が活発に行われます。</p>
+                    </div>
+                    <div class="cycle-detail-card" data-detail="4" style="display: none;">
+                        <h4>会員同士で紹介</h4>
+                        <p>適切な人を紹介し合い、ビジネスを繋ぎます。実際のコラボが生まれています。</p>
                     </div>
                 </div>
             </div>
@@ -1090,7 +1116,7 @@
                                 <i class="fas fa-users"></i> メンバー管理
                             </button>
                             <button class="admin-tab" onclick="switchAdminTab('blogs')">
-                                <i class="fas fa-blog"></i> ブログ管理
+                                <i class="fas fa-newspaper"></i> 活動レポート管理
                             </button>
                             <button class="admin-tab" onclick="switchAdminTab('events')">
                                 <i class="fas fa-calendar"></i> イベント管理
