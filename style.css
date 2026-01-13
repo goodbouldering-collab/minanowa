@@ -18636,3 +18636,176 @@ section + section {
         font-size: 0.6rem;
     }
 }
+/* ============================================
+   「みんなのWAとは」レイアウト最終調整
+   ============================================ */
+
+/* タイトルを他のセクションと同じサイズに */
+.about-interactive-ultimate .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem) !important; /* 他のセクションと同じ */
+    margin-bottom: 8px !important;
+}
+
+/* サブタイトルも標準サイズに */
+.about-interactive-ultimate .section-subtitle {
+    font-size: 1rem !important;
+}
+
+/* 統計カードを活動の流れの上に配置後の調整 */
+.stats-interactive {
+    margin-bottom: 15px !important; /* 活動の流れとの間隔を調整 */
+}
+
+/* 活動の流れをさらに縦短く */
+.activity-cycle-interactive {
+    margin-bottom: 10px !important; /* 15px → 10px */
+    padding: 8px 12px !important; /* 10px 15px → 8px 12px */
+}
+
+.cycle-title {
+    font-size: 0.9rem !important; /* 1rem → 0.9rem */
+    margin-bottom: 8px !important; /* 10px → 8px */
+}
+
+/* コンパクトサイクル図をさらに縮小 */
+.cycle-diagram-compact {
+    gap: 6px !important; /* 8px → 6px */
+    margin-bottom: 8px !important; /* 10px → 8px */
+}
+
+.cycle-step-compact {
+    padding: 6px 10px !important; /* 8px 12px → 6px 10px */
+}
+
+.step-icon-compact {
+    width: 28px !important; /* 32px → 28px */
+    height: 28px !important;
+    font-size: 12px !important; /* 14px → 12px */
+}
+
+.step-title-compact {
+    font-size: 0.85rem !important; /* 0.9rem → 0.85rem */
+}
+
+.step-detail-compact {
+    font-size: 0.65rem !important; /* 0.7rem → 0.65rem */
+}
+
+.cycle-arrow-compact {
+    font-size: 0.9rem !important; /* 1rem → 0.9rem */
+}
+
+/* 詳細説明エリアもコンパクトに */
+.cycle-details-area {
+    margin-top: 8px !important; /* 10px → 8px */
+}
+
+.cycle-detail-card {
+    padding: 10px !important; /* 12px → 10px */
+}
+
+.cycle-detail-card h4 {
+    font-size: 0.9rem !important; /* 0.95rem → 0.9rem */
+    margin-bottom: 5px !important; /* 6px → 5px */
+}
+
+.cycle-detail-card p {
+    font-size: 0.8rem !important; /* 0.85rem → 0.8rem */
+    line-height: 1.4 !important; /* 1.5 → 1.4 */
+}
+
+/* CTAボタンエリアもコンパクトに */
+.about-cta-interactive {
+    padding: 12px !important; /* 15px → 12px */
+    margin-top: 0 !important;
+}
+
+.about-cta-interactive h3 {
+    font-size: 1.1rem !important; /* 1.2rem → 1.1rem */
+    margin-bottom: 4px !important;
+}
+
+.about-cta-interactive p {
+    font-size: 0.8rem !important; /* 0.85rem → 0.8rem */
+    margin-bottom: 8px !important; /* 10px → 8px */
+}
+
+.cta-btn-interactive {
+    padding: 7px 18px !important; /* 8px 20px → 7px 18px */
+    font-size: 0.85rem !important; /* 0.9rem → 0.85rem */
+}
+
+/* レスポンシブ調整 */
+@media screen and (max-width: 768px) {
+    .activity-cycle-interactive {
+        padding: 6px 10px !important;
+    }
+    
+    .cycle-title {
+        font-size: 0.85rem !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .cycle-diagram-compact {
+        gap: 5px !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .cycle-step-compact {
+        padding: 5px 8px !important;
+    }
+    
+    .step-icon-compact {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 11px !important;
+    }
+    
+    .step-title-compact {
+        font-size: 0.8rem !important;
+    }
+    
+    .step-detail-compact {
+        font-size: 0.6rem !important;
+    }
+    
+    .cycle-detail-card {
+        padding: 8px !important;
+    }
+    
+    .cycle-detail-card h4 {
+        font-size: 0.85rem !important;
+    }
+    
+    .cycle-detail-card p {
+        font-size: 0.75rem !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .activity-cycle-interactive {
+        padding: 5px 8px !important;
+    }
+    
+    .cycle-title {
+        font-size: 0.8rem !important;
+    }
+    
+    .cycle-step-compact {
+        padding: 4px 6px !important;
+    }
+    
+    .step-icon-compact {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 10px !important;
+    }
+    
+    .step-title-compact {
+        font-size: 0.75rem !important;
+    }
+    
+    .step-detail-compact {
+        font-size: 0.55rem !important;
+    }
+}
