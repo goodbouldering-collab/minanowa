@@ -8651,3 +8651,73 @@ window.saveMemberProfile = async function(event, memberId) {
         showNotification(error.message || '保存に失敗しました', 'error');
     }
 };
+// メンバー画像アップロード機能の修正
+
+// ファイル選択時のプレビュー
+async function previewMemberAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // プレビュー表示
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const previewArea = document.getElementById('memberAvatarPreview');
+        if (previewArea) {
+            previewArea.outerHTML = `
+                <img id="memberAvatarPreview" 
+                     src="${e.target.result}" 
+                     alt="プロフィール写真" 
+                     style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid var(--primary);">
+            `;
+        }
+    };
+    reader.readAsDataURL(file);
+    
+    // 自動アップロード
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('type', 'member');
+    
+    try {
+        const response = await fetch(`${API_BASE}/api/admin/upload-image`, {
+            method: 'POST',
+            headers: {
+                'x-session-id': sessionStorage.getItem('sessionId')
+            },
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.url) {
+            // アップロード成功 - URLフィールドに設定
+            const avatarInput = document.getElementById('memberAvatar');
+            if (avatarInput) {
+                avatarInput.value = data.url;
+            }
+            showNotification('画像をアップロードしました', 'success');
+        } else {
+            showNotification('画像のアップロードに失敗しました', 'error');
+        }
+    } catch (error) {
+        console.error('画像アップロードエラー:', error);
+        showNotification('画像アップロード中にエラーが発生しました', 'error');
+    }
+}
+
+// URL入力時のプレビュー
+function previewMemberAvatarUrl(event) {
+    const url = event.target.value;
+    if (!url) return;
+    
+    const previewArea = document.getElementById('memberAvatarPreview');
+    if (previewArea) {
+        previewArea.outerHTML = `
+            <img id="memberAvatarPreview" 
+                 src="${url}" 
+                 alt="プロフィール写真" 
+                 style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid var(--primary);"
+                 onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div class=\\'image-preview-placeholder\\'><i class=\\'fas fa-user-circle\\'></i><p>画像の読み込みに失敗しました</p></div>')">
+        `;
+    }
+}
