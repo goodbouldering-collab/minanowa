@@ -1405,51 +1405,71 @@ app.get('/preview', (req, res) => {
 
 // コラボ事例一覧取得
 app.get('/api/collaborations', (req, res) => {
-    const collaborations = appData.collaborations || [];
+    // コラボレーションはブログデータから取得（カテゴリでフィルタ）
+    const collaborations = (appData.blogs || []).filter(blog => 
+        blog.category === 'コラボ事例' || blog.category === 'レポート' || blog.category === 'お知らせ'
+    );
     res.json({
         success: true,
-        collaborations: collaborations.filter(c => c.isPublic)
+        collaborations: collaborations
     });
 });
 
-// コラボ事例作成
-app.post('/api/admin/collaborations', (req, res) => {
+// コラボ事例作成（ブログとして保存）
+app.post('/api/admin/collaborations', checkAdmin, (req, res) => {
     try {
-        const newCollaboration = {
-            id: `collab-${Date.now()}`,
+        const newBlog = {
+            id: `blog-${Date.now()}`,
             ...req.body,
-            createdAt: new Date().toISOString()
+            status: 'published',
+            authorId: req.user.id,
+            authorName: req.user.name,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
         
-        if (!appData.collaborations) {
-            appData.collaborations = [];
+        if (!appData.blogs) {
+            appData.blogs = [];
         }
         
-        appData.collaborations.push(newCollaboration);
-        saveData();
-        res.json({ success: true, collaboration: newCollaboration });
+        appData.blogs.push(newBlog);
+        saveData(appData);
+        res.json({ success: true, collaboration: newBlog });
     } catch (error) {
         console.error('コラボ事例作成エラー:', error);
         res.status(500).json({ success: false, message: 'コラボ事例の作成に失敗しました' });
     }
 });
 
+// コラボ事例一覧取得（管理画面用）
+app.get('/api/admin/collaborations', checkAdmin, (req, res) => {
+    appData = loadData();
+    const collaborations = (appData.blogs || []).filter(blog => 
+        blog.category === 'コラボ事例' || blog.category === 'レポート' || blog.category === 'お知らせ'
+    );
+    res.json({
+        success: true,
+        collaborations: collaborations
+    });
+});
+
 // コラボ事例更新
-app.put('/api/admin/collaborations/:id', (req, res) => {
+app.put('/api/admin/collaborations/:id', checkAdmin, (req, res) => {
     try {
-        const collabIndex = appData.collaborations?.findIndex(c => c.id === req.params.id);
-        if (collabIndex === -1) {
+        // ブログデータから検索
+        const blogIndex = appData.blogs?.findIndex(b => b.id === req.params.id);
+        if (blogIndex === -1) {
             return res.status(404).json({ success: false, message: 'コラボ事例が見つかりません' });
         }
         
-        appData.collaborations[collabIndex] = {
-            ...appData.collaborations[collabIndex],
+        appData.blogs[blogIndex] = {
+            ...appData.blogs[blogIndex],
             ...req.body,
             updatedAt: new Date().toISOString()
         };
         
-        saveData();
-        res.json({ success: true, collaboration: appData.collaborations[collabIndex] });
+        saveData(appData);
+        res.json({ success: true, collaboration: appData.blogs[blogIndex] });
     } catch (error) {
         console.error('コラボ事例更新エラー:', error);
         res.status(500).json({ success: false, message: 'コラボ事例の更新に失敗しました' });
@@ -1457,15 +1477,16 @@ app.put('/api/admin/collaborations/:id', (req, res) => {
 });
 
 // コラボ事例削除
-app.delete('/api/admin/collaborations/:id', (req, res) => {
+app.delete('/api/admin/collaborations/:id', checkAdmin, (req, res) => {
     try {
-        const collabIndex = appData.collaborations?.findIndex(c => c.id === req.params.id);
-        if (collabIndex === -1) {
+        // ブログデータから検索
+        const blogIndex = appData.blogs?.findIndex(b => b.id === req.params.id);
+        if (blogIndex === -1) {
             return res.status(404).json({ success: false, message: 'コラボ事例が見つかりません' });
         }
         
-        appData.collaborations.splice(collabIndex, 1);
-        saveData();
+        appData.blogs.splice(blogIndex, 1);
+        saveData(appData);
         res.json({ success: true, message: 'コラボ事例を削除しました' });
     } catch (error) {
         console.error('コラボ事例削除エラー:', error);
