@@ -48,6 +48,15 @@ const upload = multer({
 // ミドルウェア
 app.use(cors());
 app.use(express.json());
+
+// すべてのリクエストをログ出力（デバッグ用）
+app.use((req, res, next) => {
+    const logMessage = `🔍 [${new Date().toISOString()}] ${req.method} ${req.path}`;
+    console.error(logMessage);  // console.errorに変更してテスト
+    console.error('   Headers:', JSON.stringify({ 'content-type': req.headers['content-type'], 'x-session-id': req.headers['x-session-id'] }));
+    next();
+});
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // データファイルのパス
@@ -1392,8 +1401,6 @@ app.delete('/api/admin/events/:id', checkAdmin, (req, res) => {
 // 静的ファイルとフォールバック
 // ============================================
 
-app.use(express.static(__dirname));
-
 // プレビュー専用ルート
 app.get('/preview', (req, res) => {
     res.sendFile(path.join(__dirname, 'preview.html'));
@@ -1531,7 +1538,15 @@ const imageUpload = multer({
 });
 
 // 汎用画像アップロードAPI
-app.post('/api/admin/upload-image', checkAdmin, imageUpload.single('image'), (req, res) => {
+app.post('/api/admin/upload-image', (req, res, next) => {
+    console.log('🔍 /api/admin/upload-image リクエスト受信:', {
+        method: req.method,
+        path: req.path,
+        contentType: req.headers['content-type'],
+        sessionId: req.headers['x-session-id']
+    });
+    next();
+}, checkAdmin, imageUpload.single('image'), (req, res) => {
     try {
         console.log('📸 画像アップロード開始:', {
             hasFile: !!req.file,
@@ -1849,9 +1864,21 @@ app.post('/api/admin/backups/restore', checkAdmin, (req, res) => {
 // フォールバックルート（最後に配置）
 // ============================================
 
+// 静的ファイル配信（すべてのAPIルートの後）
+// 静的ファイル配信は個別のルートで処理（画像アップロード後のアクセス用）
+// メインの静的ファイルはフォールバックルートで処理
+
+// フォールバックルート（最後）
 app.use((req, res, next) => {
     if (!req.path.startsWith('/api')) {
-        res.sendFile(path.join(__dirname, 'index.html'));
+        // 静的ファイルのリクエスト（CSS, JS, 画像など）
+        const filePath = path.join(__dirname, req.path);
+        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            res.sendFile(filePath);
+        } else {
+            // ファイルが見つからない場合はindex.htmlを返す（SPA対応）
+            res.sendFile(path.join(__dirname, 'index.html'));
+        }
     } else {
         res.status(404).json({ success: false, message: 'APIが見つかりません' });
     }
