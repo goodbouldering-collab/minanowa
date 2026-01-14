@@ -25,39 +25,39 @@ function initAdminSidebar() {
             </div>
             
             <nav class="admin-sidebar-nav">
-                <div class="admin-nav-item active" onclick="switchAdminTab('dashboard')">
+                <div class="admin-nav-item active" onclick="switchAdminTabWithSidebar('dashboard')">
                     <i class="fas fa-chart-line"></i>
                     <span>ダッシュボード</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('members')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('members')">
                     <i class="fas fa-users"></i>
                     <span>メンバー管理</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('blogs')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('blogs')">
                     <i class="fas fa-newspaper"></i>
                     <span>活動レポート管理</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('events')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('events')">
                     <i class="fas fa-calendar"></i>
                     <span>イベント管理</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('testimonials')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('testimonials')">
                     <i class="fas fa-comments"></i>
                     <span>会員の声</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('collaborations')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('collaborations')">
                     <i class="fas fa-handshake"></i>
                     <span>お知らせ・レポート</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('images')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('images')">
                     <i class="fas fa-images"></i>
                     <span>画像管理</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('pageContent')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('pageContent')">
                     <i class="fas fa-file-alt"></i>
                     <span>ページ内容管理</span>
                 </div>
-                <div class="admin-nav-item" onclick="switchAdminTab('faqs')">
+                <div class="admin-nav-item" onclick="switchAdminTabWithSidebar('faqs')">
                     <i class="fas fa-question-circle"></i>
                     <span>FAQ管理</span>
                 </div>
@@ -114,12 +114,11 @@ function closeAdminSidebar() {
     }
 }
 
-// タブ切り替えを拡張（サイドバー対応）
-const originalSwitchAdminTab = window.switchAdminTab;
-window.switchAdminTab = function(tabName) {
+// タブ切り替え（サイドバー対応版）
+function switchAdminTabWithSidebar(tabName) {
     // 既存のタブ切り替え処理を実行
-    if (originalSwitchAdminTab) {
-        originalSwitchAdminTab(tabName);
+    if (typeof switchAdminTab === 'function') {
+        switchAdminTab(tabName);
     }
     
     // サイドバーのアクティブ状態を更新
@@ -161,45 +160,39 @@ window.switchAdminTab = function(tabName) {
     if (window.innerWidth <= 1024) {
         closeAdminSidebar();
     }
-};
+}
 
 // ログアウト処理
 function handleAdminLogout() {
     if (confirm('ログアウトしますか？')) {
         closeAdminModal();
-        logout();
+        if (typeof logout === 'function') {
+            logout();
+        }
     }
 }
 
-// 管理者パネルを開く時にサイドバーを初期化
-const originalOpenAdminPanel = window.openAdminPanel;
-window.openAdminPanel = function() {
-    if (originalOpenAdminPanel) {
-        originalOpenAdminPanel();
-    }
+// 管理者パネルを開く処理を拡張
+function setupAdminSidebar() {
+    // 既存のopenAdminPanel関数を保存
+    const originalOpenAdminPanel = window.openAdminPanel;
     
-    // サイドバーを初期化
-    setTimeout(() => {
-        initAdminSidebar();
-    }, 100);
-};
-
-// ページロード時の初期化
-document.addEventListener('DOMContentLoaded', function() {
-    // 管理者パネルが開かれた時にサイドバーを初期化
-    const adminModal = document.getElementById('adminModal');
-    if (adminModal) {
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.target.style.display === 'flex') {
-                    initAdminSidebar();
-                }
-            });
-        });
+    // 新しいopenAdminPanel関数
+    window.openAdminPanel = function() {
+        // 既存の処理を実行
+        if (originalOpenAdminPanel) {
+            originalOpenAdminPanel();
+        }
         
-        observer.observe(adminModal, {
-            attributes: true,
-            attributeFilter: ['style']
-        });
-    }
+        // サイドバーを初期化（少し遅延させる）
+        setTimeout(() => {
+            initAdminSidebar();
+        }, 100);
+    };
+}
+
+// ページロード後に初期化
+window.addEventListener('load', function() {
+    // script.jsが読み込まれた後に実行
+    setupAdminSidebar();
 });
