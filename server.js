@@ -1498,49 +1498,24 @@ app.delete('/api/admin/collaborations/:id', checkAdmin, (req, res) => {
 // 画像アップロードAPI
 // ============================================
 
-// 汎用画像アップロード設定（type別にディレクトリを分ける）
-const multiStorage = multer.diskStorage({
+// 汎用画像アップロードAPI（シンプル化）
+const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // クエリパラメータまたはフォームフィールドからtypeを取得
-        const type = req.query.type || req.body.type || 'general';
-        let uploadDir;
-        
-        switch(type) {
-            case 'event':
-                uploadDir = path.join(__dirname, 'uploads/events');
-                break;
-            case 'member':
-                uploadDir = path.join(__dirname, 'uploads/members');
-                break;
-            case 'blog':
-            case 'report':
-                uploadDir = path.join(__dirname, 'uploads/blogs');
-                break;
-            case 'hero':
-                uploadDir = path.join(__dirname, 'uploads/hero');
-                break;
-            default:
-                uploadDir = path.join(__dirname, 'uploads/general');
-        }
-        
+        // すべての画像を1つのディレクトリに保存
+        const uploadDir = path.join(__dirname, 'uploads/images');
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
-        const type = req.query.type || req.body.type || 'general';
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const prefix = type === 'member' ? 'member-' : 
-                      type === 'event' ? 'event-' :
-                      type === 'blog' ? 'blog-' :
-                      type === 'hero' ? 'hero-' : 'image-';
-        cb(null, prefix + uniqueSuffix + path.extname(file.originalname));
+        cb(null, 'img-' + uniqueSuffix + path.extname(file.originalname));
     }
 });
 
-const multiUpload = multer({ 
-    storage: multiStorage,
+const imageUpload = multer({ 
+    storage: imageStorage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     fileFilter: (req, file, cb) => {
         const allowedTypes = /jpeg|jpg|png|gif|webp/;
@@ -1556,26 +1531,37 @@ const multiUpload = multer({
 });
 
 // 汎用画像アップロードAPI
-app.post('/api/admin/upload-image', checkAdmin, multiUpload.single('image'), (req, res) => {
+app.post('/api/admin/upload-image', checkAdmin, imageUpload.single('image'), (req, res) => {
     try {
+        console.log('📸 画像アップロード開始:', {
+            hasFile: !!req.file,
+            body: req.body,
+            headers: req.headers['content-type']
+        });
+        
         if (!req.file) {
+            console.error('❌ ファイルが見つかりません');
             return res.status(400).json({ success: false, message: '画像ファイルが選択されていません' });
         }
         
-        const type = req.body.type || 'general';
         const relativePath = req.file.path.replace(__dirname, '').replace(/\\/g, '/');
-        const imageUrl = relativePath;
+        
+        console.log('✅ アップロード成功:', {
+            path: relativePath,
+            filename: req.file.filename,
+            size: req.file.size
+        });
         
         res.json({ 
             success: true, 
-            url: imageUrl,
-            imageUrl: imageUrl, // 互換性のため両方返す
+            url: relativePath,
+            imageUrl: relativePath,
             filename: req.file.filename,
-            type: type,
+            type: req.body.type || 'general',
             message: '画像がアップロードされました'
         });
     } catch (error) {
-        console.error('画像アップロードエラー:', error);
+        console.error('❌ 画像アップロードエラー:', error);
         res.status(500).json({ 
             success: false, 
             message: '画像のアップロードに失敗しました',
