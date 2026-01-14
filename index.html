@@ -176,216 +176,108 @@
         </div>
     </section>
     <!-- つながるセクション -->
-    <!-- みんなのWAとは - 究極のインタラクティブセクション -->
-    <section class="about-interactive-ultimate" id="about">
+    <!-- みんなのWAとは -->
+    <section class="about-section-redesign" id="about">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">About</span>
-                <h2 class="section-title">みんなのWAとは</h2>
-                <p class="section-subtitle">ギブから始まる信頼で、自然に人と仕事がつながる実践型コミュニティ</p>
+            <div class="about-hero">
+                <h2 class="about-main-title">「みんなのWA」とは？</h2>
+                <p class="about-concept">
+                    地域の事業者が<strong>ギブの精神</strong>で繋がり、<br class="sp-only">
+                    お互いを紹介し合う、信頼ベースのビジネスコミュニティです。
+                </p>
             </div>
             
-            <!-- 統計カード - インタラクティブ -->
-            <div class="stats-interactive">
-                <div class="stat-card-interactive" data-stat="members">
-                    <div class="stat-icon"><i class="fas fa-users"></i></div>
-                    <div class="stat-number-interactive" id="aboutMemberCountInteractive">0</div>
-                    <div class="stat-label-interactive">事業者</div>
-                    <div class="stat-progress">
-                        <div class="progress-bar" data-progress="85"></div>
-                    </div>
-                </div>
-                <div class="stat-card-interactive" data-stat="events">
-                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-                    <div class="stat-number-interactive" id="aboutEventCountInteractive">0</div>
-                    <div class="stat-label-interactive">開催回数</div>
-                    <div class="stat-progress">
-                        <div class="progress-bar" data-progress="92"></div>
-                    </div>
-                </div>
-                <div class="stat-card-interactive" data-stat="collabs">
-                    <div class="stat-icon"><i class="fas fa-handshake"></i></div>
-                    <div class="stat-number-interactive" id="aboutCollabCountInteractive">0</div>
-                    <div class="stat-label-interactive">コラボ事例</div>
-                    <div class="stat-progress">
-                        <div class="progress-bar" data-progress="78"></div>
-                    </div>
-                </div>
-                <div class="stat-card-interactive highlight-card" data-stat="satisfaction">
-                    <div class="stat-icon"><i class="fas fa-star"></i></div>
-                    <div class="stat-number-interactive">4.8</div>
-                    <div class="stat-label-interactive">満足度</div>
-                    <div class="stat-progress">
-                        <div class="progress-bar" data-progress="96"></div>
-                    </div>
-                </div>
-            </div>
-                <div class="core-tabs">
-                    <button class="core-tab active" data-core="give" onclick="switchCoreTab('give')">
-                        <i class="fas fa-heart"></i>
-                        <span>与え合う</span>
-                    </button>
-                    <button class="core-tab" data-core="connect" onclick="switchCoreTab('connect')">
-                        <i class="fas fa-comments"></i>
-                        <span>つながる</span>
-                    </button>
-                    <button class="core-tab" data-core="grow" onclick="switchCoreTab('grow')">
-                        <i class="fas fa-infinity"></i>
-                        <span>育てる</span>
-                    </button>
+            <!-- コアバリュー -->
+            <div class="about-values">
+                <div class="value-card">
+                    <div class="value-number">01</div>
+                    <h3 class="value-title">与え合う文化</h3>
+                    <p class="value-description">
+                        見返りを求めず、まず相手に価値を提供する。<br>
+                        その積み重ねが信頼となり、自然と仕事に繋がります。
+                    </p>
                 </div>
                 
-                <div class="core-content-area">
-                    <!-- Give コンテンツ -->
-                    <div class="core-content active" data-content="give">
-                        <div class="content-visual">
-                            <div class="visual-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="content-text">
-                            <h3>ギブの文化 - 与え合いの精神</h3>
-                            <p class="content-lead">経験・知恵・失敗談を惜しみなく共有し、長期的な信頼関係を構築します。</p>
-                            <div class="content-features">
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>日常的な情報共有と助け合い</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>失敗談・成功体験の共有</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>専門知識の惜しみない提供</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Connect コンテンツ -->
-                    <div class="core-content" data-content="connect">
-                        <div class="content-visual">
-                            <div class="visual-icon">
-                                <i class="fas fa-comments"></i>
-                            </div>
-                        </div>
-                        <div class="content-text">
-                            <h3>深まる交流 - オンライン×リアル</h3>
-                            <p class="content-lead">月1回のリアル交流会で、オンラインでは得られない温度感ある繋がりを育みます。</p>
-                            <div class="content-features">
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>月1回のリアル交流会</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>異業種視点での新たな発見</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>顔の見える信頼関係</span>
-                                </div>
-                            </div>
+                <div class="value-card">
+                    <div class="value-number">02</div>
+                    <h3 class="value-title">リアルな繋がり</h3>
+                    <p class="value-description">
+                        月1回の交流会で顔を合わせ、本音で語り合う。<br>
+                        オンラインでは得られない温度感ある関係性を築きます。
+                    </p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-number">03</div>
+                    <h3 class="value-title">実践から学ぶ</h3>
+                    <p class="value-description">
+                        失敗も成功も共有し、互いに学び合う。<br>
+                        実際のコラボレーションを通じて、共に成長します。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 実績数値 -->
+            <div class="about-stats-simple">
+                <div class="stat-item-simple">
+                    <div class="stat-value" id="aboutMemberCountInteractive">0</div>
+                    <div class="stat-label">参加事業者</div>
+                </div>
+                <div class="stat-item-simple">
+                    <div class="stat-value" id="aboutEventCountInteractive">0</div>
+                    <div class="stat-label">開催回数</div>
+                </div>
+                <div class="stat-item-simple">
+                    <div class="stat-value" id="aboutCollabCountInteractive">0</div>
+                    <div class="stat-label">コラボ事例</div>
+                </div>
+            </div>
+            
+            <!-- 参加の流れ -->
+            <div class="about-flow">
+                <h3 class="flow-title">参加の流れ</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="flow-step-number">1</div>
+                        <div class="flow-step-content">
+                            <h4>会員登録申請</h4>
+                            <p>事業内容を登録。交流会参加後に正式表示されます。</p>
                         </div>
                     </div>
-                    
-                    <!-- Grow コンテンツ -->
-                    <div class="core-content" data-content="grow">
-                        <div class="content-visual">
-                            <div class="visual-icon">
-                                <i class="fas fa-infinity"></i>
-                            </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">2</div>
+                        <div class="flow-step-content">
+                            <h4>月1回の交流会</h4>
+                            <p>顔を合わせ、事業を紹介し合い、信頼を築きます。</p>
                         </div>
-                        <div class="content-text">
-                            <h3>持続的成長 - 文化を守る</h3>
-                            <p class="content-lead">規模拡大より文化・価値観の維持を優先し、質の高いコミュニティを継続します。</p>
-                            <div class="content-features">
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>信頼・実践・継続の3軸</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>誠実で利他的な文化</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>学びの循環システム</span>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">3</div>
+                        <div class="flow-step-content">
+                            <h4>日常的な交流</h4>
+                            <p>LINEグループで情報共有。質問や相談が活発です。</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">4</div>
+                        <div class="flow-step-content">
+                            <h4>お互いを紹介</h4>
+                            <p>適切な人を繋ぎ、コラボレーションが生まれます。</p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- 活動サイクル - 超コンパクト＆インタラクティブ -->
-            <div class="activity-cycle-interactive">
-                <h3 class="cycle-title">活動の流れ</h3>
-                <div class="cycle-diagram-compact">
-                    <div class="cycle-step-compact" data-step="1" onclick="toggleCycleDetail(1)">
-                        <div class="step-icon-compact"><i class="fas fa-user-plus"></i></div>
-                        <div class="step-content-compact">
-                            <div class="step-title-compact">1. 申請</div>
-                            <div class="step-detail-compact">事業内容を登録</div>
-                        </div>
-                    </div>
-                    <div class="cycle-arrow-compact"><i class="fas fa-chevron-right"></i></div>
-                    <div class="cycle-step-compact" data-step="2" onclick="toggleCycleDetail(2)">
-                        <div class="step-icon-compact"><i class="fas fa-calendar-check"></i></div>
-                        <div class="step-content-compact">
-                            <div class="step-title-compact">2. 交流会</div>
-                            <div class="step-detail-compact">月1回・顔合わせ</div>
-                        </div>
-                    </div>
-                    <div class="cycle-arrow-compact"><i class="fas fa-chevron-right"></i></div>
-                    <div class="cycle-step-compact" data-step="3" onclick="toggleCycleDetail(3)">
-                        <div class="step-icon-compact"><i class="fas fa-comments"></i></div>
-                        <div class="step-content-compact">
-                            <div class="step-title-compact">3. グループ</div>
-                            <div class="step-detail-compact">LINEで情報共有</div>
-                        </div>
-                    </div>
-                    <div class="cycle-arrow-compact"><i class="fas fa-chevron-right"></i></div>
-                    <div class="cycle-step-compact" data-step="4" onclick="toggleCycleDetail(4)">
-                        <div class="step-icon-compact"><i class="fas fa-handshake"></i></div>
-                        <div class="step-content-compact">
-                            <div class="step-title-compact">4. 紹介</div>
-                            <div class="step-detail-compact">仕事・人を繋ぐ</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 詳細説明エリア（クリック時に表示） -->
-                <div class="cycle-details-area">
-                    <div class="cycle-detail-card" data-detail="1" style="display: none;">
-                        <h4>会員登録申請</h4>
-                        <p>事業内容やスキルを登録して検索可能に。交流会参加で正式表示されます。</p>
-                    </div>
-                    <div class="cycle-detail-card" data-detail="2" style="display: none;">
-                        <h4>月1回の交流会</h4>
-                        <p>名刺交換と事業紹介。顔の見える信頼関係を構築します。</p>
-                    </div>
-                    <div class="cycle-detail-card" data-detail="3" style="display: none;">
-                        <h4>LINEグループチャット</h4>
-                        <p>日常的に情報共有。質問・相談・案件紹介が活発に行われます。</p>
-                    </div>
-                    <div class="cycle-detail-card" data-detail="4" style="display: none;">
-                        <h4>会員同士で紹介</h4>
-                        <p>適切な人を紹介し合い、ビジネスを繋ぎます。実際のコラボが生まれています。</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- CTA - 参加への誘導 -->
-            <div class="about-cta-interactive">
-                <div class="cta-content">
-                    <h3>あなたも「みんなのWA」の一員に</h3>
-                    <p>心地よい循環の中で、自分らしく働き、自然に人と仕事が結びつく場所</p>
-                    <button class="cta-btn-interactive" onclick="scrollToSection('event')">
-                        <span>次回イベントを見る</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
+            <!-- CTA -->
+            <div class="about-cta-redesign">
+                <p class="about-cta-message">あなたも「与え合い、繋がり、共に成長する」仲間になりませんか？</p>
+                <button class="about-cta-button" onclick="scrollToSection('event')">
+                    次回の交流会を見る
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
         </div>
     </section>
