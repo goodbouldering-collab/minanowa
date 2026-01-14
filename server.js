@@ -1494,14 +1494,6 @@ app.delete('/api/admin/collaborations/:id', checkAdmin, (req, res) => {
     }
 });
 
-app.use((req, res, next) => {
-    if (!req.path.startsWith('/api')) {
-        res.sendFile(path.join(__dirname, 'index.html'));
-    } else {
-        res.status(404).json({ success: false, message: 'APIが見つかりません' });
-    }
-});
-
 // ============================================
 // 画像アップロードAPI
 // ============================================
@@ -1509,7 +1501,8 @@ app.use((req, res, next) => {
 // 汎用画像アップロード設定（type別にディレクトリを分ける）
 const multiStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const type = req.body.type || 'general';
+        // クエリパラメータまたはフォームフィールドからtypeを取得
+        const type = req.query.type || req.body.type || 'general';
         let uploadDir;
         
         switch(type) {
@@ -1536,7 +1529,7 @@ const multiStorage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
-        const type = req.body.type || 'general';
+        const type = req.query.type || req.body.type || 'general';
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const prefix = type === 'member' ? 'member-' : 
                       type === 'event' ? 'event-' :
@@ -1863,6 +1856,18 @@ app.post('/api/admin/backups/restore', checkAdmin, (req, res) => {
             success: false, 
             message: 'バックアップの復元に失敗しました' 
         });
+    }
+});
+
+// ============================================
+// フォールバックルート（最後に配置）
+// ============================================
+
+app.use((req, res, next) => {
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    } else {
+        res.status(404).json({ success: false, message: 'APIが見つかりません' });
     }
 });
 
