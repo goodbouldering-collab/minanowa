@@ -1506,6 +1506,91 @@ app.use((req, res, next) => {
 // 画像アップロードAPI
 // ============================================
 
+// 汎用画像アップロード設定（type別にディレクトリを分ける）
+const multiStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const type = req.body.type || 'general';
+        let uploadDir;
+        
+        switch(type) {
+            case 'event':
+                uploadDir = path.join(__dirname, 'uploads/events');
+                break;
+            case 'member':
+                uploadDir = path.join(__dirname, 'uploads/members');
+                break;
+            case 'blog':
+            case 'report':
+                uploadDir = path.join(__dirname, 'uploads/blogs');
+                break;
+            case 'hero':
+                uploadDir = path.join(__dirname, 'uploads/hero');
+                break;
+            default:
+                uploadDir = path.join(__dirname, 'uploads/general');
+        }
+        
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const type = req.body.type || 'general';
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const prefix = type === 'member' ? 'member-' : 
+                      type === 'event' ? 'event-' :
+                      type === 'blog' ? 'blog-' :
+                      type === 'hero' ? 'hero-' : 'image-';
+        cb(null, prefix + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const multiUpload = multer({ 
+    storage: multiStorage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = /jpeg|jpg|png|gif|webp/;
+        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = allowedTypes.test(file.mimetype);
+        
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            cb(new Error('画像ファイルのみアップロード可能です（JPEG, PNG, GIF, WebP）'));
+        }
+    }
+});
+
+// 汎用画像アップロードAPI
+app.post('/api/admin/upload-image', checkAdmin, multiUpload.single('image'), (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: '画像ファイルが選択されていません' });
+        }
+        
+        const type = req.body.type || 'general';
+        const relativePath = req.file.path.replace(__dirname, '').replace(/\\/g, '/');
+        const imageUrl = relativePath;
+        
+        res.json({ 
+            success: true, 
+            url: imageUrl,
+            imageUrl: imageUrl, // 互換性のため両方返す
+            filename: req.file.filename,
+            type: type,
+            message: '画像がアップロードされました'
+        });
+    } catch (error) {
+        console.error('画像アップロードエラー:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: '画像のアップロードに失敗しました',
+            error: error.message 
+        });
+    }
+});
+
 // イベント画像アップロード
 app.post('/api/admin/upload-event-image', upload.single('image'), (req, res) => {
     try {
