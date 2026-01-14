@@ -819,38 +819,18 @@ async function loadCollabAndBlogs() {
     }
     
     try {
-        // コラボとブログを並行して取得
-        const [collabRes, blogRes] = await Promise.all([
-            fetch(`${API_BASE}/api/collaborations`),
-            fetch(`${API_BASE}/api/blogs?limit=6`)
-        ]);
-        
-        const collabData = await collabRes.json();
+        // ブログのみを取得（統合済みのため）
+        const blogRes = await fetch(`${API_BASE}/api/blogs?limit=20`);
         const blogData = await blogRes.json();
         
-        console.log('Collab data:', collabData);
         console.log('Blog data:', blogData);
         
-        const collabs = (collabData.success && collabData.collaborations) ? collabData.collaborations.filter(c => c.isPublic) : [];
         const blogs = (blogData.success && blogData.blogs) ? blogData.blogs : [];
         
-        console.log('Filtered collabs:', collabs.length, 'blogs:', blogs.length);
+        console.log('Total blogs:', blogs.length);
         
-        // コラボとブログをミックス
-        allCollabItems = [];
-        
-        // コラボを追加
-        collabs.forEach(collab => {
-            allCollabItems.push({ type: 'collab', data: collab });
-        });
-        
-        // ブログを追加
-        blogs.forEach(blog => {
-            allCollabItems.push({ type: 'blog', data: blog });
-        });
-        
-        // ランダムにシャッフル
-        allCollabItems.sort(() => Math.random() - 0.5);
+        // 全てブログとして扱う
+        allCollabItems = blogs.map(blog => ({ type: 'blog', data: blog }));
         
         console.log('Total items to render:', allCollabItems.length);
         
@@ -892,67 +872,35 @@ function renderCollabCarousel() {
 }
 
 function renderCollabItem(item) {
-    if (item.type === 'collab') {
-        const collab = item.data;
-        const memberAvatars = collab.members ? collab.members.slice(0, 3).map(m => 
-            `<img src="${m.avatar}" alt="${m.name}" class="collab-avatar">`
-        ).join('') : '';
-        const memberNames = collab.members ? collab.members.slice(0, 2).map(m => m.name).join(' × ') : '';
-        
-        return `
-            <div class="collab-card">
-                <div class="collab-image">
-                    <img src="${collab.image || collab.coverImageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80'}" alt="${collab.title}">
-                    <span class="collab-badge">コラボ</span>
-                </div>
-                <div class="collab-content">
-                    <div class="collab-members">
-                        <div class="collab-avatars">${memberAvatars}</div>
-                        <div class="collab-names">${memberNames}</div>
+    // 全てブログとして表示（統合済み）
+    const blog = item.data;
+    return `
+        <div class="collab-card" onclick="openBlogDetail('${blog.slug}')">
+            <div class="collab-image">
+                <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}" onerror="this.src='https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'">
+                <span class="collab-badge">${blog.category || 'お知らせ'}</span>
+            </div>
+            <div class="collab-content">
+                <div class="collab-members">
+                    <div class="collab-avatars">
+                        <img src="${blog.authorAvatar || 'https://i.pravatar.cc/200?img=1'}" alt="${blog.authorName || '管理者'}" class="collab-avatar" onerror="this.src='https://i.pravatar.cc/200?img=1'">
                     </div>
-                    <h3 class="collab-title">${collab.title}</h3>
-                    <p class="collab-description">${collab.description}</p>
-                    <div class="collab-tags">
-                        ${collab.result ? `<span class="collab-tag"><i class="fas fa-chart-line"></i> ${collab.result}</span>` : ''}
-                    </div>
+                    <div class="collab-names">${blog.authorName || '管理者'}</div>
                 </div>
-                <div class="collab-footer">
-                    <button class="collab-btn" onclick="showCollabDetail('${collab.id}')">
-                        <i class="fas fa-eye"></i> 詳細を見る
-                    </button>
+                <h3 class="collab-title">${blog.title}</h3>
+                <p class="collab-description">${blog.excerpt || blog.description || ''}</p>
+                <div class="collab-meta">
+                    <span><i class="fas fa-calendar"></i> ${formatDate(blog.publishDate || blog.publishedAt || blog.createdAt)}</span>
+                    <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
                 </div>
             </div>
-        `;
-    } else {
-        const blog = item.data;
-        return `
-            <div class="collab-card" onclick="openBlogDetail('${blog.slug}')">
-                <div class="collab-image">
-                    <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}">
-                    <span class="collab-badge">${blog.category}</span>
-                </div>
-                <div class="collab-content">
-                    <div class="collab-members">
-                        <div class="collab-avatars">
-                            <img src="${blog.authorAvatar}" alt="${blog.authorName}" class="collab-avatar">
-                        </div>
-                        <div class="collab-names">${blog.authorName}</div>
-                    </div>
-                    <h3 class="collab-title">${blog.title}</h3>
-                    <p class="collab-description">${blog.excerpt}</p>
-                    <div class="collab-meta">
-                        <span><i class="fas fa-calendar"></i> ${formatDate(blog.publishDate)}</span>
-                        <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
-                    </div>
-                </div>
-                <div class="collab-footer">
-                    <button class="collab-btn">
-                        <i class="fas fa-arrow-right"></i> 続きを読む
-                    </button>
-                </div>
+            <div class="collab-footer">
+                <button class="collab-btn">
+                    <i class="fas fa-arrow-right"></i> 続きを読む
+                </button>
             </div>
-        `;
-    }
+        </div>
+    `;
 }
 
 function setupCollabTabs() {
@@ -963,14 +911,29 @@ function setupCollabTabs() {
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             
-            // フィルタリング
+            // フィルタリング（カテゴリベース）
             const filter = tab.dataset.filter;
             if (filter === 'all') {
                 filteredCollabItems = [...allCollabItems];
             } else if (filter === 'collab') {
-                filteredCollabItems = allCollabItems.filter(item => item.type === 'collab');
+                // コラボ事例カテゴリのみ
+                filteredCollabItems = allCollabItems.filter(item => 
+                    item.data.category === 'コラボ事例' || 
+                    item.data.category === '商品開発' ||
+                    item.data.category === 'DX支援' ||
+                    item.data.category === 'イベント企画' ||
+                    item.data.category === 'マーケティング'
+                );
             } else if (filter === 'blog') {
-                filteredCollabItems = allCollabItems.filter(item => item.type === 'blog');
+                // レポート・お知らせカテゴリのみ
+                filteredCollabItems = allCollabItems.filter(item => 
+                    item.data.category === 'レポート' ||
+                    item.data.category === 'お知らせ' ||
+                    item.data.category === 'イベントレポート' ||
+                    item.data.category === '地域DX' ||
+                    item.data.category === '伝統工芸' ||
+                    item.data.category === '成功事例'
+                );
             }
             
             renderCollabCarousel();

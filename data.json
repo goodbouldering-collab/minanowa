@@ -562,6 +562,159 @@
       "isPublished": true,
       "createdAt": "2024-11-05T09:00:00Z",
       "updatedAt": "2024-11-05T09:00:00Z"
+    },
+    {
+      "id": "collab-001",
+      "title": "和菓子×手作り石鹸のギフトセット",
+      "slug": "report-001",
+      "content": "# 和菓子×手作り石鹸のギフトセット\n\n## 概要\n石鹸職人の田中さんと和菓子職人の佐藤さんが「彦根の贈り物」ギフトセットを共同開発。地元の観光客に大人気となり、売上30%アップを実現。\n\n## 参加メンバー\n- 田中 美香（undefined）\n- 佐藤 和也（undefined）\n\n## 成果\n売上30%UP\n\nこの活動は「商品開発」カテゴリーでの取り組みです。\n",
+      "excerpt": "石鹸職人の田中さんと和菓子職人の佐藤さんが「彦根の贈り物」ギフトセットを共同開発。地元の観光客に大人気となり、売上30%アップを実現。...",
+      "authorId": "system",
+      "authorName": "みんなのWA運営",
+      "authorAvatar": "https://i.pravatar.cc/200?img=68",
+      "category": "商品開発",
+      "tags": [
+        "コラボ事例",
+        "商品開発",
+        null,
+        null
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80",
+      "publishedAt": "2024-08-01T10:00:00Z",
+      "updatedAt": "2024-08-01T10:00:00Z",
+      "status": "published",
+      "views": 384,
+      "likes": 88,
+      "_originalCollab": {
+        "members": [
+          {
+            "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
+            "name": "田中 美香",
+            "avatar": "https://i.pravatar.cc/200?img=1",
+            "business": "手作り石鹸職人"
+          },
+          {
+            "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
+            "name": "佐藤 和也",
+            "avatar": "https://i.pravatar.cc/200?img=14",
+            "business": "和菓子職人"
+          }
+        ],
+        "result": "売上30%UP"
+      }
+    },
+    {
+      "id": "collab-002",
+      "title": "伝統工芸×IT×デザイン",
+      "slug": "report-002",
+      "content": "# 伝統工芸×IT×デザイン\n\n## 概要\nITコンサルタント鈴木さんとイラストレーター山田さんが、地元工芸品のECサイトとブランディングを共同制作。海外からの受注獲得に成功。\n\n## 参加メンバー\n- 鈴木 健太（undefined）\n- 山田 花子（undefined）\n\n## 成果\n海外受注獲得\n\nこの活動は「DX支援」カテゴリーでの取り組みです。\n",
+      "excerpt": "ITコンサルタント鈴木さんとイラストレーター山田さんが、地元工芸品のECサイトとブランディングを共同制作。海外からの受注獲得に成功。...",
+      "authorId": "system",
+      "authorName": "みんなのWA運営",
+      "authorAvatar": "https://i.pravatar.cc/200?img=68",
+      "category": "DX支援",
+      "tags": [
+        "コラボ事例",
+        "DX支援",
+        null,
+        null
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
+      "publishedAt": "2024-09-15T14:00:00Z",
+      "updatedAt": "2024-09-15T14:00:00Z",
+      "status": "published",
+      "views": 521,
+      "likes": 88,
+      "_originalCollab": {
+        "members": [
+          {
+            "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
+            "name": "鈴木 健太",
+            "avatar": "https://i.pravatar.cc/200?img=13",
+            "business": "ITコンサルタント"
+          },
+          {
+            "id": "d92d11d2-7fbf-4220-936b-04a155d9fa93",
+            "name": "山田 花子",
+            "avatar": "https://i.pravatar.cc/200?img=5",
+            "business": "イラストレーター"
+          }
+        ],
+        "result": "海外受注獲得"
+      }
+    },
+    {
+      "id": "collab-003",
+      "title": "カフェ×ワークショップ",
+      "slug": "report-003",
+      "content": "# カフェ×ワークショップ\n\n## 概要\nカフェオーナー渡辺さんが、会員の専門家を招いて月1回のワークショップイベントを開催。顧客数が2倍に増加。\n\n## 参加メンバー\n- 渡辺 真理（undefined）\n\n## 成果\n顧客数2倍\n\nこの活動は「イベント企画」カテゴリーでの取り組みです。\n",
+      "excerpt": "カフェオーナー渡辺さんが、会員の専門家を招いて月1回のワークショップイベントを開催。顧客数が2倍に増加。...",
+      "authorId": "system",
+      "authorName": "みんなのWA運営",
+      "authorAvatar": "https://i.pravatar.cc/200?img=68",
+      "category": "イベント企画",
+      "tags": [
+        "コラボ事例",
+        "イベント企画",
+        null
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
+      "publishedAt": "2024-10-10T11:00:00Z",
+      "updatedAt": "2024-10-10T11:00:00Z",
+      "status": "published",
+      "views": 197,
+      "likes": 81,
+      "_originalCollab": {
+        "members": [
+          {
+            "id": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
+            "name": "渡辺 真理",
+            "avatar": "https://i.pravatar.cc/200?img=47",
+            "business": "カフェオーナー"
+          }
+        ],
+        "result": "顧客数2倍"
+      }
+    },
+    {
+      "id": "collab-004",
+      "title": "健康サービス×マーケティング",
+      "slug": "report-004",
+      "content": "# 健康サービス×マーケティング\n\n## 概要\n整体院の上田さんがデジタル戦略家の由井さんのサポートでSNSマーケティング戦略を構築。予約率が150%向上。\n\n## 参加メンバー\n- 上田 永吉（undefined）\n- 由井 辰美（undefined）\n\n## 成果\n予約率150%UP\n\nこの活動は「マーケティング」カテゴリーでの取り組みです。\n",
+      "excerpt": "整体院の上田さんがデジタル戦略家の由井さんのサポートでSNSマーケティング戦略を構築。予約率が150%向上。...",
+      "authorId": "system",
+      "authorName": "みんなのWA運営",
+      "authorAvatar": "https://i.pravatar.cc/200?img=68",
+      "category": "マーケティング",
+      "tags": [
+        "コラボ事例",
+        "マーケティング",
+        null,
+        null
+      ],
+      "featuredImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "publishedAt": "2024-11-05T09:00:00Z",
+      "updatedAt": "2024-11-05T09:00:00Z",
+      "status": "published",
+      "views": 188,
+      "likes": 81,
+      "_originalCollab": {
+        "members": [
+          {
+            "id": "ueda-eikichi-001",
+            "name": "上田 永吉",
+            "avatar": "https://i.pravatar.cc/200?img=33",
+            "business": "りーる整体院代表"
+          },
+          {
+            "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
+            "name": "由井 辰美",
+            "avatar": "https://i.pravatar.cc/200?img=68",
+            "business": "デジタル戦略家"
+          }
+        ],
+        "result": "予約率150%UP"
+      }
     }
   ],
   "events": [
@@ -882,98 +1035,6 @@
       "joinDate": "2024-06-01",
       "isPublic": true,
       "createdAt": "2024-09-20T09:00:00Z"
-    }
-  ],
-  "collaborations": [
-    {
-      "id": "collab-001",
-      "title": "和菓子×手作り石鹸のギフトセット",
-      "description": "石鹸職人の田中さんと和菓子職人の佐藤さんが「彦根の贈り物」ギフトセットを共同開発。地元の観光客に大人気となり、売上30%アップを実現。",
-      "members": [
-        {
-          "id": "2ebe6373-bb42-4b9f-aaca-49cae0c6c254",
-          "name": "田中 美香",
-          "avatar": "https://i.pravatar.cc/200?img=1",
-          "business": "手作り石鹸職人"
-        },
-        {
-          "id": "4f8e833e-f439-4e73-9fda-6542cd9fb872",
-          "name": "佐藤 和也",
-          "avatar": "https://i.pravatar.cc/200?img=14",
-          "business": "和菓子職人"
-        }
-      ],
-      "image": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80",
-      "result": "売上30%UP",
-      "category": "商品開発",
-      "isPublic": true,
-      "createdAt": "2024-08-01T10:00:00Z"
-    },
-    {
-      "id": "collab-002",
-      "title": "伝統工芸×IT×デザイン",
-      "description": "ITコンサルタント鈴木さんとイラストレーター山田さんが、地元工芸品のECサイトとブランディングを共同制作。海外からの受注獲得に成功。",
-      "members": [
-        {
-          "id": "cc89a196-9ebe-4151-9764-050ba08a1c6e",
-          "name": "鈴木 健太",
-          "avatar": "https://i.pravatar.cc/200?img=13",
-          "business": "ITコンサルタント"
-        },
-        {
-          "id": "d92d11d2-7fbf-4220-936b-04a155d9fa93",
-          "name": "山田 花子",
-          "avatar": "https://i.pravatar.cc/200?img=5",
-          "business": "イラストレーター"
-        }
-      ],
-      "image": "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80",
-      "result": "海外受注獲得",
-      "category": "DX支援",
-      "isPublic": true,
-      "createdAt": "2024-09-15T14:00:00Z"
-    },
-    {
-      "id": "collab-003",
-      "title": "カフェ×ワークショップ",
-      "description": "カフェオーナー渡辺さんが、会員の専門家を招いて月1回のワークショップイベントを開催。顧客数が2倍に増加。",
-      "members": [
-        {
-          "id": "7d970a2d-9b83-4b15-bc88-550b84e9978c",
-          "name": "渡辺 真理",
-          "avatar": "https://i.pravatar.cc/200?img=47",
-          "business": "カフェオーナー"
-        }
-      ],
-      "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800&q=80",
-      "result": "顧客数2倍",
-      "category": "イベント企画",
-      "isPublic": true,
-      "createdAt": "2024-10-10T11:00:00Z"
-    },
-    {
-      "id": "collab-004",
-      "title": "健康サービス×マーケティング",
-      "description": "整体院の上田さんがデジタル戦略家の由井さんのサポートでSNSマーケティング戦略を構築。予約率が150%向上。",
-      "members": [
-        {
-          "id": "ueda-eikichi-001",
-          "name": "上田 永吉",
-          "avatar": "https://i.pravatar.cc/200?img=33",
-          "business": "りーる整体院代表"
-        },
-        {
-          "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
-          "name": "由井 辰美",
-          "avatar": "https://i.pravatar.cc/200?img=68",
-          "business": "デジタル戦略家"
-        }
-      ],
-      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
-      "result": "予約率150%UP",
-      "category": "マーケティング",
-      "isPublic": true,
-      "createdAt": "2024-11-05T09:00:00Z"
     }
   ],
   "pageContent": {

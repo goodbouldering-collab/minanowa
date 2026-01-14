@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="about_accordion.css">
 </head>
 <body class="no-js">
     <!-- ナビゲーション -->
@@ -177,168 +176,166 @@
         </div>
     </section>
     <!-- つながるセクション -->
-<!-- みんなのWAとは - アコーディオン形式 -->
-<section class="about-section-accordion" id="about">
-    <div class="container">
-        <h2 class="section-title">みんなのWAとは</h2>
-        <p class="section-subtitle">彦根を中心に、地域の事業者同士が「与え合い、繋がり、共に成長する」実践型コミュニティです</p>
-        
-        <div class="accordion-container">
+    <!-- みんなのWAとは -->
+    <!-- みんなのWAとは - 彦根版 -->
+    <section class="about-hikone" id="about">
+        <div class="container">
+            <!-- ヒーローエリア -->
+            <div class="about-hero-hikone">
+                <h2 class="about-title-main">彦根の未来を創る経営者コミュニティ<br>「みんなのWA」</h2>
+                <p class="about-tagline">「経営者は孤独」という時代は、もう終わりました。</p>
+                <p class="about-lead">
+                    「みんなのWA（わ）」は、彦根の個人事業主やオーナーが集まり、<br>
+                    単なる交流を超えて<strong>「信頼を基盤とした口コミの連鎖」</strong>をデザインする共助型プラットフォームです。
+                </p>
+            </div>
             
-            <!-- アコーディオンアイテム1: コンセプト -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">🌱</span>
-                    <span class="accordion-title">コンセプト：ギブから始まる信頼の輪</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>見返りを求めず、まず相手に価値を提供する。その積み重ねが信頼となり、自然と仕事に繋がります。</p>
-                        
-                        <div class="feature-grid">
-                            <div class="feature-item">
-                                <div class="feature-icon">🤝</div>
-                                <h4>与え合う文化</h4>
-                                <p>日常的な情報共有、失敗も成功も共有、専門知識のシェア</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">👥</div>
-                                <h4>リアルなつながり</h4>
-                                <p>月1回の交流会、異業種交流、顔が見える関係</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">📈</div>
-                                <h4>実践から学ぶ</h4>
-                                <p>理論ではなく実践、継続的な成長、文化を守る</p>
-                            </div>
-                        </div>
+            <!-- 統計表示 -->
+            <div class="about-stats-hikone">
+                <div class="stat-item-hikone">
+                    <div class="stat-number" id="aboutMemberCountInteractive">0</div>
+                    <div class="stat-label">参加事業者</div>
+                </div>
+                <div class="stat-item-hikone">
+                    <div class="stat-number" id="aboutEventCountInteractive">0</div>
+                    <div class="stat-label">開催回数</div>
+                </div>
+                <div class="stat-item-hikone">
+                    <div class="stat-number" id="aboutCollabCountInteractive">0</div>
+                    <div class="stat-label">コラボ事例</div>
+                </div>
+            </div>
+            
+            <!-- なぜ口コミが最強なのか -->
+            <div class="why-referral">
+                <h3 class="section-heading">なぜ「オーナー同士」の口コミが最強なのか？</h3>
+                <p class="section-intro">
+                    消費者が広告を信じない今の時代、最も強力な販促は<strong>「信頼できる人からの紹介」</strong>です。
+                </p>
+                
+                <div class="data-showcase">
+                    <div class="data-item" data-animate="fade-up">
+                        <div class="data-icon"><i class="fas fa-user-friends"></i></div>
+                        <div class="data-number">92%</div>
+                        <h4>信頼の圧倒的格差</h4>
+                        <p>消費者の92%が「友人や知人からの推薦」を他のどの広告よりも信頼</p>
+                        <span class="data-ref">出典: Nielsen調査</span>
+                    </div>
+                    
+                    <div class="data-item" data-animate="fade-up" data-delay="100">
+                        <div class="data-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="data-number">+30%</div>
+                        <h4>高い成約率</h4>
+                        <p>紹介経由の顧客は通常集客と比較して成約率が約30%高い</p>
+                        <span class="data-ref">LTV（顧客生涯価値）も16%向上</span>
+                    </div>
+                    
+                    <div class="data-item" data-animate="fade-up" data-delay="200">
+                        <div class="data-icon"><i class="fas fa-store"></i></div>
+                        <div class="data-number">1,000人</div>
+                        <h4>「オーナー」という媒体</h4>
+                        <p>1人のオーナーが100人の顧客を持つなら、10人で1,000人の潜在顧客にリーチ</p>
+                        <span class="data-ref">SNSの1,000いいね！より深い信頼</span>
+                    </div>
+                </div>
+                
+                <div class="think-box">
+                    <div class="think-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="think-content">
+                        <h4>考えてみてください</h4>
+                        <p>1人のオーナーが100人の顧客を持っていれば、10人のオーナーがつながるだけで<strong>1,000人の「良質な潜在顧客」</strong>にあなたのサービスを届けるルートが完成します。</p>
                     </div>
                 </div>
             </div>
             
-            <!-- アコーディオンアイテム2: 3つのメリット -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">🎁</span>
-                    <span class="accordion-title">参加するメリット</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <div class="feature-grid">
-                            <div class="feature-item">
-                                <div class="feature-icon">💼</div>
-                                <h4>ビジネスチャンス拡大</h4>
-                                <p>異業種との出会いから、新しいコラボレーションや顧客紹介が生まれます</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">💡</div>
-                                <h4>知識とアイデアの共有</h4>
-                                <p>他業種の視点や専門知識を得ることで、新しいアイデアが生まれます</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">🛡️</div>
-                                <h4>信頼できるネットワーク</h4>
-                                <p>顔が見える関係だからこそ、安心して紹介し合えるネットワークが構築できます</p>
-                            </div>
-                        </div>
+            <!-- 地方での成功事例 -->
+            <div class="success-cases">
+                <h3 class="section-heading">地方での成功事例：つながりが生んだ「経済の循環」</h3>
+                <p class="section-intro">日本各地で、オーナー同士の結束が地域を塗り替えた事例が増えています。</p>
+                
+                <div class="cases-table">
+                    <div class="case-row case-header">
+                        <div class="case-region">地域</div>
+                        <div class="case-initiative">取り組み内容</div>
+                        <div class="case-effect">効果・メリット</div>
+                    </div>
+                    <div class="case-row">
+                        <div class="case-region"><strong>徳島県<br>神山町</strong></div>
+                        <div class="case-initiative">異業種の経営者が集まるコミュニティ</div>
+                        <div class="case-effect">外部資本に頼らず、地元の資源を活かした新事業が次々誕生</div>
+                    </div>
+                    <div class="case-row">
+                        <div class="case-region"><strong>岡山県<br>西粟倉村</strong></div>
+                        <div class="case-initiative">「ローカルベンチャー」の相互支援</div>
+                        <div class="case-effect">移住起業家と地元事業者の連携で、村の売上が数億円規模で増加</div>
+                    </div>
+                    <div class="case-row">
+                        <div class="case-region"><strong>滋賀県内<br>（他市）</strong></div>
+                        <div class="case-initiative">オーナー限定の相互紹介カード配布</div>
+                        <div class="case-effect">広告費をかけずに、客単価が15%向上した店舗が続出</div>
+                    </div>
+                </div>
+                
+                <p class="cases-note">
+                    「みんなのWA」では、これらの成功モデルを彦根版にアップデートし、<br>
+                    <strong>「顔が見える関係だからこそできる紹介」</strong>を仕組み化します。
+                </p>
+            </div>
+            
+            <!-- 3つのベネフィット -->
+            <div class="three-benefits">
+                <h3 class="section-heading">「みんなのWA」が提供する3つのベネフィット</h3>
+                <p class="section-intro">単なる名刺交換会では終わらない、実利を伴うコミュニティです。</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card" data-benefit="1">
+                        <div class="benefit-icon"><i class="fas fa-bullhorn"></i></div>
+                        <h4>【拡声効果】口コミのハブ（拠点）化</h4>
+                        <p>各オーナーが持つ既存顧客に対し、相互に良質な情報を発信。あなたのビジネスを「街の推薦図書」のように広めます。</p>
+                    </div>
+                    
+                    <div class="benefit-card" data-benefit="2">
+                        <div class="benefit-icon"><i class="fas fa-sync-alt"></i></div>
+                        <h4>【経営のアップデート】情報の共有</h4>
+                        <p>地方経営に不可欠なAI活用、SNS戦略、補助金情報など、1人では追いきれない最新知見を「共助」の精神でシェアします。</p>
+                    </div>
+                    
+                    <div class="benefit-card" data-benefit="3">
+                        <div class="benefit-icon"><i class="fas fa-city"></i></div>
+                        <h4>【地域価値の向上】彦根ブランドの構築</h4>
+                        <p>個店が点として存在するのではなく、面としてつながることで、「彦根に行けば面白い店がたくさんある」という地域ブランドを創ります。</p>
                     </div>
                 </div>
             </div>
             
-            <!-- アコーディオンアイテム3: 参加の流れ -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">🔄</span>
-                    <span class="accordion-title">参加の流れ</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <div class="steps-container">
-                            <div class="step-item">
-                                <div class="step-number">1</div>
-                                <div class="step-content">
-                                    <h4>会員登録申請</h4>
-                                    <p>事業内容やスキルを登録。交流会参加後に正式表示されます。</p>
-                                </div>
-                            </div>
-                            <div class="step-arrow">→</div>
-                            <div class="step-item">
-                                <div class="step-number">2</div>
-                                <div class="step-content">
-                                    <h4>月1回の交流会</h4>
-                                    <p>顔を合わせ、事業を紹介し合い、信頼関係を築きます。</p>
-                                </div>
-                            </div>
-                            <div class="step-arrow">→</div>
-                            <div class="step-item">
-                                <div class="step-number">3</div>
-                                <div class="step-content">
-                                    <h4>LINEで日常交流</h4>
-                                    <p>グループチャットで情報共有。質問や相談が活発に行われます。</p>
-                                </div>
-                            </div>
-                            <div class="step-arrow">→</div>
-                            <div class="step-item">
-                                <div class="step-number">4</div>
-                                <div class="step-content">
-                                    <h4>お互いを紹介</h4>
-                                    <p>適切な人を繋ぎ、コラボレーションが自然に生まれます。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- 私たちが目指すもの -->
+            <div class="our-vision">
+                <div class="vision-quote">
+                    <i class="fas fa-quote-left"></i>
+                    <p class="vision-text">1人の100歩より、100人の1歩を。</p>
+                    <i class="fas fa-quote-right"></i>
                 </div>
+                <p class="vision-description">
+                    彦根の街を支えているのは、大手チェーンではなく、<br>
+                    私たち一人ひとりの熱意あるオーナーです。<br>
+                    「みんなのWA」でつながり、ビジネスを加速させ、<br>
+                    この街をもっと面白くしませんか？
+                </p>
             </div>
             
-            <!-- アコーディオンアイテム4: 実績データ -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">📊</span>
-                    <span class="accordion-title">データで見る効果</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
+            <!-- CTA -->
+            <div class="about-cta-hikone">
+                <button class="cta-button-primary" onclick="scrollToSection('event')">
+                    <span>次回の交流会を見る</span>
+                    <i class="fas fa-arrow-right"></i>
                 </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-number">86%</div>
-                                <p class="stat-label">口コミが購買決定に影響を与える割合</p>
-                                <p class="stat-description">メンバー同士の紹介は、広告の4倍のROIを実現</p>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">72%</div>
-                                <p class="stat-label">紹介経由のコンバージョン率向上</p>
-                                <p class="stat-description">信頼できる人からの紹介は、成約率を大きく高めます</p>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">95%</div>
-                                <p class="stat-label">対面ネットワーキングの重要性</p>
-                                <p class="stat-description">顔が見える関係が、深い信頼を生み出します</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button class="cta-button-secondary" onclick="openRegisterModal()">
+                    <span>会員登録申請をする</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
             </div>
-            
         </div>
-        
-        <!-- CTA -->
-        <div class="about-cta">
-            <h3>あなたも「与え合い、繋がり、共に成長する」仲間になりませんか？</h3>
-            <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="scrollToSection('event')">
-                    <i class="fas fa-calendar-check"></i> 次回の交流会を見る
-                </button>
-                <button class="btn btn-secondary" onclick="openRegisterModal()">
-                    <i class="fas fa-user-plus"></i> 会員登録申請
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
     <section class="collab-section" id="collab">
         <div class="container">
             <div class="section-header">
@@ -1176,7 +1173,6 @@
         </div>
     </div>
 
-    <script src="about_accordion.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
