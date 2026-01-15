@@ -675,49 +675,36 @@ function renderMembers(members) {
         const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
         
         return `
-            <div class="member-card-modern" onclick="openMemberDetail('${member.id}')">
-                ${websiteUrl && ogpImage ? `
-                    <div class="member-card-modern-header has-ogp">
-                        <img src="${ogpImage}" alt="${member.name}" class="member-card-modern-ogp" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
-                        <span class="member-card-modern-category">${member.businessCategory || 'その他'}</span>
-                    </div>
-                ` : `
-                    <div class="member-card-modern-header">
-                        <span class="member-card-modern-category">${member.businessCategory || 'その他'}</span>
-                        <div class="member-card-modern-header-content">
-                            <h3>${member.name}</h3>
-                            <p>${member.business}</p>
+            <div class="collab-card" onclick="openMemberDetail('${member.id}')">
+                <div class="collab-image">
+                    <img src="${ogpImage}" alt="${member.name}" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                    <span class="collab-badge">${member.businessCategory || 'その他'}</span>
+                </div>
+                <div class="collab-content">
+                    <div class="collab-members">
+                        <div class="collab-avatars">
+                            <img src="${member.avatar || 'https://i.pravatar.cc/200?img=1'}" alt="${member.name}" class="collab-avatar" onerror="this.src='https://i.pravatar.cc/200?img=1'">
                         </div>
+                        <div class="collab-names">${member.name}</div>
                     </div>
-                `}
-                <div class="member-card-modern-body">
-                    ${websiteUrl ? `
-                        <div class="member-card-modern-title">
-                            <h3 class="member-card-modern-name">${member.name}</h3>
-                            <p class="member-card-modern-business">${member.business}</p>
-                            <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" class="member-card-modern-website" onclick="event.stopPropagation()">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span>${displayUrl}</span>
-                            </a>
-                        </div>
-                    ` : ''}
-                    <p class="member-card-modern-intro">${member.introduction || '自己紹介文がありません'}</p>
+                    <h3 class="collab-title">${member.business}</h3>
+                    <p class="collab-description">${member.introduction || '自己紹介文がありません'}</p>
                     ${(member.skills && member.skills.length > 0) ? `
-                        <div class="member-card-modern-skills">
+                        <div class="collab-skills">
                             ${(member.skills || []).slice(0, 3).map(skill => 
-                                `<span class="member-card-modern-skill">${skill}</span>`
+                                `<span class="collab-skill-tag">${skill}</span>`
                             ).join('')}
                         </div>
                     ` : ''}
-                    <div class="member-card-modern-footer">
-                        <span class="member-card-modern-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            ${member.location || '未設定'}
-                        </span>
-                        <button class="member-card-modern-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                            詳細を見る
-                        </button>
+                    <div class="collab-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> ${member.location || '未設定'}</span>
+                        ${websiteUrl ? `<span><i class="fas fa-external-link-alt"></i> <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color: inherit;">${displayUrl}</a></span>` : ''}
                     </div>
+                </div>
+                <div class="collab-footer">
+                    <button class="collab-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
+                        <i class="fas fa-arrow-right"></i> 詳細を見る
+                    </button>
                 </div>
             </div>
         `;
@@ -879,39 +866,32 @@ function renderCollabCarousel() {
 }
 
 function renderCollabItem(item) {
-    // 全てブログとして表示（メンバーカードと同じUIで統一）
+    // 全てブログとして表示（統合済み）
     const blog = item.data;
-    const featuredImage = blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80';
-    const authorAvatar = blog.authorAvatar || 'https://i.pravatar.cc/200?img=1';
-    const authorName = blog.authorName || '管理者';
-    const category = blog.category || 'お知らせ';
-    const publishDate = blog.publishDate || blog.publishedAt || blog.createdAt;
-    
     return `
-        <div class="member-card-modern" onclick="openBlogDetail('${blog.slug}')">
-            <div class="member-card-modern-header has-ogp">
-                <img src="${featuredImage}" alt="${blog.title}" class="member-card-modern-ogp" onerror="this.src='https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'">
-                <span class="member-card-modern-category">${category}</span>
+        <div class="collab-card" onclick="openBlogDetail('${blog.slug}')">
+            <div class="collab-image">
+                <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}" onerror="this.src='https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'">
+                <span class="collab-badge">${blog.category || 'お知らせ'}</span>
             </div>
-            <div class="member-card-modern-body">
-                <div class="member-card-modern-title">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                        <img src="${authorAvatar}" alt="${authorName}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://i.pravatar.cc/200?img=1'">
-                        <span style="font-size: 0.875rem; color: #718096;">${authorName}</span>
+            <div class="collab-content">
+                <div class="collab-members">
+                    <div class="collab-avatars">
+                        <img src="${blog.authorAvatar || 'https://i.pravatar.cc/200?img=1'}" alt="${blog.authorName || '管理者'}" class="collab-avatar" onerror="this.src='https://i.pravatar.cc/200?img=1'">
                     </div>
+                    <div class="collab-names">${blog.authorName || '管理者'}</div>
                 </div>
-                <h3 class="member-card-modern-name" style="margin-bottom: 12px;">${blog.title}</h3>
-                <p class="member-card-modern-intro">${blog.excerpt || blog.description || ''}</p>
-                <div class="member-card-modern-footer">
-                    <span class="member-card-modern-location">
-                        <i class="fas fa-calendar"></i>
-                        ${formatDate(publishDate)}
-                    </span>
-                    <span style="display: flex; align-items: center; gap: 6px; color: #718096; font-size: 0.875rem;">
-                        <i class="fas fa-eye"></i>
-                        ${blog.views || 0}
-                    </span>
+                <h3 class="collab-title">${blog.title}</h3>
+                <p class="collab-description">${blog.excerpt || blog.description || ''}</p>
+                <div class="collab-meta">
+                    <span><i class="fas fa-calendar"></i> ${formatDate(blog.publishDate || blog.publishedAt || blog.createdAt)}</span>
+                    <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
                 </div>
+            </div>
+            <div class="collab-footer">
+                <button class="collab-btn">
+                    <i class="fas fa-arrow-right"></i> 続きを読む
+                </button>
             </div>
         </div>
     `;
