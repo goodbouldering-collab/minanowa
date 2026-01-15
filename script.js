@@ -671,39 +671,66 @@ function renderMembers(members) {
         // URLからドメインを抽出
         const websiteUrl = member.website || '';
         const displayUrl = websiteUrl ? websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
-        // OGP画像のURLを取得（存在しない場合はデフォルト画像）
-        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+        // ヘッダー画像（OGPまたはアバター）
+        const headerImage = member.websiteOgpImage || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+        // アバター画像
+        const avatarImage = member.avatar || 'https://i.pravatar.cc/200?img=1';
         
         return `
-            <div class="collab-card" onclick="openMemberDetail('${member.id}')">
-                <div class="collab-image">
-                    <img src="${ogpImage}" alt="${member.name}" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
-                    <span class="collab-badge">${member.businessCategory || 'その他'}</span>
-                </div>
-                <div class="collab-content">
-                    <div class="collab-members">
-                        <div class="collab-avatars">
-                            <img src="${member.avatar || 'https://i.pravatar.cc/200?img=1'}" alt="${member.name}" class="collab-avatar" onerror="this.src='https://i.pravatar.cc/200?img=1'">
-                        </div>
-                        <div class="collab-names">${member.name}</div>
+            <div class="member-card" onclick="openMemberDetail('${member.id}')">
+                <!-- カードヘッダー（画像） -->
+                <div class="member-card-header">
+                    <img src="${headerImage}" 
+                         alt="${member.name}" 
+                         class="member-card-header-image"
+                         onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                    <span class="member-card-category">${member.businessCategory || 'その他'}</span>
+                    
+                    <!-- アバター -->
+                    <div class="member-card-avatar-wrapper">
+                        <img src="${avatarImage}" 
+                             alt="${member.name}" 
+                             class="member-card-avatar"
+                             onerror="this.src='https://i.pravatar.cc/200?img=1'">
                     </div>
-                    <h3 class="collab-title">${member.business}</h3>
-                    <p class="collab-description">${member.introduction || '自己紹介文がありません'}</p>
+                </div>
+                
+                <!-- カードボディ -->
+                <div class="member-card-body">
+                    <h3 class="member-card-name">${member.name}</h3>
+                    <div class="member-card-business">${member.business || '事業内容未設定'}</div>
+                    
+                    ${websiteUrl ? `
+                        <a href="${websiteUrl}" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="member-card-website"
+                           onclick="event.stopPropagation()">
+                            <i class="fas fa-external-link-alt"></i>
+                            ${displayUrl}
+                        </a>
+                    ` : ''}
+                    
+                    <p class="member-card-intro">${member.introduction || '自己紹介文がありません'}</p>
+                    
                     ${(member.skills && member.skills.length > 0) ? `
-                        <div class="collab-skills">
+                        <div class="member-card-skills">
                             ${(member.skills || []).slice(0, 3).map(skill => 
-                                `<span class="collab-skill-tag">${skill}</span>`
+                                `<span class="member-card-skill-tag">${skill}</span>`
                             ).join('')}
                         </div>
                     ` : ''}
-                    <div class="collab-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> ${member.location || '未設定'}</span>
-                        ${websiteUrl ? `<span><i class="fas fa-external-link-alt"></i> <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color: inherit;">${displayUrl}</a></span>` : ''}
-                    </div>
                 </div>
-                <div class="collab-footer">
-                    <button class="collab-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                        <i class="fas fa-arrow-right"></i> 詳細を見る
+                
+                <!-- カードフッター -->
+                <div class="member-card-footer">
+                    <div class="member-card-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${member.location || '未設定'}
+                    </div>
+                    <button class="member-card-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
+                        詳細を見る
+                        <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>

@@ -1,11 +1,14 @@
-/* メンバーカード - 再構築版 */
+/* メンバーカード - 再構築版（member_card.cssを使用） */
 
+/* この定義はmember_card.cssで上書きされます */
+/*
 .members-carousel {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
     padding: 20px 0;
 }
+*/
 
 .member-card-modern {
     background: white;
