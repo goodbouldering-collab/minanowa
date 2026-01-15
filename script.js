@@ -668,48 +668,55 @@ function renderMembers(members) {
     }
     
     membersGrid.innerHTML = members.map(member => {
-        // OGP画像のURLを取得（存在しない場合はデフォルト画像）
-        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
-        
         // URLからドメインを抽出
         const websiteUrl = member.website || '';
         const displayUrl = websiteUrl ? websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+        // OGP画像のURLを取得（存在しない場合はデフォルト画像）
+        const ogpImage = member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
         
         return `
-            <div class="member-card" onclick="openMemberDetail('${member.id}')">
-                ${websiteUrl ? `
-                    <div class="member-card-ogp">
-                        <img src="${ogpImage}" alt="${member.name}" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
-                        <span class="member-card-category">${member.businessCategory || 'その他'}</span>
+            <div class="member-card-modern" onclick="openMemberDetail('${member.id}')">
+                ${websiteUrl && ogpImage ? `
+                    <div class="member-card-modern-header has-ogp">
+                        <img src="${ogpImage}" alt="${member.name}" class="member-card-modern-ogp" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                        <span class="member-card-modern-category">${member.businessCategory || 'その他'}</span>
                     </div>
                 ` : `
-                    <div class="member-card-header">
-                        <span class="member-card-category">${member.businessCategory || 'その他'}</span>
-                        <h3 class="member-card-name">${member.name}</h3>
-                        <p class="member-card-business">${member.business}</p>
+                    <div class="member-card-modern-header">
+                        <span class="member-card-modern-category">${member.businessCategory || 'その他'}</span>
+                        <div class="member-card-modern-header-content">
+                            <h3>${member.name}</h3>
+                            <p>${member.business}</p>
+                        </div>
                     </div>
                 `}
-                <div class="member-card-body">
+                <div class="member-card-modern-body">
                     ${websiteUrl ? `
-                        <h3 class="member-card-name" style="color: var(--text-primary); margin-bottom: 4px;">${member.name}</h3>
-                        <p class="member-card-business" style="color: var(--text-muted); margin-bottom: 8px;">${member.business}</p>
-                        <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" class="member-card-url" onclick="event.stopPropagation()">
-                            <i class="fas fa-external-link-alt"></i>
-                            <span>${displayUrl}</span>
-                        </a>
+                        <div class="member-card-modern-title">
+                            <h3 class="member-card-modern-name">${member.name}</h3>
+                            <p class="member-card-modern-business">${member.business}</p>
+                            <a href="${websiteUrl}" target="_blank" rel="noopener noreferrer" class="member-card-modern-website" onclick="event.stopPropagation()">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>${displayUrl}</span>
+                            </a>
+                        </div>
                     ` : ''}
-                    <p class="member-card-intro">${member.introduction || '自己紹介文がありません'}</p>
-                    <div class="member-card-skills">
-                        ${(member.skills || []).slice(0, 3).map(skill => 
-                            `<span class="skill-tag">${skill}</span>`
-                        ).join('')}
-                    </div>
-                    <div class="member-card-meta">
-                        <span class="member-card-location">
+                    <p class="member-card-modern-intro">${member.introduction || '自己紹介文がありません'}</p>
+                    ${(member.skills && member.skills.length > 0) ? `
+                        <div class="member-card-modern-skills">
+                            ${(member.skills || []).slice(0, 3).map(skill => 
+                                `<span class="member-card-modern-skill">${skill}</span>`
+                            ).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="member-card-modern-footer">
+                        <span class="member-card-modern-location">
                             <i class="fas fa-map-marker-alt"></i>
                             ${member.location || '未設定'}
                         </span>
-                        <button class="member-card-btn">詳細を見る</button>
+                        <button class="member-card-modern-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
+                            詳細を見る
+                        </button>
                     </div>
                 </div>
             </div>
