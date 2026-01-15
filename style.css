@@ -20434,3 +20434,17 @@ section + section {
     animation-delay: 0.2s;
     opacity: 0;
 }
+
+/* 会員登録モーダルのマージン追加 */
+#registerModal .modal-content {
+    margin: 40px auto;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    #registerModal .modal-content {
+        margin: 20px auto;
+        max-height: calc(100vh - 40px);
+    }
+}
