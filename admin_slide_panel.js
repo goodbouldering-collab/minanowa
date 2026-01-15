@@ -500,40 +500,646 @@ class AdminSlidePanel {
         `;
     }
     
-    // 編集・削除メソッド（プレースホルダー）
-    showMemberForm() { alert('メンバー追加フォームを表示します'); }
-    editMember(id) { alert(`メンバー ${id} を編集します`); }
-    deleteMember(id, name) { 
-        if (confirm(`${name} を削除しますか？`)) {
-            alert(`メンバー ${id} を削除します`); 
+    // 編集・削除メソッド
+    showMemberForm() {
+        const content = document.querySelector(`[data-content="members"]`);
+        content.innerHTML = this.renderMemberForm();
+    }
+    
+    renderMemberForm(member = null) {
+        const isEdit = member !== null;
+        return `
+            <div class="admin-slide-section-header">
+                <h3>${isEdit ? 'メンバー編集' : 'メンバー追加'}</h3>
+                <button class="btn btn-secondary" onclick="adminPanel.loadMembers(document.querySelector('[data-content=\\'members\\']'))">
+                    キャンセル
+                </button>
+            </div>
+            
+            <form class="admin-slide-form" onsubmit="adminPanel.saveMember(event, ${isEdit ? `'${member.id}'` : 'null'})">
+                <div class="admin-slide-form-group">
+                    <label>名前 *</label>
+                    <input type="text" name="name" value="${member?.name || ''}" required>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>メールアドレス *</label>
+                    <input type="email" name="email" value="${member?.email || ''}" required ${isEdit ? 'readonly' : ''}>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>事業内容</label>
+                    <input type="text" name="business" value="${member?.business || ''}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>カテゴリ</label>
+                    <select name="businessCategory">
+                        <option value="">選択してください</option>
+                        <option value="飲食" ${member?.businessCategory === '飲食' ? 'selected' : ''}>飲食</option>
+                        <option value="小売" ${member?.businessCategory === '小売' ? 'selected' : ''}>小売</option>
+                        <option value="サービス" ${member?.businessCategory === 'サービス' ? 'selected' : ''}>サービス</option>
+                        <option value="製造" ${member?.businessCategory === '製造' ? 'selected' : ''}>製造</option>
+                        <option value="IT" ${member?.businessCategory === 'IT' ? 'selected' : ''}>IT</option>
+                        <option value="建築・不動産" ${member?.businessCategory === '建築・不動産' ? 'selected' : ''}>建築・不動産</option>
+                        <option value="医療・福祉" ${member?.businessCategory === '医療・福祉' ? 'selected' : ''}>医療・福祉</option>
+                        <option value="教育" ${member?.businessCategory === '教育' ? 'selected' : ''}>教育</option>
+                        <option value="その他" ${member?.businessCategory === 'その他' ? 'selected' : ''}>その他</option>
+                    </select>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>所在地</label>
+                    <input type="text" name="location" value="${member?.location || ''}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>ウェブサイト</label>
+                    <input type="url" name="website" value="${member?.website || ''}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>自己紹介</label>
+                    <textarea name="introduction" rows="5">${member?.introduction || ''}</textarea>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>承認ステータス</label>
+                    <select name="approvalStatus">
+                        <option value="pending" ${member?.approvalStatus === 'pending' ? 'selected' : ''}>未承認</option>
+                        <option value="approved" ${member?.approvalStatus === 'approved' ? 'selected' : ''}>承認済み</option>
+                    </select>
+                </div>
+                
+                <div class="admin-slide-form-actions">
+                    <button type="button" class="btn-secondary" onclick="adminPanel.loadMembers(document.querySelector('[data-content=\\'members\\']'))">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        ${isEdit ? '更新' : '追加'}
+                    </button>
+                </div>
+            </form>
+        `;
+    }
+    
+    async editMember(id) {
+        console.log('📝 メンバー編集:', id);
+        try {
+            const response = await fetch(`${this.API_BASE}/api/members/${id}`, {
+                headers: { 'x-session-id': this.sessionId }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                const content = document.querySelector(`[data-content="members"]`);
+                content.innerHTML = this.renderMemberForm(data.member);
+            } else {
+                alert('メンバー情報の取得に失敗しました');
+            }
+        } catch (error) {
+            console.error('メンバー取得エラー:', error);
+            alert('エラーが発生しました');
         }
     }
     
-    showBlogForm() { alert('ブログ追加フォームを表示します'); }
-    editBlog(id) { alert(`ブログ ${id} を編集します`); }
-    deleteBlog(id, title) { 
-        if (confirm(`「${title}」を削除しますか？`)) {
-            alert(`ブログ ${id} を削除します`); 
+    async saveMember(event, memberId) {
+        event.preventDefault();
+        console.log('💾 メンバー保存:', memberId);
+        
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const url = memberId 
+                ? `${this.API_BASE}/api/admin/members/${memberId}`
+                : `${this.API_BASE}/api/admin/members`;
+            
+            const response = await fetch(url, {
+                method: memberId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-session-id': this.sessionId
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(memberId ? 'メンバー情報を更新しました' : 'メンバーを追加しました');
+                const content = document.querySelector(`[data-content="members"]`);
+                this.loadMembers(content);
+            } else {
+                alert('保存に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('保存エラー:', error);
+            alert('エラーが発生しました');
         }
     }
     
-    showEventForm() { alert('イベント追加フォームを表示します'); }
-    editEvent(id) { alert(`イベント ${id} を編集します`); }
-    deleteEvent(id, title) { 
-        if (confirm(`「${title}」を削除しますか？`)) {
-            alert(`イベント ${id} を削除します`); 
+    async deleteMember(id, name) {
+        if (!confirm(`${name} を削除しますか？この操作は取り消せません。`)) {
+            return;
+        }
+        
+        console.log('🗑️ メンバー削除:', id);
+        
+        try {
+            const response = await fetch(`${this.API_BASE}/api/admin/members/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-session-id': this.sessionId }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('メンバーを削除しました');
+                const content = document.querySelector(`[data-content="members"]`);
+                this.loadMembers(content);
+            } else {
+                alert('削除に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('削除エラー:', error);
+            alert('エラーが発生しました');
         }
     }
     
-    showTestimonialForm() { alert('会員の声追加フォームを表示します'); }
-    editTestimonial(id) { alert(`会員の声 ${id} を編集します`); }
-    deleteTestimonial(id) { 
-        if (confirm('この会員の声を削除しますか？')) {
-            alert(`会員の声 ${id} を削除します`); 
+    showBlogForm() {
+        const content = document.querySelector(`[data-content="blogs"]`);
+        content.innerHTML = this.renderBlogForm();
+    }
+    
+    renderBlogForm(blog = null) {
+        const isEdit = blog !== null;
+        return `
+            <div class="admin-slide-section-header">
+                <h3>${isEdit ? 'ブログ編集' : 'ブログ追加'}</h3>
+                <button class="btn btn-secondary" onclick="adminPanel.loadBlogs(document.querySelector('[data-content=\\'blogs\\']'))">
+                    キャンセル
+                </button>
+            </div>
+            
+            <form class="admin-slide-form" onsubmit="adminPanel.saveBlog(event, ${isEdit ? `'${blog.id}'` : 'null'})">
+                <div class="admin-slide-form-group">
+                    <label>タイトル *</label>
+                    <input type="text" name="title" value="${blog?.title || ''}" required>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>スラッグ（URL用）*</label>
+                    <input type="text" name="slug" value="${blog?.slug || ''}" required pattern="[a-z0-9-]+" 
+                           placeholder="例: my-first-post" ${isEdit ? 'readonly' : ''}>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>カテゴリ *</label>
+                    <select name="category" required>
+                        <option value="">選択してください</option>
+                        <option value="コラボ事例" ${blog?.category === 'コラボ事例' ? 'selected' : ''}>コラボ事例</option>
+                        <option value="商品開発" ${blog?.category === '商品開発' ? 'selected' : ''}>商品開発</option>
+                        <option value="DX支援" ${blog?.category === 'DX支援' ? 'selected' : ''}>DX支援</option>
+                        <option value="イベント企画" ${blog?.category === 'イベント企画' ? 'selected' : ''}>イベント企画</option>
+                        <option value="マーケティング" ${blog?.category === 'マーケティング' ? 'selected' : ''}>マーケティング</option>
+                        <option value="レポート" ${blog?.category === 'レポート' ? 'selected' : ''}>レポート</option>
+                        <option value="お知らせ" ${blog?.category === 'お知らせ' ? 'selected' : ''}>お知らせ</option>
+                        <option value="イベントレポート" ${blog?.category === 'イベントレポート' ? 'selected' : ''}>イベントレポート</option>
+                    </select>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>概要 *</label>
+                    <textarea name="excerpt" rows="3" required>${blog?.excerpt || ''}</textarea>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>本文 *</label>
+                    <textarea name="content" rows="10" required>${blog?.content || ''}</textarea>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>著者名</label>
+                    <input type="text" name="authorName" value="${blog?.authorName || '管理者'}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>アイキャッチ画像URL</label>
+                    <input type="url" name="featuredImage" value="${blog?.featuredImage || ''}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>公開ステータス</label>
+                    <select name="isPublic">
+                        <option value="true" ${blog?.isPublic !== false ? 'selected' : ''}>公開</option>
+                        <option value="false" ${blog?.isPublic === false ? 'selected' : ''}>下書き</option>
+                    </select>
+                </div>
+                
+                <div class="admin-slide-form-actions">
+                    <button type="button" class="btn-secondary" onclick="adminPanel.loadBlogs(document.querySelector('[data-content=\\'blogs\\']'))">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        ${isEdit ? '更新' : '追加'}
+                    </button>
+                </div>
+            </form>
+        `;
+    }
+    
+    async editBlog(id) {
+        console.log('📝 ブログ編集:', id);
+        try {
+            const response = await fetch(`${this.API_BASE}/api/blogs/${id}`, {
+                headers: { 'x-session-id': this.sessionId }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                const content = document.querySelector(`[data-content="blogs"]`);
+                content.innerHTML = this.renderBlogForm(data.blog);
+            } else {
+                alert('ブログ情報の取得に失敗しました');
+            }
+        } catch (error) {
+            console.error('ブログ取得エラー:', error);
+            alert('エラーが発生しました');
         }
     }
     
-    showFAQForm() { alert('FAQ追加フォームを表示します'); }
+    async saveBlog(event, blogId) {
+        event.preventDefault();
+        console.log('💾 ブログ保存:', blogId);
+        
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        data.isPublic = data.isPublic === 'true';
+        data.publishDate = new Date().toISOString();
+        
+        try {
+            const url = blogId 
+                ? `${this.API_BASE}/api/admin/blogs/${blogId}`
+                : `${this.API_BASE}/api/admin/blogs`;
+            
+            const response = await fetch(url, {
+                method: blogId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-session-id': this.sessionId
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(blogId ? 'ブログを更新しました' : 'ブログを追加しました');
+                const content = document.querySelector(`[data-content="blogs"]`);
+                this.loadBlogs(content);
+            } else {
+                alert('保存に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('保存エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    async deleteBlog(id, title) {
+        if (!confirm(`「${title}」を削除しますか？この操作は取り消せません。`)) {
+            return;
+        }
+        
+        console.log('🗑️ ブログ削除:', id);
+        
+        try {
+            const response = await fetch(`${this.API_BASE}/api/admin/blogs/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-session-id': this.sessionId }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('ブログを削除しました');
+                const content = document.querySelector(`[data-content="blogs"]`);
+                this.loadBlogs(content);
+            } else {
+                alert('削除に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('削除エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    
+    showEventForm() {
+        const content = document.querySelector(`[data-content="events"]`);
+        content.innerHTML = this.renderEventForm();
+    }
+    
+    renderEventForm(event = null) {
+        const isEdit = event !== null;
+        const dateValue = event?.date ? new Date(event.date).toISOString().slice(0, 16) : '';
+        
+        return `
+            <div class="admin-slide-section-header">
+                <h3>${isEdit ? 'イベント編集' : 'イベント追加'}</h3>
+                <button class="btn btn-secondary" onclick="adminPanel.loadEvents(document.querySelector('[data-content=\\'events\\']'))">
+                    キャンセル
+                </button>
+            </div>
+            
+            <form class="admin-slide-form" onsubmit="adminPanel.saveEvent(event, ${isEdit ? `'${event.id}'` : 'null'})">
+                <div class="admin-slide-form-group">
+                    <label>タイトル *</label>
+                    <input type="text" name="title" value="${event?.title || ''}" required>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>開催日時 *</label>
+                    <input type="datetime-local" name="date" value="${dateValue}" required>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>場所 *</label>
+                    <input type="text" name="location" value="${event?.location || ''}" required>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>説明 *</label>
+                    <textarea name="description" rows="5" required>${event?.description || ''}</textarea>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>定員</label>
+                    <input type="number" name="capacity" value="${event?.capacity || ''}" min="1">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>イベント画像URL</label>
+                    <input type="url" name="imageUrl" value="${event?.imageUrl || ''}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>ステータス</label>
+                    <select name="status">
+                        <option value="published" ${event?.status === 'published' ? 'selected' : ''}>公開</option>
+                        <option value="draft" ${event?.status === 'draft' ? 'selected' : ''}>下書き</option>
+                        <option value="archived" ${event?.status === 'archived' ? 'selected' : ''}>アーカイブ</option>
+                    </select>
+                </div>
+                
+                <div class="admin-slide-form-actions">
+                    <button type="button" class="btn-secondary" onclick="adminPanel.loadEvents(document.querySelector('[data-content=\\'events\\']'))">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        ${isEdit ? '更新' : '追加'}
+                    </button>
+                </div>
+            </form>
+        `;
+    }
+    
+    async editEvent(id) {
+        console.log('📝 イベント編集:', id);
+        try {
+            const response = await fetch(`${this.API_BASE}/api/events/${id}`, {
+                headers: { 'x-session-id': this.sessionId }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                const content = document.querySelector(`[data-content="events"]`);
+                content.innerHTML = this.renderEventForm(data.event);
+            } else {
+                alert('イベント情報の取得に失敗しました');
+            }
+        } catch (error) {
+            console.error('イベント取得エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    async saveEvent(event, eventId) {
+        event.preventDefault();
+        console.log('💾 イベント保存:', eventId);
+        
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const url = eventId 
+                ? `${this.API_BASE}/api/admin/events/${eventId}`
+                : `${this.API_BASE}/api/admin/events`;
+            
+            const response = await fetch(url, {
+                method: eventId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-session-id': this.sessionId
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(eventId ? 'イベントを更新しました' : 'イベントを追加しました');
+                const content = document.querySelector(`[data-content="events"]`);
+                this.loadEvents(content);
+            } else {
+                alert('保存に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('保存エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    async deleteEvent(id, title) {
+        if (!confirm(`「${title}」を削除しますか？この操作は取り消せません。`)) {
+            return;
+        }
+        
+        console.log('🗑️ イベント削除:', id);
+        
+        try {
+            const response = await fetch(`${this.API_BASE}/api/admin/events/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-session-id': this.sessionId }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('イベントを削除しました');
+                const content = document.querySelector(`[data-content="events"]`);
+                this.loadEvents(content);
+            } else {
+                alert('削除に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('削除エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    
+    showTestimonialForm() {
+        const content = document.querySelector(`[data-content="testimonials"]`);
+        content.innerHTML = this.renderTestimonialForm();
+    }
+    
+    renderTestimonialForm(testimonial = null) {
+        const isEdit = testimonial !== null;
+        return `
+            <div class="admin-slide-section-header">
+                <h3>${isEdit ? '会員の声編集' : '会員の声追加'}</h3>
+                <button class="btn btn-secondary" onclick="adminPanel.loadTestimonials(document.querySelector('[data-content=\\'testimonials\\']'))">
+                    キャンセル
+                </button>
+            </div>
+            
+            <form class="admin-slide-form" onsubmit="adminPanel.saveTestimonial(event, ${isEdit ? `'${testimonial.id}'` : 'null'})">
+                <div class="admin-slide-form-group">
+                    <label>メンバー名 *</label>
+                    <input type="text" name="memberName" value="${testimonial?.memberName || ''}" required>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>役職・事業名</label>
+                    <input type="text" name="memberRole" value="${testimonial?.memberRole || ''}">
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>評価 *</label>
+                    <select name="rating" required>
+                        <option value="">選択してください</option>
+                        <option value="5" ${testimonial?.rating === 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐ (5)</option>
+                        <option value="4" ${testimonial?.rating === 4 ? 'selected' : ''}>⭐⭐⭐⭐ (4)</option>
+                        <option value="3" ${testimonial?.rating === 3 ? 'selected' : ''}>⭐⭐⭐ (3)</option>
+                        <option value="2" ${testimonial?.rating === 2 ? 'selected' : ''}>⭐⭐ (2)</option>
+                        <option value="1" ${testimonial?.rating === 1 ? 'selected' : ''}>⭐ (1)</option>
+                    </select>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>コメント *</label>
+                    <textarea name="content" rows="5" required>${testimonial?.content || ''}</textarea>
+                </div>
+                
+                <div class="admin-slide-form-group">
+                    <label>アバター画像URL</label>
+                    <input type="url" name="memberAvatar" value="${testimonial?.memberAvatar || ''}">
+                </div>
+                
+                <div class="admin-slide-form-actions">
+                    <button type="button" class="btn-secondary" onclick="adminPanel.loadTestimonials(document.querySelector('[data-content=\\'testimonials\\']'))">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        ${isEdit ? '更新' : '追加'}
+                    </button>
+                </div>
+            </form>
+        `;
+    }
+    
+    async editTestimonial(id) {
+        console.log('📝 会員の声編集:', id);
+        try {
+            const response = await fetch(`${this.API_BASE}/api/testimonials`, {
+                headers: { 'x-session-id': this.sessionId }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                const testimonial = data.testimonials.find(t => t.id === id);
+                if (testimonial) {
+                    const content = document.querySelector(`[data-content="testimonials"]`);
+                    content.innerHTML = this.renderTestimonialForm(testimonial);
+                } else {
+                    alert('会員の声が見つかりませんでした');
+                }
+            } else {
+                alert('会員の声情報の取得に失敗しました');
+            }
+        } catch (error) {
+            console.error('会員の声取得エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    async saveTestimonial(event, testimonialId) {
+        event.preventDefault();
+        console.log('💾 会員の声保存:', testimonialId);
+        
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        data.rating = parseInt(data.rating);
+        
+        try {
+            const url = testimonialId 
+                ? `${this.API_BASE}/api/admin/testimonials/${testimonialId}`
+                : `${this.API_BASE}/api/admin/testimonials`;
+            
+            const response = await fetch(url, {
+                method: testimonialId ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-session-id': this.sessionId
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(testimonialId ? '会員の声を更新しました' : '会員の声を追加しました');
+                const content = document.querySelector(`[data-content="testimonials"]`);
+                this.loadTestimonials(content);
+            } else {
+                alert('保存に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('保存エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
+    async deleteTestimonial(id) {
+        if (!confirm('この会員の声を削除しますか？この操作は取り消せません。')) {
+            return;
+        }
+        
+        console.log('🗑️ 会員の声削除:', id);
+        
+        try {
+            const response = await fetch(`${this.API_BASE}/api/admin/testimonials/${id}`, {
+                method: 'DELETE',
+                headers: { 'x-session-id': this.sessionId }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('会員の声を削除しました');
+                const content = document.querySelector(`[data-content="testimonials"]`);
+                this.loadTestimonials(content);
+            } else {
+                alert('削除に失敗しました: ' + (result.error || ''));
+            }
+        } catch (error) {
+            console.error('削除エラー:', error);
+            alert('エラーが発生しました');
+        }
+    }
+    
 }
 
 // 初期化 - グローバル変数として宣言
