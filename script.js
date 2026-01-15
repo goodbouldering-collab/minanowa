@@ -1507,11 +1507,17 @@ function updateUIForLoggedInUser() {
     const navUserAvatar = document.getElementById('navUserAvatar');
     const navUserName = document.getElementById('navUserName');
     const adminLink = document.getElementById('adminLink');
+    const groupChatButton = document.getElementById('groupChatButton');
     
     if (authButtons) authButtons.style.display = 'none';
     if (userMenu) userMenu.style.display = 'block';
     if (navUserAvatar) navUserAvatar.src = currentUser.avatar;
     if (navUserName) navUserName.textContent = currentUser.name;
+    
+    // グループチャットボタンを表示（ログイン時のみ）
+    if (groupChatButton) {
+        groupChatButton.style.display = 'block';
+    }
     
     // 管理者の場合は管理者リンクを表示
     if (adminLink) {
@@ -1529,10 +1535,16 @@ function updateUIForLoggedOutUser() {
     const authButtons = document.getElementById('authButtons');
     const userMenu = document.getElementById('userMenu');
     const adminLink = document.getElementById('adminLink');
+    const groupChatButton = document.getElementById('groupChatButton');
     
     if (authButtons) authButtons.style.display = 'flex';
     if (userMenu) userMenu.style.display = 'none';
     if (adminLink) adminLink.style.display = 'none';
+    
+    // グループチャットボタンを非表示（ログアウト時）
+    if (groupChatButton) {
+        groupChatButton.style.display = 'none';
+    }
     
     // ヒーローボタンを更新
     if (typeof updateHeroButtons === 'function') {
