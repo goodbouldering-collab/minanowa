@@ -671,7 +671,7 @@ function renderMembers(members) {
         // URLからドメインを抽出
         const websiteUrl = member.website || '';
         const displayUrl = websiteUrl ? websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
-        // ヘッダー画像（OGPまたはアバター）
+        // ヘッダー画像（OGPまたはデフォルト）
         const headerImage = member.websiteOgpImage || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
         // アバター画像
         const avatarImage = member.avatar || 'https://i.pravatar.cc/200?img=1';
@@ -684,9 +684,11 @@ function renderMembers(members) {
                          alt="${member.name}" 
                          class="member-card-header-image"
                          onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                    
+                    <!-- カテゴリバッジ（左上） -->
                     <span class="member-card-category">${member.businessCategory || 'その他'}</span>
                     
-                    <!-- アバター -->
+                    <!-- アバター（右上） -->
                     <div class="member-card-avatar-wrapper">
                         <img src="${avatarImage}" 
                              alt="${member.name}" 
@@ -729,7 +731,7 @@ function renderMembers(members) {
                         ${member.location || '未設定'}
                     </div>
                     <button class="member-card-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                        詳細を見る
+                        詳細
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -917,7 +919,8 @@ function renderCollabItem(item) {
             </div>
             <div class="collab-footer">
                 <button class="collab-btn">
-                    <i class="fas fa-arrow-right"></i> 続きを読む
+                    続きを読む
+                    <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
