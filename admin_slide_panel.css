@@ -1,0 +1,452 @@
+/* 管理者パネル - 横スライド方式（再構築版） */
+
+.admin-slide-panel {
+    width: 100%;
+    height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+/* ヘッダー */
+.admin-slide-header {
+    padding: 30px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-slide-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-slide-subtitle {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* タブナビゲーション */
+.admin-slide-tabs {
+    display: flex;
+    gap: 0;
+    background: white;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 0 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+}
+
+.admin-slide-tabs::-webkit-scrollbar {
+    height: 4px;
+}
+
+.admin-slide-tabs::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.admin-slide-tabs::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.admin-slide-tab {
+    background: transparent;
+    border: none;
+    padding: 16px 24px;
+    color: #718096;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    min-width: max-content;
+}
+
+.admin-slide-tab i {
+    font-size: 1rem;
+}
+
+.admin-slide-tab:hover {
+    color: #667eea;
+    background: #f7fafc;
+}
+
+.admin-slide-tab.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: #f7fafc;
+}
+
+/* コンテンツコンテナ */
+.admin-slide-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.admin-slide-wrapper {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-slide-content {
+    min-width: 100%;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 30px 40px;
+    box-sizing: border-box;
+}
+
+/* ローディング */
+.admin-slide-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+}
+
+.admin-slide-loading .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #667eea;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.admin-slide-loading p {
+    margin-top: 20px;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+/* セクションヘッダー */
+.admin-slide-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-slide-section-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-slide-section-header .btn {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+}
+
+/* テーブル */
+.admin-slide-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-slide-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-slide-table thead {
+    background: #f7fafc;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-slide-table th {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-slide-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #2d3748;
+    font-size: 0.9rem;
+}
+
+.admin-slide-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-slide-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+/* アクションボタン */
+.admin-slide-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-slide-actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-slide-actions .btn-edit {
+    background: #667eea;
+    color: white;
+}
+
+.admin-slide-actions .btn-edit:hover {
+    background: #5568d3;
+}
+
+.admin-slide-actions .btn-delete {
+    background: #f56565;
+    color: white;
+}
+
+.admin-slide-actions .btn-delete:hover {
+    background: #e53e3e;
+}
+
+.admin-slide-actions .btn-view {
+    background: #48bb78;
+    color: white;
+}
+
+.admin-slide-actions .btn-view:hover {
+    background: #38a169;
+}
+
+/* フォーム */
+.admin-slide-form {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-slide-form-group {
+    margin-bottom: 24px;
+}
+
+.admin-slide-form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+
+.admin-slide-form-group input,
+.admin-slide-form-group textarea,
+.admin-slide-form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    background: white;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.admin-slide-form-group input:focus,
+.admin-slide-form-group textarea:focus,
+.admin-slide-form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.admin-slide-form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.admin-slide-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.admin-slide-form-actions button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-slide-form-actions .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.admin-slide-form-actions .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.admin-slide-form-actions .btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.admin-slide-form-actions .btn-secondary:hover {
+    background: #cbd5e0;
+}
+
+/* 統計カード */
+.admin-slide-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.admin-slide-stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.admin-slide-stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.admin-slide-stat-info {
+    flex: 1;
+}
+
+.admin-slide-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.admin-slide-stat-label {
+    font-size: 0.875rem;
+    color: #718096;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .admin-slide-header {
+        padding: 20px 20px;
+    }
+    
+    .admin-slide-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .admin-slide-tabs {
+        padding: 0 10px;
+    }
+    
+    .admin-slide-tab {
+        padding: 12px 16px;
+        font-size: 0.8rem;
+    }
+    
+    .admin-slide-tab span {
+        display: none;
+    }
+    
+    .admin-slide-tab i {
+        font-size: 1.2rem;
+    }
+    
+    .admin-slide-content {
+        padding: 20px 15px;
+    }
+    
+    .admin-slide-table {
+        overflow-x: auto;
+    }
+    
+    .admin-slide-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* エラー・成功メッセージ */
+.admin-slide-message {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+}
+
+.admin-slide-message.success {
+    background: #d4f4dd;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+}
+
+.admin-slide-message.error {
+    background: #fed7d7;
+    color: #742a2a;
+    border: 1px solid #fc8181;
+}
+
+.admin-slide-message i {
+    font-size: 1.2rem;
+}

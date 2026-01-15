@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about_accordion.css">
     <link rel="stylesheet" href="member_card_modern.css">
+    <link rel="stylesheet" href="admin_slide_panel.css">
 </head>
 <body class="no-js">
     <!-- ナビゲーション -->
@@ -1000,44 +1001,110 @@
     <div class="modal" id="adminModal">
         <div class="modal-content glass-modal modal-fullscreen">
             <button class="modal-close" onclick="closeAdminModal()">&times;</button>
-            <div class="admin-panel">
-                <div class="admin-header">
+            <!-- 管理者パネル - 横スライド方式（再構築版） -->
+            <div class="admin-slide-panel">
+                <div class="admin-slide-header">
                     <h2><i class="fas fa-cog"></i> 管理者パネル</h2>
+                    <p class="admin-slide-subtitle">データ管理・設定</p>
                 </div>
-                <div class="admin-tabs-wrapper">
-                    <div class="admin-tabs-container">
-                        <div class="admin-tabs">
-                            <button class="admin-tab active" onclick="switchAdminTab('dashboard')">
-                                <i class="fas fa-chart-line"></i> ダッシュボード
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('members')">
-                                <i class="fas fa-users"></i> メンバー管理
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('blogs')">
-                                <i class="fas fa-newspaper"></i> 活動レポート管理
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('events')">
-                                <i class="fas fa-calendar"></i> イベント管理
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('testimonials')">
-                                <i class="fas fa-comments"></i> 会員の声
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('collaborations')">
-                                <i class="fas fa-handshake"></i> お知らせ・レポート・コラボ
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('images')">
-                                <i class="fas fa-images"></i> 画像管理
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('pageContent')">
-                                <i class="fas fa-file-alt"></i> ページ内容管理
-                            </button>
-                            <button class="admin-tab" onclick="switchAdminTab('faqs')">
-                                <i class="fas fa-question-circle"></i> FAQ管理
-                            </button>
+                
+                <!-- タブナビゲーション -->
+                <div class="admin-slide-tabs">
+                    <button class="admin-slide-tab active" data-tab="dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>ダッシュボード</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="members">
+                        <i class="fas fa-users"></i>
+                        <span>メンバー管理</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="blogs">
+                        <i class="fas fa-newspaper"></i>
+                        <span>活動レポート</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="events">
+                        <i class="fas fa-calendar"></i>
+                        <span>イベント管理</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="testimonials">
+                        <i class="fas fa-comments"></i>
+                        <span>会員の声</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="faqs">
+                        <i class="fas fa-question-circle"></i>
+                        <span>FAQ管理</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="images">
+                        <i class="fas fa-images"></i>
+                        <span>画像管理</span>
+                    </button>
+                    <button class="admin-slide-tab" data-tab="settings">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>設定</span>
+                    </button>
+                </div>
+                
+                <!-- コンテンツエリア（横スライド） -->
+                <div class="admin-slide-container">
+                    <div class="admin-slide-wrapper" id="adminSlideWrapper">
+                        <!-- 各タブのコンテンツ -->
+                        <div class="admin-slide-content" data-content="dashboard">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="members">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="blogs">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="events">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="testimonials">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="faqs">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="images">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slide-content" data-content="settings">
+                            <div class="admin-slide-loading">
+                                <div class="spinner"></div>
+                                <p>読み込み中...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="admin-content" id="adminContent"></div>
             </div>
         </div>
     </div>
@@ -1144,6 +1211,7 @@
     </div>
 
     <script src="about_accordion.js"></script>
+    <script src="admin_slide_panel.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
