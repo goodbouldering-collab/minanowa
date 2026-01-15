@@ -20507,3 +20507,10 @@ section + section {
         max-height: calc(100vh - 40px);
     }
 }
+
+/* モバイルでグループチャットボタンを非表示 */
+@media (max-width: 768px) {
+    #groupChatButton {
+        display: none !important;
+    }
+}
