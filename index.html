@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="about_accordion.css">
+    <link rel="stylesheet" href="about_modern.css">
     <link rel="stylesheet" href="member_card_modern.css">
     <link rel="stylesheet" href="member_card.css">
     <link rel="stylesheet" href="activity_card.css">
@@ -177,135 +177,119 @@
         </div>
     </section>
     <!-- つながるセクション -->
-<!-- みんなのWAとは - アコーディオン形式 -->
-<section class="about-section-accordion" id="about">
+<!-- みんなのWAとは - モダングリッドレイアウト -->
+<section class="about-section-modern" id="about">
     <div class="container">
         <h2 class="section-title">みんなのWAとは</h2>
         <p class="section-subtitle">彦根を中心に、地域の事業者同士が「与え合い、繋がり、共に成長する」実践型コミュニティです</p>
         
-        <div class="accordion-container">
-            
-            <!-- アコーディオンアイテム1: コンセプト -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">🌱</span>
-                    <span class="accordion-title">コンセプト：ギブから始まる信頼の輪</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <p>見返りを求めず、まず相手に価値を提供する。その積み重ねが信頼となり、自然と仕事に繋がります。</p>
-                        
-                        <div class="feature-grid">
-                            <div class="feature-item">
-                                <div class="feature-icon">🤝</div>
-                                <h4>与え合う文化</h4>
-                                <p>日常的な情報共有、失敗も成功も共有、専門知識のシェア</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">👥</div>
-                                <h4>リアルなつながり</h4>
-                                <p>月1回の交流会、異業種交流、顔が見える関係</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">📈</div>
-                                <h4>実践から学ぶ</h4>
-                                <p>理論ではなく実践、継続的な成長、文化を守る</p>
-                            </div>
-                        </div>
+        <!-- コンセプトカード -->
+        <div class="concept-grid">
+            <div class="concept-card">
+                <div class="concept-icon">🤝</div>
+                <h3>与え合う文化</h3>
+                <p>見返りを求めず、まず相手に価値を提供する。日常的な情報共有、失敗も成功も共有し、専門知識をシェアします。</p>
+            </div>
+            <div class="concept-card">
+                <div class="concept-icon">👥</div>
+                <h3>リアルなつながり</h3>
+                <p>月1回の交流会で顔を合わせ、異業種の仲間と深い関係を築きます。オンラインでは得られない信頼が生まれます。</p>
+            </div>
+            <div class="concept-card">
+                <div class="concept-icon">📈</div>
+                <h3>実践から学ぶ</h3>
+                <p>理論ではなく実践から学び、継続的に成長します。ギブの文化を守り、共に高め合います。</p>
+            </div>
+        </div>
+        
+        <!-- メリットセクション -->
+        <div class="benefits-section">
+            <h3>参加するメリット</h3>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💼</div>
+                    <div class="benefit-content">
+                        <h4>ビジネスチャンス拡大</h4>
+                        <p>異業種との出会いから、新しいコラボレーションや顧客紹介が自然に生まれます</p>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💡</div>
+                    <div class="benefit-content">
+                        <h4>知識とアイデアの共有</h4>
+                        <p>他業種の視点や専門知識を得ることで、新しいアイデアが生まれます</p>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛡️</div>
+                    <div class="benefit-content">
+                        <h4>信頼できるネットワーク</h4>
+                        <p>顔が見える関係だからこそ、安心して紹介し合えるネットワークが構築できます</p>
                     </div>
                 </div>
             </div>
-            
-            <!-- アコーディオンアイテム2: 3つのメリット -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">🎁</span>
-                    <span class="accordion-title">参加するメリット</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <div class="feature-grid">
-                            <div class="feature-item">
-                                <div class="feature-icon">💼</div>
-                                <h4>ビジネスチャンス拡大</h4>
-                                <p>異業種との出会いから、新しいコラボレーションや顧客紹介が生まれます</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">💡</div>
-                                <h4>知識とアイデアの共有</h4>
-                                <p>他業種の視点や専門知識を得ることで、新しいアイデアが生まれます</p>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">🛡️</div>
-                                <h4>信頼できるネットワーク</h4>
-                                <p>顔が見える関係だからこそ、安心して紹介し合えるネットワークが構築できます</p>
-                            </div>
-                        </div>
+        </div>
+        
+        <!-- 参加の流れ -->
+        <div class="flow-section">
+            <h3>参加の流れ</h3>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>会員登録申請</h4>
+                        <p>事業内容やスキルを登録。交流会参加後に正式表示されます。</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>月1回の交流会</h4>
+                        <p>顔を合わせ、事業を紹介し合い、信頼関係を築きます。</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>LINEで日常交流</h4>
+                        <p>グループチャットで情報共有。質問や相談が活発に行われます。</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>お互いを紹介</h4>
+                        <p>適切な人を繋ぎ、コラボレーションが自然に生まれます。</p>
                     </div>
                 </div>
             </div>
-            
-            <!-- アコーディオンアイテム3: 参加の流れ -->
-            <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion(this)">
-                    <span class="accordion-icon">🔄</span>
-                    <span class="accordion-title">参加の流れ</span>
-                    <i class="fas fa-chevron-down accordion-arrow"></i>
-                </button>
-                <div class="accordion-content">
-                    <div class="accordion-body">
-                        <div class="steps-container">
-                            <div class="step-item">
-                                <div class="step-number">1</div>
-                                <div class="step-content">
-                                    <h4>会員登録申請</h4>
-                                    <p>事業内容やスキルを登録。交流会参加後に正式表示されます。</p>
-                                </div>
-                            </div>
-                            <div class="step-arrow">→</div>
-                            <div class="step-item">
-                                <div class="step-number">2</div>
-                                <div class="step-content">
-                                    <h4>月1回の交流会</h4>
-                                    <p>顔を合わせ、事業を紹介し合い、信頼関係を築きます。</p>
-                                </div>
-                            </div>
-                            <div class="step-arrow">→</div>
-                            <div class="step-item">
-                                <div class="step-number">3</div>
-                                <div class="step-content">
-                                    <h4>LINEで日常交流</h4>
-                                    <p>グループチャットで情報共有。質問や相談が活発に行われます。</p>
-                                </div>
-                            </div>
-                            <div class="step-arrow">→</div>
-                            <div class="step-item">
-                                <div class="step-number">4</div>
-                                <div class="step-content">
-                                    <h4>お互いを紹介</h4>
-                                    <p>適切な人を繋ぎ、コラボレーションが自然に生まれます。</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        </div>
+        
+        <!-- 実績統計 -->
+        <div class="stats-section">
+            <h3>実績</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">登録事業者</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24+</div>
+                    <div class="stat-label">開催回数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">成立コラボ</div>
                 </div>
             </div>
-            
         </div>
         
         <!-- CTA -->
         <div class="about-cta">
-            <h3>あなたも「与え合い、繋がり、共に成長する」仲間になりませんか？</h3>
-            <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="scrollToSection('event')">
-                    <i class="fas fa-calendar-check"></i> 次回の交流会を見る
-                </button>
-                <button class="btn btn-secondary" onclick="openRegisterModal()">
-                    <i class="fas fa-user-plus"></i> 会員登録申請
-                </button>
-            </div>
+            <button class="about-cta-btn" onclick="scrollToSection('event')">
+                交流会に参加する
+                <i class="fas fa-arrow-right"></i>
+            </button>
         </div>
     </div>
 </section>
