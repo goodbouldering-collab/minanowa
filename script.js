@@ -2185,7 +2185,11 @@ function openAdminPanel() {
     if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        switchAdminTab('dashboard');
+        
+        // AdminSlidePanelを初期化
+        if (typeof initAdminSlidePanel === 'function') {
+            initAdminSlidePanel();
+        }
     }
 }
 

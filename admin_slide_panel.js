@@ -11,28 +11,49 @@ class AdminSlidePanel {
     }
     
     init() {
+        console.log('🎯 AdminSlidePanel.init() 開始');
+        console.log('📊 タブ数:', this.tabs.length);
+        
         // タブクリックイベント
-        document.querySelectorAll('.admin-slide-tab').forEach((tab, index) => {
+        const tabElements = document.querySelectorAll('.admin-slide-tab');
+        console.log('🔍 タブ要素数:', tabElements.length);
+        
+        tabElements.forEach((tab, index) => {
+            console.log(`  タブ${index}:`, tab.dataset.tab);
             tab.addEventListener('click', () => {
+                console.log(`🖱️ タブ${index}クリック:`, tab.dataset.tab);
                 this.switchTab(index);
             });
         });
         
         // 初期タブのロード
+        console.log('📥 初期タブ（ダッシュボード）をロード...');
         this.loadTab(0);
     }
     
     switchTab(index) {
+        console.log(`🔄 タブ切り替え: ${this.currentTab} → ${index}`);
         this.currentTab = index;
         const wrapper = document.getElementById('adminSlideWrapper');
         
+        if (!wrapper) {
+            console.error('❌ adminSlideWrapper が見つかりません！');
+            return;
+        }
+        
         // タブのアクティブ状態を更新
         document.querySelectorAll('.admin-slide-tab').forEach((tab, i) => {
-            tab.classList.toggle('active', i === index);
+            const isActive = i === index;
+            tab.classList.toggle('active', isActive);
+            if (isActive) {
+                console.log(`✅ タブ${i}をアクティブ化:`, tab.dataset.tab);
+            }
         });
         
         // スライド移動
-        wrapper.style.transform = `translateX(-${index * 100}%)`;
+        const translateX = -index * 100;
+        console.log(`📐 スライド移動: translateX(${translateX}%)`);
+        wrapper.style.transform = `translateX(${translateX}%)`;
         
         // コンテンツをロード
         this.loadTab(index);
@@ -515,11 +536,23 @@ class AdminSlidePanel {
     showFAQForm() { alert('FAQ追加フォームを表示します'); }
 }
 
-// 初期化
-let adminPanel;
-document.addEventListener('DOMContentLoaded', () => {
+// 初期化 - グローバル変数として宣言
+let adminPanel = null;
+
+// 管理者パネルを初期化する関数（モーダル開閉時に呼ばれる）
+function initAdminSlidePanel() {
     const adminSlidePanel = document.querySelector('.admin-slide-panel');
-    if (adminSlidePanel) {
+    if (adminSlidePanel && !adminPanel) {
+        console.log('🎯 AdminSlidePanel初期化開始');
         adminPanel = new AdminSlidePanel();
+        console.log('✅ AdminSlidePanel初期化完了');
     }
+}
+
+// DOMContentLoadedでも初期化を試みる
+document.addEventListener('DOMContentLoaded', () => {
+    // モーダルが既に存在する場合は初期化
+    setTimeout(() => {
+        initAdminSlidePanel();
+    }, 100);
 });
