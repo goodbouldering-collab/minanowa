@@ -1,325 +1,202 @@
-/* みんなのWAとは - モダングリッドレイアウト */
+/* みんなのWAとは - コンパクトモダンレイアウト */
 
 .about-section-modern {
-    padding: 100px 0;
-    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.about-section-modern::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 300px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-    z-index: 0;
+    padding: 80px 0;
+    background: #ffffff;
 }
 
 .about-section-modern .container {
-    position: relative;
-    z-index: 1;
+    max-width: 1000px;
 }
 
 .about-section-modern .section-title {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 800;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     letter-spacing: -0.5px;
 }
 
 .about-section-modern .section-subtitle {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: #6c757d;
     text-align: center;
-    margin-bottom: 60px;
-    line-height: 1.7;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* コンセプトカードグリッド */
-.concept-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-bottom: 80px;
-}
-
-.concept-card {
-    background: white;
-    border-radius: 16px;
-    padding: 35px 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid #f0f0f0;
-    position: relative;
-    overflow: hidden;
-}
-
-.concept-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-}
-
-.concept-card:hover::before {
-    transform: scaleX(1);
-}
-
-.concept-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.2);
-}
-
-.concept-icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: white;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.concept-card h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #2d3748;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-.concept-card p {
-    color: #4a5568;
-    line-height: 1.8;
-    font-size: 0.95rem;
-}
-
-/* メリットセクション */
-.benefits-section {
-    margin-bottom: 80px;
-}
-
-.benefits-section h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2d3748;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.benefit-card {
-    background: white;
-    border-radius: 12px;
-    padding: 28px 25px;
-    border-left: 4px solid #667eea;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-}
-
-.benefit-card:hover {
-    transform: translateX(8px);
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.12);
-    border-left-color: #764ba2;
-}
-
-.benefit-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: #667eea;
-    flex-shrink: 0;
-}
-
-.benefit-content h4 {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 8px;
-}
-
-.benefit-content p {
-    color: #4a5568;
-    line-height: 1.7;
-    font-size: 0.9rem;
-}
-
-/* 参加の流れ */
-.flow-section {
-    margin-bottom: 80px;
-}
-
-.flow-section h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2d3748;
-    text-align: center;
     margin-bottom: 50px;
+    line-height: 1.6;
 }
 
-.flow-container {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.flow-container::before {
-    content: '';
-    position: absolute;
-    left: 35px;
-    top: 50px;
-    bottom: 50px;
-    width: 2px;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    z-index: 0;
-}
-
-.flow-step {
-    display: flex;
-    gap: 25px;
-    margin-bottom: 40px;
-    position: relative;
-    z-index: 1;
-}
-
-.flow-step:last-child {
-    margin-bottom: 0;
-}
-
-.flow-number {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    font-weight: 800;
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    border: 4px solid white;
-}
-
-.flow-content {
-    background: white;
-    border-radius: 12px;
-    padding: 25px 28px;
-    flex: 1;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-}
-
-.flow-content:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.flow-content h4 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 10px;
-}
-
-.flow-content p {
-    color: #4a5568;
-    line-height: 1.7;
-    font-size: 0.95rem;
-}
-
-/* 実績統計 */
+/* 実績統計 - トップに配置 */
 .stats-section {
-    text-align: center;
-}
-
-.stats-section h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2d3748;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     max-width: 900px;
     margin: 0 auto;
 }
 
 .stat-card {
     background: white;
-    border-radius: 16px;
-    padding: 40px 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s ease;
-    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border: 2px solid #f0f0f0;
 }
 
 .stat-card:hover {
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
     border-color: #667eea;
 }
 
 .stat-number {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
     font-weight: 800;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     line-height: 1;
 }
 
 .stat-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #6c757d;
     font-weight: 500;
+}
+
+/* 価値提案 - 2カラムグリッド */
+.value-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 60px;
+}
+
+.value-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+}
+
+.value-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.12);
+}
+
+.value-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.value-icon {
+    font-size: 1.5rem;
+}
+
+.value-card p {
+    color: #4a5568;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.value-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.value-list li {
+    color: #4a5568;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.value-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+/* 参加の流れ - コンパクト版 */
+.flow-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    padding: 40px 35px;
+    margin-bottom: 40px;
+}
+
+.flow-section h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.flow-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.flow-step {
+    text-align: center;
+}
+
+.flow-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 auto 12px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.flow-step h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+}
+
+.flow-step p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.5;
 }
 
 /* CTA ボタン */
 .about-cta {
     text-align: center;
-    margin-top: 60px;
 }
 
 .about-cta-btn {
@@ -331,7 +208,7 @@
     color: white;
     border: none;
     border-radius: 50px;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -345,9 +222,13 @@
 
 /* レスポンシブ */
 @media (max-width: 1024px) {
-    .concept-grid {
+    .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
+    }
+    
+    .flow-steps {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 }
 
@@ -365,48 +246,37 @@
         margin-bottom: 40px;
     }
 
-    .concept-grid,
-    .benefits-grid {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 25px 15px;
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+    }
+
+    .value-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    .concept-card {
-        padding: 28px 24px;
+    .flow-section {
+        padding: 30px 25px;
     }
 
-    .concept-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 1.7rem;
-    }
-
-    .flow-container::before {
-        left: 25px;
-    }
-
-    .flow-number {
-        width: 50px;
-        height: 50px;
-        font-size: 1.4rem;
-    }
-
-    .flow-step {
-        gap: 18px;
-    }
-
-    .stat-number {
-        font-size: 2.5rem;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .flow-steps {
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 
     .about-cta-btn {
         padding: 14px 32px;
-        font-size: 1rem;
+        font-size: 0.95rem;
+        width: 100%;
     }
 }
 
@@ -415,11 +285,15 @@
         grid-template-columns: 1fr;
     }
 
-    .concept-card h3 {
-        font-size: 1.2rem;
+    .stat-card {
+        padding: 20px 15px;
     }
 
-    .flow-content h4 {
-        font-size: 1.1rem;
+    .value-card {
+        padding: 25px 20px;
+    }
+
+    .value-card h3 {
+        font-size: 1.15rem;
     }
 }
