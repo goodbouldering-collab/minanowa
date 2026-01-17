@@ -678,25 +678,17 @@ function renderMembers(members) {
         
         return `
             <div class="member-card" onclick="openMemberDetail('${member.id}')">
-                <!-- カードヘッダー（画像） -->
+                <!-- カードヘッダー -->
                 <div class="member-card-header">
                     <img src="${headerImage}" 
                          alt="${member.name}" 
                          class="member-card-header-image"
                          onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
                     
-                    <!-- カテゴリバッジ（左上） -->
+                    <!-- カテゴリバッジ -->
                     <span class="member-card-category">${member.businessCategory || 'その他'}</span>
                     
-                    <!-- アバター（右上） -->
-                    <div class="member-card-avatar-wrapper">
-                        <img src="${avatarImage}" 
-                             alt="${member.name}" 
-                             class="member-card-avatar"
-                             onerror="this.src='https://i.pravatar.cc/200?img=1'">
-                    </div>
-                    
-                    <!-- クイックアクション（ホバー時表示） -->
+                    <!-- クイックアクション -->
                     <div class="member-card-quick-actions">
                         ${websiteUrl ? `
                             <button class="quick-action-btn" 
@@ -716,15 +708,25 @@ function renderMembers(members) {
                             <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
+                    
+                    <!-- アバター（中央下） -->
+                    <div class="member-card-avatar-wrapper">
+                        <img src="${avatarImage}" 
+                             alt="${member.name}" 
+                             class="member-card-avatar"
+                             onerror="this.src='https://i.pravatar.cc/200?img=1'">
+                    </div>
                 </div>
                 
                 <!-- カードボディ -->
                 <div class="member-card-body">
-                    <!-- ステータスインジケーター -->
-                    <div class="member-card-status">アクティブ</div>
+                    <!-- ステータス -->
+                    <div class="member-card-status">Active</div>
                     
                     <h3 class="member-card-name">${member.name}</h3>
                     <div class="member-card-business">${member.business || '事業内容未設定'}</div>
+                    
+                    <div class="member-card-divider"></div>
                     
                     ${websiteUrl ? `
                         <a href="${websiteUrl}" 
@@ -732,7 +734,7 @@ function renderMembers(members) {
                            rel="noopener noreferrer" 
                            class="member-card-website"
                            onclick="event.stopPropagation()">
-                            <i class="fas fa-external-link-alt"></i>
+                            <i class="fas fa-globe"></i>
                             ${displayUrl}
                         </a>
                     ` : ''}
@@ -755,7 +757,7 @@ function renderMembers(members) {
                         ${member.location || '未設定'}
                     </div>
                     <button class="member-card-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                        詳細を見る
+                        <span>詳細を見る</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>

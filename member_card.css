@@ -1,33 +1,49 @@
-/* 事業者カード - インタラクティブ版 */
+/* 事業者カード - 超インタラクティブ・デザイン重視版 */
 
-/* カードコンテナ */
+/* =====================================
+   グリッドレイアウト
+   ===================================== */
+.members-carousel {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    padding: 32px 0;
+}
+
+/* =====================================
+   カードコンテナ - ガラスモーフィズム
+   ===================================== */
 .member-card {
-    background: white;
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     height: 100%;
-    border: 1px solid transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8);
     position: relative;
-    transform-style: preserve-3d;
-    perspective: 1000px;
+    transform-origin: center;
 }
 
+/* グラデーションボーダー */
 .member-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    inset: 0;
+    border-radius: 24px;
+    padding: 2px;
+    background: linear-gradient(135deg, #667eea, #764ba2, #667eea);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
+    transition: opacity 0.5s ease;
     pointer-events: none;
 }
 
@@ -36,92 +52,109 @@
 }
 
 .member-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 16px 32px rgba(102, 126, 234, 0.2);
-    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateY(-12px);
+    box-shadow: 
+        0 24px 64px rgba(102, 126, 234, 0.2),
+        0 12px 32px rgba(118, 75, 162, 0.15);
 }
 
-/* カードヘッダー（画像エリア） */
+/* =====================================
+   カードヘッダー - 画像エリア
+   ===================================== */
 .member-card-header {
     position: relative;
-    height: 160px;
+    height: 200px;
     overflow: hidden;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 24px 24px 0 0;
 }
 
 .member-card-header-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: brightness(0.95);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: brightness(0.9) contrast(1.05);
 }
 
 .member-card:hover .member-card-header-image {
-    transform: scale(1.1) rotate(1deg);
-    filter: brightness(1.05);
+    transform: scale(1.15);
+    filter: brightness(1) contrast(1.1);
 }
 
 /* グラデーションオーバーレイ */
 .member-card-header::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+    inset: 0;
+    background: linear-gradient(
+        180deg, 
+        transparent 0%, 
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.4) 100%
+    );
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.5s ease;
 }
 
 .member-card:hover .member-card-header::after {
     opacity: 1;
 }
 
-/* カテゴリバッジ */
+/* =====================================
+   カテゴリバッジ
+   ===================================== */
 .member-card-category {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 16px;
+    left: 16px;
     background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
     color: #667eea;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
-    z-index: 2;
-    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
     text-transform: uppercase;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 3;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .member-card:hover .member-card-category {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
 }
 
-/* アバター */
+/* =====================================
+   アバター - 中央下配置
+   ===================================== */
 .member-card-avatar-wrapper {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 56px;
-    height: 56px;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 4px solid white;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 0 0 8px rgba(255, 255, 255, 0.5);
     overflow: hidden;
     background: white;
-    z-index: 2;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 4;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .member-card:hover .member-card-avatar-wrapper {
-    transform: scale(1.15) translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    transform: translateX(-50%) scale(1.15);
+    box-shadow: 
+        0 12px 48px rgba(102, 126, 234, 0.4),
+        0 0 0 8px rgba(102, 126, 234, 0.2);
     border-color: #667eea;
 }
 
@@ -129,111 +162,124 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
 }
 
-.member-card:hover .member-card-avatar {
-    transform: scale(1.1);
-}
-
-/* クイックアクション（ホバー時表示） */
+/* =====================================
+   クイックアクション - 右上配置
+   ===================================== */
 .member-card-quick-actions {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
+    top: 16px;
+    right: 16px;
     display: flex;
     gap: 8px;
-    z-index: 2;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-}
-
-.member-card:hover .member-card-quick-actions {
-    opacity: 1;
-    transform: translateY(0);
+    z-index: 3;
 }
 
 .quick-action-btn {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     color: #667eea;
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
 }
 
+.member-card:hover .quick-action-btn {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.quick-action-btn:nth-child(1) { transition-delay: 0.05s; }
+.quick-action-btn:nth-child(2) { transition-delay: 0.1s; }
+.quick-action-btn:nth-child(3) { transition-delay: 0.15s; }
+
 .quick-action-btn:hover {
-    background: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
-    transform: scale(1.1);
+    transform: scale(1.2) translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
 }
 
 .quick-action-btn i {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
-/* カードボディ */
+/* =====================================
+   カードボディ
+   ===================================== */
 .member-card-body {
-    padding: 20px;
+    padding: 56px 24px 24px;
     flex: 1;
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 1;
+    text-align: center;
 }
 
-/* ステータスインジケーター */
+/* ステータスバッジ */
 .member-card-status {
     position: absolute;
-    top: -10px;
+    top: 12px;
     left: 50%;
-    transform: translateX(-50%);
-    background: #10b981;
+    transform: translateX(-50%) scale(0.9);
+    background: linear-gradient(135deg, #10b981, #059669);
     color: white;
     padding: 4px 12px;
-    border-radius: 12px;
+    border-radius: 20px;
     font-size: 0.7rem;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .member-card:hover .member-card-status {
     opacity: 1;
+    transform: translateX(-50%) scale(1);
 }
 
 /* 名前 */
 .member-card-name {
-    font-size: 1.15rem;
-    font-weight: 700;
+    font-size: 1.35rem;
+    font-weight: 800;
     color: #1a202c;
-    margin-bottom: 6px;
-    margin-top: 8px;
-    line-height: 1.3;
+    margin-bottom: 8px;
+    line-height: 1.2;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #1a202c, #2d3748);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .member-card:hover .member-card-name {
-    color: #667eea;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* 事業内容 */
 .member-card-business {
-    font-size: 0.9rem;
-    color: #4a5568;
-    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #718096;
+    margin-bottom: 16px;
     font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -241,106 +287,102 @@
     overflow: hidden;
 }
 
+/* ディバイダー */
+.member-card-divider {
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #667eea, transparent);
+    margin: 0 auto 16px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-card-divider {
+    width: 80px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+}
+
 /* ウェブサイトリンク */
 .member-card-website {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     color: #667eea;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     text-decoration: none;
-    margin-bottom: 12px;
-    transition: all 0.2s;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
     font-weight: 600;
-    position: relative;
-}
-
-.member-card-website::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    transition: width 0.3s ease;
-}
-
-.member-card-website:hover::after {
-    width: 100%;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: rgba(102, 126, 234, 0.05);
 }
 
 .member-card-website:hover {
+    background: rgba(102, 126, 234, 0.1);
     color: #5568d3;
-    transform: translateX(2px);
+    transform: scale(1.05);
 }
 
 /* 自己紹介 */
 .member-card-intro {
-    font-size: 0.85rem;
-    color: #718096;
+    font-size: 0.9rem;
+    color: #4a5568;
     line-height: 1.7;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     flex: 1;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.member-card:hover .member-card-intro {
-    -webkit-line-clamp: 3;
+    text-align: center;
 }
 
 /* スキルタグ */
 .member-card-skills {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 12px;
-    max-height: 32px;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-}
-
-.member-card:hover .member-card-skills {
-    max-height: 100px;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
 }
 
 .member-card-skill-tag {
-    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    background: linear-gradient(135deg, #f7fafc, #edf2f7);
     color: #4a5568;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
     border: 1px solid #e2e8f0;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     white-space: nowrap;
 }
 
 .member-card-skill-tag:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
-    border-color: #667eea;
-    transform: translateY(-2px);
+    border-color: transparent;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-/* カードフッター */
+/* =====================================
+   カードフッター
+   ===================================== */
 .member-card-footer {
-    padding: 16px 20px;
-    border-top: 1px solid #f0f0f0;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(226, 232, 240, 0.5);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(to top, #fafafa 0%, #ffffff 100%);
-    transition: all 0.3s ease;
-}
-
-.member-card:hover .member-card-footer {
-    background: linear-gradient(to top, #f7fafc 0%, #ffffff 100%);
-    padding: 18px 20px;
+    background: linear-gradient(
+        180deg,
+        rgba(248, 250, 252, 0.5) 0%,
+        rgba(255, 255, 255, 0.8) 100%
+    );
+    border-radius: 0 0 24px 24px;
 }
 
 .member-card-location {
@@ -348,8 +390,8 @@
     align-items: center;
     gap: 6px;
     color: #718096;
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
@@ -359,140 +401,84 @@
 
 .member-card-location i {
     color: #667eea;
-    font-size: 0.85rem;
-    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .member-card:hover .member-card-location i {
-    transform: scale(1.2);
+    transform: scale(1.3);
 }
 
+/* 詳細ボタン */
 .member-card-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     align-items: center;
-    gap: 6px;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.member-card-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.member-card-btn:hover::before {
+    opacity: 1;
+}
+
+.member-card-btn span,
+.member-card-btn i {
+    position: relative;
+    z-index: 1;
 }
 
 .member-card-btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
 }
 
 .member-card-btn i {
-    font-size: 0.75rem;
-    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .member-card-btn:hover i {
-    transform: translateX(3px);
+    transform: translateX(4px);
 }
 
-/* パルスエフェクト */
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
+/* =====================================
+   アニメーション
+   ===================================== */
 
-.member-card-status {
-    animation: pulse 2s ease-in-out infinite;
-}
-
-/* グリッドレイアウト */
-.members-carousel {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 28px;
-    padding: 24px 0;
-}
-
-/* レスポンシブ */
-@media (max-width: 768px) {
-    .member-card-header {
-        height: 140px;
-    }
-    
-    .member-card-avatar-wrapper {
-        width: 48px;
-        height: 48px;
-    }
-    
-    .member-card-body {
-        padding: 16px;
-    }
-    
-    .member-card-name {
-        font-size: 1.05rem;
-    }
-    
-    .member-card-business {
-        font-size: 0.85rem;
-    }
-    
-    .member-card-intro {
-        font-size: 0.8rem;
-    }
-    
-    .members-carousel {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .member-card-quick-actions {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .members-carousel {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-    }
-}
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .members-carousel {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 26px;
-    }
-}
-
-@media (min-width: 1281px) {
-    .members-carousel {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 28px;
-    }
-}
-
-/* アニメーション */
-@keyframes fadeInUp {
-    from {
+/* フェードインアニメーション */
+@keyframes cardFadeIn {
+    0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px) scale(0.95);
     }
-    to {
+    100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
 .member-card {
-    animation: fadeInUp 0.5s ease-out;
-    animation-fill-mode: both;
+    animation: cardFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 
 .member-card:nth-child(1) { animation-delay: 0.05s; }
@@ -501,67 +487,115 @@
 .member-card:nth-child(4) { animation-delay: 0.2s; }
 .member-card:nth-child(5) { animation-delay: 0.25s; }
 .member-card:nth-child(6) { animation-delay: 0.3s; }
+.member-card:nth-child(7) { animation-delay: 0.35s; }
+.member-card:nth-child(8) { animation-delay: 0.4s; }
 
-/* リップルエフェクト */
-.member-card::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(102, 126, 234, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-    pointer-events: none;
-    z-index: 0;
+/* パルスアニメーション */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
 }
 
-.member-card:active::after {
-    width: 300px;
-    height: 300px;
+.member-card-status {
+    animation: pulse 2s ease-in-out infinite;
 }
 
-/* 空の状態 */
+/* =====================================
+   レスポンシブデザイン
+   ===================================== */
+
+@media (max-width: 768px) {
+    .members-carousel {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 24px 0;
+    }
+    
+    .member-card-header {
+        height: 180px;
+    }
+    
+    .member-card-avatar-wrapper {
+        width: 70px;
+        height: 70px;
+        bottom: -35px;
+    }
+    
+    .member-card-body {
+        padding: 48px 20px 20px;
+    }
+    
+    .member-card-name {
+        font-size: 1.2rem;
+    }
+    
+    .member-card-business {
+        font-size: 0.9rem;
+    }
+    
+    .member-card-intro {
+        font-size: 0.85rem;
+    }
+    
+    .member-card-footer {
+        padding: 16px 20px;
+    }
+    
+    /* モバイルではクイックアクションを常時表示 */
+    .quick-action-btn {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .members-carousel {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .members-carousel {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+}
+
+@media (min-width: 1281px) {
+    .members-carousel {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+    }
+}
+
+/* =====================================
+   空の状態 & ローディング
+   ===================================== */
+
 .member-card-empty {
-    text-align: center;
-    padding: 60px 20px;
-    color: #718096;
     grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 32px;
+    color: #718096;
 }
 
 .member-card-empty i {
-    font-size: 4rem;
+    font-size: 5rem;
     color: #cbd5e0;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     animation: pulse 2s ease-in-out infinite;
 }
 
 .member-card-empty h3 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: #4a5568;
     margin-bottom: 12px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .member-card-empty p {
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: #a0aec0;
-}
-
-/* ローディング状態 */
-.member-card-skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s ease-in-out infinite;
-}
-
-@keyframes loading {
-    0% {
-        background-position: 200% 0;
-    }
-    100% {
-        background-position: -200% 0;
-    }
+    line-height: 1.6;
 }
