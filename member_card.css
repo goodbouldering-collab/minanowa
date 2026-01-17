@@ -1,106 +1,237 @@
-/* 事業者カード - 最新モダンデザイン（完全再構築版） */
+/* 事業者カード - インタラクティブ版 */
 
 /* カードコンテナ */
 .member-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     height: 100%;
-    border: 1px solid #f0f0f0;
+    border: 1px solid transparent;
     position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.member-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.member-card:hover::before {
+    opacity: 1;
 }
 
 .member-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-    border-color: #e0e0e0;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(102, 126, 234, 0.2);
+    border-color: rgba(102, 126, 234, 0.3);
 }
 
-/* カードヘッダー（コンパクト画像エリア） */
+/* カードヘッダー（画像エリア） */
 .member-card-header {
     position: relative;
-    height: 140px;
+    height: 160px;
     overflow: hidden;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .member-card-header-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: brightness(0.95);
 }
 
 .member-card:hover .member-card-header-image {
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(1deg);
+    filter: brightness(1.05);
 }
 
-/* カテゴリバッジ（コンパクト） */
+/* グラデーションオーバーレイ */
+.member-card-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.member-card:hover .member-card-header::after {
+    opacity: 1;
+}
+
+/* カテゴリバッジ */
 .member-card-category {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 12px;
+    left: 12px;
     background: rgba(255, 255, 255, 0.95);
     color: #667eea;
-    padding: 4px 10px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
     font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    z-index: 2;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
 }
 
-/* アバター（小さく右上に配置） */
+.member-card:hover .member-card-category {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* アバター */
 .member-card-avatar-wrapper {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 50px;
-    height: 50px;
+    top: 12px;
+    right: 12px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     background: white;
-    z-index: 10;
+    z-index: 2;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.member-card:hover .member-card-avatar-wrapper {
+    transform: scale(1.15) translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    border-color: #667eea;
 }
 
 .member-card-avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.member-card:hover .member-card-avatar {
+    transform: scale(1.1);
+}
+
+/* クイックアクション（ホバー時表示） */
+.member-card-quick-actions {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-card-quick-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.quick-action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: #667eea;
+}
+
+.quick-action-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: scale(1.1);
+}
+
+.quick-action-btn i {
+    font-size: 0.9rem;
 }
 
 /* カードボディ */
 .member-card-body {
-    padding: 16px;
+    padding: 20px;
     flex: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* ステータスインジケーター */
+.member-card-status {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #10b981;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.member-card:hover .member-card-status {
+    opacity: 1;
 }
 
 /* 名前 */
 .member-card-name {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #1a202c;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    margin-top: 8px;
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+.member-card:hover .member-card-name {
+    color: #667eea;
 }
 
 /* 事業内容 */
 .member-card-business {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #4a5568;
     margin-bottom: 12px;
     font-weight: 500;
@@ -114,130 +245,201 @@
 .member-card-website {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     color: #667eea;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     text-decoration: none;
     margin-bottom: 12px;
-    transition: color 0.2s;
+    transition: all 0.2s;
     font-weight: 600;
+    position: relative;
+}
+
+.member-card-website::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+}
+
+.member-card-website:hover::after {
+    width: 100%;
 }
 
 .member-card-website:hover {
     color: #5568d3;
-}
-
-.member-card-website i {
-    font-size: 0.75rem;
+    transform: translateX(2px);
 }
 
 /* 自己紹介 */
 .member-card-intro {
     font-size: 0.85rem;
     color: #718096;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 12px;
     flex: 1;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-card-intro {
+    -webkit-line-clamp: 3;
 }
 
 /* スキルタグ */
 .member-card-skills {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 6px;
     margin-bottom: 12px;
+    max-height: 32px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.member-card:hover .member-card-skills {
+    max-height: 100px;
 }
 
 .member-card-skill-tag {
-    background: #f7fafc;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
     color: #4a5568;
-    padding: 3px 8px;
-    border-radius: 4px;
+    padding: 5px 10px;
+    border-radius: 6px;
     font-size: 0.7rem;
     font-weight: 600;
     border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.member-card-skill-tag:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
 }
 
 /* カードフッター */
 .member-card-footer {
-    padding: 12px 16px;
+    padding: 16px 20px;
     border-top: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: linear-gradient(to top, #fafafa 0%, #ffffff 100%);
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-card-footer {
+    background: linear-gradient(to top, #f7fafc 0%, #ffffff 100%);
+    padding: 18px 20px;
 }
 
 .member-card-location {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     color: #718096;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .member-card-location {
+    color: #667eea;
 }
 
 .member-card-location i {
     color: #667eea;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+}
+
+.member-card:hover .member-card-location i {
+    transform: scale(1.2);
 }
 
 .member-card-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .member-card-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
 }
 
 .member-card-btn i {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.member-card-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* パルスエフェクト */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.member-card-status {
+    animation: pulse 2s ease-in-out infinite;
 }
 
 /* グリッドレイアウト */
 .members-carousel {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
     padding: 24px 0;
 }
 
 /* レスポンシブ */
 @media (max-width: 768px) {
     .member-card-header {
-        height: 120px;
+        height: 140px;
     }
     
     .member-card-avatar-wrapper {
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
     }
     
     .member-card-body {
-        padding: 14px;
+        padding: 16px;
     }
     
     .member-card-name {
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
     
     .member-card-business {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
     
     .member-card-intro {
@@ -246,36 +448,41 @@
     
     .members-carousel {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 20px;
+    }
+    
+    .member-card-quick-actions {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
     .members-carousel {
         grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
+        gap: 24px;
     }
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
     .members-carousel {
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 26px;
     }
 }
 
 @media (min-width: 1281px) {
     .members-carousel {
         grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
+        gap: 28px;
     }
 }
 
 /* アニメーション */
-@keyframes fadeIn {
+@keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
@@ -284,29 +491,77 @@
 }
 
 .member-card {
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeInUp 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.member-card:nth-child(1) { animation-delay: 0.05s; }
+.member-card:nth-child(2) { animation-delay: 0.1s; }
+.member-card:nth-child(3) { animation-delay: 0.15s; }
+.member-card:nth-child(4) { animation-delay: 0.2s; }
+.member-card:nth-child(5) { animation-delay: 0.25s; }
+.member-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* リップルエフェクト */
+.member-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.member-card:active::after {
+    width: 300px;
+    height: 300px;
 }
 
 /* 空の状態 */
 .member-card-empty {
     text-align: center;
-    padding: 48px 20px;
+    padding: 60px 20px;
     color: #718096;
+    grid-column: 1 / -1;
 }
 
 .member-card-empty i {
-    font-size: 3rem;
+    font-size: 4rem;
     color: #cbd5e0;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .member-card-empty h3 {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: #4a5568;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    font-weight: 700;
 }
 
 .member-card-empty p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #a0aec0;
+}
+
+/* ローディング状態 */
+.member-card-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }

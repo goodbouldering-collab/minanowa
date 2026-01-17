@@ -695,10 +695,34 @@ function renderMembers(members) {
                              class="member-card-avatar"
                              onerror="this.src='https://i.pravatar.cc/200?img=1'">
                     </div>
+                    
+                    <!-- クイックアクション（ホバー時表示） -->
+                    <div class="member-card-quick-actions">
+                        ${websiteUrl ? `
+                            <button class="quick-action-btn" 
+                                    onclick="event.stopPropagation(); window.open('${websiteUrl}', '_blank')"
+                                    title="ウェブサイトを開く">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        ` : ''}
+                        <button class="quick-action-btn" 
+                                onclick="event.stopPropagation(); openMessageModal('${member.id}')"
+                                title="メッセージを送る">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="quick-action-btn" 
+                                onclick="event.stopPropagation(); shareMemberProfile('${member.id}')"
+                                title="シェアする">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- カードボディ -->
                 <div class="member-card-body">
+                    <!-- ステータスインジケーター -->
+                    <div class="member-card-status">アクティブ</div>
+                    
                     <h3 class="member-card-name">${member.name}</h3>
                     <div class="member-card-business">${member.business || '事業内容未設定'}</div>
                     
@@ -717,7 +741,7 @@ function renderMembers(members) {
                     
                     ${(member.skills && member.skills.length > 0) ? `
                         <div class="member-card-skills">
-                            ${(member.skills || []).slice(0, 3).map(skill => 
+                            ${(member.skills || []).slice(0, 5).map(skill => 
                                 `<span class="member-card-skill-tag">${skill}</span>`
                             ).join('')}
                         </div>
@@ -731,7 +755,7 @@ function renderMembers(members) {
                         ${member.location || '未設定'}
                     </div>
                     <button class="member-card-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                        詳細
+                        詳細を見る
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -8722,5 +8746,33 @@ function previewMemberAvatarUrl(event) {
                  style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 3px solid var(--primary);"
                  onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div class=\\'image-preview-placeholder\\'><i class=\\'fas fa-user-circle\\'></i><p>画像の読み込みに失敗しました</p></div>')">
         `;
+    }
+}
+
+// メンバープロフィールのシェア機能
+function shareMemberProfile(memberId) {
+    const member = allMembers.find(m => m.id === memberId);
+    if (!member) return;
+    
+    const shareData = {
+        title: `${member.name} - みんなのWA`,
+        text: `${member.business || '事業者'} | ${member.location || '彦根'}`,
+        url: `${window.location.origin}?member=${memberId}`
+    };
+    
+    if (navigator.share) {
+        navigator.share(shareData)
+            .then(() => console.log('共有成功'))
+            .catch(err => console.log('共有キャンセル', err));
+    } else {
+        // フォールバック: URLをクリップボードにコピー
+        navigator.clipboard.writeText(shareData.url)
+            .then(() => {
+                showNotification('プロフィールURLをコピーしました', 'success');
+            })
+            .catch(err => {
+                console.error('コピー失敗:', err);
+                showNotification('URLのコピーに失敗しました', 'error');
+            });
     }
 }
