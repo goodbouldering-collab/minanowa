@@ -16,9 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about_modern.css?v=3">
-    <link rel="stylesheet" href="member_card.css?v=3">
     <link rel="stylesheet" href="activity_card.css?v=3">
-    <link rel="stylesheet" href="admin_slide_panel.css?v=3">
 </head>
 <body class="no-js">
     <!-- ナビゲーション -->
@@ -953,105 +951,13 @@
     </div>
 
     <!-- 管理者パネルモーダル -->
+    <!-- 管理者パネル（シンプル版） -->
     <div class="modal" id="adminModal">
-        <div class="modal-content glass-modal modal-fullscreen">
+        <div class="modal-content">
             <button class="modal-close" onclick="closeAdminModal()">&times;</button>
-            <!-- 管理者パネル - 横スライド方式（再構築版） -->
-            <div class="admin-slide-panel">
-                <div class="admin-slide-header">
-                    <h2><i class="fas fa-cog"></i> 管理者パネル</h2>
-                    <p class="admin-slide-subtitle">データ管理・設定</p>
-                </div>
-                
-                <!-- タブナビゲーション -->
-                <div class="admin-slide-tabs">
-                    <button class="admin-slide-tab active" data-tab="dashboard">
-                        <span>ダッシュボード</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="members">
-                        <span>メンバー管理</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="blogs">
-                        <span>活動レポート</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="events">
-                        <span>イベント管理</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="testimonials">
-                        <span>会員の声</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="faqs">
-                        <span>FAQ管理</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="images">
-                        <span>画像管理</span>
-                    </button>
-                    <button class="admin-slide-tab" data-tab="settings">
-                        <span>設定</span>
-                    </button>
-                </div>
-                
-                <!-- コンテンツエリア（横スライド） -->
-                <div class="admin-slide-container">
-                    <div class="admin-slide-wrapper" id="adminSlideWrapper">
-                        <!-- 各タブのコンテンツ -->
-                        <div class="admin-slide-content" data-content="dashboard">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="members">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="blogs">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="events">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="testimonials">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="faqs">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="images">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="admin-slide-content" data-content="settings">
-                            <div class="admin-slide-loading">
-                                <div class="spinner"></div>
-                                <p>読み込み中...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <h2>管理者パネル</h2>
+            <div id="adminContent">
+                <p>管理者パネルを読み込み中...</p>
             </div>
         </div>
     </div>
@@ -1158,7 +1064,6 @@
     </div>
 
     <script src="about_accordion.js"></script>
-    <script src="admin_slide_panel.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
