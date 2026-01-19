@@ -6302,7 +6302,7 @@ async function loadMembersCarousel() {
 
 // カルーセルレンダリング
 function renderMembersCarousel() {
-    const track = document.getElementById('membersCarousel');
+    const track = document.getElementById('membersGrid');
     if (!track) return;
     
     if (membersCarouselData.length === 0) {
@@ -6368,7 +6368,7 @@ function renderMembersCarousel() {
 
 // カルーセル位置更新
 function updateCarouselPosition() {
-    const track = document.getElementById('membersCarousel');
+    const track = document.getElementById('membersGrid');
     if (!track) return;
     
     // カードの幅と間隔を計算
@@ -7214,7 +7214,7 @@ console.log('✅ Group chat functionality loaded');
 
 // カルーセルのHTML要素IDを更新
 function renderMembersCarouselUnified() {
-    const carousel = document.getElementById('membersCarousel');
+    const carousel = document.getElementById('membersGrid');
     if (!carousel) {
         console.warn('⚠️ Members carousel element not found');
         return;
@@ -7279,7 +7279,7 @@ function renderMembersCarouselUnified() {
 
 // カルーセルナビゲーション更新
 function updateMembersCarouselNav() {
-    const carousel = document.getElementById('membersCarousel');
+    const carousel = document.getElementById('membersGrid');
     const prevBtn = document.getElementById('membersPrev');
     const nextBtn = document.getElementById('membersNext');
     
@@ -7292,7 +7292,7 @@ function updateMembersCarouselNav() {
 
 // カルーセルスライド
 function slideMembersCarousel(direction) {
-    const carousel = document.getElementById('membersCarousel');
+    const carousel = document.getElementById('membersGrid');
     if (!carousel) return;
     
     const cardWidth = 340 + 24; // カード幅 + gap
@@ -7308,7 +7308,7 @@ function slideMembersCarousel(direction) {
 
 // スクロールイベントでナビゲーション更新
 document.addEventListener('DOMContentLoaded', () => {
-    const carousel = document.getElementById('membersCarousel');
+    const carousel = document.getElementById('membersGrid');
     if (carousel) {
         carousel.addEventListener('scroll', updateMembersCarouselNav);
     }
