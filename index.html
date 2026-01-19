@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about_modern.css?v=3">
+    <link rel="stylesheet" href="member_card.css?v=4">
     <link rel="stylesheet" href="activity_card.css?v=3">
+    <link rel="stylesheet" href="admin_panel.css?v=4">
 </head>
 <body class="no-js">
     <!-- ナビゲーション -->
@@ -951,13 +953,40 @@
     </div>
 
     <!-- 管理者パネルモーダル -->
-    <!-- 管理者パネル（シンプル版） -->
+    <!-- 管理者パネル -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeAdminModal()">&times;</button>
             <h2>管理者パネル</h2>
-            <div id="adminContent">
-                <p>管理者パネルを読み込み中...</p>
+            
+            <!-- タブナビゲーション -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="dashboard">ダッシュボード</button>
+                <button class="admin-tab" data-tab="members">メンバー管理</button>
+                <button class="admin-tab" data-tab="blogs">活動レポート</button>
+                <button class="admin-tab" data-tab="events">イベント管理</button>
+                <button class="admin-tab" data-tab="testimonials">会員の声</button>
+            </div>
+            
+            <!-- タブコンテンツ -->
+            <div id="admin-dashboard" class="admin-tab-content active">
+                <div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>
+            </div>
+            
+            <div id="admin-members" class="admin-tab-content">
+                <div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>
+            </div>
+            
+            <div id="admin-blogs" class="admin-tab-content">
+                <div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>
+            </div>
+            
+            <div id="admin-events" class="admin-tab-content">
+                <div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>
+            </div>
+            
+            <div id="admin-testimonials" class="admin-tab-content">
+                <div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>
             </div>
         </div>
     </div>
@@ -1064,6 +1093,7 @@
     </div>
 
     <script src="about_accordion.js"></script>
+    <script src="admin_panel.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

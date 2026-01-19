@@ -678,38 +678,14 @@ function renderMembers(members) {
         
         return `
             <div class="member-card" onclick="openMemberDetail('${member.id}')">
-                <!-- カードヘッダー -->
                 <div class="member-card-header">
                     <img src="${headerImage}" 
                          alt="${member.name}" 
                          class="member-card-header-image"
                          onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
                     
-                    <!-- カテゴリバッジ -->
                     <span class="member-card-category">${member.businessCategory || 'その他'}</span>
                     
-                    <!-- クイックアクション -->
-                    <div class="member-card-quick-actions">
-                        ${websiteUrl ? `
-                            <button class="quick-action-btn" 
-                                    onclick="event.stopPropagation(); window.open('${websiteUrl}', '_blank')"
-                                    title="ウェブサイトを開く">
-                                <i class="fas fa-external-link-alt"></i>
-                            </button>
-                        ` : ''}
-                        <button class="quick-action-btn" 
-                                onclick="event.stopPropagation(); openMessageModal('${member.id}')"
-                                title="メッセージを送る">
-                            <i class="fas fa-envelope"></i>
-                        </button>
-                        <button class="quick-action-btn" 
-                                onclick="event.stopPropagation(); shareMemberProfile('${member.id}')"
-                                title="シェアする">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- アバター（中央下） -->
                     <div class="member-card-avatar-wrapper">
                         <img src="${avatarImage}" 
                              alt="${member.name}" 
@@ -718,11 +694,7 @@ function renderMembers(members) {
                     </div>
                 </div>
                 
-                <!-- カードボディ -->
                 <div class="member-card-body">
-                    <!-- ステータス -->
-                    <div class="member-card-status">Active</div>
-                    
                     <h3 class="member-card-name">${member.name}</h3>
                     <div class="member-card-business">${member.business || '事業内容未設定'}</div>
                     
@@ -734,8 +706,7 @@ function renderMembers(members) {
                            rel="noopener noreferrer" 
                            class="member-card-website"
                            onclick="event.stopPropagation()">
-                            <i class="fas fa-globe"></i>
-                            ${displayUrl}
+                            <i class="fas fa-globe"></i> ${displayUrl}
                         </a>
                     ` : ''}
                     
@@ -743,22 +714,20 @@ function renderMembers(members) {
                     
                     ${(member.skills && member.skills.length > 0) ? `
                         <div class="member-card-skills">
-                            ${(member.skills || []).slice(0, 5).map(skill => 
+                            ${(member.skills || []).slice(0, 3).map(skill => 
                                 `<span class="member-card-skill-tag">${skill}</span>`
                             ).join('')}
                         </div>
                     ` : ''}
                 </div>
                 
-                <!-- カードフッター -->
                 <div class="member-card-footer">
                     <div class="member-card-location">
                         <i class="fas fa-map-marker-alt"></i>
                         ${member.location || '未設定'}
                     </div>
                     <button class="member-card-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                        <span>詳細を見る</span>
-                        <i class="fas fa-arrow-right"></i>
+                        詳細 <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
