@@ -8747,3 +8747,17 @@ function shareMemberProfile(memberId) {
             });
     }
 }
+
+// ============================================
+// メイン初期化 - ページロード時に実行
+// ============================================
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🎠 Loading members carousel...');
+    
+    // メンバー検索セクションが存在する場合のみ読み込み
+    const membersSection = document.getElementById('members');
+    if (membersSection) {
+        await loadMembers();
+        console.log('✅ Loaded 5 public members');
+    }
+});
