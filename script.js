@@ -746,10 +746,41 @@ function updateResultsCount(count, query = '') {
     }
 }
 
-// メンバーグリッドのナビゲーションとスワイプ設定
+// メンバーカルーセルのナビゲーション設定
 function setupMembersNavigation() {
-    // この関数は無効化されています - メンバーグリッドは横スクロールではなく通常のグリッド表示になりました
-    return;
+    const carousel = document.getElementById('membersGrid');
+    const prevBtn = document.getElementById('membersPrev');
+    const nextBtn = document.getElementById('membersNext');
+    
+    if (!carousel || !prevBtn || !nextBtn) return;
+    
+    // スクロール量（1カード分 + gap）
+    const scrollAmount = 344; // 320px (card width) + 24px (gap)
+    
+    // スクロール位置をチェックしてボタンの状態を更新
+    function updateButtonState() {
+        prevBtn.disabled = carousel.scrollLeft <= 0;
+        nextBtn.disabled = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 10;
+    }
+    
+    // 初期状態
+    updateButtonState();
+    
+    // スクロールイベント
+    carousel.addEventListener('scroll', updateButtonState);
+    
+    // 前へボタン
+    prevBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+    
+    // 次へボタン
+    nextBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+    
+    // ウィンドウリサイズ時に状態を更新
+    window.addEventListener('resize', updateButtonState);
 }
 
 // ============================================
@@ -8748,16 +8779,4 @@ function shareMemberProfile(memberId) {
     }
 }
 
-// ============================================
-// メイン初期化 - ページロード時に実行
-// ============================================
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🎠 Loading members carousel...');
-    
-    // メンバー検索セクションが存在する場合のみ読み込み
-    const membersSection = document.getElementById('members');
-    if (membersSection) {
-        await loadMembers();
-        console.log('✅ Loaded 5 public members');
-    }
-});
+// メイン初期化は既に他の場所で実行されているため削除

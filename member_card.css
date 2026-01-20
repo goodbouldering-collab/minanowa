@@ -1,17 +1,74 @@
 /* ========================================
-   事業者カード - シンプル＆機能的
+   事業者カード - 横スライドカルーセル版
    ======================================== */
 
-/* グリッドレイアウト */
-.members-carousel {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-    padding: 24px 0;
+/* カルーセルラッパー */
+.members-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 60px;
 }
 
-/* カードベース */
+/* カルーセルコンテナ */
+.members-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 24px;
+    padding: 20px 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.members-carousel::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* ナビゲーションボタン */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #667eea;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-nav:hover {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.carousel-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-prev {
+    left: 0;
+}
+
+.carousel-next {
+    right: 0;
+}
+
+/* カードベース - 固定幅 */
 .member-card {
+    flex: 0 0 320px;
     background: white;
     border-radius: 16px;
     overflow: hidden;
@@ -20,7 +77,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 480px;
 }
 
 .member-card:hover {
@@ -31,7 +88,7 @@
 /* ヘッダー画像 */
 .member-card-header {
     position: relative;
-    height: 180px;
+    height: 160px;
     overflow: hidden;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -54,12 +111,15 @@
     left: 12px;
     background: rgba(255, 255, 255, 0.95);
     color: #667eea;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 8px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    max-width: calc(100% - 24px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* アバター */
@@ -86,39 +146,50 @@
 
 /* カードボディ */
 .member-card-body {
-    padding: 40px 20px 20px;
+    padding: 40px 16px 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
     text-align: center;
+    overflow: hidden;
 }
 
 .member-card-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #2d3748;
     margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .member-card-business {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #718096;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .member-card-divider {
     width: 40px;
     height: 2px;
     background: #667eea;
-    margin: 0 auto 12px;
+    margin: 0 auto 10px;
 }
 
 .member-card-website {
     display: inline-block;
     color: #667eea;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-decoration: none;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .member-card-website:hover {
@@ -126,15 +197,16 @@
 }
 
 .member-card-intro {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #4a5568;
-    line-height: 1.6;
-    margin-bottom: 12px;
+    line-height: 1.5;
+    margin-bottom: 10px;
     flex: 1;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* スキルタグ */
@@ -143,22 +215,23 @@
     flex-wrap: wrap;
     gap: 6px;
     justify-content: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .member-card-skill-tag {
     background: #f7fafc;
     color: #4a5568;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
     font-weight: 600;
     border: 1px solid #e2e8f0;
+    white-space: nowrap;
 }
 
 /* フッター */
 .member-card-footer {
-    padding: 16px 20px;
+    padding: 12px 16px;
     border-top: 1px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
@@ -171,23 +244,30 @@
     align-items: center;
     gap: 6px;
     color: #718096;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
 }
 
 .member-card-location i {
     color: #667eea;
+    flex-shrink: 0;
 }
 
 .member-card-btn {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .member-card-btn:hover {
@@ -197,30 +277,43 @@
 
 /* レスポンシブ */
 @media (max-width: 768px) {
-    .members-carousel {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .members-carousel-wrapper {
+        padding: 20px 50px;
+    }
+    
+    .member-card {
+        flex: 0 0 280px;
+        height: 460px;
     }
     
     .member-card-header {
-        height: 160px;
+        height: 140px;
+    }
+    
+    .carousel-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .members-carousel {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 480px) {
+    .members-carousel-wrapper {
+        padding: 20px 40px;
     }
-}
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .members-carousel {
-        grid-template-columns: repeat(3, 1fr);
+    
+    .member-card {
+        flex: 0 0 260px;
+        height: 440px;
     }
-}
-
-@media (min-width: 1281px) {
-    .members-carousel {
-        grid-template-columns: repeat(4, 1fr);
+    
+    .member-card-body {
+        padding: 35px 12px 12px;
+    }
+    
+    .carousel-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
 }
