@@ -719,15 +719,14 @@ function renderMembers(members) {
                             ).join('')}
                         </div>
                     ` : ''}
-                </div>
-                
-                <div class="member-card-footer">
+                    
                     <div class="member-card-location">
                         <i class="fas fa-map-marker-alt"></i>
                         ${member.location || '未設定'}
                     </div>
+                    
                     <button class="member-card-btn" onclick="event.stopPropagation(); openMemberDetail('${member.id}')">
-                        詳細 <i class="fas fa-arrow-right"></i>
+                        詳細を見る <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
