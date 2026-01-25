@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about_modern.css?v=3">
-    <link rel="stylesheet" href="member_card.css?v=4">
+    <link rel="stylesheet" href="member_card.css?v=5">
     <link rel="stylesheet" href="activity_card.css?v=3">
     <link rel="stylesheet" href="admin_panel.css?v=4">
 </head>
@@ -448,7 +448,7 @@
             
             <!-- メンバーカルーセル（活動レポートと同じ構造） -->
             <div class="members-carousel-wrapper">
-                <button class="carousel-nav carousel-prev" id="membersPrev" onclick="slideMembersCarousel(-1)" disabled>
+                <button class="carousel-nav" id="membersPrev" disabled>
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 
@@ -459,7 +459,7 @@
                     </div>
                 </div>
                 
-                <button class="carousel-nav carousel-next" id="membersNext" onclick="slideMembersCarousel(1)">
+                <button class="carousel-nav" id="membersNext">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -1093,6 +1093,6 @@
     </div>
 
     <script src="admin_panel.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=5"></script>
 </body>
 </html>
