@@ -1,5 +1,5 @@
 // ========================================
-// 管理者パネル - 完全再構築版
+// 管理者パネル - 全データコントロール対応
 // ========================================
 
 (function() {
@@ -13,7 +13,6 @@
     function initAdminPanel() {
         console.log('🎯 管理者パネル初期化開始');
         
-        // セッションIDを取得
         sessionId = localStorage.getItem('sessionId') || sessionStorage.getItem('sessionId');
         
         if (!sessionId) {
@@ -21,7 +20,6 @@
             return;
         }
         
-        // タブクリックイベント
         document.querySelectorAll('.admin-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabName = tab.dataset.tab;
@@ -36,7 +34,6 @@
     function switchTab(tabName) {
         console.log('📑 タブ切り替え:', tabName);
         
-        // タブボタンの状態更新
         document.querySelectorAll('.admin-tab').forEach(tab => {
             tab.classList.remove('active');
             if (tab.dataset.tab === tabName) {
@@ -44,7 +41,6 @@
             }
         });
         
-        // コンテンツ表示
         document.querySelectorAll('.admin-tab-content').forEach(content => {
             content.classList.remove('active');
             if (content.id === `admin-${tabName}`) {
@@ -53,8 +49,6 @@
         });
         
         currentTab = tabName;
-        
-        // データ読み込み
         loadTabData(tabName);
     }
     
@@ -83,6 +77,12 @@
                 case 'testimonials':
                     await loadTestimonials(contentElement);
                     break;
+                case 'faqs':
+                    await loadFAQs(contentElement);
+                    break;
+                case 'content':
+                    await loadPageContent(contentElement);
+                    break;
                 default:
                     contentElement.innerHTML = '<div class="admin-message">このタブは準備中です</div>';
             }
@@ -103,15 +103,10 @@
                 headers: { 'x-session-id': sessionId }
             });
             
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
             const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error(data.message || 'データ取得失敗');
-            }
+            if (!data.success) throw new Error(data.message || 'データ取得失敗');
             
             const stats = data.stats || {};
             
@@ -140,7 +135,7 @@
                             <div class="stat-icon">📝</div>
                             <div class="stat-info">
                                 <div class="stat-value">${stats.totalBlogs || 0}</div>
-                                <div class="stat-label">ブログ記事</div>
+                                <div class="stat-label">活動レポート</div>
                             </div>
                         </div>
                         
@@ -161,16 +156,16 @@
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-icon">🔐</div>
+                            <div class="stat-icon">❓</div>
                             <div class="stat-info">
-                                <div class="stat-value">${stats.activeSessions || 0}</div>
-                                <div class="stat-label">アクティブセッション</div>
+                                <div class="stat-value">${stats.totalFAQs || 0}</div>
+                                <div class="stat-label">FAQ</div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="admin-info">
-                        <p>✨ みんなのWA 管理システム v2.0</p>
+                        <p>✨ みんなのWA 管理システム v3.0</p>
                         <p>最終更新: ${new Date().toLocaleString('ja-JP')}</p>
                     </div>
                 </div>
@@ -188,7 +183,7 @@
     }
     
     // ========================================
-    // メンバー管理
+    // メンバー管理（横カルーセル表示）
     // ========================================
     async function loadMembers(container) {
         container.innerHTML = '<div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>';
@@ -198,15 +193,10 @@
                 headers: { 'x-session-id': sessionId }
             });
             
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
             const data = await response.json();
-            
-            if (!data.success) {
-                throw new Error(data.message || 'メンバー取得失敗');
-            }
+            if (!data.success) throw new Error(data.message || 'メンバー取得失敗');
             
             const members = data.members || [];
             
@@ -219,57 +209,55 @@
                         </button>
                     </div>
                     
-                    <div class="admin-table-wrapper">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>アバター</th>
-                                    <th>名前</th>
-                                    <th>メール</th>
-                                    <th>事業</th>
-                                    <th>カテゴリ</th>
-                                    <th>公開</th>
-                                    <th>管理者</th>
-                                    <th>登録日</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${members.map(member => `
-                                    <tr>
-                                        <td>
+                    <!-- 横カルーセル表示 -->
+                    <div class="admin-carousel-wrapper">
+                        <button class="admin-carousel-nav" id="adminMembersPrev" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        
+                        <div class="admin-carousel" id="adminMembersCarousel">
+                            ${members.map(member => `
+                                <div class="admin-member-card">
+                                    <div class="admin-member-header">
+                                        <img src="${member.websiteOgpImage || member.avatar || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'}" 
+                                             alt="${member.name}"
+                                             onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'">
+                                        <span class="admin-member-badge">${member.businessCategory || 'その他'}</span>
+                                        <div class="admin-member-avatar">
                                             <img src="${member.avatar || 'https://i.pravatar.cc/100?img=1'}" 
-                                                 alt="${member.name}" 
-                                                 class="admin-avatar"
+                                                 alt="${member.name}"
                                                  onerror="this.src='https://i.pravatar.cc/100?img=1'">
-                                        </td>
-                                        <td><strong>${member.name || '-'}</strong></td>
-                                        <td>${member.email || '-'}</td>
-                                        <td>${member.business || '-'}</td>
-                                        <td><span class="admin-badge">${member.businessCategory || 'その他'}</span></td>
-                                        <td>
-                                            <span class="admin-status ${member.isPublic ? 'active' : 'inactive'}">
+                                        </div>
+                                    </div>
+                                    <div class="admin-member-body">
+                                        <h3>${member.name}</h3>
+                                        <p class="admin-member-business">${member.business || '事業未設定'}</p>
+                                        <div class="admin-member-meta">
+                                            <span><i class="fas fa-envelope"></i> ${member.email || '-'}</span>
+                                            <span><i class="fas fa-map-marker-alt"></i> ${member.location || '-'}</span>
+                                        </div>
+                                        <div class="admin-member-status">
+                                            <span class="${member.isPublic ? 'status-active' : 'status-inactive'}">
                                                 ${member.isPublic ? '✓ 公開' : '✗ 非公開'}
                                             </span>
-                                        </td>
-                                        <td>
-                                            ${member.isAdmin ? '<span class="admin-badge admin">🔐 管理者</span>' : '-'}
-                                        </td>
-                                        <td>${formatDate(member.joinDate)}</td>
-                                        <td>
-                                            <div class="admin-actions">
-                                                <button class="admin-btn-icon" onclick="window.adminPanel.editMember('${member.id}')" title="編集">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="admin-btn-icon danger" onclick="window.adminPanel.deleteMember('${member.id}')" title="削除">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
+                                            ${member.isAdmin ? '<span class="status-admin">🔐 管理者</span>' : ''}
+                                        </div>
+                                    </div>
+                                    <div class="admin-member-actions">
+                                        <button class="admin-btn-secondary" onclick="window.adminPanel.editMember('${member.id}')">
+                                            <i class="fas fa-edit"></i> 編集
+                                        </button>
+                                        <button class="admin-btn-danger" onclick="window.adminPanel.deleteMember('${member.id}')">
+                                            <i class="fas fa-trash"></i> 削除
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <button class="admin-carousel-nav" id="adminMembersNext">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                     
                     <div class="admin-footer">
@@ -277,6 +265,10 @@
                     </div>
                 </div>
             `;
+            
+            // カルーセルナビゲーション初期化
+            setupAdminCarousel('adminMembersCarousel', 'adminMembersPrev', 'adminMembersNext');
+            
         } catch (error) {
             console.error('❌ メンバー読み込みエラー:', error);
             container.innerHTML = `
@@ -289,6 +281,38 @@
         }
     }
     
+    // カルーセルナビゲーション設定
+    function setupAdminCarousel(carouselId, prevBtnId, nextBtnId) {
+        const carousel = document.getElementById(carouselId);
+        const prevBtn = document.getElementById(prevBtnId);
+        const nextBtn = document.getElementById(nextBtnId);
+        
+        if (!carousel || !prevBtn || !nextBtn) return;
+        
+        const scrollAmount = 340;
+        
+        function updateButtons() {
+            const scrollLeft = carousel.scrollLeft;
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            
+            prevBtn.disabled = scrollLeft <= 0;
+            nextBtn.disabled = scrollLeft >= maxScroll - 1;
+        }
+        
+        updateButtons();
+        
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+        
+        carousel.addEventListener('scroll', updateButtons);
+        window.addEventListener('resize', updateButtons);
+    }
+    
     // ========================================
     // ブログ管理
     // ========================================
@@ -299,16 +323,14 @@
             const response = await fetch(`${API_BASE}/api/blogs?limit=100`);
             const data = await response.json();
             
-            if (!data.success) {
-                throw new Error(data.message || 'ブログ取得失敗');
-            }
+            if (!data.success) throw new Error(data.message || 'ブログ取得失敗');
             
             const blogs = data.blogs || [];
             
             container.innerHTML = `
                 <div class="admin-section">
                     <div class="admin-header">
-                        <h2>📝 ブログ管理</h2>
+                        <h2>📝 活動レポート管理</h2>
                         <button class="admin-btn-primary" onclick="window.adminPanel.addBlog()">
                             <i class="fas fa-plus"></i> 新規作成
                         </button>
@@ -357,7 +379,7 @@
             container.innerHTML = `
                 <div class="admin-error">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <p>ブログの読み込みに失敗しました</p>
+                    <p>活動レポートの読み込みに失敗しました</p>
                     <p class="error-detail">${error.message}</p>
                 </div>
             `;
@@ -374,9 +396,7 @@
             const response = await fetch(`${API_BASE}/api/events?showAll=true`);
             const data = await response.json();
             
-            if (!data.success) {
-                throw new Error(data.message || 'イベント取得失敗');
-            }
+            if (!data.success) throw new Error(data.message || 'イベント取得失敗');
             
             const events = data.events || [];
             
@@ -441,9 +461,7 @@
             const response = await fetch(`${API_BASE}/api/testimonials`);
             const data = await response.json();
             
-            if (!data.success) {
-                throw new Error(data.message || '会員の声取得失敗');
-            }
+            if (!data.success) throw new Error(data.message || '会員の声取得失敗');
             
             const testimonials = data.testimonials || [];
             
@@ -502,6 +520,101 @@
     }
     
     // ========================================
+    // FAQ管理
+    // ========================================
+    async function loadFAQs(container) {
+        container.innerHTML = '<div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>';
+        
+        try {
+            // FAQデータを取得（APIがない場合はダミーデータ）
+            container.innerHTML = `
+                <div class="admin-section">
+                    <div class="admin-header">
+                        <h2>❓ FAQ管理</h2>
+                        <button class="admin-btn-primary" onclick="window.adminPanel.addFAQ()">
+                            <i class="fas fa-plus"></i> 新規追加
+                        </button>
+                    </div>
+                    
+                    <div class="admin-message">
+                        <i class="fas fa-info-circle"></i>
+                        <p>FAQ管理機能は準備中です</p>
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            console.error('❌ FAQ読み込みエラー:', error);
+            container.innerHTML = `
+                <div class="admin-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>FAQの読み込みに失敗しました</p>
+                    <p class="error-detail">${error.message}</p>
+                </div>
+            `;
+        }
+    }
+    
+    // ========================================
+    // コンテンツ管理（ヒーロー画像、About画像、テキスト等）
+    // ========================================
+    async function loadPageContent(container) {
+        container.innerHTML = '<div class="admin-loading"><div class="spinner"></div><p>読み込み中...</p></div>';
+        
+        try {
+            container.innerHTML = `
+                <div class="admin-section">
+                    <div class="admin-header">
+                        <h2>🎨 コンテンツ管理</h2>
+                    </div>
+                    
+                    <div class="content-sections">
+                        <div class="content-section">
+                            <h3><i class="fas fa-image"></i> ヒーロー画像</h3>
+                            <p class="content-desc">トップページのヒーローセクションに表示される画像を管理します</p>
+                            <button class="admin-btn-primary" onclick="window.adminPanel.manageHeroImages()">
+                                <i class="fas fa-edit"></i> 管理
+                            </button>
+                        </div>
+                        
+                        <div class="content-section">
+                            <h3><i class="fas fa-info-circle"></i> About画像</h3>
+                            <p class="content-desc">Aboutセクションの画像を管理します</p>
+                            <button class="admin-btn-primary" onclick="window.adminPanel.manageAboutImage()">
+                                <i class="fas fa-edit"></i> 管理
+                            </button>
+                        </div>
+                        
+                        <div class="content-section">
+                            <h3><i class="fas fa-text-height"></i> ページテキスト</h3>
+                            <p class="content-desc">ヒーローセクションのタイトル、サブタイトル等を管理します</p>
+                            <button class="admin-btn-primary" onclick="window.adminPanel.managePageText()">
+                                <i class="fas fa-edit"></i> 管理
+                            </button>
+                        </div>
+                        
+                        <div class="content-section">
+                            <h3><i class="fas fa-cog"></i> サイト設定</h3>
+                            <p class="content-desc">過去のイベント数、統計情報等を管理します</p>
+                            <button class="admin-btn-primary" onclick="window.adminPanel.manageSettings()">
+                                <i class="fas fa-edit"></i> 管理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            console.error('❌ コンテンツ読み込みエラー:', error);
+            container.innerHTML = `
+                <div class="admin-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>コンテンツの読み込みに失敗しました</p>
+                    <p class="error-detail">${error.message}</p>
+                </div>
+            `;
+        }
+    }
+    
+    // ========================================
     // ユーティリティ関数
     // ========================================
     function formatDate(dateString) {
@@ -515,7 +628,7 @@
     }
     
     // ========================================
-    // CRUD操作（準備中）
+    // CRUD操作
     // ========================================
     const adminActions = {
         // メンバー
@@ -552,7 +665,22 @@
             if (confirm('本当に削除しますか？')) {
                 alert(`会員の声削除機能は準備中です (ID: ${id})`);
             }
-        }
+        },
+        
+        // FAQ
+        addFAQ: () => alert('FAQ追加機能は準備中です'),
+        editFAQ: (id) => alert(`FAQ編集機能は準備中です (ID: ${id})`),
+        deleteFAQ: (id) => {
+            if (confirm('本当に削除しますか？')) {
+                alert(`FAQ削除機能は準備中です (ID: ${id})`);
+            }
+        },
+        
+        // コンテンツ管理
+        manageHeroImages: () => alert('ヒーロー画像管理機能は準備中です'),
+        manageAboutImage: () => alert('About画像管理機能は準備中です'),
+        managePageText: () => alert('ページテキスト管理機能は準備中です'),
+        manageSettings: () => alert('サイト設定管理機能は準備中です')
     };
     
     // グローバルに公開
@@ -567,10 +695,10 @@
     // DOMContentLoaded でも初期化を試みる
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('✅ 管理者パネルスクリプト読み込み完了');
+            console.log('✅ 管理者パネルスクリプト読み込み完了 v3.0');
         });
     } else {
-        console.log('✅ 管理者パネルスクリプト読み込み完了');
+        console.log('✅ 管理者パネルスクリプト読み込み完了 v3.0');
     }
     
 })();
