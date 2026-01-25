@@ -748,39 +748,8 @@ function updateResultsCount(count, query = '') {
 
 // メンバーカルーセルのナビゲーション設定
 function setupMembersNavigation() {
-    const carousel = document.getElementById('membersGrid');
-    const prevBtn = document.getElementById('membersPrev');
-    const nextBtn = document.getElementById('membersNext');
-    
-    if (!carousel || !prevBtn || !nextBtn) return;
-    
-    // スクロール量（1カード分 + gap）
-    const scrollAmount = 344; // 320px (card width) + 24px (gap)
-    
-    // スクロール位置をチェックしてボタンの状態を更新
-    function updateButtonState() {
-        prevBtn.disabled = carousel.scrollLeft <= 0;
-        nextBtn.disabled = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 10;
-    }
-    
-    // 初期状態
-    updateButtonState();
-    
-    // スクロールイベント
-    carousel.addEventListener('scroll', updateButtonState);
-    
-    // 前へボタン
-    prevBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    });
-    
-    // 次へボタン
-    nextBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    });
-    
-    // ウィンドウリサイズ時に状態を更新
-    window.addEventListener('resize', updateButtonState);
+    // グリッド表示のためナビゲーション不要
+    return;
 }
 
 // ============================================
