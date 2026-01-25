@@ -733,6 +733,9 @@ function renderMembers(members) {
             </div>
         `;
     }).join('');
+    
+    // カルーセルナビゲーションを設定
+    setupMembersNavigation();
 }
 
 function updateResultsCount(count, query = '') {
@@ -746,10 +749,55 @@ function updateResultsCount(count, query = '') {
     }
 }
 
-// メンバーカルーセルのナビゲーション設定
+// メンバーカルーセルのナビゲーション設定（横スライド）
 function setupMembersNavigation() {
-    // グリッド表示のためナビゲーション不要
-    return;
+    const carousel = document.getElementById('membersGrid');
+    const prevBtn = document.getElementById('membersPrev');
+    const nextBtn = document.getElementById('membersNext');
+    
+    if (!carousel || !prevBtn || !nextBtn) {
+        console.warn('⚠️ Carousel elements not found for navigation');
+        return;
+    }
+    
+    // スクロール量（カード幅 + gap）
+    const scrollAmount = 344; // 320px (card) + 24px (gap)
+    
+    // ボタンの状態を更新
+    function updateButtonStates() {
+        const scrollLeft = carousel.scrollLeft;
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        
+        prevBtn.disabled = scrollLeft <= 0;
+        nextBtn.disabled = scrollLeft >= maxScroll - 1;
+    }
+    
+    // 初期状態を設定
+    updateButtonStates();
+    
+    // 前へボタン
+    prevBtn.addEventListener('click', () => {
+        carousel.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+    
+    // 次へボタン
+    nextBtn.addEventListener('click', () => {
+        carousel.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+    
+    // スクロール時にボタン状態を更新
+    carousel.addEventListener('scroll', updateButtonStates);
+    
+    // ウィンドウリサイズ時にボタン状態を更新
+    window.addEventListener('resize', updateButtonStates);
+    
+    console.log('✅ Members carousel navigation initialized');
 }
 
 // ============================================
