@@ -1,5 +1,5 @@
 /* ========================================
-   事業者カード - 横スライドカルーセル専用（縦スクロール禁止）
+   事業者カード - 横カルーセル専用デザイン
    ======================================== */
 
 /* カルーセルラッパー */
@@ -11,36 +11,38 @@
     padding: 40px 60px;
 }
 
-/* カルーセルコンテナ - 横スクロールのみ */
+/* 横カルーセルコンテナ */
 #membersGrid {
     display: flex;
     gap: 24px;
     overflow-x: auto;
-    overflow-y: hidden; /* 縦スクロール禁止 */
+    overflow-y: hidden;
     scroll-behavior: smooth;
-    padding: 20px 0 30px 0;
+    padding: 20px 4px 30px 4px;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory; /* スナップスクロール */
 }
 
 #membersGrid::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
+    display: none;
 }
 
-/* カードベース - 固定サイズ（縦スクロールなし） */
+/* カードベース - カルーセルアイテム */
 .member-card {
     flex: 0 0 320px;
     width: 320px;
-    height: 450px; /* 固定高さ */
+    height: 450px;
     background: white;
     border-radius: 16px;
-    overflow: hidden; /* カード内のスクロール禁止 */
+    overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     border: 1px solid #f0f0f0;
+    scroll-snap-align: start; /* スナップ位置 */
 }
 
 .member-card:hover {
@@ -49,10 +51,10 @@
     border-color: #667eea;
 }
 
-/* ヘッダー画像 - 高さ削減 */
+/* ヘッダー画像 */
 .member-card-header {
     position: relative;
-    height: 140px; /* 180px → 140px */
+    height: 140px;
     overflow: hidden;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     flex-shrink: 0;
@@ -89,13 +91,13 @@
     text-overflow: ellipsis;
 }
 
-/* アバター - サイズ縮小 */
+/* アバター */
 .member-card-avatar-wrapper {
     position: absolute;
-    bottom: -24px; /* -30px → -24px */
+    bottom: -24px;
     left: 50%;
     transform: translateX(-50%);
-    width: 48px; /* 60px → 48px */
+    width: 48px;
     height: 48px;
     border-radius: 50%;
     border: 3px solid white;
@@ -111,23 +113,23 @@
     object-fit: cover;
 }
 
-/* カードボディ - パディング最適化 */
+/* カードボディ */
 .member-card-body {
-    padding: 32px 16px 12px 16px; /* 上パディング調整 */
+    padding: 32px 16px 12px 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    overflow: hidden; /* 縦スクロール禁止 */
-    min-height: 0; /* flex子要素の縮小を許可 */
+    overflow: hidden;
+    min-height: 0;
 }
 
 .member-card-name {
-    font-size: 1.1rem; /* 1.2rem → 1.1rem */
+    font-size: 1.1rem;
     font-weight: 700;
     color: #1a202c;
-    margin-bottom: 6px; /* 8px → 6px */
+    margin-bottom: 6px;
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -137,9 +139,9 @@
 }
 
 .member-card-business {
-    font-size: 0.85rem; /* 0.9rem → 0.85rem */
+    font-size: 0.85rem;
     color: #667eea;
-    margin-bottom: 8px; /* 12px → 8px */
+    margin-bottom: 8px;
     font-weight: 600;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -152,7 +154,7 @@
     width: 40px;
     height: 2px;
     background: linear-gradient(90deg, transparent, #667eea, transparent);
-    margin: 8px auto; /* 12px → 8px */
+    margin: 8px auto;
     flex-shrink: 0;
 }
 
@@ -161,10 +163,10 @@
     align-items: center;
     gap: 4px;
     color: #667eea;
-    font-size: 0.75rem; /* 0.8rem → 0.75rem */
+    font-size: 0.75rem;
     text-decoration: none;
-    margin-bottom: 8px; /* 12px → 8px */
-    padding: 4px 10px; /* 6px 12px → 4px 10px */
+    margin-bottom: 8px;
+    padding: 4px 10px;
     border-radius: 6px;
     background: #f7fafc;
     transition: all 0.2s ease;
@@ -181,12 +183,12 @@
 }
 
 .member-card-intro {
-    font-size: 0.8rem; /* 0.85rem → 0.8rem */
+    font-size: 0.8rem;
     color: #718096;
-    line-height: 1.5; /* 1.6 → 1.5 */
-    margin-bottom: 8px; /* 12px → 8px */
+    line-height: 1.5;
+    margin-bottom: 8px;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 3 → 2 */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-align: center;
@@ -194,12 +196,12 @@
     flex-shrink: 1;
 }
 
-/* スキルタグ - サイズ削減 */
+/* スキルタグ */
 .member-card-skills {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    margin-bottom: 8px; /* 12px → 8px */
+    margin-bottom: 8px;
     justify-content: center;
     width: 100%;
     flex-shrink: 0;
@@ -208,22 +210,22 @@
 .member-card-skill-tag {
     background: #f7fafc;
     color: #4a5568;
-    padding: 3px 8px; /* 4px 10px → 3px 8px */
+    padding: 3px 8px;
     border-radius: 4px;
-    font-size: 0.65rem; /* 0.7rem → 0.65rem */
+    font-size: 0.65rem;
     font-weight: 600;
     border: 1px solid #e2e8f0;
     white-space: nowrap;
 }
 
-/* 所在地と詳細ボタン - コンパクト化 */
+/* 所在地 */
 .member-card-location {
     display: flex;
     align-items: center;
     gap: 4px;
     color: #718096;
-    font-size: 0.7rem; /* 0.75rem → 0.7rem */
-    margin-bottom: 8px; /* 追加 */
+    font-size: 0.7rem;
+    margin-bottom: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -235,14 +237,14 @@
     flex-shrink: 0;
 }
 
-/* 詳細ボタン - カード内に完全収納 */
+/* 詳細ボタン */
 .member-card-btn {
     background: #667eea;
     color: white;
     border: none;
-    padding: 6px 16px; /* パディング調整 */
-    border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -250,32 +252,32 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 6px;
     flex-shrink: 0;
-    margin-top: auto; /* 下端に配置 */
+    margin-top: auto;
 }
 
 .member-card-btn:hover {
     background: #5568d3;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .member-card-btn i {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     transition: transform 0.2s ease;
 }
 
 .member-card-btn:hover i {
-    transform: translateX(2px);
+    transform: translateX(3px);
 }
 
-/* フッターは削除（すべてボディ内に配置） */
+/* フッターは使用しない */
 .member-card-footer {
     display: none;
 }
 
-/* ナビゲーションボタン */
+/* カルーセルナビゲーションボタン */
 .carousel-nav {
     position: absolute;
     top: 50%;
@@ -295,7 +297,7 @@
     z-index: 10;
 }
 
-.carousel-nav:hover {
+.carousel-nav:hover:not(:disabled) {
     background: #667eea;
     color: white;
     box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
@@ -320,7 +322,7 @@
     right: 0;
 }
 
-/* 読み込み中スピナー */
+/* 読み込み中 */
 .loading-spinner {
     display: flex;
     flex-direction: column;
@@ -328,6 +330,7 @@
     justify-content: center;
     padding: 60px 20px;
     color: #718096;
+    width: 100%;
 }
 
 .spinner {
@@ -353,7 +356,7 @@
     .member-card {
         flex: 0 0 280px;
         width: 280px;
-        height: 420px; /* 固定高さ */
+        height: 420px;
     }
     
     .member-card-header {
@@ -382,7 +385,7 @@
     .member-card {
         flex: 0 0 260px;
         width: 260px;
-        height: 400px; /* 固定高さ */
+        height: 400px;
     }
     
     .member-card-header {
@@ -396,4 +399,27 @@
     #membersGrid {
         gap: 16px;
     }
+}
+
+/* カルーセルインジケーター（オプション） */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.carousel-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d0d0d0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
+    background: #667eea;
+    width: 24px;
+    border-radius: 4px;
 }
