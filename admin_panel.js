@@ -20,12 +20,17 @@
             return;
         }
         
+        console.log('✅ セッションID確認:', sessionId);
+        
         document.querySelectorAll('.admin-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabName = tab.dataset.tab;
                 switchTab(tabName);
             });
         });
+        
+        // 初期タブをロード
+        switchTab('dashboard');
         
         console.log('✅ 管理者パネル初期化完了');
     }
@@ -688,8 +693,8 @@
     
     // モーダルが開かれた時に初期化
     window.addEventListener('openAdminModal', () => {
+        console.log('🎯 管理者モーダルオープンイベント受信');
         initAdminPanel();
-        setTimeout(() => switchTab('dashboard'), 100);
     });
     
     // DOMContentLoaded でも初期化を試みる

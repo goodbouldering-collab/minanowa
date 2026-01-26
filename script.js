@@ -1030,32 +1030,44 @@ function renderCollabCarousel() {
 }
 
 function renderCollabItem(item) {
-    // 全てブログとして表示（統合済み）
+    // 全てブログとして表示（事業者カードと同じUIで統一）
     const blog = item.data;
+    const headerImage = blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80';
+    const avatarImage = blog.authorAvatar || 'https://i.pravatar.cc/200?img=1';
+    
     return `
-        <div class="collab-card" onclick="openBlogDetail('${blog.slug}')">
-            <div class="collab-image">
-                <img src="${blog.featuredImage || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'}" alt="${blog.title}" onerror="this.src='https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'">
-                <span class="collab-badge">${blog.category || 'お知らせ'}</span>
-            </div>
-            <div class="collab-content">
-                <div class="collab-members">
-                    <div class="collab-avatars">
-                        <img src="${blog.authorAvatar || 'https://i.pravatar.cc/200?img=1'}" alt="${blog.authorName || '管理者'}" class="collab-avatar" onerror="this.src='https://i.pravatar.cc/200?img=1'">
-                    </div>
-                    <div class="collab-names">${blog.authorName || '管理者'}</div>
-                </div>
-                <h3 class="collab-title">${blog.title}</h3>
-                <p class="collab-description">${blog.excerpt || blog.description || ''}</p>
-                <div class="collab-meta">
-                    <span><i class="fas fa-calendar"></i> ${formatDate(blog.publishDate || blog.publishedAt || blog.createdAt)}</span>
-                    <span><i class="fas fa-eye"></i> ${blog.views || 0}</span>
+        <div class="member-card blog-card-unified" onclick="openBlogDetail('${blog.slug}')">
+            <div class="member-card-header">
+                <img src="${headerImage}" 
+                     alt="${blog.title}" 
+                     class="member-card-header-image"
+                     onerror="this.src='https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'">
+                
+                <span class="member-card-category">${blog.category || 'お知らせ'}</span>
+                
+                <div class="member-card-avatar-wrapper">
+                    <img src="${avatarImage}" 
+                         alt="${blog.authorName || '管理者'}" 
+                         class="member-card-avatar"
+                         onerror="this.src='https://i.pravatar.cc/200?img=1'">
                 </div>
             </div>
-            <div class="collab-footer">
-                <button class="collab-btn">
-                    続きを読む
-                    <i class="fas fa-arrow-right"></i>
+            
+            <div class="member-card-body">
+                <h3 class="member-card-name">${blog.title}</h3>
+                <div class="member-card-business">${blog.authorName || '管理者'}</div>
+                
+                <div class="member-card-divider"></div>
+                
+                <p class="member-card-intro">${blog.excerpt || blog.description || ''}</p>
+                
+                <div class="member-card-skills">
+                    <span class="member-card-skill-tag"><i class="fas fa-calendar"></i> ${formatDate(blog.publishDate || blog.publishedAt || blog.createdAt)}</span>
+                    <span class="member-card-skill-tag"><i class="fas fa-eye"></i> ${blog.views || 0}</span>
+                </div>
+                
+                <button class="member-card-btn" onclick="event.stopPropagation(); openBlogDetail('${blog.slug}')">
+                    続きを読む <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
@@ -2350,6 +2362,9 @@ function openAdminPanel() {
     if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // 管理者パネル初期化イベントを発火
+        window.dispatchEvent(new Event('openAdminModal'));
         
         // AdminSlidePanelを初期化
         if (typeof initAdminSlidePanel === 'function') {
