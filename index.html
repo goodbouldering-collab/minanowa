@@ -81,11 +81,16 @@
         
         <div class="hero-content">
             <h1 class="hero-title animate-slide-up">
-                <span class="title-small">彦根発 異業種交流コミュニティ</span>
-                <span class="title-main">つながりが、<br class="sp-only"><span class="highlight">可能性</span>を広げる</span>
+                <span class="title-small" id="heroTitleSmall" data-default="彦根発 異業種交流コミュニティ">彦根発 異業種交流コミュニティ</span>
+                <span class="title-main">
+                    <span id="heroTitleMainPrefix" data-default="つながりが、">つながりが、</span>
+                    <br class="sp-only">
+                    <span class="highlight" id="heroTitleMainHighlight" data-default="可能性">可能性</span>
+                    <span id="heroTitleMainSuffix" data-default="を広げる">を広げる</span>
+                </span>
             </h1>
             
-            <p class="hero-description animate-slide-up delay-1">
+            <p class="hero-description animate-slide-up delay-1" id="heroDescription" data-default="月1回の交流会で事業者同士がつながり、&#10;お互いの事業を紹介し合い、新しいコラボレーションを生み出す">
                 月1回の交流会で事業者同士がつながり、<br class="pc-only">
                 お互いの事業を紹介し合い、新しいコラボレーションを生み出す
             </p>
@@ -108,32 +113,32 @@
             <!-- 事業者検索ボタン（統計情報の下） -->
             <div class="hero-buttons animate-slide-up delay-3">
                 <div class="next-event-preview" id="nextEventPreview">
-                    <div class="next-event-badge">次回イベント</div>
+                    <div class="next-event-badge" id="nextEventBadgeLabel" data-default="次回イベント">次回イベント</div>
                     <div class="next-event-title-gold" id="nextEventTitleGold">イベントを読み込み中...</div>
                     <div class="next-event-datetime" id="nextEventDateTime">
                         <i class="fas fa-calendar-day"></i>
                         <span id="nextEventDateText">日時を読み込み中...</span>
                     </div>
                 </div>
-                <a href="#event" class="btn btn-primary btn-large">
+                <a href="#event" class="btn btn-primary btn-large" id="heroEventCta">
                     <i class="fas fa-calendar-check"></i>
-                    交流会に参加
+                    <span id="heroEventCtaText" data-default="交流会に参加">交流会に参加</span>
                 </a>
-                <a href="#members" class="btn btn-primary btn-large">
+                <a href="#members" class="btn btn-primary btn-large" id="heroMembersCta">
                     <i class="fas fa-search"></i>
-                    事業者を探す
+                    <span id="heroMembersCtaText" data-default="事業者を探す">事業者を探す</span>
                 </a>
                 
                 <!-- ログイン時のみ表示：グループチャット -->
                 <button id="heroGroupChatBtn" class="btn btn-success btn-large" onclick="openGroupChatModal()" style="display: none;">
                     <i class="fas fa-comments"></i>
-                    グループチャット
+                    <span id="heroGroupChatText" data-default="グループチャット">グループチャット</span>
                 </button>
                 
                 <!-- 非ログイン時のみ表示：会員登録申請 -->
                 <button id="heroRegisterBtn" class="btn btn-success btn-large" onclick="openRegisterModal()">
                     <i class="fas fa-user-plus"></i>
-                    会員登録申請
+                    <span id="heroRegisterCtaText" data-default="会員登録申請">会員登録申請</span>
                 </button>
             </div>
         </div>
@@ -179,8 +184,8 @@
 <!-- みんなのWAとは - コンパクト版 -->
 <section class="about-section-modern" id="about">
     <div class="container">
-        <h2 class="section-title">みんなのWAとは</h2>
-        <p class="section-subtitle">彦根の事業者が「ギブ精神」で繋がる実践型コミュニティ</p>
+        <h2 class="section-title" id="aboutTitle" data-default="みんなのWAとは">みんなのWAとは</h2>
+        <p class="section-subtitle" id="aboutSubtitle" data-default="彦根の事業者が「ギブ精神」で繋がる実践型コミュニティ">彦根の事業者が「ギブ精神」で繋がる実践型コミュニティ</p>
         
         <!-- 実績統計 - 数字で証明 -->
         <div class="stats-section">
@@ -389,8 +394,8 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Find Members</span>
-                <h2 class="section-title">事業者を探す</h2>
-                <p class="section-subtitle">名前・職業・スキルで検索してつながろう</p>
+                <h2 class="section-title" id="membersTitle" data-default="事業者を探す">事業者を探す</h2>
+                <p class="section-subtitle" id="membersSubtitle" data-default="名前・職業・スキルで検索してつながろう">名前・職業・スキルで検索してつながろう</p>
             </div>
             
             <!-- 検索パネル -->
@@ -398,7 +403,7 @@
                 <div class="search-main">
                     <div class="search-input-wrapper">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." autocomplete="off">
+                        <input type="text" id="searchInput" placeholder="名前、職業、スキルで検索..." data-default-placeholder="名前、職業、スキルで検索..." autocomplete="off">
                     </div>
                     <button class="search-btn" onclick="performMemberSearch()">
                         <i class="fas fa-search"></i>
@@ -433,7 +438,7 @@
                 </div>
                 
                 <div class="quick-search">
-                    <span class="quick-label">人気の検索:</span>
+                    <span class="quick-label" id="quickSearchLabel" data-default="人気の検索:">人気の検索:</span>
                     <button class="quick-tag" onclick="setMemberQuickSearch('IT')">IT・Web</button>
                     <button class="quick-tag" onclick="setMemberQuickSearch('デザイン')">デザイン</button>
                     <button class="quick-tag" onclick="setMemberQuickSearch('飲食')">飲食店</button>
@@ -469,8 +474,8 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Connect</span>
-                <h2 class="section-title">つながる・紹介する</h2>
-                <p class="section-subtitle">会員同士で事業を紹介し合い、つなげる仕組み</p>
+                <h2 class="section-title" id="connectTitle" data-default="つながる・紹介する">つながる・紹介する</h2>
+                <p class="section-subtitle" id="connectSubtitle" data-default="会員同士で事業を紹介し合い、つなげる仕組み">会員同士で事業を紹介し合い、つなげる仕組み</p>
             </div>
             
             <div class="connect-flow">
@@ -600,8 +605,8 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Contact Us</span>
-                <h2 class="section-title">お問い合わせ</h2>
-                <p class="section-subtitle">ご質問やご相談など、お気軽にお問い合わせください</p>
+                <h2 class="section-title" id="contactTitle" data-default="お問い合わせ">お問い合わせ</h2>
+                <p class="section-subtitle" id="contactSubtitle" data-default="ご質問やご相談など、お気軽にお問い合わせください">ご質問やご相談など、お気軽にお問い合わせください</p>
             </div>
             
             <div class="contact-content">

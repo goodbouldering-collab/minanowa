@@ -1,80 +1,65 @@
 // ============================================
-// 自動バックアップシステム
+// バックアップシステム（簡易版）
 // ============================================
 
 const fs = require('fs');
 const path = require('path');
 
-// バックアップディレクトリ
-const BACKUP_DIR = path.join(__dirname, 'backups');
 const DATA_FILE = path.join(__dirname, 'data.json');
+const BACKUP_DIR = path.join(__dirname, 'backups');
 
 // バックアップディレクトリを作成
 if (!fs.existsSync(BACKUP_DIR)) {
     fs.mkdirSync(BACKUP_DIR, { recursive: true });
 }
 
-// バックアップを作成
+/**
+ * バックアップを作成
+ */
 function createBackup() {
     try {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        if (!fs.existsSync(DATA_FILE)) {
+            console.log('⚠️ data.jsonが存在しないため、バックアップをスキップします');
+            return null;
+        }
+
+        const timestamp = new Date().toISOString().replace(/:/g, '-').replace(/\./g, '-');
         const backupFile = path.join(BACKUP_DIR, `data-${timestamp}.json`);
         
-        if (fs.existsSync(DATA_FILE)) {
-            fs.copyFileSync(DATA_FILE, backupFile);
-            console.log(`✅ バックアップ作成: ${path.basename(backupFile)}`);
-            
-            // 古いバックアップを削除（最新30件のみ保持）
-            cleanOldBackups();
-            
-            return backupFile;
-        }
+        fs.copyFileSync(DATA_FILE, backupFile);
+        console.log(`✅ バックアップを作成しました: ${backupFile}`);
+        
+        return backupFile;
     } catch (error) {
         console.error('❌ バックアップ作成エラー:', error);
+        return null;
     }
 }
 
-// 古いバックアップを削除
-function cleanOldBackups() {
-    try {
-        const files = fs.readdirSync(BACKUP_DIR)
-            .filter(file => file.startsWith('data-') && file.endsWith('.json'))
-            .map(file => ({
-                name: file,
-                path: path.join(BACKUP_DIR, file),
-                time: fs.statSync(path.join(BACKUP_DIR, file)).mtime.getTime()
-            }))
-            .sort((a, b) => b.time - a.time);
-
-        // 最新30件以外を削除
-        if (files.length > 30) {
-            files.slice(30).forEach(file => {
-                fs.unlinkSync(file.path);
-                console.log(`🗑️ 古いバックアップ削除: ${file.name}`);
-            });
-        }
-    } catch (error) {
-        console.error('❌ バックアップクリーンアップエラー:', error);
-    }
-}
-
-// バックアップ一覧を取得
+/**
+ * バックアップ一覧を取得
+ */
 function listBackups() {
     try {
+        if (!fs.existsSync(BACKUP_DIR)) {
+            return [];
+        }
+
         const files = fs.readdirSync(BACKUP_DIR)
             .filter(file => file.startsWith('data-') && file.endsWith('.json'))
             .map(file => {
                 const filePath = path.join(BACKUP_DIR, file);
                 const stats = fs.statSync(filePath);
                 return {
-                    name: file,
+                    filename: file,
                     path: filePath,
                     size: stats.size,
-                    created: stats.mtime
+                    created: stats.mtime,
+                    createdISO: stats.mtime.toISOString()
                 };
             })
             .sort((a, b) => b.created - a.created);
-        
+
         return files;
     } catch (error) {
         console.error('❌ バックアップ一覧取得エラー:', error);
@@ -82,45 +67,57 @@ function listBackups() {
     }
 }
 
-// バックアップから復元
-function restoreBackup(backupFile) {
+/**
+ * バックアップから復元
+ */
+function restoreBackup(backupFilename) {
     try {
-        const backupPath = path.join(BACKUP_DIR, backupFile);
+        const backupPath = path.join(BACKUP_DIR, backupFilename);
         
         if (!fs.existsSync(backupPath)) {
             throw new Error('バックアップファイルが見つかりません');
         }
-        
-        // 復元前に現在のデータをバックアップ
-        createBackup();
-        
-        // 復元
+
+        // 現在のdata.jsonをバックアップ
+        if (fs.existsSync(DATA_FILE)) {
+            createBackup();
+        }
+
+        // バックアップから復元
         fs.copyFileSync(backupPath, DATA_FILE);
-        console.log(`✅ バックアップから復元: ${backupFile}`);
+        console.log(`✅ バックアップから復元しました: ${backupFilename}`);
         
         return true;
     } catch (error) {
         console.error('❌ バックアップ復元エラー:', error);
-        return false;
+        throw error;
     }
 }
 
-// 自動バックアップを開始（1時間ごと）
-function startAutoBackup() {
-    // 起動時にバックアップ
-    createBackup();
-    
-    // 1時間ごとにバックアップ
-    setInterval(() => {
-        createBackup();
-    }, 60 * 60 * 1000); // 1時間
-    
-    console.log('🔄 自動バックアップを開始（1時間ごと）');
+/**
+ * バックアップを削除
+ */
+function deleteBackup(backupFilename) {
+    try {
+        const backupPath = path.join(BACKUP_DIR, backupFilename);
+        
+        if (!fs.existsSync(backupPath)) {
+            throw new Error('バックアップファイルが見つかりません');
+        }
+
+        fs.unlinkSync(backupPath);
+        console.log(`✅ バックアップを削除しました: ${backupFilename}`);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ バックアップ削除エラー:', error);
+        throw error;
+    }
 }
 
 module.exports = {
     createBackup,
     listBackups,
     restoreBackup,
-    startAutoBackup
+    deleteBackup
 };

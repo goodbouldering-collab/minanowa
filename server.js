@@ -62,6 +62,75 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // データファイルのパス
 const DATA_FILE = path.join(__dirname, 'data.json');
 
+const defaultPageContent = {
+    hero: {
+        titleSmall: '彦根発 異業種交流コミュニティ',
+        titleMainPrefix: 'つながりが、',
+        titleMainHighlight: '可能性',
+        titleMainSuffix: 'を広げる',
+        description: '月1回の交流会で事業者同士がつながり、お互いの事業を紹介し合い、新しいコラボレーションを生み出す',
+        ctaEvent: '交流会に参加',
+        ctaRegister: '会員登録申請',
+        nextEventLabel: '次回イベント'
+    },
+    about: {
+        title: 'みんなのWAとは',
+        subtitle: '彦根の事業者が「ギブ精神」で繋がる実践型コミュニティ'
+    },
+    members: {
+        title: '事業者を探す',
+        subtitle: '名前・職業・スキルで検索してつながろう',
+        searchPlaceholder: '名前、職業、スキルで検索...',
+        quickSearchLabel: '人気の検索:'
+    },
+    connect: {
+        title: 'つながる・紹介する',
+        subtitle: '会員同士で事業を紹介し合い、つなげる仕組み'
+    },
+    contact: {
+        title: 'お問い合わせ',
+        subtitle: 'ご質問やご相談など、お気軽にお問い合わせください'
+    }
+};
+
+function mergeSection(defaults, current = {}) {
+    return { ...defaults, ...(current || {}) };
+}
+
+function getPageContent(dataStore = appData) {
+    const existing = dataStore?.pageContent || {};
+    return {
+        hero: mergeSection(defaultPageContent.hero, existing.hero),
+        about: mergeSection(defaultPageContent.about, existing.about),
+        members: mergeSection(defaultPageContent.members, existing.members),
+        connect: mergeSection(defaultPageContent.connect, existing.connect),
+        contact: mergeSection(defaultPageContent.contact, existing.contact)
+    };
+}
+
+function ensurePageContentDefaults(dataStore) {
+    if (!dataStore) {
+        return false;
+    }
+
+    if (!dataStore.pageContent) {
+        dataStore.pageContent = JSON.parse(JSON.stringify(defaultPageContent));
+        return true;
+    }
+
+    let updated = false;
+
+    for (const section of Object.keys(defaultPageContent)) {
+        const merged = mergeSection(defaultPageContent[section], dataStore.pageContent[section]);
+        if (JSON.stringify(merged) !== JSON.stringify(dataStore.pageContent[section])) {
+            dataStore.pageContent[section] = merged;
+            updated = true;
+        }
+    }
+
+    return updated;
+}
+
 // ============================================
 // データベース操作（JSONファイル）
 // ============================================
@@ -78,13 +147,14 @@ function loadData() {
     return { members: [], sessions: {}, blogs: [], events: [], messages: [] };
 }
 
-function saveData(data) {
+function saveData(data = appData) {
     try {
         // バックアップを作成
         backupSystem.createBackup();
-        
+
         // データを保存
         fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+        appData = data;
         return true;
     } catch (error) {
         console.error('データ保存エラー:', error);
@@ -95,6 +165,7 @@ function saveData(data) {
 // データ初期化
 function initializeData() {
     let data = loadData();
+    let dataUpdated = false;
     
     // events配列がなければ追加
     if (!data.events || data.events.length === 0) {
@@ -119,13 +190,22 @@ function initializeData() {
                 createdAt: new Date().toISOString()
             }
         ];
-        saveData(data);
+        dataUpdated = true;
     }
     
     // messages配列がなければ追加
     if (!data.messages) {
         data.messages = [];
+        dataUpdated = true;
+    }
+    
+    if (ensurePageContentDefaults(data)) {
+        dataUpdated = true;
+    }
+    
+    if (dataUpdated) {
         saveData(data);
+        data = loadData();
     }
     
     return data;
@@ -1734,48 +1814,79 @@ app.put('/api/admin/about-image', (req, res) => {
     }
 });
 
+// ページコンテンツ取得
+app.get('/api/page-content', (req, res) => {
+    try {
+        appData = loadData();
+        const content = getPageContent(appData);
+        res.json({
+            success: true,
+            content
+        });
+    } catch (error) {
+        console.error('ページコンテンツ取得エラー:', error);
+        res.status(500).json({
+            success: false,
+            message: 'ページコンテンツの取得に失敗しました'
+        });
+    }
+});
+
 // ページコンテンツ更新
 app.put('/api/admin/page-content', checkAdmin, (req, res) => {
     try {
         const { section, data } = req.body;
-        
+
         if (!section || !data) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'セクションとデータが必要です' 
+            return res.status(400).json({
+                success: false,
+                message: 'セクションとデータが必要です'
             });
         }
-        
-        // pageContentの初期化
-        if (!appData.pageContent) {
-            appData.pageContent = {
-                hero: {},
-                about: {},
-                connect: {},
-                contact: {}
-            };
+
+        const sectionKey = section.trim();
+        if (!defaultPageContent[sectionKey]) {
+            return res.status(400).json({
+                success: false,
+                message: '指定されたセクションは更新できません'
+            });
         }
-        
-        // セクションごとに更新
-        appData.pageContent[section] = {
-            ...(appData.pageContent[section] || {}),
+
+        if (typeof data !== 'object' || Array.isArray(data)) {
+            return res.status(400).json({
+                success: false,
+                message: 'データ形式が正しくありません'
+            });
+        }
+
+        appData = loadData();
+
+        const mergedSection = {
+            ...mergeSection(defaultPageContent[sectionKey], appData.pageContent?.[sectionKey]),
             ...data,
             updatedAt: new Date().toISOString()
         };
-        
-        // データを保存
-        saveData();
-        
-        console.log(`✅ ページコンテンツ更新成功 - セクション: ${section}`);
-        res.json({ 
-            success: true, 
-            section,
-            content: appData.pageContent[section] 
+
+        if (!appData.pageContent) {
+            appData.pageContent = {};
+        }
+        appData.pageContent[sectionKey] = mergedSection;
+
+        if (!saveData(appData)) {
+            throw new Error('データの保存に失敗しました');
+        }
+
+        console.log(`✅ ページコンテンツ更新成功 - セクション: ${sectionKey}`);
+        const updatedContent = getPageContent(appData)[sectionKey];
+        res.json({
+            success: true,
+            section: sectionKey,
+            content: updatedContent
         });
     } catch (error) {
         console.error('ページコンテンツ更新エラー:', error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: 'ページコンテンツの更新に失敗しました',
             error: error.message
         });
@@ -1887,8 +1998,8 @@ app.use((req, res, next) => {
 // サーバー起動
 // ============================================
 
-// 自動バックアップを開始
-backupSystem.startAutoBackup();
+// 自動バックアップを開始（簡易版では不要）
+// backupSystem.startAutoBackup();
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🌸 みんなのWA サーバー起動`);

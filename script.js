@@ -77,6 +77,7 @@ async function initApp() {
     
     // データ読み込み（並列）
     await Promise.all([
+        loadPageContent(),
         loadStats(),
         loadMembersCarousel(),
         loadCollabAndBlogs(),
@@ -152,10 +153,17 @@ function updateEventDisplay(event) {
     const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
     const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
     
-    // ヒーローバッジを更新
-    const heroBadge = document.querySelector('.hero-badge span');
-    if (heroBadge) {
-        heroBadge.textContent = `次回交流会: ${eventDate.getMonth() + 1}月${eventDate.getDate()}日（${weekdays[eventDate.getDay()]}）${event.time ? event.time.split('〜')[0] : ''}〜`;
+    // 次回イベントプレビューを更新
+    const nextEventTitleEl = document.getElementById('nextEventTitleGold');
+    if (nextEventTitleEl) {
+        nextEventTitleEl.textContent = event.title || '次回イベント';
+    }
+
+    const nextEventDateTextEl = document.getElementById('nextEventDateText');
+    if (nextEventDateTextEl) {
+        const startTime = event.time ? event.time.split('〜')[0] : '';
+        const dateText = `${eventDate.getMonth() + 1}月${eventDate.getDate()}日（${weekdays[eventDate.getDay()]}）${startTime}`;
+        nextEventDateTextEl.textContent = dateText.trim();
     }
     
     // イベントカードの日付を更新
@@ -183,6 +191,91 @@ function updateEventDisplay(event) {
     if (eventFee && event.fee) {
         eventFee.textContent = `参加費 ${event.fee}`;
     }
+}
+
+function getElementDefault(element) {
+    if (!element) return '';
+    if (element.dataset?.default) return element.dataset.default;
+    if (element.dataset?.defaultPlaceholder) return element.dataset.defaultPlaceholder;
+    if (typeof element.getAttribute === 'function' && element.getAttribute('placeholder')) {
+        return element.getAttribute('placeholder');
+    }
+    return element.textContent?.trim() || '';
+}
+
+function setElementTextById(id, value) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    const text = typeof value === 'string' && value.trim() !== '' ? value : getElementDefault(element);
+    if (element.textContent !== undefined) {
+        element.textContent = text;
+    }
+}
+
+async function loadPageContent() {
+    try {
+        const response = await fetch(`${API_BASE}/api/page-content`);
+        const result = await response.json();
+        if (result.success && result.content) {
+            applyPageContent(result.content);
+        }
+    } catch (error) {
+        console.error('ページコンテンツ取得エラー:', error);
+    }
+}
+
+function applyPageContent(content = {}) {
+    const hero = content.hero || {};
+    setElementTextById('heroTitleSmall', hero.titleSmall);
+    setElementTextById('heroTitleMainPrefix', hero.titleMainPrefix);
+    setElementTextById('heroTitleMainHighlight', hero.titleMainHighlight);
+    setElementTextById('heroTitleMainSuffix', hero.titleMainSuffix);
+
+    const heroDescriptionEl = document.getElementById('heroDescription');
+    if (heroDescriptionEl) {
+        const rawDescription = typeof hero.description === 'string' && hero.description.trim() !== ''
+            ? hero.description
+            : getElementDefault(heroDescriptionEl);
+        if (rawDescription) {
+            heroDescriptionEl.innerHTML = rawDescription
+                .split(/\r?\n+/)
+                .map(line => line.trim())
+                .filter(Boolean)
+                .join('<br class="pc-only">');
+        }
+    }
+
+    setElementTextById('nextEventBadgeLabel', hero.nextEventLabel);
+    setElementTextById('heroEventCtaText', hero.ctaEvent);
+    setElementTextById('heroMembersCtaText', hero.membersCta);
+    setElementTextById('heroRegisterCtaText', hero.ctaRegister);
+    setElementTextById('heroGroupChatText', hero.groupChatLabel);
+
+    const about = content.about || {};
+    setElementTextById('aboutTitle', about.title);
+    setElementTextById('aboutSubtitle', about.subtitle);
+
+    const members = content.members || {};
+    setElementTextById('membersTitle', members.title);
+    setElementTextById('membersSubtitle', members.subtitle);
+    setElementTextById('quickSearchLabel', members.quickSearchLabel);
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        const placeholder = typeof members.searchPlaceholder === 'string' && members.searchPlaceholder.trim() !== ''
+            ? members.searchPlaceholder
+            : searchInput.dataset?.defaultPlaceholder || searchInput.getAttribute('placeholder');
+        if (placeholder) {
+            searchInput.setAttribute('placeholder', placeholder);
+        }
+    }
+
+    const connect = content.connect || {};
+    setElementTextById('connectTitle', connect.title);
+    setElementTextById('connectSubtitle', connect.subtitle);
+
+    const contact = content.contact || {};
+    setElementTextById('contactTitle', contact.title);
+    setElementTextById('contactSubtitle', contact.subtitle);
 }
 
 // 未読メッセージチェック
@@ -5258,11 +5351,26 @@ async function loadAdminPageContent() {
         </div>
     `;
     
+    const escapeHtml = (value = '') => String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    
     try {
-        const timestamp = new Date().getTime();
-        const response = await fetch(`./data.json?t=${timestamp}`);
-        const data = await response.json();
-        const pageContent = data.pageContent || {};
+        const response = await fetch(`${API_BASE}/api/page-content?ts=${Date.now()}`);
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || 'ページコンテンツの取得に失敗しました');
+        }
+        
+        const pageContent = result.content || {};
+        const hero = pageContent.hero || {};
+        const about = pageContent.about || {};
+        const members = pageContent.members || {};
+        const connect = pageContent.connect || {};
+        const contact = pageContent.contact || {};
         
         adminContent.innerHTML = `
             <div class="admin-toolbar">
@@ -5276,16 +5384,44 @@ async function loadAdminPageContent() {
                     <h4><i class="fas fa-home"></i> ヒーローセクション</h4>
                     <form onsubmit="savePageContent(event, 'hero')" class="content-form">
                         <div class="form-group">
-                            <label>メインタイトル</label>
-                            <input type="text" name="title" class="form-control" value="${pageContent.hero?.title || ''}" required>
+                            <label>サブタイトル（小見出し）</label>
+                            <input type="text" name="titleSmall" class="form-control" value="${escapeHtml(hero.titleSmall || '')}" required>
                         </div>
                         <div class="form-group">
-                            <label>サブタイトル</label>
-                            <input type="text" name="subtitle" class="form-control" value="${pageContent.hero?.subtitle || ''}" required>
+                            <label>メインタイトル（前半）</label>
+                            <input type="text" name="titleMainPrefix" class="form-control" value="${escapeHtml(hero.titleMainPrefix || '')}" required>
                         </div>
                         <div class="form-group">
-                            <label>説明文</label>
-                            <textarea name="description" class="form-control" rows="3" required>${pageContent.hero?.description || ''}</textarea>
+                            <label>強調テキスト</label>
+                            <input type="text" name="titleMainHighlight" class="form-control" value="${escapeHtml(hero.titleMainHighlight || '')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>メインタイトル（後半）</label>
+                            <input type="text" name="titleMainSuffix" class="form-control" value="${escapeHtml(hero.titleMainSuffix || '')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>説明文（改行可）</label>
+                            <textarea name="description" class="form-control" rows="3" required>${escapeHtml(hero.description || '')}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>交流会ボタン文言</label>
+                            <input type="text" name="ctaEvent" class="form-control" value="${escapeHtml(hero.ctaEvent || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>事業者検索ボタン文言</label>
+                            <input type="text" name="membersCta" class="form-control" value="${escapeHtml(hero.membersCta || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>会員登録ボタン文言</label>
+                            <input type="text" name="ctaRegister" class="form-control" value="${escapeHtml(hero.ctaRegister || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>グループチャットボタン文言</label>
+                            <input type="text" name="groupChatLabel" class="form-control" value="${escapeHtml(hero.groupChatLabel || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>バッジラベル</label>
+                            <input type="text" name="nextEventLabel" class="form-control" value="${escapeHtml(hero.nextEventLabel || '')}">
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> 保存
@@ -5299,11 +5435,11 @@ async function loadAdminPageContent() {
                     <form onsubmit="savePageContent(event, 'about')" class="content-form">
                         <div class="form-group">
                             <label>セクションタイトル</label>
-                            <input type="text" name="title" class="form-control" value="${pageContent.about?.title || 'みんなのWAとは'}" required>
+                            <input type="text" name="title" class="form-control" value="${escapeHtml(about.title || '')}" required>
                         </div>
                         <div class="form-group">
                             <label>サブタイトル</label>
-                            <input type="text" name="subtitle" class="form-control" value="${pageContent.about?.subtitle || '彦根周辺の事業者をつないで広げる'}" required>
+                            <input type="text" name="subtitle" class="form-control" value="${escapeHtml(about.subtitle || '')}">
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> 保存
@@ -5317,11 +5453,19 @@ async function loadAdminPageContent() {
                     <form onsubmit="savePageContent(event, 'members')" class="content-form">
                         <div class="form-group">
                             <label>セクションタイトル</label>
-                            <input type="text" name="title" class="form-control" value="${pageContent.members?.title || '事業者を探す'}" required>
+                            <input type="text" name="title" class="form-control" value="${escapeHtml(members.title || '')}" required>
                         </div>
                         <div class="form-group">
-                            <label>説明文</label>
-                            <textarea name="description" class="form-control" rows="2">${pageContent.members?.description || ''}</textarea>
+                            <label>サブタイトル</label>
+                            <input type="text" name="subtitle" class="form-control" value="${escapeHtml(members.subtitle || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>検索プレースホルダー</label>
+                            <input type="text" name="searchPlaceholder" class="form-control" value="${escapeHtml(members.searchPlaceholder || '')}">
+                        </div>
+                        <div class="form-group">
+                            <label>人気検索ラベル</label>
+                            <input type="text" name="quickSearchLabel" class="form-control" value="${escapeHtml(members.quickSearchLabel || '')}">
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> 保存
@@ -5329,17 +5473,33 @@ async function loadAdminPageContent() {
                     </form>
                 </div>
 
-                <!-- Event Section -->
                 <div class="content-section-card">
-                    <h4><i class="fas fa-calendar"></i> 交流会・イベント</h4>
-                    <form onsubmit="savePageContent(event, 'events')" class="content-form">
+                    <h4><i class="fas fa-hands-helping"></i> つながる・紹介する</h4>
+                    <form onsubmit="savePageContent(event, 'connect')" class="content-form">
                         <div class="form-group">
                             <label>セクションタイトル</label>
-                            <input type="text" name="title" class="form-control" value="${pageContent.events?.title || '交流会・イベント'}" required>
+                            <input type="text" name="title" class="form-control" value="${escapeHtml(connect.title || '')}" required>
                         </div>
                         <div class="form-group">
-                            <label>説明文</label>
-                            <textarea name="description" class="form-control" rows="2">${pageContent.events?.description || ''}</textarea>
+                            <label>サブタイトル</label>
+                            <input type="text" name="subtitle" class="form-control" value="${escapeHtml(connect.subtitle || '')}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                    </form>
+                </div>
+
+                <div class="content-section-card">
+                    <h4><i class="fas fa-envelope"></i> お問い合わせ</h4>
+                    <form onsubmit="savePageContent(event, 'contact')" class="content-form">
+                        <div class="form-group">
+                            <label>セクションタイトル</label>
+                            <input type="text" name="title" class="form-control" value="${escapeHtml(contact.title || '')}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>サブタイトル</label>
+                            <input type="text" name="subtitle" class="form-control" value="${escapeHtml(contact.subtitle || '')}">
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> 保存
