@@ -15,9 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="about_modern.css?v=3">
-    <link rel="stylesheet" href="member_card.css?v=5">
-    <link rel="stylesheet" href="activity_card.css?v=3">
+    <link rel="stylesheet" href="member_card.css?v=6">
     <link rel="stylesheet" href="admin_panel.css?v=5">
 </head>
 <body class="no-js">
@@ -451,13 +449,13 @@
                 <span id="resultsCount">読み込み中...</span>
             </div>
             
-            <!-- メンバーカルーセル（活動レポートと同じ構造） -->
+            <!-- メンバーカルーセル（横スクロール） -->
             <div class="members-carousel-wrapper">
                 <button class="carousel-nav" id="membersPrev" disabled>
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 
-                <div class="members-carousel" id="membersGrid">
+                <div class="members-carousel members-horizontal-carousel" id="membersGrid">
                     <div class="loading-spinner">
                         <div class="spinner"></div>
                         <p>読み込み中...</p>

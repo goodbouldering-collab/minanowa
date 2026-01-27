@@ -12,11 +12,13 @@
 }
 
 /* 横カルーセルコンテナ */
-#membersGrid {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    overflow-y: hidden;
+#membersGrid,
+.members-horizontal-carousel {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 24px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
     scroll-behavior: smooth;
     padding: 20px 4px 30px 4px;
     -webkit-overflow-scrolling: touch;
@@ -24,23 +26,27 @@
     scroll-snap-type: x mandatory; /* スナップスクロール */
 }
 
-#membersGrid::-webkit-scrollbar {
+#membersGrid::-webkit-scrollbar,
+.members-horizontal-carousel::-webkit-scrollbar {
     display: none;
 }
 
 /* カードベース - カルーセルアイテム */
-.member-card {
-    flex: 0 0 320px;
-    width: 320px;
-    height: 450px;
+.member-card,
+.members-horizontal-carousel .member-card {
+    flex: 0 0 320px !important;
+    width: 320px !important;
+    height: 450px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
     background: white;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     border: 1px solid #f0f0f0;
     scroll-snap-align: start; /* スナップ位置 */
 }
