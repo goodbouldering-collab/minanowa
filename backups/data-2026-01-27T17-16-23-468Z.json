@@ -295,7 +295,7 @@
       "isPublic": true,
       "isAdmin": true,
       "role": "代表",
-      "lastLogin": "2026-01-11T16:46:03.481Z"
+      "lastLogin": "2026-01-25T23:10:02.498Z"
     },
     {
       "id": "abc5a1f3-480e-4e06-9e6b-cd9789d834f7",
@@ -347,6 +347,10 @@
     "8bc0267a-c9bf-4a98-aaf5-a11064351118": {
       "memberId": "okura-yuki-001",
       "createdAt": "2026-01-11T16:46:03.481Z"
+    },
+    "81fa3df7-9462-4431-8c04-36ffbca26c73": {
+      "memberId": "okura-yuki-001",
+      "createdAt": "2026-01-25T23:10:02.498Z"
     }
   },
   "blogs": [
@@ -696,7 +700,7 @@
       "publishedAt": "2024-11-05T09:00:00Z",
       "updatedAt": "2024-11-05T09:00:00Z",
       "status": "published",
-      "views": 188,
+      "views": 189,
       "likes": 81,
       "_originalCollab": {
         "members": [
@@ -1039,9 +1043,32 @@
   ],
   "pageContent": {
     "hero": {
-      "title": "彦根から世界へ",
-      "subtitle": "つながりで夢を育てる異業種交流コミュニティ",
-      "description": "地域の事業者が集まり、お互いの強みを活かして新しい価値を創造するコミュニティです"
+      "titleSmall": "彦根から世界へ",
+      "titleMainPrefix": "つながりで",
+      "titleMainHighlight": "夢",
+      "titleMainSuffix": "を育てる異業種交流コミュニティ",
+      "description": "地域の事業者が集まり、お互いの強みを活かして新しい価値を創造するコミュニティです",
+      "ctaEvent": "交流会に参加",
+      "ctaRegister": "会員登録申請",
+      "nextEventLabel": "次回イベント"
+    },
+    "about": {
+      "title": "みんなのWAとは",
+      "subtitle": "彦根の事業者が「ギブ精神」で繋がる実践型コミュニティ"
+    },
+    "members": {
+      "title": "事業者を探す",
+      "subtitle": "名前・職業・スキルで検索してつながろう",
+      "searchPlaceholder": "名前、職業、スキルで検索...",
+      "quickSearchLabel": "人気の検索:"
+    },
+    "connect": {
+      "title": "つながる・紹介する",
+      "subtitle": "会員同士で事業を紹介し合い、つなげる仕組み"
+    },
+    "contact": {
+      "title": "お問い合わせ",
+      "subtitle": "ご質問やご相談など、お気軽にお問い合わせください"
     }
   },
   "faqs": [

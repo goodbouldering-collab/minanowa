@@ -3,7 +3,8 @@
    ======================================== */
 
 /* カルーセルラッパー */
-.members-carousel-wrapper {
+.members-carousel-wrapper,
+.collab-carousel-wrapper {
     position: relative;
     width: 100%;
     max-width: 1400px;
@@ -13,7 +14,9 @@
 
 /* 横カルーセルコンテナ */
 #membersGrid,
-.members-horizontal-carousel {
+.members-horizontal-carousel,
+#collabBlogCarousel,
+.collab-carousel {
     display: flex !important;
     flex-direction: row !important;
     gap: 24px !important;
@@ -27,18 +30,24 @@
 }
 
 #membersGrid::-webkit-scrollbar,
-.members-horizontal-carousel::-webkit-scrollbar {
+.members-horizontal-carousel::-webkit-scrollbar,
+#collabBlogCarousel::-webkit-scrollbar,
+.collab-carousel::-webkit-scrollbar {
     display: none;
 }
 
 /* カードベース - カルーセルアイテム */
 .member-card,
-.members-horizontal-carousel .member-card {
+.members-horizontal-carousel .member-card,
+.collab-carousel .member-card,
+.blog-card-unified {
     flex: 0 0 320px !important;
     width: 320px !important;
     height: 450px !important;
     min-width: 320px !important;
     max-width: 320px !important;
+    min-height: 450px !important;
+    max-height: 450px !important;
     background: white;
     border-radius: 16px;
     overflow: hidden;
@@ -51,14 +60,16 @@
     scroll-snap-align: start; /* スナップ位置 */
 }
 
-.member-card:hover {
+.member-card:hover,
+.blog-card-unified:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     border-color: #667eea;
 }
 
 /* ヘッダー画像 */
-.member-card-header {
+.member-card-header,
+.blog-card-unified .member-card-header {
     position: relative;
     height: 140px;
     overflow: hidden;
@@ -66,14 +77,16 @@
     flex-shrink: 0;
 }
 
-.member-card-header-image {
+.member-card-header-image,
+.blog-card-unified .member-card-header-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-.member-card:hover .member-card-header-image {
+.member-card:hover .member-card-header-image,
+.blog-card-unified:hover .member-card-header-image {
     transform: scale(1.1);
 }
 
@@ -120,7 +133,8 @@
 }
 
 /* カードボディ */
-.member-card-body {
+.member-card-body,
+.blog-card-unified .member-card-body {
     padding: 32px 16px 12px 16px;
     flex: 1;
     display: flex;
@@ -244,7 +258,8 @@
 }
 
 /* 詳細ボタン */
-.member-card-btn {
+.member-card-btn,
+.blog-card-unified .member-card-btn {
     background: #667eea;
     color: white;
     border: none;
@@ -263,18 +278,21 @@
     margin-top: auto;
 }
 
-.member-card-btn:hover {
+.member-card-btn:hover,
+.blog-card-unified .member-card-btn:hover {
     background: #5568d3;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-.member-card-btn i {
+.member-card-btn i,
+.blog-card-unified .member-card-btn i {
     font-size: 0.75rem;
     transition: transform 0.2s ease;
 }
 
-.member-card-btn:hover i {
+.member-card-btn:hover i,
+.blog-card-unified .member-card-btn:hover i {
     transform: translateX(3px);
 }
 
@@ -284,7 +302,9 @@
 }
 
 /* カルーセルナビゲーションボタン */
-.carousel-nav {
+.carousel-nav,
+.carousel-prev,
+.carousel-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -303,28 +323,38 @@
     z-index: 10;
 }
 
-.carousel-nav:hover:not(:disabled) {
+.carousel-nav:hover:not(:disabled),
+.carousel-prev:hover:not(:disabled),
+.carousel-next:hover:not(:disabled) {
     background: #667eea;
     color: white;
     box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
     transform: translateY(-50%) scale(1.1);
 }
 
-.carousel-nav:disabled {
+.carousel-nav:disabled,
+.carousel-prev:disabled,
+.carousel-next:disabled {
     opacity: 0.3;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-.carousel-nav i {
+.carousel-nav i,
+.carousel-prev i,
+.carousel-next i {
     font-size: 20px;
 }
 
-#membersPrev {
+#membersPrev,
+#collabPrev,
+.carousel-prev {
     left: 0;
 }
 
-#membersNext {
+#membersNext,
+#collabNext,
+.carousel-next {
     right: 0;
 }
 
