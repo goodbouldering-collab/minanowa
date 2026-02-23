@@ -1799,12 +1799,12 @@ html,body{max-width:100vw;overflow-x:hidden}
     <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')"><i class="fas fa-bars"></i></button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#about">WAとは</a></li>
-      <li><a href="#events">交流会</a></li>
-      <li><a href="#members">メンバー</a></li>
-      <li><a href="#blogs">お知らせ</a></li>
+      <li><a href="#events">交流会・イベント</a></li>
       <li><a href="#blogs">活動レポート</a></li>
+      <li><a href="#members">メンバー</a></li>
+      <li><a href="#memberMap">メンバーマップ</a></li>
       <li><a href="#board">掲示板</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#faq">よくある質問</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
       <li id="navAuth"><button class="btn btn-primary btn-sm" onclick="openModal('loginModal')"><i class="fas fa-sign-in-alt"></i> ログイン</button></li>
     </ul>
@@ -1832,7 +1832,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   <div class="hero-photos-container" id="heroPhotos"></div>
   <div class="hero-content">
     <h1><span class="hero-typed" id="heroTitle"></span><span class="cursor" id="typedCursor"></span></h1>
-    <p id="heroSubtitle">彦根周辺のビジネスを加速させる交流の場</p>
+    <p id="heroSubtitle">国宝・彦根城のおひざ元から、地域の事業者がつながる交流の場</p>
     <div class="hero-trust">
       <span><i class="fas fa-handshake"></i> 仲間がお客さんになる</span>
       <span><i class="fas fa-rocket"></i> コラボがすぐ形に</span>
@@ -1864,7 +1864,7 @@ html,body{max-width:100vw;overflow-x:hidden}
 <!-- ABOUT: full width -->
 <div class="bento-cell bento-full reveal">
 <section class="sec" id="about" style="padding-top:2.5rem;padding-bottom:2rem">
-  <div class="sec-head" style="margin-bottom:1.8rem"><h2><i class="fas fa-heart"></i> みんなのWAとは</h2><p id="aboutSubtitle">事業者がつながり、成長し合うコミュニティ</p></div>
+  <div class="sec-head" style="margin-bottom:1.8rem"><h2><i class="fas fa-heart"></i> みんなのWAとは</h2><p id="aboutSubtitle">彦根発・琵琶湖のほとりで事業者がつながり、成長し合うコミュニティ</p></div>
 
   <!-- Intro one-liner -->
   <p class="about-intro reveal">名刺交換で終わる従来の異業種交流を、<strong>売上が生まれる仕組み</strong>へ進化させた彦根発のコミュニティです。</p>
@@ -1967,10 +1967,22 @@ html,body{max-width:100vw;overflow-x:hidden}
 </section>
 </div><!-- /events -->
 
+<!-- BLOGS: full width — 活動の様子をイベント直下で見せる -->
+<div class="bento-cell bento-full reveal">
+<section class="sec" id="blogs">
+  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・活動レポート</h2><p>交流会やコラボの様子をお届けします</p></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="blogTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('blogTrack',290)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+</div><!-- /blogs -->
+
 <!-- MEMBERS: full width -->
 <div class="bento-cell bento-full reveal">
 <section class="sec" id="members">
-  <div class="sec-head"><h2><i class="fas fa-user-friends"></i> メンバー</h2><p>この仲間たちがあなたの「お客さん」になります</p></div>
+  <div class="sec-head"><h2><i class="fas fa-user-friends"></i> メンバー</h2><p>彦根を中心に活躍する事業者たち。この仲間があなたの「お客さん」になります</p></div>
   <div class="search-box"><input type="text" id="memSearch" placeholder="店名、業種、地域、名前で検索..."><i class="fas fa-search"></i></div>
   <div class="carousel-wrap">
     <button class="carousel-btn prev" onclick="scrollCar('memTrack',-235)"><i class="fas fa-chevron-left"></i></button>
@@ -1979,6 +1991,18 @@ html,body{max-width:100vw;overflow-x:hidden}
   </div>
 </section>
 </div><!-- /members -->
+
+<!-- MEMBER MAP: 6 cols -->
+<div class="bento-cell bento-6 reveal">
+<section class="sec" id="memberMap">
+  <div class="sec-head"><h2><i class="fas fa-map-marked-alt"></i> メンバーマップ</h2><p>彦根周辺のメンバー店舗を地図で探せます</p></div>
+  <div class="member-map-wrap">
+    <div class="member-map-container" id="memberMapContainer">
+      <div id="gmap" style="width:100%;height:100%"></div>
+    </div>
+  </div>
+</section>
+</div><!-- /memberMap -->
 
 <!-- BOARD: 6 cols sidebar -->
 <div class="bento-cell bento-6 reveal">
@@ -1990,30 +2014,6 @@ html,body{max-width:100vw;overflow-x:hidden}
   <div class="board-list" id="boardList"></div>
 </section>
 </div><!-- /board -->
-
-<!-- MEMBER MAP: 6 cols -->
-<div class="bento-cell bento-6 reveal">
-<section class="sec" id="memberMap">
-  <div class="sec-head"><h2><i class="fas fa-map-marked-alt"></i> メンバーマップ</h2><p>ピンをタップして場所を確認。経路検索も可能</p></div>
-  <div class="member-map-wrap">
-    <div class="member-map-container" id="memberMapContainer">
-      <div id="gmap" style="width:100%;height:100%"></div>
-    </div>
-  </div>
-</section>
-</div><!-- /memberMap -->
-
-<!-- BLOGS: full width -->
-<div class="bento-cell bento-full reveal">
-<section class="sec" id="blogs">
-  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・活動レポート</h2><p>最新のお知らせや活動レポート</p></div>
-  <div class="carousel-wrap">
-    <button class="carousel-btn prev" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
-    <div class="carousel-track" id="blogTrack"></div>
-    <button class="carousel-btn next" onclick="scrollCar('blogTrack',290)"><i class="fas fa-chevron-right"></i></button>
-  </div>
-</section>
-</div><!-- /blogs -->
 
 <!-- FAQ: 6 cols -->
 <div class="bento-cell bento-6 bento-soft reveal">
@@ -2096,7 +2096,7 @@ html,body{max-width:100vw;overflow-x:hidden}
 <footer>
   <div class="footer-grid">
     <div><h4>みんなのWA</h4><p style="color:rgba(255,255,255,.4);font-size:.78rem;line-height:1.6">彦根の事業主が「お客さん・コラボ・スキル」を同時に手に入れる異業種コミュニティ。</p></div>
-    <div><h4>リンク</h4><a href="#about">WAとは</a><a href="#events">交流会</a><a href="#members">メンバー</a><a href="#blogs">お知らせ・活動レポート</a><a href="#opMembers">運営メンバー</a><a href="/feed" target="_blank" style="display:flex;align-items:center;gap:.3rem"><i class="fas fa-rss"></i> RSS フィード</a></div>
+    <div><h4>リンク</h4><a href="#about">WAとは</a><a href="#events">交流会・イベント</a><a href="#blogs">活動レポート</a><a href="#members">メンバー</a><a href="#board">掲示板</a><a href="#opMembers">運営メンバー</a><a href="/feed" target="_blank" style="display:flex;align-items:center;gap:.3rem"><i class="fas fa-rss"></i> RSS フィード</a></div>
     <div><h4>サポート</h4><a href="#faq">よくある質問</a><a href="#contact">お問い合わせ</a><a href="#" onclick="openModal('regModal')">会員登録</a></div>
     <div><h4>SNS</h4><div class="footer-social" style="margin-top:.3rem"><a href="#" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" data-tooltip="X"><i class="fab fa-x-twitter"></i></a><a href="https://www.instagram.com/minnano_wa.shiga?igsh=MTE0YXJwbGlqMnFlaQ==" target="_blank" rel="noopener" data-tooltip="Instagram"><i class="fab fa-instagram"></i></a><a href="https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener" data-tooltip="LINE"><i class="fab fa-line"></i></a></div></div>
   </div>
