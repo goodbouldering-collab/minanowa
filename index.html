@@ -386,6 +386,7 @@ nav.at-top .hamburger{color:#fff}
   .mem-avatar-wrap{width:68px;height:68px}
   .mem-avatar{width:68px;height:68px}
   .mem-name{font-size:1.05rem}
+  .mem-name-sub{font-size:.82rem}
   .mem-biz{font-size:.92rem}
   .mem-intro{font-size:.84rem;-webkit-line-clamp:2}
   .mem-skill{font-size:.78rem;padding:.12rem .4rem}
@@ -994,6 +995,9 @@ nav.at-top .hamburger{color:#fff}
   border:1.5px solid rgba(16,185,129,.3);animation:status-ping 2s ease-in-out infinite}
 @keyframes status-ping{0%,100%{transform:scale(1);opacity:0}50%{transform:scale(1.3);opacity:1}}
 .mem-name{font-size:1.25rem;font-weight:700;color:var(--td)}
+.mem-name-link{text-decoration:none;color:var(--td);transition:color .3s ease;display:block}
+.mem-name-link:hover{color:var(--c1)}
+.mem-name-sub{font-size:.92rem;font-weight:500;color:var(--tl);margin-top:.1rem}
 .mem-biz{font-size:1.05rem;font-weight:600;margin:.2rem 0;
   background:linear-gradient(135deg,var(--c1),#0e7490);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .mem-loc{color:var(--tl);font-size:.92rem;display:flex;align-items:center;justify-content:center;gap:.2rem}
@@ -1002,9 +1006,6 @@ nav.at-top .hamburger{color:#fff}
   background:rgba(13,124,102,.08);color:var(--c2);font-weight:500;
   border:1px solid rgba(13,124,102,.1);transition:all .4s cubic-bezier(.25,.46,.45,.94)}
 .mem-skill:hover{background:var(--c1);color:#fff;border-color:var(--c1);transform:translateY(-1px);box-shadow:0 2px 8px rgba(13,124,102,.2)}
-.mem-profession{font-size:.98rem;color:var(--c2);font-weight:700;margin-top:.15rem;display:flex;align-items:center;justify-content:center;gap:.3rem;text-decoration:none;transition:all .3s ease}
-.mem-profession:hover{color:var(--c1);opacity:.85}
-.mem-profession i{font-size:.7rem;opacity:.8}
 .mem-links{display:flex;gap:.5rem;justify-content:center;margin-top:.35rem}
 .mem-intro{font-size:.9rem;color:var(--tl);line-height:1.5;margin-top:.35rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;text-align:left;padding:0 .15rem}
 .mem-cat{font-size:.82rem;color:var(--c1);background:rgba(13,124,102,.08);padding:.15rem .55rem;border-radius:20px;display:inline-block;margin-top:.25rem;font-weight:500;border:1px solid rgba(13,124,102,.12)}
@@ -1552,6 +1553,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   .mem-avatar-wrap{width:60px;height:60px}
   .mem-avatar{width:60px;height:60px}
   .mem-name{font-size:.98rem}
+  .mem-name-sub{font-size:.78rem}
   .mem-biz{font-size:.82rem}
   .mem-intro{font-size:.78rem;-webkit-line-clamp:2}
   .mem-skill{font-size:.68rem;padding:.1rem .32rem}
@@ -2874,7 +2876,6 @@ function renderMembers(list){
     const card=document.createElement('div');
     card.className='card mem-card';
     card.style.animationDelay=(i*60)+'ms';
-    const profHtml=m.profession?(m.homepage?`<a href="${m.homepage}" target="_blank" class="mem-profession"><i class="fas fa-store"></i> ${m.profession}</a>`:`<div class="mem-profession"><i class="fas fa-store"></i> ${m.profession}</div>`):'';
     const mapBtnHtml=m.googleMapUrl?`<a href="javascript:void(0)" class="mem-map-btn" data-member-id="${m.id}" title="マップで表示"><i class="fas fa-map-marker-alt" style="color:#ea4335"></i></a>`:'';
     const catHtml=m.businessCategory?`<span class="mem-cat">${m.businessCategory}</span>`:'';
     const introHtml=m.introduction?`<div class="mem-intro">${m.introduction}</div>`:'';
@@ -2884,13 +2885,18 @@ function renderMembers(list){
     if(m.instagram) linksArr.push(`<a href="https://instagram.com/${m.instagram}" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>`);
     if(mapBtnHtml) linksArr.push(mapBtnHtml);
     const linksHtml=linksArr.length?`<div class="mem-links">${linksArr.join('')}</div>`:'';
+    const shopNameEl = m.profession
+      ? (m.homepage ? `<a href="${m.homepage}" target="_blank" class="mem-name mem-name-link">${m.profession}</a>` : `<div class="mem-name">${m.profession}</div>`)
+      : '';
+    const nameBlock = m.profession
+      ? `${shopNameEl}<div class="mem-name-sub">${m.name}</div>`
+      : `<div class="mem-name">${m.name}</div>`;
     card.innerHTML=`<div class="mem-avatar-wrap">
         <img class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
         <div class="mem-status"></div>
       </div>
-      <div class="mem-name">${m.name}</div>
+      ${nameBlock}
       ${rankHtml}
-      ${profHtml}
       <div class="mem-biz">${m.business}</div>
       ${catHtml}
       <div class="mem-loc"><i class="fas fa-map-marker-alt"></i> ${m.location}</div>
