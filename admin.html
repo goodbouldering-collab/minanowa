@@ -258,6 +258,34 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 .status-tag.inactive{background:rgba(100,116,139,.06);color:#64748b}
 .status-tag.admin{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 2px 6px rgba(16,185,129,.2)}
 
+/* BLOG TABS */
+.blog-tab{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:var(--r3);
+  font-size:.72rem;font-weight:600;cursor:pointer;border:1.5px solid rgba(16,185,129,.1);
+  background:var(--white);color:var(--tl);transition:var(--transition)}
+.blog-tab:hover{border-color:var(--c1);color:var(--c1)}
+.blog-tab.active{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border-color:var(--c1);
+  box-shadow:0 2px 8px rgba(16,185,129,.2)}
+.blog-tab i{font-size:.65rem}
+.tab-count{font-size:.6rem;background:rgba(255,255,255,.25);padding:.05rem .3rem;border-radius:8px;min-width:16px;text-align:center}
+.blog-tab.active .tab-count{background:rgba(255,255,255,.3)}
+
+/* BLOG FORM TABS */
+.blog-form-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:.3rem;padding:.4rem .5rem;
+  border-radius:var(--r2);font-size:.72rem;font-weight:600;cursor:pointer;border:none;
+  background:transparent;color:var(--tl);transition:var(--transition)}
+.blog-form-tab:hover{background:rgba(16,185,129,.06);color:var(--c1)}
+.blog-form-tab.active{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
+  box-shadow:0 2px 8px rgba(16,185,129,.2)}
+.blog-form-tab i{font-size:.65rem}
+
+/* Category badges */
+.cat-badge{display:inline-flex;align-items:center;gap:.2rem;padding:.12rem .4rem;border-radius:6px;
+  font-size:.6rem;font-weight:700}
+.cat-badge.cat-news{background:rgba(59,130,246,.08);color:#2563eb}
+.cat-badge.cat-report{background:rgba(16,185,129,.08);color:#059669}
+.cat-badge.cat-movie{background:rgba(239,68,68,.08);color:#dc2626}
+.cat-badge.cat-other{background:rgba(100,116,139,.06);color:#64748b}
+
 @media(max-width:768px){
   .stat-row{grid-template-columns:repeat(2,1fr)}
   .dash-grid{grid-template-columns:1fr !important}
@@ -297,10 +325,9 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <div class="menu-item active" onclick="showPanel('dash',this)"><i class="fas fa-chart-pie"></i><span>ダッシュボード</span></div>
     <div class="menu-item" onclick="showPanel('hero',this)"><i class="fas fa-image"></i><span>トップページ</span></div>
     <div class="menu-item" onclick="showPanel('events',this)"><i class="fas fa-calendar-alt"></i><span>イベント</span></div>
-    <div class="menu-item" onclick="showPanel('blogs',this)"><i class="fas fa-newspaper"></i><span>お知らせ/レポート</span></div>
+    <div class="menu-item" onclick="showPanel('blogs',this)"><i class="fas fa-newspaper"></i><span>お知らせ・活動レポート</span></div>
     <div class="menu-item" onclick="showPanel('members',this)"><i class="fas fa-users"></i><span>メンバー</span></div>
     <div class="menu-item" onclick="showPanel('boards',this)"><i class="fas fa-comments"></i><span>掲示板</span></div>
-    <div class="menu-item" onclick="showPanel('interviews',this)"><i class="fas fa-film"></i><span>活動ムービー</span></div>
     <div class="menu-item" onclick="showPanel('backup',this)"><i class="fas fa-database"></i><span>バックアップ</span></div>
   </div>
 </div>
@@ -316,7 +343,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   <div class="stat-row">
     <div class="stat-box"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="num" id="dMem">0</div><div class="lbl">メンバー</div><div class="trend up"><i class="fas fa-arrow-up"></i> 増加中</div></div>
     <div class="stat-box"><div class="stat-icon"><i class="fas fa-calendar"></i></div><div class="num" id="dEv">0</div><div class="lbl">イベント</div><div class="trend stable"><i class="fas fa-minus"></i> 安定</div></div>
-    <div class="stat-box"><div class="stat-icon"><i class="fas fa-newspaper"></i></div><div class="num" id="dBlog">0</div><div class="lbl">お知らせ/レポート</div><div class="trend up"><i class="fas fa-arrow-up"></i> 新着</div></div>
+    <div class="stat-box"><div class="stat-icon"><i class="fas fa-newspaper"></i></div><div class="num" id="dBlog">0</div><div class="lbl">お知らせ・レポート</div><div class="trend up"><i class="fas fa-arrow-up"></i> 新着</div></div>
     <div class="stat-box"><div class="stat-icon"><i class="fas fa-comments"></i></div><div class="num" id="dBoard">0</div><div class="lbl">掲示板</div><div class="trend up"><i class="fas fa-arrow-up"></i> 活発</div></div>
   </div>
 
@@ -412,11 +439,23 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   </div>
 </div>
 
-<!-- BLOGS -->
+<!-- BLOGS (UNIFIED: お知らせ + 活動レポート + 活動ムービー) -->
 <div class="panel" id="panel-blogs">
-  <div class="panel-head"><h2><i class="fas fa-newspaper"></i> お知らせ/レポート管理</h2>
-    <button class="btn btn-primary" onclick="openBlogForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
-  <div class="tbl-wrap"><table><thead><tr><th>タイトル</th><th>カテゴリ</th><th>日付</th><th>著者</th><th>操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
+  <div class="panel-head"><h2><i class="fas fa-newspaper"></i> お知らせ・活動レポート管理</h2>
+    <div style="display:flex;gap:.3rem">
+      <button class="btn btn-outline" onclick="openBlogForm(null,'お知らせ')"><i class="fas fa-bullhorn"></i> お知らせ</button>
+      <button class="btn btn-outline" onclick="openBlogForm(null,'活動レポート')"><i class="fas fa-file-alt"></i> レポート</button>
+      <button class="btn btn-primary" onclick="openBlogForm(null,'活動ムービー')"><i class="fas fa-film"></i> ムービー</button>
+    </div>
+  </div>
+  <!-- Category tabs -->
+  <div class="blog-tabs" style="display:flex;gap:.3rem;margin-bottom:.6rem;flex-wrap:wrap">
+    <button class="blog-tab active" onclick="filterBlogTab('all',this)"><i class="fas fa-th-list"></i> 全て <span class="tab-count" id="tabCountAll">0</span></button>
+    <button class="blog-tab" onclick="filterBlogTab('お知らせ',this)"><i class="fas fa-bullhorn"></i> お知らせ <span class="tab-count" id="tabCountNews">0</span></button>
+    <button class="blog-tab" onclick="filterBlogTab('活動レポート',this)"><i class="fas fa-file-alt"></i> 活動レポート <span class="tab-count" id="tabCountReport">0</span></button>
+    <button class="blog-tab" onclick="filterBlogTab('活動ムービー',this)"><i class="fas fa-film"></i> 活動ムービー <span class="tab-count" id="tabCountMovie">0</span></button>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>サムネイル</th><th>タイトル</th><th>カテゴリ</th><th>日付</th><th>著者</th><th>操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
 </div>
 
 <!-- MEMBERS -->
@@ -438,14 +477,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 <div class="panel" id="panel-boards">
   <div class="panel-head"><h2><i class="fas fa-comments"></i> 掲示板管理</h2></div>
   <div id="boardAdminList"></div>
-</div>
-
-<!-- INTERVIEWS -->
-<div class="panel" id="panel-interviews">
-  <div class="panel-head"><h2><i class="fas fa-film"></i> 活動ムービー管理</h2>
-    <button class="btn btn-primary" onclick="openInterviewForm()"><i class="fas fa-plus"></i> 新規追加</button></div>
-  <p style="font-size:.72rem;color:var(--tl);margin-bottom:.6rem"><i class="fas fa-info-circle" style="color:var(--c1);margin-right:.2rem"></i>YouTube動画のURLを入力して活動ムービーセクションに表示できます</p>
-  <div class="tbl-wrap"><table><thead><tr><th>サムネイル</th><th>タイトル</th><th>出演者</th><th>日付</th><th>操作</th></tr></thead><tbody id="interviewTbl"></tbody></table></div>
 </div>
 
 
@@ -511,41 +542,49 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 </div>
 
 <div id="blogModal" class="modal">
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:580px">
     <button class="modal-close" onclick="closeM('blogModal')">&times;</button>
-    <div class="modal-title"><i class="fas fa-pen-fancy"></i> <span id="blogFormTitle">お知らせ/レポート作成</span></div>
+    <div class="modal-title"><i class="fas fa-pen-fancy"></i> <span id="blogFormTitle">投稿作成</span></div>
+    <!-- Category tabs in modal -->
+    <div class="blog-form-tabs" style="display:flex;gap:.25rem;margin-bottom:.8rem;padding:.3rem;background:rgba(16,185,129,.04);border-radius:var(--r2)">
+      <button type="button" class="blog-form-tab active" data-cat="お知らせ" onclick="switchBlogFormTab('お知らせ',this)">
+        <i class="fas fa-bullhorn"></i> お知らせ</button>
+      <button type="button" class="blog-form-tab" data-cat="活動レポート" onclick="switchBlogFormTab('活動レポート',this)">
+        <i class="fas fa-file-alt"></i> 活動レポート</button>
+      <button type="button" class="blog-form-tab" data-cat="活動ムービー" onclick="switchBlogFormTab('活動ムービー',this)">
+        <i class="fas fa-film"></i> 活動ムービー</button>
+    </div>
     <form onsubmit="saveBlog(event)">
       <input type="hidden" id="blogId">
+      <input type="hidden" id="blogCat" value="お知らせ">
       <div class="fg"><label>タイトル *</label><input id="blogTitle" required></div>
-      <div class="fg"><label>カテゴリ *</label>
-        <select id="blogCat"><option>お知らせ</option><option>活動レポート</option><option>イベントレポート</option><option>メンバー紹介</option></select>
+      <!-- YouTube fields (活動ムービー only) -->
+      <div id="blogYtFields" style="display:none">
+        <div class="fg"><label><i class="fab fa-youtube" style="color:#f00;margin-right:.2rem"></i>YouTube URL *</label>
+          <input id="blogYtUrl" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="fg"><label>出演者</label><input id="blogSpeaker" placeholder="名前"></div>
+        <div id="blogYtPreview" style="margin-bottom:.5rem;border-radius:var(--r2);overflow:hidden;display:none"></div>
       </div>
-      <div class="fg"><label>概要</label><textarea id="blogExcerpt"></textarea></div>
-      <div class="fg"><label>本文</label><textarea id="blogContent" style="min-height:100px"></textarea></div>
-      <div class="fg"><label>画像URL</label><input id="blogImg"></div>
-      <div class="fg"><label>画像アップロード</label><input type="file" id="blogImgFile" accept="image/*" onchange="uploadImg(this,'blogImg')"></div>
+      <!-- Text fields (お知らせ/活動レポート) -->
+      <div id="blogTextFields">
+        <div class="fg"><label>概要</label><textarea id="blogExcerpt"></textarea></div>
+        <div class="fg"><label>本文</label><textarea id="blogContent" style="min-height:100px"></textarea></div>
+        <div class="fg"><label>画像URL</label><input id="blogImg"></div>
+        <div class="fg"><label>画像アップロード</label><input type="file" id="blogImgFile" accept="image/*" onchange="uploadImg(this,'blogImg')"></div>
+      </div>
+      <!-- Description (活動ムービー) -->
+      <div id="blogMovieDescField" style="display:none">
+        <div class="fg"><label>説明</label><textarea id="blogMovieDesc" placeholder="動画の概要を入力"></textarea></div>
+      </div>
+      <!-- Date (all types) -->
+      <div class="fg"><label>日付</label><input type="date" id="blogDate"></div>
       <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存</button>
     </form>
   </div>
 </div>
 
-<!-- INTERVIEW MODAL -->
-<div id="interviewModal" class="modal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeM('interviewModal')">&times;</button>
-    <div class="modal-title"><i class="fas fa-film"></i> <span id="ivFormTitle">活動ムービー追加</span></div>
-    <form onsubmit="saveInterview(event)">
-      <input type="hidden" id="ivId">
-      <div class="fg"><label>タイトル *</label><input id="ivTitle" required placeholder="活動ムービータイトル"></div>
-      <div class="fg"><label><i class="fab fa-youtube" style="color:#f00;margin-right:.2rem"></i>YouTube URL *</label><input id="ivUrl" required placeholder="https://www.youtube.com/watch?v=..."></div>
-      <div class="fg"><label>出演者</label><input id="ivSpeaker" placeholder="名前"></div>
-      <div class="fg"><label>説明</label><textarea id="ivDesc" placeholder="動画の概要を入力"></textarea></div>
-      <div class="fg"><label>日付</label><input type="date" id="ivDate"></div>
-      <div id="ivPreview" style="margin-bottom:.5rem;border-radius:var(--r2);overflow:hidden;display:none"></div>
-      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存</button>
-    </form>
-  </div>
-</div>
+
 
 <!-- MEMBER EDIT MODAL -->
 <div id="memEditModal" class="modal" style="display:none">
@@ -602,7 +641,8 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 </div>
 
 <script>
-let admin=null,members=[],events=[],blogs=[],boards=[],settings={},interviews=[],opMemberIds=[];
+let admin=null,members=[],events=[],blogs=[],boards=[],settings={},opMemberIds=[];
+let _blogFilter='all'; // current blog tab filter
 
 /* Loading */
 window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('adminLoading').classList.add('hide')},800)});
@@ -641,17 +681,15 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 async function loadAll(){
-  [members,events,blogs,boards,settings,interviews,opMemberIds]=await Promise.all([
+  [members,events,blogs,boards,settings,opMemberIds]=await Promise.all([
     fetch('/api/members').then(r=>r.json()),
     fetch('/api/events').then(r=>r.json()),
     fetch('/api/blogs').then(r=>r.json()),
     fetch('/api/boards').then(r=>r.json()),
     fetch('/api/site-settings').then(r=>r.json()),
-    fetch('/api/interviews').then(r=>r.json()),
     fetch('/api/admin/operating-members').then(r=>r.json())
   ]);
   renderDash();renderEvTbl();renderBlogTbl();renderMemTbl();renderBoardAdmin();
-  renderInterviewTbl();
   document.getElementById('hTitle').value=settings.heroTitle||'';
   document.getElementById('hSub').value=settings.heroSubtitle||'';
   document.getElementById('hAbout').value=settings.aboutTitle||'';
@@ -735,7 +773,7 @@ function renderDash(){
   const activities=[
     {text:`<strong>${members.length}</strong>名のメンバーが登録中`,time:'最新',dot:'green'},
     {text:`<strong>${events.filter(e=>!e.isPast).length}</strong>件のイベントが予定`,time:'今後',dot:'blue'},
-    {text:`お知らせ/レポート <strong>${blogs.length}</strong>件が公開中`,time:'累計',dot:'purple'},
+    {text:`お知らせ・レポート <strong>${blogs.length}</strong>件が公開中`,time:'累計',dot:'purple'},
     {text:`掲示板 <strong>${boards.length}</strong>件のディスカッション`,time:'累計',dot:'amber'},
     {text:`最新登録: <strong>${members.length>0?members[members.length-1].name:'--'}</strong>`,time:'新規',dot:'green'}
   ];
@@ -874,39 +912,132 @@ async function saveEvent(e){
 }
 async function delEvent(id){if(confirm('削除しますか？')){await fetch(`/api/admin/events/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
 
-// Blogs
+// Blogs (unified)
+function getCatBadge(cat){
+  if(cat==='お知らせ') return '<span class="cat-badge cat-news"><i class="fas fa-bullhorn"></i> お知らせ</span>';
+  if(cat==='活動レポート') return '<span class="cat-badge cat-report"><i class="fas fa-file-alt"></i> 活動レポート</span>';
+  if(cat==='活動ムービー') return '<span class="cat-badge cat-movie"><i class="fas fa-film"></i> 活動ムービー</span>';
+  return `<span class="cat-badge cat-other">${cat}</span>`;
+}
 function renderBlogTbl(){
   const t=document.getElementById('blogTbl');t.innerHTML='';
-  blogs.forEach(b=>{
-    t.innerHTML+=`<tr><td style="font-weight:600">${b.title}</td>
-      <td><span class="status-tag active">${b.category}</span></td>
-      <td style="font-size:.72rem">${b.date}</td><td style="font-size:.72rem">${b.author||'--'}</td>
+  // Count by category
+  const countAll=blogs.length;
+  const countNews=blogs.filter(b=>b.category==='お知らせ').length;
+  const countReport=blogs.filter(b=>b.category==='活動レポート').length;
+  const countMovie=blogs.filter(b=>b.category==='活動ムービー').length;
+  document.getElementById('tabCountAll').textContent=countAll;
+  document.getElementById('tabCountNews').textContent=countNews;
+  document.getElementById('tabCountReport').textContent=countReport;
+  document.getElementById('tabCountMovie').textContent=countMovie;
+
+  const filtered=_blogFilter==='all'?blogs:blogs.filter(b=>b.category===_blogFilter);
+  const sorted=[...filtered].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if(!sorted.length){
+    t.innerHTML='<tr><td colspan="6" style="text-align:center;padding:1.5rem;color:var(--tl)"><i class="fas fa-inbox" style="font-size:1.2rem;color:var(--c5);display:block;margin-bottom:.3rem"></i>投稿はまだありません</td></tr>';
+    return;
+  }
+  sorted.forEach(b=>{
+    const isMovie=b.category==='活動ムービー'&&b.youtubeId;
+    const thumb=isMovie?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" style="width:60px;height:34px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
+      :(b.imageUrl?`<img src="${b.imageUrl}" style="width:60px;height:34px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
+      :'<span style="color:var(--tl);font-size:.6rem">-</span>');
+    t.innerHTML+=`<tr>
+      <td>${thumb}</td>
+      <td style="font-weight:600">${b.title}${isMovie?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem"></i>':''}</td>
+      <td>${getCatBadge(b.category)}</td>
+      <td style="font-size:.72rem">${b.date||'--'}</td>
+      <td style="font-size:.72rem">${b.author||'--'}</td>
       <td><button class="btn btn-outline btn-sm" onclick="editBlog('${b.id}')"><i class="fas fa-edit"></i></button>
       <button class="btn btn-danger btn-sm" onclick="delBlog('${b.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
   });
 }
-function openBlogForm(b){
-  document.getElementById('blogFormTitle').textContent=b?'お知らせ/レポート編集':'お知らせ/レポート作成';
+function filterBlogTab(cat,el){
+  _blogFilter=cat;
+  document.querySelectorAll('.blog-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderBlogTbl();
+}
+function switchBlogFormTab(cat,el){
+  document.querySelectorAll('.blog-form-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('blogCat').value=cat;
+  const isMovie=cat==='活動ムービー';
+  document.getElementById('blogYtFields').style.display=isMovie?'block':'none';
+  document.getElementById('blogMovieDescField').style.display=isMovie?'block':'none';
+  document.getElementById('blogTextFields').style.display=isMovie?'none':'block';
+  // Update title
+  const titleEl=document.getElementById('blogFormTitle');
+  const id=document.getElementById('blogId').value;
+  if(cat==='お知らせ') titleEl.innerHTML='<i class="fas fa-bullhorn" style="margin-right:.3rem"></i> '+(id?'お知らせ編集':'お知らせ作成');
+  else if(cat==='活動レポート') titleEl.innerHTML='<i class="fas fa-file-alt" style="margin-right:.3rem"></i> '+(id?'活動レポート編集':'活動レポート作成');
+  else titleEl.innerHTML='<i class="fas fa-film" style="margin-right:.3rem"></i> '+(id?'活動ムービー編集':'活動ムービー追加');
+}
+function openBlogForm(b,defaultCat){
+  const cat=b?b.category:(defaultCat||'お知らせ');
   document.getElementById('blogId').value=b?b.id:'';
   document.getElementById('blogTitle').value=b?b.title:'';
-  document.getElementById('blogCat').value=b?b.category:'お知らせ';
-  document.getElementById('blogExcerpt').value=b?b.excerpt:'';
-  document.getElementById('blogContent').value=b?b.content:'';
-  document.getElementById('blogImg').value=b?b.imageUrl:'';
+  document.getElementById('blogCat').value=cat;
+  document.getElementById('blogExcerpt').value=b?b.excerpt||'':'';
+  document.getElementById('blogContent').value=b?b.content||'':'';
+  document.getElementById('blogImg').value=b?b.imageUrl||'':'';
+  document.getElementById('blogDate').value=b?b.date||'':'';
+  document.getElementById('blogYtUrl').value=b?b.youtubeUrl||'':'';
+  document.getElementById('blogSpeaker').value=b?b.author||'':'';
+  document.getElementById('blogMovieDesc').value=b?(b.excerpt||b.content||''):'';
+  // YouTube preview
+  const ytPreview=document.getElementById('blogYtPreview');
+  if(b&&b.youtubeId){
+    ytPreview.style.display='block';
+    ytPreview.innerHTML=`<img src="https://img.youtube.com/vi/${b.youtubeId}/mqdefault.jpg" style="width:100%;border-radius:var(--r2)">`;
+  }else{ytPreview.style.display='none';ytPreview.innerHTML=''}
+  // Activate correct tab
+  document.querySelectorAll('.blog-form-tab').forEach(t=>{
+    t.classList.toggle('active',t.dataset.cat===cat);
+  });
+  switchBlogFormTab(cat,document.querySelector(`.blog-form-tab[data-cat="${cat}"]`));
   openM('blogModal');
 }
 function editBlog(id){openBlogForm(blogs.find(b=>b.id===id))}
 async function saveBlog(e){
   e.preventDefault();
   const id=document.getElementById('blogId').value;
-  const body={title:document.getElementById('blogTitle').value,category:document.getElementById('blogCat').value,
-    excerpt:document.getElementById('blogExcerpt').value,content:document.getElementById('blogContent').value,
-    imageUrl:document.getElementById('blogImg').value,author:admin.name};
+  const cat=document.getElementById('blogCat').value;
+  const isMovie=cat==='活動ムービー';
+  let body;
+  if(isMovie){
+    const ytUrl=document.getElementById('blogYtUrl').value;
+    const desc=document.getElementById('blogMovieDesc').value;
+    body={title:document.getElementById('blogTitle').value,category:cat,
+      youtubeUrl:ytUrl,excerpt:desc,content:desc,
+      author:document.getElementById('blogSpeaker').value||admin.name,
+      date:document.getElementById('blogDate').value};
+  }else{
+    body={title:document.getElementById('blogTitle').value,category:cat,
+      excerpt:document.getElementById('blogExcerpt').value,
+      content:document.getElementById('blogContent').value,
+      imageUrl:document.getElementById('blogImg').value,
+      author:admin.name,
+      date:document.getElementById('blogDate').value};
+  }
   const url=id?`/api/admin/blogs/${id}`:'/api/admin/blogs';
   const r=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){closeM('blogModal');loadAll();showToast(id?'更新しました':'作成しました')}
 }
 async function delBlog(id){if(confirm('削除しますか？')){await fetch(`/api/admin/blogs/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
+
+// YouTube URL preview in blog form
+document.addEventListener('DOMContentLoaded',()=>{
+  const ytInput=document.getElementById('blogYtUrl');
+  if(ytInput) ytInput.addEventListener('input',function(){
+    const m=this.value.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+    const preview=document.getElementById('blogYtPreview');
+    if(m){
+      preview.style.display='block';
+      preview.innerHTML=`<img src="https://img.youtube.com/vi/${m[1]}/mqdefault.jpg" style="width:100%;border-radius:var(--r2)">`;
+    }else{preview.style.display='none';preview.innerHTML=''}
+  });
+});
 
 // Members
 function renderMemTbl(){
@@ -1084,59 +1215,6 @@ async function uploadImg(input,targetId){
 function openM(id){document.getElementById(id).classList.add('active')}
 function closeM(id){document.getElementById(id).classList.remove('active')}
 document.addEventListener('click',e=>{if(e.target.classList.contains('modal'))e.target.classList.remove('active')});
-
-// Interviews
-function renderInterviewTbl(){
-  const t=document.getElementById('interviewTbl');t.innerHTML='';
-  if(!interviews.length){t.innerHTML='<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--tl)"><i class="fas fa-video" style="font-size:1.2rem;color:var(--c5);display:block;margin-bottom:.3rem"></i>活動ムービーはまだありません</td></tr>';return}
-  interviews.sort((a,b)=>{const da=a.date||'';const db=b.date||'';return da>db?-1:da<db?1:0}).forEach(iv=>{
-    const thumb=iv.youtubeId?`https://img.youtube.com/vi/${iv.youtubeId}/default.jpg`:'';
-    t.innerHTML+=`<tr>
-      <td>${thumb?`<img src="${thumb}" style="width:80px;height:45px;object-fit:cover;border-radius:6px;border:1px solid rgba(16,185,129,.08)">`:'<span style="color:var(--tl);font-size:.68rem">なし</span>'}</td>
-      <td style="font-weight:600">${iv.title}</td>
-      <td style="font-size:.72rem">${iv.speaker||'--'}</td>
-      <td style="font-size:.72rem">${iv.date||'--'}</td>
-      <td><button class="btn btn-outline btn-sm" onclick="editInterview('${iv.id}')"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="delInterview('${iv.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
-  });
-}
-function openInterviewForm(iv){
-  document.getElementById('ivFormTitle').textContent=iv?'活動ムービー編集':'活動ムービー追加';
-  document.getElementById('ivId').value=iv?iv.id:'';
-  document.getElementById('ivTitle').value=iv?iv.title:'';
-  document.getElementById('ivUrl').value=iv?iv.youtubeUrl:'';
-  document.getElementById('ivSpeaker').value=iv?iv.speaker:'';
-  document.getElementById('ivDesc').value=iv?iv.description:'';
-  document.getElementById('ivDate').value=iv?iv.date:'';
-  const preview=document.getElementById('ivPreview');
-  if(iv&&iv.youtubeId){
-    preview.style.display='block';
-    preview.innerHTML=`<img src="https://img.youtube.com/vi/${iv.youtubeId}/mqdefault.jpg" style="width:100%;border-radius:var(--r2)">`;
-  }else{preview.style.display='none';preview.innerHTML=''}
-  openM('interviewModal');
-}
-function editInterview(id){openInterviewForm(interviews.find(i=>i.id===id))}
-async function saveInterview(e){
-  e.preventDefault();
-  const id=document.getElementById('ivId').value;
-  const body={title:document.getElementById('ivTitle').value,youtubeUrl:document.getElementById('ivUrl').value,
-    speaker:document.getElementById('ivSpeaker').value,description:document.getElementById('ivDesc').value,
-    date:document.getElementById('ivDate').value};
-  const url=id?`/api/admin/interviews/${id}`:'/api/admin/interviews';
-  const r=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
-  if(r.success){closeM('interviewModal');loadAll();showToast(id?'更新しました':'追加しました')}
-}
-async function delInterview(id){if(confirm('削除しますか？')){await fetch(`/api/admin/interviews/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
-
-// YouTube URL preview
-document.getElementById('ivUrl').addEventListener('input',function(){
-  const m=this.value.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
-  const preview=document.getElementById('ivPreview');
-  if(m){
-    preview.style.display='block';
-    preview.innerHTML=`<img src="https://img.youtube.com/vi/${m[1]}/mqdefault.jpg" style="width:100%;border-radius:var(--r2)">`;
-  }else{preview.style.display='none';preview.innerHTML=''}
-});
 
 // Member Tab Switch
 // Member Edit Modal

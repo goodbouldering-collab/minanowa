@@ -65,6 +65,49 @@ async function writeData(data) {
 }
 function genId(p) { return `${p}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; }
 
+// YouTube ID extractor
+function extractYoutubeId(url) {
+    if (!url) return '';
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
+    return m ? m[1] : '';
+}
+
+// Auto-migrate interviews into blogs on startup
+async function migrateInterviewsToBlogs() {
+    try {
+        const data = await readData();
+        if (!data.interviews || !data.interviews.length) return;
+        let migrated = 0;
+        for (const iv of data.interviews) {
+            const exists = (data.blogs || []).some(b => b.id === iv.id);
+            if (!exists) {
+                data.blogs.push({
+                    id: iv.id,
+                    title: iv.title || '',
+                    date: iv.date || new Date().toISOString().split('T')[0],
+                    category: '活動ムービー',
+                    excerpt: iv.description || '',
+                    content: iv.description || '',
+                    author: iv.speaker || '運営事務局',
+                    imageUrl: iv.youtubeId ? `https://img.youtube.com/vi/${iv.youtubeId}/hqdefault.jpg` : '',
+                    youtubeUrl: iv.youtubeUrl || '',
+                    youtubeId: iv.youtubeId || extractYoutubeId(iv.youtubeUrl),
+                    order: iv.order || 0
+                });
+                migrated++;
+            }
+        }
+        if (migrated > 0) {
+            // Remove interviews array after migration
+            data.interviews = [];
+            await writeData(data);
+            console.log(`✅ Migrated ${migrated} interviews into blogs`);
+        }
+    } catch (e) {
+        console.error('Migration error:', e);
+    }
+}
+
 // ==================== AUTH ====================
 app.post('/api/register', async (req, res) => {
     try {
@@ -607,11 +650,20 @@ app.delete('/api/admin/events/:id', async (req, res) => {
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 
-// Blogs CRUD
+// Blogs CRUD (unified: お知らせ, 活動レポート, 活動ムービー)
 app.post('/api/admin/blogs', async (req, res) => {
     try {
         const data = await readData();
-        const blog = { id: genId('blog'), ...req.body, date: req.body.date || new Date().toISOString().split('T')[0] };
+        const body = { ...req.body };
+        // Auto-extract YouTube ID if youtubeUrl provided
+        if (body.youtubeUrl && !body.youtubeId) {
+            body.youtubeId = extractYoutubeId(body.youtubeUrl);
+        }
+        // Auto-set thumbnail for video posts
+        if (body.youtubeId && !body.imageUrl) {
+            body.imageUrl = `https://img.youtube.com/vi/${body.youtubeId}/hqdefault.jpg`;
+        }
+        const blog = { id: genId('blog'), ...body, date: body.date || new Date().toISOString().split('T')[0] };
         data.blogs.push(blog);
         await writeData(data);
         res.json({ success: true, blog });
@@ -622,7 +674,14 @@ app.put('/api/admin/blogs/:id', async (req, res) => {
         const data = await readData();
         const idx = data.blogs.findIndex(b => b.id === req.params.id);
         if (idx === -1) return res.status(404).json({ error: 'not found' });
-        data.blogs[idx] = { ...data.blogs[idx], ...req.body, id: data.blogs[idx].id };
+        const body = { ...req.body };
+        if (body.youtubeUrl && !body.youtubeId) {
+            body.youtubeId = extractYoutubeId(body.youtubeUrl);
+        }
+        if (body.youtubeId && !body.imageUrl) {
+            body.imageUrl = `https://img.youtube.com/vi/${body.youtubeId}/hqdefault.jpg`;
+        }
+        data.blogs[idx] = { ...data.blogs[idx], ...body, id: data.blogs[idx].id };
         await writeData(data);
         res.json({ success: true, blog: data.blogs[idx] });
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
@@ -667,45 +726,68 @@ app.delete('/api/admin/boards/:id', async (req, res) => {
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 
-// ==================== INTERVIEWS ====================
+// ==================== INTERVIEWS (backward compat - reads from blogs) ====================
 app.get('/api/interviews', async (req, res) => {
-    try { res.json((await readData()).interviews || []); } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    try {
+        const data = await readData();
+        // Return blogs with category 活動ムービー in interview format (for hero video digest etc.)
+        const videoBlogs = (data.blogs || []).filter(b => b.category === '活動ムービー' && b.youtubeId);
+        const asInterviews = videoBlogs.map(b => ({
+            id: b.id, title: b.title, description: b.excerpt || b.content || '',
+            youtubeUrl: b.youtubeUrl || '', youtubeId: b.youtubeId || '',
+            speaker: b.author || '運営事務局', date: b.date || '', order: b.order || 0
+        }));
+        // Also include any remaining legacy interviews
+        const legacy = (data.interviews || []);
+        const allIds = new Set(asInterviews.map(i => i.id));
+        legacy.forEach(iv => { if (!allIds.has(iv.id)) asInterviews.push(iv); });
+        res.json(asInterviews);
+    } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
+// Legacy interview CRUD - redirect to blogs
 app.post('/api/admin/interviews', async (req, res) => {
     try {
         const data = await readData();
-        if (!data.interviews) data.interviews = [];
-        const { youtubeUrl } = req.body;
-        let youtubeId = '';
-        if (youtubeUrl) {
-            const m = youtubeUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
-            if (m) youtubeId = m[1];
-        }
-        const interview = { id: genId('interview'), ...req.body, youtubeId, order: data.interviews.length + 1 };
-        data.interviews.push(interview);
+        const { youtubeUrl, title, speaker, description, date } = req.body;
+        const youtubeId = extractYoutubeId(youtubeUrl);
+        const blog = {
+            id: genId('blog'), title: title || '', date: date || new Date().toISOString().split('T')[0],
+            category: '活動ムービー', excerpt: description || '', content: description || '',
+            author: speaker || '運営事務局',
+            imageUrl: youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : '',
+            youtubeUrl: youtubeUrl || '', youtubeId
+        };
+        data.blogs.push(blog);
         await writeData(data);
-        res.json({ success: true, interview });
+        res.json({ success: true, interview: blog });
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 app.put('/api/admin/interviews/:id', async (req, res) => {
     try {
         const data = await readData();
-        if (!data.interviews) data.interviews = [];
-        const idx = data.interviews.findIndex(i => i.id === req.params.id);
+        const idx = data.blogs.findIndex(b => b.id === req.params.id);
         if (idx === -1) return res.status(404).json({ error: 'not found' });
-        const updates = { ...req.body };
-        if (updates.youtubeUrl) {
-            const m = updates.youtubeUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([\w-]{11})/);
-            if (m) updates.youtubeId = m[1];
-        }
-        data.interviews[idx] = { ...data.interviews[idx], ...updates, id: data.interviews[idx].id };
+        const { youtubeUrl, title, speaker, description, date } = req.body;
+        const youtubeId = youtubeUrl ? extractYoutubeId(youtubeUrl) : data.blogs[idx].youtubeId;
+        Object.assign(data.blogs[idx], {
+            title: title || data.blogs[idx].title,
+            excerpt: description || data.blogs[idx].excerpt,
+            content: description || data.blogs[idx].content,
+            author: speaker || data.blogs[idx].author,
+            date: date || data.blogs[idx].date,
+            youtubeUrl: youtubeUrl || data.blogs[idx].youtubeUrl,
+            youtubeId: youtubeId || data.blogs[idx].youtubeId,
+            imageUrl: youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : data.blogs[idx].imageUrl
+        });
         await writeData(data);
-        res.json({ success: true, interview: data.interviews[idx] });
+        res.json({ success: true, interview: data.blogs[idx] });
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 app.delete('/api/admin/interviews/:id', async (req, res) => {
     try {
         const data = await readData();
+        data.blogs = (data.blogs || []).filter(b => b.id !== req.params.id);
+        // Also clean legacy interviews
         data.interviews = (data.interviews || []).filter(i => i.id !== req.params.id);
         await writeData(data);
         res.json({ success: true });
@@ -1095,7 +1177,9 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'サーバーエラー' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`🎉 みんなのWA Server running on port ${PORT}`);
     console.log(`🔐 Admin: admin@minanowa.com / password123`);
+    // Auto-migrate interviews into blogs on startup
+    await migrateInterviewsToBlogs();
 });

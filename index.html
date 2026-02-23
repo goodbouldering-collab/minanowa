@@ -213,6 +213,8 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .btn-outline:hover{background:var(--c1);color:#fff;border-color:var(--c1);box-shadow:0 4px 16px rgba(13,124,102,.2);transform:translateY(-2px)}
 .btn-ghost{background:rgba(13,124,102,.06);color:var(--c1);border:none}
 .btn-ghost:hover{background:rgba(13,124,102,.12)}
+.btn-instagram{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
+.btn-instagram:hover{filter:brightness(1.08);transform:translateY(-3px);box-shadow:0 6px 20px rgba(220,39,67,.25)}
 .btn-sm{padding:.45rem .95rem;font-size:.88rem}
 .btn-full{width:100%;justify-content:center}
 .btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);
@@ -1622,7 +1624,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   /* === FORM === */
   .form-group input,.form-group select,.form-group textarea{font-size:.84rem;padding:.55rem .7rem;border-radius:10px}
   .form-group label{font-size:.76rem}
-  .btn-primary{font-size:.82rem;padding:.55rem 1rem}
+  .btn-primary,.btn-instagram,.btn-outline{font-size:.82rem;padding:.55rem 1rem}
   
   /* === BG SHAPES === */
   .bg-shape{display:none}
@@ -1942,7 +1944,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   </div>
 
   <div style="text-align:center;margin-top:1.8rem" class="reveal">
-    <button class="btn btn-primary" onclick="openModal('regModal')" style="padding:.7rem 2.2rem;font-size:1.05rem;font-weight:700"><i class="fas fa-user-plus"></i> 無料で参加する</button>
+    <button class="btn btn-primary" onclick="openModal('regModal')"><i class="fas fa-user-plus"></i> 無料で参加する</button>
   </div>
 </section>
 </div><!-- /about -->
@@ -2030,10 +2032,10 @@ html,body{max-width:100vw;overflow-x:hidden}
         <div class="fg"><label>お名前 *</label><input required></div>
         <div class="fg"><label>メールアドレス *</label><input type="email" required></div>
         <div class="fg"><label>お問い合わせ内容 *</label><textarea required></textarea></div>
-        <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
-          <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center"><i class="fas fa-paper-plane"></i> 送信する</button>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary" style="flex:1;min-width:0;justify-content:center"><i class="fas fa-paper-plane"></i> 送信する</button>
           <a href="https://ig.me/m/minnano_wa.shiga" target="_blank" rel="noopener"
-             class="btn" style="flex:none;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;justify-content:center;padding:.65rem 1.2rem">
+             class="btn btn-instagram" style="flex:1;min-width:0;justify-content:center">
             <i class="fab fa-instagram"></i> DMで問い合わせ
           </a>
         </div>
@@ -2134,7 +2136,7 @@ html,body{max-width:100vw;overflow-x:hidden}
         <input type="text" id="resetLinkUrl" readonly style="flex:1;padding:.5rem .7rem;border:1px solid rgba(0,0,0,.1);border-radius:8px;font-size:.72rem;background:#fff;color:var(--td)">
         <button onclick="copyResetLink()" class="btn btn-sm btn-primary" style="white-space:nowrap;padding:.5rem .8rem;font-size:.75rem"><i class="fas fa-copy"></i></button>
       </div>
-      <button onclick="openResetFromLink()" class="btn btn-primary btn-full" style="margin-top:.6rem;font-size:.9rem"><i class="fas fa-arrow-right"></i> 今すぐパスワードを再設定する</button>
+      <button onclick="openResetFromLink()" class="btn btn-primary btn-full" style="margin-top:.6rem"><i class="fas fa-arrow-right"></i> 今すぐパスワードを再設定する</button>
     </div>
     <p style="margin-top:.8rem;text-align:center;font-size:.78rem;color:var(--tl)">
       <a href="#" style="color:var(--c1);font-weight:500" onclick="event.preventDefault();closeModal('resetRequestModal');openModal('loginModal')"><i class="fas fa-arrow-left" style="margin-right:.2rem"></i>ログインに戻る</a>
