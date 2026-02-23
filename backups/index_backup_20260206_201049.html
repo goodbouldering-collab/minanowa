@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みんなのWA - 彦根発 異業種交流コミュニティ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ========== VARIABLES ========== */
+:root{
+  --c1:#10b981;--c2:#059669;--c3:#34d399;--cbg:#f0fdf9;
+  --td:#1f2937;--tl:#6b7280;--white:#fff;
+  --sh:0 4px 20px rgba(16,185,129,.12);
+  --sh2:0 8px 30px rgba(16,185,129,.18);
+  --r:12px;--r2:8px;
+}
+/* ========== RESET ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--td);background:var(--cbg);font-size:13px;line-height:1.5;letter-spacing:-.01em;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button,input,select,textarea{font-family:inherit;font-size:inherit}
+
+/* ========== SHARED: Section ========== */
+.sec{padding:2rem 1rem;max-width:1300px;margin:0 auto}
+.sec-divider{border-top:1px solid #e5e7eb;margin:0 auto;max-width:1300px}
+.sec-head{text-align:center;margin-bottom:.8rem}
+.sec-head h2{font-size:1.35rem;font-weight:800;display:inline-flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sec-head p{color:var(--tl);font-size:.82rem;margin-top:.15rem}
+
+/* ========== SHARED: Carousel ========== */
+.carousel-wrap{position:relative;overflow:hidden;margin:0 -.5rem}
+.carousel-track{display:flex;gap:.8rem;overflow-x:auto;scroll-behavior:smooth;padding:.5rem .5rem 1rem;
+  scrollbar-width:thin;scrollbar-color:var(--c1) transparent;-webkit-overflow-scrolling:touch}
+.carousel-track::-webkit-scrollbar{height:4px}
+.carousel-track::-webkit-scrollbar-thumb{background:var(--c1);border-radius:4px}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-60%);z-index:5;width:28px;height:28px;
+  border-radius:50%;border:none;background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.15);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--c2);transition:.2s}
+.carousel-btn:hover{background:var(--c1);color:#fff}
+.carousel-btn.prev{left:2px}
+.carousel-btn.next{right:2px}
+
+/* ========== SHARED: Card ========== */
+.card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;transition:.25s;flex-shrink:0}
+.card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.card-img{width:100%;height:140px;object-fit:cover}
+.card-body{padding:.7rem .8rem}
+.card-tag{display:inline-block;background:var(--cbg);color:var(--c1);font-size:.65rem;font-weight:600;
+  padding:.15rem .5rem;border-radius:10px;margin-bottom:.3rem}
+.card-title{font-size:.88rem;font-weight:700;line-height:1.35;margin-bottom:.25rem;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{color:var(--tl);font-size:.7rem;display:flex;gap:.5rem;align-items:center}
+
+/* ========== SHARED: Button ========== */
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem 1rem;border-radius:20px;border:none;
+  font-weight:600;font-size:.78rem;cursor:pointer;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 2px 10px rgba(16,185,129,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(16,185,129,.35)}
+.btn-outline{background:transparent;border:1.5px solid var(--c1);color:var(--c1)}
+.btn-outline:hover{background:var(--c1);color:#fff}
+.btn-sm{padding:.3rem .7rem;font-size:.72rem}
+.btn-full{width:100%;justify-content:center}
+
+/* ========== SHARED: Form ========== */
+.fg{margin-bottom:.7rem}
+.fg label{display:block;font-weight:600;font-size:.78rem;margin-bottom:.2rem;color:var(--td)}
+.fg input,.fg select,.fg textarea{width:100%;padding:.5rem .7rem;border:1.5px solid #e5e7eb;border-radius:var(--r2);
+  font-size:.82rem;transition:.2s;background:#fff}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+.fg textarea{resize:vertical;min-height:70px}
+
+/* ========== NAV ========== */
+nav{position:fixed;top:0;width:100%;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+  box-shadow:0 1px 12px rgba(16,185,129,.08);z-index:1000}
+.nav-inner{max-width:1300px;margin:0 auto;padding:.5rem 1rem;display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-size:1.15rem;font-weight:900;background:linear-gradient(135deg,var(--c1),var(--c2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:1rem;align-items:center;list-style:none}
+.nav-links a{font-weight:500;font-size:.82rem;color:var(--td);position:relative;transition:.2s}
+.nav-links a:hover{color:var(--c1)}
+.hamburger{display:none;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--td)}
+@media(max-width:768px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;
+    flex-direction:column;padding:1rem;gap:.8rem;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+  .nav-links.open{display:flex}
+  .hamburger{display:block}
+}
+
+/* ========== HERO ========== */
+.hero{margin-top:48px;position:relative;padding:3rem 1.5rem 2.5rem;text-align:center;color:#fff;overflow:hidden;
+  background:linear-gradient(135deg,#10b981 0%,#059669 50%,#047857 100%)}
+.hero h1{font-size:2.2rem;font-weight:900;margin-bottom:.4rem;text-shadow:0 2px 10px rgba(0,0,0,.15)}
+.hero p{font-size:1rem;opacity:.95;margin-bottom:1.5rem}
+.hero-stats{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.15);backdrop-filter:blur(6px);padding:.8rem 1.2rem;border-radius:var(--r);
+  border:1px solid rgba(255,255,255,.2);text-align:center;min-width:100px}
+.stat b{display:block;font-size:1.8rem;font-weight:900}
+.stat span{font-size:.75rem;opacity:.9}
+.hero-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.particle{position:absolute;background:rgba(255,255,255,.08);border-radius:50%;animation:fl 20s infinite ease-in-out}
+@keyframes fl{0%,100%{transform:translateY(0) translateX(0)}50%{transform:translateY(-80px) translateX(40px)}}
+
+/* ========== ABOUT ========== */
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-top:.5rem}
+.about-card{background:#fff;border-radius:var(--r);padding:1.2rem;text-align:center;box-shadow:var(--sh)}
+.about-card i{font-size:2rem;color:var(--c1);margin-bottom:.5rem}
+.about-card h3{font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.about-card p{font-size:.78rem;color:var(--tl);line-height:1.5}
+
+/* ========== EVENT CARD ========== */
+.ev-card{width:280px;min-height:280px;display:flex;flex-direction:column}
+.ev-card .card-body{flex:1;display:flex;flex-direction:column}
+.ev-card .ev-date{color:var(--c1);font-weight:600;font-size:.72rem;margin-bottom:.2rem}
+.ev-card .ev-loc{color:var(--tl);font-size:.72rem;margin-bottom:.4rem}
+.ev-card .ev-fee{font-size:.72rem;color:var(--td);font-weight:500;margin-top:auto;padding-top:.3rem}
+
+/* ========== MEMBER CARD ========== */
+.mem-card{width:200px;text-align:center;padding:1rem .8rem}
+.mem-avatar{width:70px;height:70px;border-radius:50%;object-fit:cover;margin:0 auto .5rem;border:3px solid var(--c1)}
+.mem-name{font-size:.85rem;font-weight:700}
+.mem-biz{color:var(--c1);font-size:.72rem;font-weight:600;margin:.1rem 0}
+.mem-loc{color:var(--tl);font-size:.68rem}
+
+/* ========== BLOG CARD ========== */
+.blog-card{width:260px}
+
+/* ========== BOARD ========== */
+.board-list{display:flex;flex-direction:column;gap:.6rem;max-width:800px;margin:0 auto}
+.board-post{background:#fff;border-radius:var(--r);padding:.8rem;box-shadow:var(--sh)}
+.board-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.board-header img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.board-header .bh-info{flex:1}
+.board-header .bh-name{font-weight:700;font-size:.8rem}
+.board-header .bh-time{font-size:.65rem;color:var(--tl)}
+.board-cat{display:inline-block;background:var(--cbg);color:var(--c1);font-size:.62rem;font-weight:600;
+  padding:.1rem .4rem;border-radius:8px;margin-bottom:.3rem}
+.board-title{font-weight:700;font-size:.85rem;margin-bottom:.2rem}
+.board-text{font-size:.78rem;color:var(--tl);line-height:1.5}
+.board-replies{margin-top:.5rem;border-top:1px solid #f3f4f6;padding-top:.4rem}
+.reply-item{display:flex;gap:.4rem;padding:.3rem 0;font-size:.75rem}
+.reply-item img{width:24px;height:24px;border-radius:50%;flex-shrink:0}
+.reply-item .r-name{font-weight:600;color:var(--td)}
+.reply-item .r-text{color:var(--tl)}
+.board-reply-form{display:flex;gap:.3rem;margin-top:.4rem}
+.board-reply-form input{flex:1;padding:.35rem .5rem;border:1.5px solid #e5e7eb;border-radius:var(--r2);font-size:.75rem}
+
+/* ========== FAQ ========== */
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:.5rem}
+.faq-item{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.faq-q{padding:.7rem .8rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  font-weight:600;font-size:.85rem;transition:.2s}
+.faq-q:hover{background:var(--cbg);color:var(--c1)}
+.faq-q i{transition:.3s;font-size:.7rem}
+.faq-item.active .faq-q i{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:.3s;padding:0 .8rem;color:var(--tl);font-size:.8rem;line-height:1.6}
+.faq-item.active .faq-a{max-height:300px;padding:0 .8rem .7rem}
+
+/* ========== CONTACT ========== */
+.contact-box{max-width:500px;margin:0 auto;background:#fff;padding:1.2rem;border-radius:var(--r);box-shadow:var(--sh)}
+
+/* ========== FOOTER ========== */
+footer{background:linear-gradient(135deg,#1f2937,#111827);color:#fff;padding:2rem 1rem 1rem;margin-top:2rem}
+.footer-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;margin-bottom:1.5rem}
+.footer-grid h4{font-size:.9rem;margin-bottom:.5rem}
+.footer-grid a{color:rgba(255,255,255,.65);font-size:.8rem;display:block;margin-bottom:.3rem;transition:.2s}
+.footer-grid a:hover{color:var(--c3)}
+.footer-bot{text-align:center;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:.75rem}
+
+/* ========== MODAL ========== */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center}
+.modal.active{display:flex}
+.modal-box{background:#fff;border-radius:var(--r);padding:1.5rem;max-width:480px;width:92%;max-height:85vh;overflow-y:auto;
+  animation:su .25s ease}
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{float:right;font-size:1.3rem;cursor:pointer;color:var(--tl);transition:.2s;background:none;border:none}
+.modal-close:hover{color:var(--c1)}
+.modal-title{font-size:1.1rem;font-weight:800;color:var(--c2);margin-bottom:.8rem}
+
+/* ========== MYPAGE ========== */
+.mypage-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px solid #f3f4f6}
+.mypage-avatar{width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid var(--c1)}
+.mypage-info h3{font-size:1rem;font-weight:700}
+.mypage-info p{color:var(--tl);font-size:.78rem}
+.avatar-upload{position:relative;cursor:pointer}
+.avatar-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.avatar-overlay{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;text-align:center;
+  font-size:.6rem;padding:.15rem;border-radius:0 0 50% 50%}
+
+/* ========== SEARCH ========== */
+.search-box{max-width:500px;margin:0 auto .8rem;position:relative}
+.search-box input{width:100%;padding:.5rem 2rem .5rem .8rem;border:1.5px solid var(--c1);border-radius:20px;font-size:.82rem}
+.search-box input:focus{outline:none;box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+.search-box i{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);color:var(--c1);font-size:.85rem}
+
+/* ========== USER BAR ========== */
+.user-bar{display:flex;align-items:center;gap:.5rem}
+.user-bar img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--c1);cursor:pointer}
+.user-bar .uname{font-size:.78rem;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="goHome()">みんなのWA</a>
+    <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')"><i class="fas fa-bars"></i></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">WAとは</a></li>
+      <li><a href="#events">交流会</a></li>
+      <li><a href="#members">メンバー</a></li>
+      <li><a href="#blogs">活動レポート</a></li>
+      <li><a href="#board">掲示板</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+      <li id="navAuth"><button class="btn btn-primary btn-sm" onclick="openModal('loginModal')">ログイン</button></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="hero-particles" id="particles"></div>
+  <h1 id="heroTitle">つながりが、可能性を広げる</h1>
+  <p id="heroSubtitle">彦根市を中心とした事業者の異業種交流コミュニティ</p>
+  <div class="hero-stats">
+    <div class="stat"><b id="cntMember">0</b><span>登録事業者</span></div>
+    <div class="stat"><b id="cntEvent">0</b><span>累計イベント</span></div>
+    <div class="stat"><b id="cntBlog">0</b><span>活動レポート</span></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="sec-head"><h2><i class="fas fa-heart"></i> みんなのWAとは</h2><p>地域の事業者がつながり、成長し合うコミュニティ</p></div>
+  <div class="about-grid">
+    <div class="about-card"><i class="fas fa-calendar-alt"></i><h3>定期的な交流会</h3><p>月1回、彦根市内で交流会を開催。名刺交換や事業紹介を通じてつながりを作ります。</p></div>
+    <div class="about-card"><i class="fas fa-users"></i><h3>多様な業種</h3><p>IT、飲食、教育、製造など、様々な業種の事業者が参加しています。</p></div>
+    <div class="about-card"><i class="fas fa-handshake"></i><h3>新しいつながり</h3><p>コラボレーションやビジネスチャンスが生まれる場を提供します。</p></div>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- EVENTS -->
+<section class="sec" id="events">
+  <div class="sec-head"><h2><i class="fas fa-calendar-check"></i> 開催予定の交流会</h2><p>カードをクリックして詳細を確認</p></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('evTrack',-280)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="evTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('evTrack',280)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- MEMBERS -->
+<section class="sec" id="members">
+  <div class="sec-head"><h2><i class="fas fa-user-friends"></i> 事業者メンバー</h2><p>様々な業種の事業者が活動しています</p></div>
+  <div class="search-box"><input type="text" id="memSearch" placeholder="業種、地域、名前で検索..."><i class="fas fa-search"></i></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('memTrack',-220)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="memTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('memTrack',220)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- BLOGS -->
+<section class="sec" id="blogs">
+  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> ブログ・お知らせ・活動レポート</h2><p>最新の活動やイベントレポート</p></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('blogTrack',-270)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="blogTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('blogTrack',270)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- BOARD -->
+<section class="sec" id="board">
+  <div class="sec-head"><h2><i class="fas fa-comments"></i> 掲示板</h2><p>事業者同士がつながり情報交換できる場</p></div>
+  <div style="text-align:center;margin-bottom:.6rem">
+    <button class="btn btn-primary btn-sm" onclick="currentUser?openModal('boardPostModal'):openModal('loginModal')"><i class="fas fa-pen"></i> 投稿する</button>
+  </div>
+  <div class="board-list" id="boardList"></div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-head"><h2><i class="fas fa-question-circle"></i> よくある質問</h2><p>みんなのWAについて</p></div>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>参加するにはどうすればいいですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">「会員登録」ボタンから必要事項を入力して申請してください。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>参加費用はかかりますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">会員登録は無料です。交流会参加時には1,000円〜3,000円程度の参加費をいただいています。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>どんな業種の方が参加していますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">IT・Web、飲食、教育、建設、サービス、農業、製造、小売など様々です。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>交流会の頻度はどのくらいですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">月1回、第3木曜日の19:00〜21:00に開催しています。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>個人事業主でも参加できますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">はい、法人・個人事業主を問わずご参加いただけます。</div></div>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="sec-head"><h2><i class="fas fa-envelope"></i> お問い合わせ</h2><p>ご質問・ご相談はお気軽にどうぞ</p></div>
+  <div class="contact-box">
+    <form onsubmit="event.preventDefault();alert('お問い合わせを受け付けました。');this.reset()">
+      <div class="fg"><label>お名前 *</label><input required></div>
+      <div class="fg"><label>メールアドレス *</label><input type="email" required></div>
+      <div class="fg"><label>お問い合わせ内容 *</label><textarea required></textarea></div>
+      <button type="submit" class="btn btn-primary btn-full">送信する</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><h4>みんなのWA</h4><p style="color:rgba(255,255,255,.6);font-size:.78rem">彦根発 異業種交流コミュニティ</p></div>
+    <div><h4>リンク</h4><a href="#about">WAとは</a><a href="#events">交流会</a><a href="#members">メンバー</a><a href="#blogs">活動レポート</a></div>
+    <div><h4>サポート</h4><a href="#faq">よくある質問</a><a href="#contact">お問い合わせ</a></div>
+    <div><h4>SNS</h4><div style="display:flex;gap:.8rem;margin-top:.3rem"><a href="#" style="font-size:1.2rem"><i class="fab fa-facebook"></i></a><a href="#" style="font-size:1.2rem"><i class="fab fa-twitter"></i></a><a href="#" style="font-size:1.2rem"><i class="fab fa-instagram"></i></a></div></div>
+  </div>
+  <div class="footer-bot">&copy; 2024-2026 みんなのWA. All rights reserved.</div>
+</footer>
+
+<!-- ========== MODALS ========== -->
+
+<!-- LOGIN -->
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+    <div class="modal-title">ログイン</div>
+    <form onsubmit="handleLogin(event)">
+      <div class="fg"><label>メールアドレス</label><input type="email" id="loginEmail" required></div>
+      <div class="fg"><label>パスワード</label><input type="password" id="loginPass" required></div>
+      <button type="submit" class="btn btn-primary btn-full">ログイン</button>
+    </form>
+    <p style="margin-top:.7rem;text-align:center;font-size:.78rem;color:var(--tl)">
+      アカウントをお持ちでない方は <a href="#" style="color:var(--c1);font-weight:600" onclick="closeModal('loginModal');openModal('regModal')">新規登録</a>
+    </p>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="regModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('regModal')">&times;</button>
+    <div class="modal-title">会員登録</div>
+    <form onsubmit="handleRegister(event)">
+      <div class="fg"><label>お名前 *</label><input id="regName" required></div>
+      <div class="fg"><label>ふりがな *</label><input id="regFuri" required></div>
+      <div class="fg"><label>メールアドレス *</label><input type="email" id="regEmail" required></div>
+      <div class="fg"><label>パスワード *</label><input type="password" id="regPass" required minlength="6"></div>
+      <div class="fg"><label>電話番号 *</label><input type="tel" id="regPhone" required></div>
+      <div class="fg"><label>事業内容 *</label><input id="regBiz" required></div>
+      <div class="fg"><label>業種 *</label>
+        <select id="regCat" required>
+          <option value="">選択してください</option>
+          <option>IT・Web</option><option>飲食</option><option>教育・研修</option>
+          <option>建設・不動産</option><option>サービス</option><option>農業・食品</option>
+          <option>製造</option><option>小売</option><option>その他</option>
+        </select>
+      </div>
+      <div class="fg"><label>地域 *</label><input id="regLoc" placeholder="例: 彦根市" required></div>
+      <div class="fg"><label>ホームページURL</label><input id="regWeb" type="url" placeholder="https://"></div>
+      <div class="fg"><label>Instagram ID</label><input id="regInsta" placeholder="例: myshop_hikone"></div>
+      <div class="fg"><label>プロフィール写真</label><input type="file" id="regAvatar" accept="image/*"></div>
+      <button type="submit" class="btn btn-primary btn-full">登録する</button>
+    </form>
+  </div>
+</div>
+
+<!-- MYPAGE -->
+<div id="mypageModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('mypageModal')">&times;</button>
+    <div class="modal-title">マイページ</div>
+    <div id="mypageContent"></div>
+  </div>
+</div>
+
+<!-- BOARD POST -->
+<div id="boardPostModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('boardPostModal')">&times;</button>
+    <div class="modal-title">掲示板に投稿</div>
+    <form onsubmit="handleBoardPost(event)">
+      <div class="fg"><label>カテゴリ</label>
+        <select id="bpCat"><option>コラボ募集</option><option>イベント企画</option><option>お知らせ</option><option>質問</option><option>その他</option></select>
+      </div>
+      <div class="fg"><label>タイトル *</label><input id="bpTitle" required></div>
+      <div class="fg"><label>内容 *</label><textarea id="bpContent" required></textarea></div>
+      <button type="submit" class="btn btn-primary btn-full">投稿する</button>
+    </form>
+  </div>
+</div>
+
+<script>
+// ========== STATE ==========
+let currentUser = null;
+let allMembers=[], allEvents=[], allBlogs=[], allBoards=[];
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+  loadAll();
+  const saved = localStorage.getItem('wa_user');
+  if(saved){ currentUser = JSON.parse(saved); updateNav(); }
+});
+
+function initParticles(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');p.className='particle';
+    p.style.cssText=`width:${20+Math.random()*50}px;height:${20+Math.random()*50}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*20}s`;
+    c.appendChild(p);
+  }
+}
+
+async function loadAll(){
+  try{
+    const [members,events,blogs,boards,settings]=await Promise.all([
+      fetch('/api/members').then(r=>r.json()),
+      fetch('/api/events').then(r=>r.json()),
+      fetch('/api/blogs').then(r=>r.json()),
+      fetch('/api/boards').then(r=>r.json()),
+      fetch('/api/site-settings').then(r=>r.json())
+    ]);
+    allMembers=members.filter(m=>m.isPublic);
+    allEvents=events; allBlogs=blogs; allBoards=boards;
+    if(settings.heroTitle) document.getElementById('heroTitle').textContent=settings.heroTitle;
+    if(settings.heroSubtitle) document.getElementById('heroSubtitle').textContent=settings.heroSubtitle;
+    animNum('cntMember',allMembers.length);
+    animNum('cntEvent',allEvents.length);
+    animNum('cntBlog',allBlogs.length);
+    renderEvents(); renderMembers(); renderBlogs(); renderBoards();
+    document.getElementById('memSearch').addEventListener('input',e=>{
+      const q=e.target.value.toLowerCase();
+      renderMembers(allMembers.filter(m=>m.name.toLowerCase().includes(q)||m.business.toLowerCase().includes(q)||m.businessCategory.toLowerCase().includes(q)||m.location.toLowerCase().includes(q)));
+    });
+  }catch(e){console.error(e)}
+}
+
+function animNum(id,t){const el=document.getElementById(id);let c=0;const inc=Math.max(t/40,1);const tm=setInterval(()=>{c+=inc;if(c>=t){el.textContent=t;clearInterval(tm)}else el.textContent=Math.floor(c)},30)}
+
+// ========== CAROUSEL ==========
+function scrollCar(id,dx){document.getElementById(id).scrollBy({left:dx,behavior:'smooth'})}
+
+// ========== RENDER ==========
+function renderEvents(){
+  const t=document.getElementById('evTrack');t.innerHTML='';
+  allEvents.forEach(ev=>{
+    t.innerHTML+=`<div class="card ev-card">
+      <img class="card-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.src='https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=60'">
+      <div class="card-body">
+        <div class="ev-date"><i class="fas fa-calendar"></i> ${ev.date} ${ev.time}</div>
+        <div class="card-title">${ev.title}</div>
+        <div class="ev-loc"><i class="fas fa-map-marker-alt"></i> ${ev.location}</div>
+        <div class="ev-fee"><i class="fas fa-yen-sign"></i> ${ev.fee} / 定員${ev.participants}名</div>
+      </div>
+    </div>`;
+  });
+}
+
+function getMemberImage(m){
+  if(m.avatar) return m.avatar;
+  if(m.website) return `https://www.google.com/s2/favicons?domain=${m.website}&sz=128`;
+  if(m.instagram) return `https://unavatar.io/instagram/${m.instagram}`;
+  return 'https://i.pravatar.cc/200?img=0';
+}
+
+function renderMembers(list){
+  const t=document.getElementById('memTrack');t.innerHTML='';
+  (list||allMembers).forEach(m=>{
+    t.innerHTML+=`<div class="card mem-card">
+      <img class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" onerror="this.src='https://i.pravatar.cc/200?img=0'">
+      <div class="mem-name">${m.name}</div>
+      <div class="mem-biz">${m.business}</div>
+      <div class="mem-loc"><i class="fas fa-map-marker-alt"></i> ${m.location}</div>
+    </div>`;
+  });
+}
+
+function renderBlogs(){
+  const t=document.getElementById('blogTrack');t.innerHTML='';
+  allBlogs.forEach(b=>{
+    t.innerHTML+=`<div class="card blog-card">
+      <img class="card-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
+      <div class="card-body">
+        <span class="card-tag">${b.category}</span>
+        <div class="card-title">${b.title}</div>
+        <div class="card-meta"><i class="fas fa-clock"></i> ${b.date}</div>
+      </div>
+    </div>`;
+  });
+}
+
+function renderBoards(){
+  const el=document.getElementById('boardList');el.innerHTML='';
+  allBoards.forEach(b=>{
+    let rhtml='';
+    (b.replies||[]).forEach(r=>{
+      rhtml+=`<div class="reply-item"><img src="${r.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><span class="r-name">${r.authorName}</span> <span class="r-text">${r.content}</span></div></div>`;
+    });
+    el.innerHTML+=`<div class="board-post">
+      <div class="board-header">
+        <img src="${b.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">
+        <div class="bh-info"><div class="bh-name">${b.authorName}</div><div class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}</div></div>
+        <span class="board-cat">${b.category||''}</span>
+      </div>
+      <div class="board-title">${b.title}</div>
+      <div class="board-text">${b.content}</div>
+      ${rhtml?`<div class="board-replies">${rhtml}</div>`:''}
+      ${currentUser?`<div class="board-reply-form"><input placeholder="返信を入力..." id="rp-${b.id}"><button class="btn btn-primary btn-sm" onclick="sendReply('${b.id}')">返信</button></div>`:''}
+    </div>`;
+  });
+}
+
+// ========== AUTH ==========
+async function handleLogin(e){
+  e.preventDefault();
+  try{
+    const res=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:document.getElementById('loginEmail').value,password:document.getElementById('loginPass').value})});
+    const d=await res.json();
+    if(d.success){
+      currentUser=d.member;
+      localStorage.setItem('wa_user',JSON.stringify(currentUser));
+      closeModal('loginModal');
+      updateNav(); renderBoards();
+      if(d.member.isAdmin && confirm('管理者ページに移動しますか？')) window.location.href='/admin.html';
+    }else alert(d.error||'ログイン失敗');
+  }catch{alert('エラーが発生しました')}
+}
+
+async function handleRegister(e){
+  e.preventDefault();
+  let avatarUrl='';
+  const file=document.getElementById('regAvatar').files[0];
+  if(file){
+    const fd=new FormData();fd.append('image',file);
+    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+    if(up.success) avatarUrl=up.url;
+  }
+  try{
+    const body={name:document.getElementById('regName').value,furigana:document.getElementById('regFuri').value,
+      email:document.getElementById('regEmail').value,password:document.getElementById('regPass').value,
+      phone:document.getElementById('regPhone').value,business:document.getElementById('regBiz').value,
+      businessCategory:document.getElementById('regCat').value,location:document.getElementById('regLoc').value,
+      website:document.getElementById('regWeb').value,instagram:document.getElementById('regInsta').value};
+    if(avatarUrl) body.avatar=avatarUrl;
+    const res=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await res.json();
+    if(d.success){
+      currentUser=d.member;localStorage.setItem('wa_user',JSON.stringify(currentUser));
+      closeModal('regModal');updateNav();renderBoards();loadAll();
+      alert('登録が完了しました！');
+    }else alert(d.error||'登録失敗');
+  }catch{alert('エラーが発生しました')}
+}
+
+function logout(){
+  currentUser=null;localStorage.removeItem('wa_user');updateNav();renderBoards();
+}
+
+function updateNav(){
+  const el=document.getElementById('navAuth');
+  if(currentUser){
+    el.innerHTML=`<div class="user-bar">
+      <img src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
+      <span class="uname" onclick="openMypage()">${currentUser.name}</span>
+      ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-outline btn-sm">管理</a>':''}
+      <button class="btn btn-outline btn-sm" onclick="logout()">ログアウト</button>
+    </div>`;
+  }else{
+    el.innerHTML='<button class="btn btn-primary btn-sm" onclick="openModal(\'loginModal\')">ログイン</button>';
+  }
+}
+
+// ========== MYPAGE ==========
+function openMypage(){
+  if(!currentUser) return;
+  const c=document.getElementById('mypageContent');
+  c.innerHTML=`
+    <div class="mypage-header">
+      <div class="avatar-upload">
+        <img class="mypage-avatar" id="mpAvatar" src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/80'">
+        <input type="file" accept="image/*" onchange="uploadMyAvatar(this)">
+        <div class="avatar-overlay">変更</div>
+      </div>
+      <div class="mypage-info"><h3>${currentUser.name}</h3><p>${currentUser.business} / ${currentUser.location}</p></div>
+    </div>
+    <form onsubmit="saveMypage(event)">
+      <div class="fg"><label>お名前</label><input id="mpName" value="${currentUser.name||''}"></div>
+      <div class="fg"><label>ふりがな</label><input id="mpFuri" value="${currentUser.furigana||''}"></div>
+      <div class="fg"><label>事業内容</label><input id="mpBiz" value="${currentUser.business||''}"></div>
+      <div class="fg"><label>自己紹介</label><textarea id="mpIntro">${currentUser.introduction||''}</textarea></div>
+      <div class="fg"><label>電話番号</label><input id="mpPhone" value="${currentUser.phone||''}"></div>
+      <div class="fg"><label>ホームページ</label><input id="mpWeb" value="${currentUser.website||''}"></div>
+      <div class="fg"><label>Instagram ID</label><input id="mpInsta" value="${currentUser.instagram||''}"></div>
+      <div class="fg"><label>地域</label><input id="mpLoc" value="${currentUser.location||''}"></div>
+      <div class="fg"><label>公開設定</label><select id="mpPublic"><option value="true" ${currentUser.isPublic?'selected':''}>公開</option><option value="false" ${!currentUser.isPublic?'selected':''}>非公開</option></select></div>
+      <button type="submit" class="btn btn-primary btn-full">保存する</button>
+    </form>`;
+  openModal('mypageModal');
+}
+
+async function uploadMyAvatar(input){
+  const file=input.files[0]; if(!file) return;
+  const fd=new FormData();fd.append('image',file);
+  const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+  if(r.success){
+    document.getElementById('mpAvatar').src=r.url;
+    currentUser.avatar=r.url;
+  }
+}
+
+async function saveMypage(e){
+  e.preventDefault();
+  const body={name:document.getElementById('mpName').value,furigana:document.getElementById('mpFuri').value,
+    business:document.getElementById('mpBiz').value,introduction:document.getElementById('mpIntro').value,
+    phone:document.getElementById('mpPhone').value,website:document.getElementById('mpWeb').value,
+    instagram:document.getElementById('mpInsta').value,location:document.getElementById('mpLoc').value,
+    isPublic:document.getElementById('mpPublic').value==='true',avatar:currentUser.avatar};
+  try{
+    const r=await fetch(`/api/members/${currentUser.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(d.success){currentUser={...currentUser,...d.member};localStorage.setItem('wa_user',JSON.stringify(currentUser));updateNav();loadAll();alert('保存しました');closeModal('mypageModal')}
+  }catch{alert('エラー')}
+}
+
+// ========== BOARD ==========
+async function handleBoardPost(e){
+  e.preventDefault();
+  const body={authorId:currentUser.id,authorName:currentUser.name,authorAvatar:getMemberImage(currentUser),
+    title:document.getElementById('bpTitle').value,content:document.getElementById('bpContent').value,
+    category:document.getElementById('bpCat').value};
+  const r=await fetch('/api/boards',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){closeModal('boardPostModal');allBoards.unshift(r.post);renderBoards();document.getElementById('bpTitle').value='';document.getElementById('bpContent').value=''}
+}
+
+async function sendReply(boardId){
+  const input=document.getElementById('rp-'+boardId);
+  if(!input.value.trim()) return;
+  const body={authorId:currentUser.id,authorName:currentUser.name,authorAvatar:getMemberImage(currentUser),content:input.value};
+  const r=await fetch(`/api/boards/${boardId}/reply`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){
+    const post=allBoards.find(b=>b.id===boardId);
+    if(post) post.replies.push(r.reply);
+    renderBoards();
+  }
+}
+
+// ========== UTILS ==========
+function openModal(id){document.getElementById(id).classList.add('active')}
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+function goHome(){window.scrollTo({top:0,behavior:'smooth'})}
+
+// Close modals on bg click
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal'))e.target.classList.remove('active')});
+</script>
+</body>
+</html>

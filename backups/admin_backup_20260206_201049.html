@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者ページ - みんなのWA</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--c1:#10b981;--c2:#059669;--c3:#34d399;--cbg:#f0fdf9;--td:#1f2937;--tl:#6b7280;--white:#fff;
+  --sh:0 4px 20px rgba(16,185,129,.12);--sh2:0 8px 30px rgba(16,185,129,.18);--r:12px;--r2:8px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--td);background:var(--cbg);font-size:13px;line-height:1.5;letter-spacing:-.01em}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button,input,select,textarea{font-family:inherit;font-size:inherit}
+
+/* NAV */
+.admin-nav{background:var(--white);padding:.6rem 1rem;display:flex;align-items:center;gap:1rem;
+  box-shadow:0 1px 8px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+.admin-nav .logo{font-size:1rem;font-weight:900;background:linear-gradient(135deg,var(--c1),var(--c2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.admin-nav .badge{background:var(--c1);color:#fff;font-size:.6rem;font-weight:700;padding:.1rem .4rem;border-radius:8px}
+.admin-nav .spacer{flex:1}
+
+/* MENU CAROUSEL */
+.menu-wrap{background:var(--white);border-bottom:1px solid #e5e7eb;position:sticky;top:42px;z-index:99}
+.menu-track{display:flex;gap:.3rem;overflow-x:auto;padding:.5rem 1rem;scroll-behavior:smooth;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.menu-track::-webkit-scrollbar{display:none}
+.menu-item{flex-shrink:0;padding:.4rem .8rem;border-radius:20px;font-size:.75rem;font-weight:600;
+  cursor:pointer;border:1.5px solid #e5e7eb;background:var(--white);color:var(--tl);transition:.2s;
+  display:flex;align-items:center;gap:.3rem;white-space:nowrap}
+.menu-item:hover,.menu-item.active{background:var(--c1);color:#fff;border-color:var(--c1)}
+.menu-item i{font-size:.7rem}
+
+/* PANEL */
+.panel{display:none;max-width:1100px;margin:0 auto;padding:1rem}
+.panel.active{display:block}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+.panel-head h2{font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* SHARED */
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .8rem;border-radius:20px;border:none;
+  font-weight:600;font-size:.75rem;cursor:pointer;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.2)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1.5px solid var(--c1);color:var(--c1)}
+.btn-outline:hover{background:var(--c1);color:#fff}
+.btn-danger{background:#ef4444;color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-sm{padding:.3rem .6rem;font-size:.7rem}
+
+.fg{margin-bottom:.6rem}
+.fg label{display:block;font-weight:600;font-size:.75rem;margin-bottom:.15rem;color:var(--td)}
+.fg input,.fg select,.fg textarea{width:100%;padding:.45rem .6rem;border:1.5px solid #e5e7eb;border-radius:var(--r2);
+  font-size:.8rem;transition:.2s;background:#fff}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rgba(16,185,129,.1)}
+.fg textarea{resize:vertical;min-height:60px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th{background:var(--cbg);font-weight:600;text-align:left;padding:.5rem .6rem;color:var(--c2);white-space:nowrap}
+td{padding:.45rem .6rem;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+tr:hover td{background:#fafffe}
+.tbl-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover}
+
+/* CARD */
+.admin-card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:.8rem;margin-bottom:.6rem}
+
+/* STAT ROW */
+.stat-row{display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap}
+.stat-box{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:.7rem 1rem;flex:1;min-width:140px;text-align:center}
+.stat-box .num{font-size:1.5rem;font-weight:900;color:var(--c2)}
+.stat-box .lbl{font-size:.7rem;color:var(--tl)}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center}
+.modal.active{display:flex}
+.modal-box{background:#fff;border-radius:var(--r);padding:1.2rem;max-width:500px;width:92%;max-height:85vh;overflow-y:auto;animation:su .2s}
+@keyframes su{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{float:right;font-size:1.2rem;cursor:pointer;color:var(--tl);background:none;border:none}
+.modal-close:hover{color:var(--c1)}
+.modal-title{font-size:1rem;font-weight:800;color:var(--c2);margin-bottom:.7rem}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="admin-nav">
+  <a href="/" class="logo">みんなのWA</a>
+  <span class="badge">ADMIN</span>
+  <span class="spacer"></span>
+  <span id="adminName" style="font-size:.78rem;font-weight:600"></span>
+  <a href="/" class="btn btn-outline btn-sm"><i class="fas fa-home"></i> サイト</a>
+  <button class="btn btn-outline btn-sm" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
+</div>
+
+<!-- MENU CAROUSEL -->
+<div class="menu-wrap">
+  <div class="menu-track" id="menuTrack">
+    <div class="menu-item active" onclick="showPanel('dash',this)"><i class="fas fa-chart-pie"></i>ダッシュボード</div>
+    <div class="menu-item" onclick="showPanel('hero',this)"><i class="fas fa-image"></i>ヒーロー編集</div>
+    <div class="menu-item" onclick="showPanel('events',this)"><i class="fas fa-calendar-alt"></i>イベント管理</div>
+    <div class="menu-item" onclick="showPanel('blogs',this)"><i class="fas fa-newspaper"></i>ブログ管理</div>
+    <div class="menu-item" onclick="showPanel('members',this)"><i class="fas fa-users"></i>メンバー管理</div>
+    <div class="menu-item" onclick="showPanel('boards',this)"><i class="fas fa-comments"></i>掲示板管理</div>
+    <div class="menu-item" onclick="showPanel('backup',this)"><i class="fas fa-database"></i>バックアップ</div>
+  </div>
+</div>
+
+<!-- PANELS -->
+<!-- DASHBOARD -->
+<div class="panel active" id="panel-dash">
+  <div class="panel-head"><h2><i class="fas fa-chart-pie"></i> ダッシュボード</h2></div>
+  <div class="stat-row">
+    <div class="stat-box"><div class="num" id="dMem">0</div><div class="lbl">メンバー数</div></div>
+    <div class="stat-box"><div class="num" id="dEv">0</div><div class="lbl">イベント数</div></div>
+    <div class="stat-box"><div class="num" id="dBlog">0</div><div class="lbl">ブログ数</div></div>
+    <div class="stat-box"><div class="num" id="dBoard">0</div><div class="lbl">掲示板投稿</div></div>
+  </div>
+  <div class="admin-card">
+    <h3 style="font-size:.85rem;font-weight:700;margin-bottom:.4rem">最近のメンバー</h3>
+    <div class="tbl-wrap"><table><thead><tr><th></th><th>名前</th><th>業種</th><th>地域</th><th>登録日</th></tr></thead><tbody id="dMemTbl"></tbody></table></div>
+  </div>
+</div>
+
+<!-- HERO EDIT -->
+<div class="panel" id="panel-hero">
+  <div class="panel-head"><h2><i class="fas fa-image"></i> トップページ編集</h2></div>
+  <div class="admin-card">
+    <form onsubmit="saveHero(event)">
+      <div class="fg"><label>ヒーロータイトル</label><input id="hTitle"></div>
+      <div class="fg"><label>ヒーローサブタイトル</label><input id="hSub"></div>
+      <div class="fg"><label>aboutタイトル</label><input id="hAbout"></div>
+      <div class="fg"><label>aboutサブタイトル</label><input id="hAboutText"></div>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> 保存</button>
+    </form>
+  </div>
+</div>
+
+<!-- EVENTS -->
+<div class="panel" id="panel-events">
+  <div class="panel-head"><h2><i class="fas fa-calendar-alt"></i> イベント管理</h2>
+    <button class="btn btn-primary" onclick="openEventForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
+  <div class="tbl-wrap"><table><thead><tr><th>タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
+</div>
+
+<!-- BLOGS -->
+<div class="panel" id="panel-blogs">
+  <div class="panel-head"><h2><i class="fas fa-newspaper"></i> ブログ・お知らせ管理</h2>
+    <button class="btn btn-primary" onclick="openBlogForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
+  <div class="tbl-wrap"><table><thead><tr><th>タイトル</th><th>カテゴリ</th><th>日付</th><th>操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
+</div>
+
+<!-- MEMBERS -->
+<div class="panel" id="panel-members">
+  <div class="panel-head"><h2><i class="fas fa-users"></i> メンバー管理</h2></div>
+  <div class="tbl-wrap"><table><thead><tr><th></th><th>名前</th><th>業種</th><th>メール</th><th>地域</th><th>管理者</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
+</div>
+
+<!-- BOARDS -->
+<div class="panel" id="panel-boards">
+  <div class="panel-head"><h2><i class="fas fa-comments"></i> 掲示板管理</h2></div>
+  <div id="boardAdminList"></div>
+</div>
+
+<!-- BACKUP -->
+<div class="panel" id="panel-backup">
+  <div class="panel-head"><h2><i class="fas fa-database"></i> バックアップ</h2></div>
+  <div class="admin-card">
+    <p style="font-size:.82rem;margin-bottom:.5rem">データのバックアップを作成します。</p>
+    <button class="btn btn-primary" onclick="doBackup()"><i class="fas fa-download"></i> バックアップ作成</button>
+    <div id="backupResult" style="margin-top:.5rem;font-size:.78rem;color:var(--c2)"></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- Event Form -->
+<div id="evModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeM('evModal')">&times;</button>
+    <div class="modal-title" id="evFormTitle">イベント作成</div>
+    <form onsubmit="saveEvent(event)">
+      <input type="hidden" id="evId">
+      <div class="fg"><label>タイトル *</label><input id="evTitle" required></div>
+      <div class="fg"><label>日付 *</label><input type="date" id="evDate" required></div>
+      <div class="fg"><label>時間 *</label><input id="evTime" required placeholder="19:00-21:00"></div>
+      <div class="fg"><label>場所 *</label><input id="evLoc" required></div>
+      <div class="fg"><label>説明</label><textarea id="evDesc"></textarea></div>
+      <div class="fg"><label>詳細情報</label><textarea id="evDetail"></textarea></div>
+      <div class="fg"><label>定員</label><input type="number" id="evCap" value="30"></div>
+      <div class="fg"><label>参加費</label><input id="evFee" placeholder="2,000円"></div>
+      <div class="fg"><label>画像URL</label><input id="evImg"></div>
+      <div class="fg"><label>または画像アップロード</label><input type="file" id="evImgFile" accept="image/*" onchange="uploadImg(this,'evImg')"></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存</button>
+    </form>
+  </div>
+</div>
+
+<!-- Blog Form -->
+<div id="blogModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeM('blogModal')">&times;</button>
+    <div class="modal-title" id="blogFormTitle">ブログ作成</div>
+    <form onsubmit="saveBlog(event)">
+      <input type="hidden" id="blogId">
+      <div class="fg"><label>タイトル *</label><input id="blogTitle" required></div>
+      <div class="fg"><label>カテゴリ *</label>
+        <select id="blogCat"><option>ブログ</option><option>お知らせ</option><option>活動レポート</option></select>
+      </div>
+      <div class="fg"><label>概要</label><textarea id="blogExcerpt"></textarea></div>
+      <div class="fg"><label>本文</label><textarea id="blogContent" style="min-height:100px"></textarea></div>
+      <div class="fg"><label>画像URL</label><input id="blogImg"></div>
+      <div class="fg"><label>または画像アップロード</label><input type="file" id="blogImgFile" accept="image/*" onchange="uploadImg(this,'blogImg')"></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let admin=null, members=[], events=[], blogs=[], boards=[], settings={};
+
+// Init
+document.addEventListener('DOMContentLoaded',()=>{
+  const saved=localStorage.getItem('wa_user');
+  if(saved){
+    admin=JSON.parse(saved);
+    if(!admin.isAdmin){alert('管理者権限がありません');window.location.href='/';return}
+    document.getElementById('adminName').textContent=admin.name;
+    loadAll();
+  }else{window.location.href='/';}
+});
+
+async function loadAll(){
+  [members,events,blogs,boards,settings]=await Promise.all([
+    fetch('/api/members').then(r=>r.json()),
+    fetch('/api/events').then(r=>r.json()),
+    fetch('/api/blogs').then(r=>r.json()),
+    fetch('/api/boards').then(r=>r.json()),
+    fetch('/api/site-settings').then(r=>r.json())
+  ]);
+  renderDash(); renderEvTbl(); renderBlogTbl(); renderMemTbl(); renderBoardAdmin();
+  // Hero form
+  document.getElementById('hTitle').value=settings.heroTitle||'';
+  document.getElementById('hSub').value=settings.heroSubtitle||'';
+  document.getElementById('hAbout').value=settings.aboutTitle||'';
+  document.getElementById('hAboutText').value=settings.aboutText||'';
+}
+
+// Panel switch
+function showPanel(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Dashboard
+function renderDash(){
+  document.getElementById('dMem').textContent=members.length;
+  document.getElementById('dEv').textContent=events.length;
+  document.getElementById('dBlog').textContent=blogs.length;
+  document.getElementById('dBoard').textContent=boards.length;
+  const tbl=document.getElementById('dMemTbl');tbl.innerHTML='';
+  members.slice(-5).reverse().forEach(m=>{
+    tbl.innerHTML+=`<tr><td><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"></td>
+      <td>${m.name}</td><td>${m.businessCategory||''}</td><td>${m.location||''}</td><td>${m.joinDate||''}</td></tr>`;
+  });
+}
+
+// Hero Save
+async function saveHero(e){
+  e.preventDefault();
+  const body={heroTitle:document.getElementById('hTitle').value,heroSubtitle:document.getElementById('hSub').value,
+    aboutTitle:document.getElementById('hAbout').value,aboutText:document.getElementById('hAboutText').value};
+  const r=await fetch('/api/site-settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success) alert('保存しました');
+}
+
+// Events
+function renderEvTbl(){
+  const t=document.getElementById('evTbl');t.innerHTML='';
+  events.forEach(ev=>{
+    t.innerHTML+=`<tr><td style="font-weight:600">${ev.title}</td><td>${ev.date} ${ev.time}</td><td>${ev.location}</td>
+      <td>${ev.participants||''}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="editEvent('${ev.id}')"><i class="fas fa-edit"></i></button>
+      <button class="btn btn-danger btn-sm" onclick="delEvent('${ev.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+  });
+}
+
+function openEventForm(ev){
+  document.getElementById('evFormTitle').textContent=ev?'イベント編集':'イベント作成';
+  document.getElementById('evId').value=ev?ev.id:'';
+  document.getElementById('evTitle').value=ev?ev.title:'';
+  document.getElementById('evDate').value=ev?ev.date:'';
+  document.getElementById('evTime').value=ev?ev.time:'';
+  document.getElementById('evLoc').value=ev?ev.location:'';
+  document.getElementById('evDesc').value=ev?ev.description:'';
+  document.getElementById('evDetail').value=ev?ev.detailedInfo:'';
+  document.getElementById('evCap').value=ev?ev.participants:30;
+  document.getElementById('evFee').value=ev?ev.fee:'';
+  document.getElementById('evImg').value=ev?ev.imageUrl:'';
+  openM('evModal');
+}
+function editEvent(id){openEventForm(events.find(e=>e.id===id))}
+async function saveEvent(e){
+  e.preventDefault();
+  const id=document.getElementById('evId').value;
+  const body={title:document.getElementById('evTitle').value,date:document.getElementById('evDate').value,
+    time:document.getElementById('evTime').value,location:document.getElementById('evLoc').value,
+    description:document.getElementById('evDesc').value,detailedInfo:document.getElementById('evDetail').value,
+    participants:parseInt(document.getElementById('evCap').value),fee:document.getElementById('evFee').value,
+    imageUrl:document.getElementById('evImg').value};
+  const url=id?`/api/admin/events/${id}`:'/api/admin/events';
+  const method=id?'PUT':'POST';
+  const r=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){closeM('evModal');loadAll()}
+}
+async function delEvent(id){if(confirm('削除しますか？')){await fetch(`/api/admin/events/${id}`,{method:'DELETE'});loadAll()}}
+
+// Blogs
+function renderBlogTbl(){
+  const t=document.getElementById('blogTbl');t.innerHTML='';
+  blogs.forEach(b=>{
+    t.innerHTML+=`<tr><td style="font-weight:600">${b.title}</td><td><span style="background:var(--cbg);color:var(--c1);padding:.1rem .4rem;border-radius:8px;font-size:.68rem;font-weight:600">${b.category}</span></td>
+      <td>${b.date}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="editBlog('${b.id}')"><i class="fas fa-edit"></i></button>
+      <button class="btn btn-danger btn-sm" onclick="delBlog('${b.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+  });
+}
+
+function openBlogForm(b){
+  document.getElementById('blogFormTitle').textContent=b?'ブログ編集':'ブログ作成';
+  document.getElementById('blogId').value=b?b.id:'';
+  document.getElementById('blogTitle').value=b?b.title:'';
+  document.getElementById('blogCat').value=b?b.category:'ブログ';
+  document.getElementById('blogExcerpt').value=b?b.excerpt:'';
+  document.getElementById('blogContent').value=b?b.content:'';
+  document.getElementById('blogImg').value=b?b.imageUrl:'';
+  openM('blogModal');
+}
+function editBlog(id){openBlogForm(blogs.find(b=>b.id===id))}
+async function saveBlog(e){
+  e.preventDefault();
+  const id=document.getElementById('blogId').value;
+  const body={title:document.getElementById('blogTitle').value,category:document.getElementById('blogCat').value,
+    excerpt:document.getElementById('blogExcerpt').value,content:document.getElementById('blogContent').value,
+    imageUrl:document.getElementById('blogImg').value,author:admin.name};
+  const url=id?`/api/admin/blogs/${id}`:'/api/admin/blogs';
+  const method=id?'PUT':'POST';
+  const r=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){closeM('blogModal');loadAll()}
+}
+async function delBlog(id){if(confirm('削除しますか？')){await fetch(`/api/admin/blogs/${id}`,{method:'DELETE'});loadAll()}}
+
+// Members
+function renderMemTbl(){
+  const t=document.getElementById('memTbl');t.innerHTML='';
+  members.forEach(m=>{
+    t.innerHTML+=`<tr><td><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"></td>
+      <td style="font-weight:600">${m.name}</td><td>${m.businessCategory||''}</td><td style="font-size:.7rem">${m.email}</td>
+      <td>${m.location||''}</td>
+      <td>${m.isAdmin?'<span style="color:var(--c1);font-weight:700">&#10003;</span>':''}</td>
+      <td>${m.id!=='admin-001'?`<button class="btn btn-outline btn-sm" onclick="toggleAdmin('${m.id}',${!m.isAdmin})">${m.isAdmin?'権限解除':'管理者に'}</button>
+        <button class="btn btn-danger btn-sm" onclick="delMember('${m.id}')"><i class="fas fa-trash"></i></button>`:''}</td></tr>`;
+  });
+}
+async function toggleAdmin(id,val){
+  await fetch(`/api/admin/members/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({isAdmin:val})});
+  loadAll();
+}
+async function delMember(id){if(confirm('削除しますか？')){await fetch(`/api/admin/members/${id}`,{method:'DELETE'});loadAll()}}
+
+// Boards Admin
+function renderBoardAdmin(){
+  const el=document.getElementById('boardAdminList');el.innerHTML='';
+  if(!boards.length){el.innerHTML='<p style="text-align:center;color:var(--tl);font-size:.82rem">投稿はありません</p>';return}
+  boards.forEach(b=>{
+    el.innerHTML+=`<div class="admin-card" style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:.82rem">${b.title}</div>
+        <div style="font-size:.72rem;color:var(--tl)">${b.authorName} / ${new Date(b.createdAt).toLocaleDateString('ja-JP')} / 返信${(b.replies||[]).length}件</div>
+        <div style="font-size:.75rem;color:var(--td);margin-top:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.content}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="delBoard('${b.id}')"><i class="fas fa-trash"></i></button>
+    </div>`;
+  });
+}
+async function delBoard(id){if(confirm('削除しますか？')){await fetch(`/api/admin/boards/${id}`,{method:'DELETE'});loadAll()}}
+
+// Backup
+async function doBackup(){
+  const r=await fetch('/api/admin/backup').then(r=>r.json());
+  document.getElementById('backupResult').textContent=r.success?`バックアップ完了: ${r.filename}`:'エラー';
+}
+
+// Image upload helper
+async function uploadImg(input,targetId){
+  const file=input.files[0];if(!file) return;
+  const fd=new FormData();fd.append('image',file);
+  const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+  if(r.success) document.getElementById(targetId).value=r.url;
+}
+
+// Modal
+function openM(id){document.getElementById(id).classList.add('active')}
+function closeM(id){document.getElementById(id).classList.remove('active')}
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal'))e.target.classList.remove('active')});
+
+function adminLogout(){localStorage.removeItem('wa_user');window.location.href='/';}
+</script>
+</body>
+</html>

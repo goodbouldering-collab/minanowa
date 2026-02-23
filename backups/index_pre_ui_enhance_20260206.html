@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みんなのWA - 彦根発 異業種交流コミュニティ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ========== CSS VARIABLES ========== */
+:root{
+  --c1:#10b981;--c2:#059669;--c3:#34d399;--c4:#6ee7b7;--c5:#a7f3d0;
+  --cbg:#f0fdf4;--cbg2:#ecfdf5;
+  --td:#1e293b;--tl:#64748b;--white:#fff;
+  --glass:rgba(255,255,255,.72);--glass2:rgba(255,255,255,.55);
+  --sh:0 4px 24px rgba(16,185,129,.10);
+  --sh2:0 12px 40px rgba(16,185,129,.18);
+  --sh-glow:0 0 30px rgba(16,185,129,.20);
+  --r:14px;--r2:10px;--r3:20px;
+  --transition:.3s cubic-bezier(.4,0,.2,1);
+}
+/* ========== RESET ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--td);background:var(--cbg);font-size:13px;
+  line-height:1.5;letter-spacing:-.01em;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button,input,select,textarea{font-family:inherit;font-size:inherit}
+::selection{background:var(--c3);color:#fff}
+
+/* ========== SCROLL REVEAL ========== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.92);transition:opacity .6s ease,transform .6s ease}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+
+/* ========== SECTION ========== */
+.sec{padding:2.2rem 1.2rem;max-width:1300px;margin:0 auto;position:relative}
+.sec-divider{height:1px;max-width:1300px;margin:0 auto;
+  background:linear-gradient(90deg,transparent,var(--c4),transparent)}
+.sec-head{text-align:center;margin-bottom:.8rem}
+.sec-head h2{font-size:1.4rem;font-weight:800;display:inline-flex;align-items:center;gap:.4rem;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  position:relative}
+.sec-head h2::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
+  width:40px;height:3px;background:linear-gradient(90deg,var(--c1),var(--c3));border-radius:2px}
+.sec-head p{color:var(--tl);font-size:.82rem;margin-top:.35rem}
+
+/* ========== CAROUSEL ========== */
+.carousel-wrap{position:relative;overflow:hidden;margin:0 -.5rem}
+.carousel-track{display:flex;gap:.8rem;overflow-x:auto;scroll-behavior:smooth;padding:.6rem .5rem 1rem;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-60%);z-index:5;width:32px;height:32px;
+  border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;transition:var(--transition);
+  background:var(--glass);backdrop-filter:blur(10px);box-shadow:0 4px 15px rgba(0,0,0,.1);color:var(--c2)}
+.carousel-btn:hover{background:var(--c1);color:#fff;transform:translateY(-60%) scale(1.1);box-shadow:var(--sh-glow)}
+.carousel-btn.prev{left:4px}
+.carousel-btn.next{right:4px}
+
+/* ========== CARD BASE ========== */
+.card{background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);
+  border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;transition:var(--transition);flex-shrink:0;
+  position:relative}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(16,185,129,.03),transparent);
+  pointer-events:none;z-index:1;transition:var(--transition)}
+.card:hover{transform:translateY(-5px);box-shadow:var(--sh2);border-color:rgba(16,185,129,.2)}
+.card:hover::before{background:linear-gradient(135deg,rgba(16,185,129,.06),transparent)}
+.card-img-wrap{position:relative;overflow:hidden}
+.card-img{width:100%;height:150px;object-fit:cover;transition:transform .5s ease}
+.card:hover .card-img{transform:scale(1.06)}
+.card-img-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.35) 0%,transparent 60%);pointer-events:none}
+.card-body{padding:.7rem .8rem;position:relative;z-index:2}
+.card-tag{display:inline-block;font-size:.62rem;font-weight:700;padding:.15rem .55rem;border-radius:10px;
+  margin-bottom:.3rem;letter-spacing:.02em;
+  background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.card-title{font-size:.88rem;font-weight:700;line-height:1.35;margin-bottom:.25rem;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{color:var(--tl);font-size:.7rem;display:flex;gap:.5rem;align-items:center}
+
+/* ========== BUTTON ========== */
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem 1.1rem;border-radius:var(--r3);border:none;
+  font-weight:600;font-size:.78rem;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
+  opacity:0;transition:var(--transition)}
+.btn:hover::after{opacity:1}
+.btn-primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
+  box-shadow:0 4px 15px rgba(16,185,129,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(16,185,129,.4)}
+.btn-outline{background:transparent;border:1.5px solid var(--c1);color:var(--c1)}
+.btn-outline:hover{background:var(--c1);color:#fff;box-shadow:var(--sh-glow)}
+.btn-ghost{background:rgba(16,185,129,.08);color:var(--c2);border:none}
+.btn-ghost:hover{background:rgba(16,185,129,.15)}
+.btn-sm{padding:.3rem .7rem;font-size:.72rem}
+.btn-full{width:100%;justify-content:center}
+/* Ripple */
+.btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);
+  transform:scale(0);animation:ripple .6s linear}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+
+/* ========== FORM ========== */
+.fg{margin-bottom:.7rem}
+.fg label{display:block;font-weight:600;font-size:.78rem;margin-bottom:.2rem;color:var(--td)}
+.fg input,.fg select,.fg textarea{width:100%;padding:.5rem .7rem;
+  border:1.5px solid rgba(16,185,129,.15);border-radius:var(--r2);
+  font-size:.82rem;transition:var(--transition);background:rgba(255,255,255,.8);backdrop-filter:blur(4px)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);
+  box-shadow:0 0 0 3px rgba(16,185,129,.12),0 4px 12px rgba(16,185,129,.08)}
+.fg textarea{resize:vertical;min-height:70px}
+
+/* ========== NAV ========== */
+nav{position:fixed;top:0;width:100%;z-index:1000;transition:var(--transition)}
+nav.at-top{background:transparent}
+nav.scrolled{background:var(--glass);backdrop-filter:blur(20px);box-shadow:0 1px 20px rgba(16,185,129,.08)}
+.nav-inner{max-width:1300px;margin:0 auto;padding:.55rem 1.2rem;display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,var(--c1),var(--c2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:none;transition:var(--transition)}
+nav.at-top .nav-logo{filter:brightness(3)}
+.nav-links{display:flex;gap:1rem;align-items:center;list-style:none}
+.nav-links a{font-weight:500;font-size:.82rem;transition:var(--transition);position:relative;padding:.2rem 0}
+nav.at-top .nav-links a{color:rgba(255,255,255,.9)}
+nav.scrolled .nav-links a{color:var(--td)}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+  background:linear-gradient(90deg,var(--c1),var(--c3));transition:width .3s;border-radius:1px}
+.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--c1)}
+.hamburger{display:none;background:none;border:none;font-size:1.2rem;cursor:pointer;
+  color:var(--td);transition:var(--transition)}
+nav.at-top .hamburger{color:#fff}
+@media(max-width:768px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;
+    background:var(--glass);backdrop-filter:blur(20px);
+    flex-direction:column;padding:1rem;gap:.8rem;box-shadow:0 8px 30px rgba(0,0,0,.1);
+    border-radius:0 0 var(--r) var(--r)}
+  .nav-links.open{display:flex}
+  .nav-links a{color:var(--td) !important}
+  .hamburger{display:block}
+  .hero h1{font-size:1.8rem !important}
+  .hero-stats{gap:.6rem !important}
+  .stat{min-width:80px !important;padding:.6rem .8rem !important}
+  .stat b{font-size:1.4rem !important}
+  .about-grid{grid-template-columns:1fr !important}
+}
+
+/* ========== HERO ========== */
+.hero{margin-top:0;padding-top:0;position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;color:#fff;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-2;
+  background:linear-gradient(135deg,#059669 0%,#047857 30%,#065f46 60%,#064e3b 100%)}
+.hero-mesh{position:absolute;inset:0;z-index:-1;opacity:.3;
+  background:radial-gradient(ellipse at 20% 50%,rgba(52,211,153,.4) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 20%,rgba(110,231,183,.3) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 80%,rgba(16,185,129,.3) 0%,transparent 50%)}
+.hero-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(100px);opacity:.15;
+  animation:glow-move 15s ease-in-out infinite alternate}
+.hero-glow.g1{background:var(--c3);top:-100px;left:-100px}
+.hero-glow.g2{background:var(--c4);bottom:-100px;right:-100px;animation-delay:-7s}
+@keyframes glow-move{0%{transform:translate(0,0)}100%{transform:translate(80px,60px)}}
+.particle{position:absolute;background:rgba(255,255,255,.06);border-radius:50%;
+  animation:fl var(--dur,20s) infinite ease-in-out}
+.particle.bright{background:rgba(255,255,255,.15);box-shadow:0 0 6px rgba(255,255,255,.1)}
+@keyframes fl{0%,100%{transform:translateY(0) translateX(0) scale(1)}
+  33%{transform:translateY(calc(var(--dy,-60px))) translateX(calc(var(--dx,30px))) scale(1.1)}
+  66%{transform:translateY(calc(var(--dy,-60px) * .5)) translateX(calc(var(--dx,30px) * -1)) scale(.9)}}
+.hero-content{position:relative;z-index:10;padding:2rem;max-width:800px;
+  animation:hero-enter 1s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes hero-enter{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{font-size:2.8rem;font-weight:900;margin-bottom:.5rem;
+  text-shadow:0 4px 30px rgba(0,0,0,.2);letter-spacing:-.02em;line-height:1.2}
+.hero p{font-size:1.05rem;opacity:.92;margin-bottom:2rem;font-weight:300}
+.hero-stats{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);padding:.8rem 1.4rem;
+  border-radius:var(--r);border:1px solid rgba(255,255,255,.15);text-align:center;
+  min-width:110px;transition:var(--transition);cursor:default}
+.stat:hover{background:rgba(255,255,255,.18);transform:translateY(-3px);
+  box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.stat b{display:block;font-size:2rem;font-weight:900;
+  background:linear-gradient(135deg,#fff,var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat span{font-size:.72rem;opacity:.85;font-weight:400}
+.hero-cta{margin-top:1.8rem;display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.hero-cta .btn{padding:.6rem 1.8rem;font-size:.88rem;border-radius:30px}
+.hero-cta .btn-white{background:rgba(255,255,255,.95);color:var(--c2);font-weight:700;
+  box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.hero-cta .btn-white:hover{background:#fff;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.hero-cta .btn-glass{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(8px)}
+.hero-cta .btn-glass:hover{background:rgba(255,255,255,.22);transform:translateY(-2px)}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;
+  color:rgba(255,255,255,.6);font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ========== ABOUT ========== */
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin-top:.5rem}
+.about-card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.5);
+  border-radius:var(--r);padding:1.3rem;text-align:center;box-shadow:var(--sh);
+  transition:var(--transition);position:relative;overflow:hidden;cursor:default}
+.about-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent,rgba(16,185,129,.05),transparent,rgba(16,185,129,.08),transparent);
+  animation:about-spin 8s linear infinite;opacity:0;transition:opacity .5s}
+.about-card:hover::before{opacity:1}
+@keyframes about-spin{to{transform:rotate(360deg)}}
+.about-card:hover{transform:translateY(-4px);box-shadow:var(--sh2);border-color:rgba(16,185,129,.2)}
+.about-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto .6rem;font-size:1.4rem;color:#fff;
+  background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 4px 15px rgba(16,185,129,.3);
+  transition:var(--transition)}
+.about-card:hover .about-icon{transform:scale(1.08) rotate(-5deg);box-shadow:0 6px 20px rgba(16,185,129,.4)}
+.about-card h3{font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.about-card p{font-size:.78rem;color:var(--tl);line-height:1.55}
+
+/* ========== EVENT CARD ========== */
+.ev-card{width:290px;min-height:300px;display:flex;flex-direction:column}
+.ev-card .card-body{flex:1;display:flex;flex-direction:column}
+.ev-date{color:var(--c1);font-weight:600;font-size:.72rem;margin-bottom:.2rem;display:flex;align-items:center;gap:.3rem}
+.ev-loc{color:var(--tl);font-size:.72rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
+.ev-footer{margin-top:auto;padding-top:.4rem;display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(16,185,129,.08)}
+.ev-fee{font-size:.7rem;color:var(--td);font-weight:600}
+.ev-cap{font-size:.65rem;color:var(--tl);display:flex;align-items:center;gap:.2rem}
+.ev-badge{position:absolute;top:.6rem;right:.6rem;z-index:3;padding:.2rem .55rem;
+  border-radius:8px;font-size:.6rem;font-weight:700;backdrop-filter:blur(6px)}
+.ev-badge.upcoming{background:rgba(16,185,129,.9);color:#fff}
+.ev-badge.past{background:rgba(100,116,139,.7);color:#fff}
+
+/* ========== MEMBER CARD ========== */
+.mem-card{width:210px;text-align:center;padding:1.1rem .8rem;cursor:default}
+.mem-avatar-wrap{position:relative;width:76px;height:76px;margin:0 auto .5rem}
+.mem-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;
+  border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(135deg,var(--c1),var(--c3)) border-box;
+  transition:var(--transition)}
+.mem-card:hover .mem-avatar{transform:scale(1.06);box-shadow:0 4px 20px rgba(16,185,129,.25)}
+.mem-status{position:absolute;bottom:2px;right:2px;width:12px;height:12px;
+  border-radius:50%;background:var(--c1);border:2px solid #fff}
+.mem-name{font-size:.85rem;font-weight:700}
+.mem-biz{font-size:.72rem;font-weight:600;margin:.1rem 0;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mem-loc{color:var(--tl);font-size:.68rem;display:flex;align-items:center;justify-content:center;gap:.2rem}
+.mem-skills{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap;margin-top:.3rem}
+.mem-skill{font-size:.58rem;padding:.1rem .35rem;border-radius:6px;background:rgba(16,185,129,.08);color:var(--c2);font-weight:500}
+
+/* ========== BLOG CARD ========== */
+.blog-card{width:270px}
+.blog-card .card-body{position:relative}
+.blog-date-badge{position:absolute;top:-20px;left:.8rem;z-index:3;
+  background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
+  padding:.2rem .5rem;border-radius:8px;font-size:.6rem;font-weight:700;
+  box-shadow:0 3px 10px rgba(16,185,129,.3)}
+
+/* ========== BOARD ========== */
+.board-list{display:flex;flex-direction:column;gap:.6rem;max-width:800px;margin:0 auto}
+.board-post{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.5);
+  border-radius:var(--r);padding:.8rem;box-shadow:var(--sh);transition:var(--transition)}
+.board-post:hover{box-shadow:var(--sh2);border-color:rgba(16,185,129,.15)}
+.board-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.board-header img{width:34px;height:34px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(16,185,129,.2)}
+.bh-info{flex:1}
+.bh-name{font-weight:700;font-size:.8rem}
+.bh-time{font-size:.65rem;color:var(--tl)}
+.board-cat{display:inline-block;font-size:.6rem;font-weight:700;padding:.12rem .45rem;border-radius:8px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.board-title{font-weight:700;font-size:.85rem;margin-bottom:.2rem}
+.board-text{font-size:.78rem;color:var(--tl);line-height:1.55}
+.board-replies{margin-top:.5rem;border-top:1px solid rgba(16,185,129,.08);padding-top:.4rem}
+.reply-item{display:flex;gap:.4rem;padding:.3rem 0;font-size:.75rem}
+.reply-item img{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(16,185,129,.15)}
+.r-name{font-weight:600;color:var(--td)}
+.r-text{color:var(--tl)}
+.board-reply-form{display:flex;gap:.3rem;margin-top:.4rem}
+.board-reply-form input{flex:1;padding:.35rem .5rem;border:1.5px solid rgba(16,185,129,.15);
+  border-radius:var(--r2);font-size:.75rem;background:rgba(255,255,255,.7)}
+
+/* ========== FAQ ========== */
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:.5rem}
+.faq-item{background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.5);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:var(--transition)}
+.faq-item:hover{border-color:rgba(16,185,129,.15)}
+.faq-q{padding:.7rem .8rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  font-weight:600;font-size:.85rem;transition:var(--transition)}
+.faq-q:hover{color:var(--c1)}
+.faq-q i{transition:transform .3s;font-size:.7rem;color:var(--c1)}
+.faq-item.active .faq-q i{transform:rotate(180deg)}
+.faq-item.active{border-color:rgba(16,185,129,.2);box-shadow:var(--sh2)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;
+  padding:0 .8rem;color:var(--tl);font-size:.8rem;line-height:1.6}
+.faq-item.active .faq-a{max-height:300px;padding:0 .8rem .7rem}
+
+/* ========== CONTACT ========== */
+.contact-box{max-width:520px;margin:0 auto;background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.5);padding:1.3rem;border-radius:var(--r);box-shadow:var(--sh);
+  position:relative;overflow:hidden}
+.contact-box::before{content:'';position:absolute;top:-40%;right:-40%;width:80%;height:80%;
+  border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.06),transparent);pointer-events:none}
+
+/* ========== FOOTER ========== */
+footer{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:2.5rem 1.2rem 1rem;
+  margin-top:2rem;position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--c1),var(--c3),var(--c4),var(--c3),var(--c1));
+  background-size:200% 100%;animation:gradient-move 4s linear infinite}
+@keyframes gradient-move{0%{background-position:0% 0%}100%{background-position:200% 0%}}
+.footer-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1.5rem;margin-bottom:1.5rem}
+.footer-grid h4{font-size:.9rem;margin-bottom:.5rem;
+  background:linear-gradient(135deg,var(--c3),var(--c4));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.footer-grid a{color:rgba(255,255,255,.55);font-size:.8rem;display:block;margin-bottom:.3rem;transition:var(--transition)}
+.footer-grid a:hover{color:var(--c3);transform:translateX(3px)}
+.footer-social a{display:inline-flex;width:34px;height:34px;border-radius:50%;
+  align-items:center;justify-content:center;background:rgba(255,255,255,.06);
+  margin-right:.3rem;transition:var(--transition);font-size:1rem}
+.footer-social a:hover{background:var(--c1);color:#fff;transform:translateY(-2px)}
+.footer-bot{text-align:center;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06);
+  color:rgba(255,255,255,.3);font-size:.72rem}
+
+/* ========== MODAL ========== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);
+  z-index:2000;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-box{background:var(--white);border-radius:var(--r);padding:1.5rem;max-width:480px;width:92%;
+  max-height:85vh;overflow-y:auto;animation:modal-in .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 25px 60px rgba(0,0,0,.25);border:1px solid rgba(16,185,129,.08)}
+@keyframes modal-in{from{opacity:0;transform:translateY(25px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-close{float:right;font-size:1.3rem;cursor:pointer;color:var(--tl);transition:var(--transition);
+  background:none;border:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--c1);background:rgba(16,185,129,.08)}
+.modal-title{font-size:1.1rem;font-weight:800;
+  background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.8rem;display:flex;align-items:center;gap:.4rem}
+
+/* ========== MYPAGE ========== */
+.mypage-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;padding-bottom:.8rem;
+  border-bottom:1px solid rgba(16,185,129,.08)}
+.mypage-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;
+  border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(135deg,var(--c1),var(--c3)) border-box}
+.avatar-upload{position:relative;cursor:pointer}
+.avatar-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.avatar-overlay{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;
+  text-align:center;font-size:.6rem;padding:.15rem;border-radius:0 0 50% 50%;backdrop-filter:blur(4px)}
+.mypage-info h3{font-size:1rem;font-weight:700}
+.mypage-info p{color:var(--tl);font-size:.78rem}
+
+/* ========== SEARCH ========== */
+.search-box{max-width:500px;margin:0 auto .8rem;position:relative}
+.search-box input{width:100%;padding:.55rem 2.2rem .55rem .9rem;border:1.5px solid rgba(16,185,129,.2);
+  border-radius:var(--r3);font-size:.82rem;background:var(--glass);backdrop-filter:blur(8px);transition:var(--transition)}
+.search-box input:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rgba(16,185,129,.1),0 4px 15px rgba(16,185,129,.08)}
+.search-box i{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);color:var(--c1);font-size:.85rem}
+
+/* ========== USER BAR ========== */
+.user-bar{display:flex;align-items:center;gap:.5rem}
+.user-bar img{width:30px;height:30px;border-radius:50%;object-fit:cover;cursor:pointer;
+  border:2px solid transparent;background:linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(135deg,var(--c1),var(--c3)) border-box;transition:var(--transition)}
+.user-bar img:hover{transform:scale(1.1);box-shadow:0 2px 10px rgba(16,185,129,.3)}
+.user-bar .uname{font-size:.78rem;font-weight:600;cursor:pointer;transition:var(--transition)}
+.user-bar .uname:hover{color:var(--c1)}
+
+/* ========== FLOATING SHAPES (decorative bg) ========== */
+.bg-shape{position:fixed;border-radius:50%;pointer-events:none;z-index:-1;filter:blur(80px);opacity:.08}
+.bg-shape.s1{width:400px;height:400px;background:var(--c1);top:20%;left:-10%}
+.bg-shape.s2{width:300px;height:300px;background:var(--c3);top:60%;right:-5%}
+.bg-shape.s3{width:350px;height:350px;background:var(--c4);bottom:10%;left:30%}
+
+/* ========== TOOLTIP ========== */
+[data-tooltip]{position:relative}
+[data-tooltip]:hover::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 6px);left:50%;
+  transform:translateX(-50%);padding:.3rem .6rem;border-radius:6px;font-size:.65rem;font-weight:500;
+  background:var(--td);color:#fff;white-space:nowrap;pointer-events:none;z-index:50;
+  animation:tooltip-in .2s ease}
+@keyframes tooltip-in{from{opacity:0;transform:translateX(-50%) translateY(4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ========== COUNT-UP SHIMMER ========== */
+.shimmer{background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);
+  background-size:200% 100%;animation:shimmer 2s ease-in-out infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+</head>
+<body>
+
+<!-- BG SHAPES -->
+<div class="bg-shape s1"></div>
+<div class="bg-shape s2"></div>
+<div class="bg-shape s3"></div>
+
+<!-- NAV -->
+<nav id="navbar" class="at-top">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="goHome()">みんなのWA</a>
+    <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')"><i class="fas fa-bars"></i></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">WAとは</a></li>
+      <li><a href="#events">交流会</a></li>
+      <li><a href="#members">メンバー</a></li>
+      <li><a href="#blogs">活動レポート</a></li>
+      <li><a href="#board">掲示板</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+      <li id="navAuth"><button class="btn btn-primary btn-sm" onclick="openModal('loginModal')">ログイン</button></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="heroSection">
+  <div class="hero-bg"></div>
+  <div class="hero-mesh"></div>
+  <div class="hero-glow g1"></div>
+  <div class="hero-glow g2"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <h1 id="heroTitle">つながりが、可能性を広げる</h1>
+    <p id="heroSubtitle">彦根市を中心とした事業者の異業種交流コミュニティ</p>
+    <div class="hero-stats">
+      <div class="stat" data-tooltip="登録メンバー数"><b id="cntMember">0</b><span>登録事業者</span></div>
+      <div class="stat" data-tooltip="開催済+予定"><b id="cntEvent">0</b><span>累計イベント</span></div>
+      <div class="stat" data-tooltip="記事数"><b id="cntBlog">0</b><span>活動レポート</span></div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn btn-white" onclick="openModal('regModal')"><i class="fas fa-user-plus"></i> 会員登録</button>
+      <button class="btn btn-glass" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><i class="fas fa-arrow-down"></i> もっと見る</button>
+    </div>
+  </div>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i><span>Scroll</span></div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec reveal" id="about">
+  <div class="sec-head"><h2><i class="fas fa-heart"></i> みんなのWAとは</h2><p>地域の事業者がつながり、成長し合うコミュニティ</p></div>
+  <div class="about-grid">
+    <div class="about-card reveal-left" style="transition-delay:.1s"><div class="about-icon"><i class="fas fa-calendar-alt"></i></div><h3>定期的な交流会</h3><p>月1回、彦根市内で交流会を開催。名刺交換や事業紹介を通じてつながりを作ります。</p></div>
+    <div class="about-card reveal-left" style="transition-delay:.2s"><div class="about-icon"><i class="fas fa-users"></i></div><h3>多様な業種</h3><p>IT、飲食、教育、製造など、様々な業種の事業者が参加しています。</p></div>
+    <div class="about-card reveal-left" style="transition-delay:.3s"><div class="about-icon"><i class="fas fa-handshake"></i></div><h3>新しいつながり</h3><p>コラボレーションやビジネスチャンスが生まれる場を提供します。</p></div>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- EVENTS -->
+<section class="sec reveal" id="events">
+  <div class="sec-head"><h2><i class="fas fa-calendar-check"></i> 開催予定の交流会</h2><p>カードをクリックして詳細を確認</p></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('evTrack',-300)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="evTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('evTrack',300)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- MEMBERS -->
+<section class="sec reveal" id="members">
+  <div class="sec-head"><h2><i class="fas fa-user-friends"></i> 事業者メンバー</h2><p>様々な業種の事業者が活動しています</p></div>
+  <div class="search-box"><input type="text" id="memSearch" placeholder="業種、地域、名前で検索..."><i class="fas fa-search"></i></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('memTrack',-230)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="memTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('memTrack',230)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- BLOGS -->
+<section class="sec reveal" id="blogs">
+  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> ブログ・お知らせ・活動レポート</h2><p>最新の活動やイベントレポート</p></div>
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" onclick="scrollCar('blogTrack',-280)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="blogTrack"></div>
+    <button class="carousel-btn next" onclick="scrollCar('blogTrack',280)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- BOARD -->
+<section class="sec reveal" id="board">
+  <div class="sec-head"><h2><i class="fas fa-comments"></i> 掲示板</h2><p>事業者同士がつながり情報交換できる場</p></div>
+  <div style="text-align:center;margin-bottom:.6rem">
+    <button class="btn btn-primary btn-sm" onclick="currentUser?openModal('boardPostModal'):openModal('loginModal')"><i class="fas fa-pen"></i> 投稿する</button>
+  </div>
+  <div class="board-list" id="boardList"></div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- FAQ -->
+<section class="sec reveal" id="faq">
+  <div class="sec-head"><h2><i class="fas fa-question-circle"></i> よくある質問</h2><p>みんなのWAについて</p></div>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>参加するにはどうすればいいですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">「会員登録」ボタンから必要事項を入力して登録してください。すぐにコミュニティに参加できます。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>参加費用はかかりますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">会員登録は無料です。交流会参加時には1,000円〜3,000円程度の参加費をいただいています。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>どんな業種の方が参加していますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">IT・Web、飲食、教育、建設、サービス、農業、製造、小売など様々な業種の事業者が参加しています。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>交流会の頻度はどのくらいですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">月1回、第3木曜日の19:00〜21:00に定期開催しています。特別イベントも随時開催。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('active')"><span>個人事業主でも参加できますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">はい、法人・個人事業主を問わずどなたでもご参加いただけます。</div></div>
+  </div>
+</section>
+<div class="sec-divider"></div>
+
+<!-- CONTACT -->
+<section class="sec reveal" id="contact">
+  <div class="sec-head"><h2><i class="fas fa-envelope"></i> お問い合わせ</h2><p>ご質問・ご相談はお気軽にどうぞ</p></div>
+  <div class="contact-box">
+    <form onsubmit="event.preventDefault();alert('お問い合わせを受け付けました。');this.reset()">
+      <div class="fg"><label>お名前 *</label><input required></div>
+      <div class="fg"><label>メールアドレス *</label><input type="email" required></div>
+      <div class="fg"><label>お問い合わせ内容 *</label><textarea required></textarea></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-paper-plane"></i> 送信する</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><h4>みんなのWA</h4><p style="color:rgba(255,255,255,.45);font-size:.78rem;line-height:1.6">彦根市を中心とした異業種交流コミュニティ。つながりから新しいビジネスチャンスを。</p></div>
+    <div><h4>リンク</h4><a href="#about">WAとは</a><a href="#events">交流会</a><a href="#members">メンバー</a><a href="#blogs">活動レポート</a></div>
+    <div><h4>サポート</h4><a href="#faq">よくある質問</a><a href="#contact">お問い合わせ</a><a href="#" onclick="openModal('regModal')">会員登録</a></div>
+    <div><h4>SNS</h4><div class="footer-social" style="margin-top:.3rem"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-line"></i></a></div></div>
+  </div>
+  <div class="footer-bot">&copy; 2024-2026 みんなのWA. All rights reserved.</div>
+</footer>
+
+<!-- ========== MODALS ========== -->
+<!-- LOGIN -->
+<div id="loginModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+    <div class="modal-title"><i class="fas fa-sign-in-alt"></i> ログイン</div>
+    <form onsubmit="handleLogin(event)">
+      <div class="fg"><label>メールアドレス</label><input type="email" id="loginEmail" required placeholder="you@example.com"></div>
+      <div class="fg"><label>パスワード</label><input type="password" id="loginPass" required placeholder="••••••"></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-arrow-right"></i> ログイン</button>
+    </form>
+    <p style="margin-top:.8rem;text-align:center;font-size:.78rem;color:var(--tl)">
+      アカウントをお持ちでない方は <a href="#" style="color:var(--c1);font-weight:600" onclick="closeModal('loginModal');openModal('regModal')">新規登録</a>
+    </p>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="regModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('regModal')">&times;</button>
+    <div class="modal-title"><i class="fas fa-user-plus"></i> 会員登録</div>
+    <form onsubmit="handleRegister(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+        <div class="fg"><label>お名前 *</label><input id="regName" required></div>
+        <div class="fg"><label>ふりがな *</label><input id="regFuri" required></div>
+      </div>
+      <div class="fg"><label>メールアドレス *</label><input type="email" id="regEmail" required></div>
+      <div class="fg"><label>パスワード *</label><input type="password" id="regPass" required minlength="6"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+        <div class="fg"><label>電話番号 *</label><input type="tel" id="regPhone" required></div>
+        <div class="fg"><label>地域 *</label><input id="regLoc" placeholder="例: 彦根市" required></div>
+      </div>
+      <div class="fg"><label>事業内容 *</label><input id="regBiz" required></div>
+      <div class="fg"><label>業種 *</label>
+        <select id="regCat" required><option value="">選択してください</option>
+          <option>IT・Web</option><option>飲食</option><option>教育・研修</option>
+          <option>建設・不動産</option><option>サービス</option><option>農業・食品</option>
+          <option>製造</option><option>小売</option><option>その他</option></select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+        <div class="fg"><label>ホームページ</label><input id="regWeb" type="url" placeholder="https://"></div>
+        <div class="fg"><label>Instagram ID</label><input id="regInsta" placeholder="your_id"></div>
+      </div>
+      <div class="fg"><label>プロフィール写真</label><input type="file" id="regAvatar" accept="image/*"></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-check"></i> 登録する</button>
+    </form>
+  </div>
+</div>
+
+<!-- MYPAGE -->
+<div id="mypageModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('mypageModal')">&times;</button>
+    <div class="modal-title"><i class="fas fa-user-cog"></i> マイページ</div>
+    <div id="mypageContent"></div>
+  </div>
+</div>
+
+<!-- BOARD POST -->
+<div id="boardPostModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('boardPostModal')">&times;</button>
+    <div class="modal-title"><i class="fas fa-pen-fancy"></i> 掲示板に投稿</div>
+    <form onsubmit="handleBoardPost(event)">
+      <div class="fg"><label>カテゴリ</label>
+        <select id="bpCat"><option>コラボ募集</option><option>イベント企画</option><option>お知らせ</option><option>質問</option><option>その他</option></select>
+      </div>
+      <div class="fg"><label>タイトル *</label><input id="bpTitle" required></div>
+      <div class="fg"><label>内容 *</label><textarea id="bpContent" required></textarea></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-paper-plane"></i> 投稿する</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* ========== STATE ========== */
+let currentUser=null, allMembers=[], allEvents=[], allBlogs=[], allBoards=[];
+
+/* ========== INIT ========== */
+document.addEventListener('DOMContentLoaded',()=>{
+  initHero();
+  initScrollReveal();
+  initNavScroll();
+  loadAll();
+  const saved=localStorage.getItem('wa_user');
+  if(saved){currentUser=JSON.parse(saved);updateNav()}
+});
+
+/* ========== HERO PARTICLES ========== */
+function initHero(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    const size=10+Math.random()*60;
+    const bright=Math.random()>.7;
+    p.className='particle'+(bright?' bright':'');
+    p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;
+      --dur:${12+Math.random()*20}s;--dy:${-40-Math.random()*80}px;--dx:${-30+Math.random()*60}px;
+      animation-delay:${-Math.random()*20}s`;
+    c.appendChild(p);
+  }
+}
+
+/* ========== SCROLL REVEAL ========== */
+function initScrollReveal(){
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-scale').forEach(el=>obs.observe(el));
+}
+
+/* ========== NAV SCROLL ========== */
+function initNavScroll(){
+  const nav=document.getElementById('navbar');
+  const check=()=>{
+    if(window.scrollY>80){nav.classList.remove('at-top');nav.classList.add('scrolled')}
+    else{nav.classList.add('at-top');nav.classList.remove('scrolled')}
+  };
+  window.addEventListener('scroll',check,{passive:true});
+  check();
+}
+
+/* ========== DATA LOAD ========== */
+async function loadAll(){
+  try{
+    const [members,events,blogs,boards,settings]=await Promise.all([
+      fetch('/api/members').then(r=>r.json()),
+      fetch('/api/events').then(r=>r.json()),
+      fetch('/api/blogs').then(r=>r.json()),
+      fetch('/api/boards').then(r=>r.json()),
+      fetch('/api/site-settings').then(r=>r.json())
+    ]);
+    allMembers=members.filter(m=>m.isPublic);
+    allEvents=events; allBlogs=blogs; allBoards=boards;
+    if(settings.heroTitle) document.getElementById('heroTitle').textContent=settings.heroTitle;
+    if(settings.heroSubtitle) document.getElementById('heroSubtitle').textContent=settings.heroSubtitle;
+    animNum('cntMember',allMembers.length);
+    animNum('cntEvent',allEvents.length);
+    animNum('cntBlog',allBlogs.length);
+    renderEvents();renderMembers();renderBlogs();renderBoards();
+    document.getElementById('memSearch').addEventListener('input',e=>{
+      const q=e.target.value.toLowerCase();
+      renderMembers(allMembers.filter(m=>m.name.toLowerCase().includes(q)||m.business.toLowerCase().includes(q)||
+        m.businessCategory.toLowerCase().includes(q)||m.location.toLowerCase().includes(q)));
+    });
+  }catch(e){console.error(e)}
+}
+
+function animNum(id,t){
+  const el=document.getElementById(id);let c=0;const dur=1200;const start=performance.now();
+  const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+  function tick(now){
+    const p=Math.min((now-start)/dur,1);
+    el.textContent=Math.floor(ease(p)*t);
+    if(p<1) requestAnimationFrame(tick);
+    else el.textContent=t;
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ========== CAROUSEL ========== */
+function scrollCar(id,dx){document.getElementById(id).scrollBy({left:dx,behavior:'smooth'})}
+
+/* ========== RENDER EVENTS ========== */
+function renderEvents(){
+  const t=document.getElementById('evTrack');t.innerHTML='';
+  allEvents.forEach(ev=>{
+    const isPast=new Date(ev.date)<new Date();
+    t.innerHTML+=`<div class="card ev-card">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.src='https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=60'">
+        <div class="card-img-overlay"></div>
+        <span class="ev-badge ${isPast?'past':'upcoming'}">${isPast?'終了':'受付中'}</span>
+      </div>
+      <div class="card-body">
+        <div class="ev-date"><i class="fas fa-calendar"></i> ${ev.date} ${ev.time}</div>
+        <div class="card-title">${ev.title}</div>
+        <div class="ev-loc"><i class="fas fa-map-marker-alt"></i> ${ev.location}</div>
+        <div class="ev-footer">
+          <span class="ev-fee"><i class="fas fa-yen-sign"></i> ${ev.fee}</span>
+          <span class="ev-cap"><i class="fas fa-users"></i> 定員${ev.participants}名</span>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+/* ========== RENDER MEMBERS ========== */
+function getMemberImage(m){
+  if(m.avatar) return m.avatar;
+  if(m.website) return `https://www.google.com/s2/favicons?domain=${m.website}&sz=128`;
+  if(m.instagram) return `https://unavatar.io/instagram/${m.instagram}`;
+  return 'https://i.pravatar.cc/200?img=0';
+}
+
+function renderMembers(list){
+  const t=document.getElementById('memTrack');t.innerHTML='';
+  (list||allMembers).forEach(m=>{
+    const skills=(m.skills||[]).slice(0,2).map(s=>`<span class="mem-skill">${s}</span>`).join('');
+    t.innerHTML+=`<div class="card mem-card">
+      <div class="mem-avatar-wrap">
+        <img class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" onerror="this.src='https://i.pravatar.cc/200?img=0'">
+        <div class="mem-status"></div>
+      </div>
+      <div class="mem-name">${m.name}</div>
+      <div class="mem-biz">${m.business}</div>
+      <div class="mem-loc"><i class="fas fa-map-marker-alt"></i> ${m.location}</div>
+      <div class="mem-skills">${skills}</div>
+    </div>`;
+  });
+}
+
+/* ========== RENDER BLOGS ========== */
+function renderBlogs(){
+  const t=document.getElementById('blogTrack');t.innerHTML='';
+  allBlogs.forEach(b=>{
+    t.innerHTML+=`<div class="card blog-card">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
+        <div class="card-img-overlay"></div>
+      </div>
+      <div class="card-body">
+        <div class="blog-date-badge"><i class="fas fa-clock"></i> ${b.date}</div>
+        <span class="card-tag">${b.category}</span>
+        <div class="card-title">${b.title}</div>
+        <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
+      </div>
+    </div>`;
+  });
+}
+
+/* ========== RENDER BOARDS ========== */
+function renderBoards(){
+  const el=document.getElementById('boardList');el.innerHTML='';
+  allBoards.forEach(b=>{
+    let rhtml='';
+    (b.replies||[]).forEach(r=>{
+      rhtml+=`<div class="reply-item"><img src="${r.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><span class="r-name">${r.authorName}</span> <span class="r-text">${r.content}</span></div></div>`;
+    });
+    el.innerHTML+=`<div class="board-post">
+      <div class="board-header">
+        <img src="${b.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">
+        <div class="bh-info"><div class="bh-name">${b.authorName}</div><div class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}</div></div>
+        <span class="board-cat">${b.category||''}</span>
+      </div>
+      <div class="board-title">${b.title}</div>
+      <div class="board-text">${b.content}</div>
+      ${rhtml?`<div class="board-replies">${rhtml}</div>`:''}
+      ${currentUser?`<div class="board-reply-form"><input placeholder="返信を入力..." id="rp-${b.id}"><button class="btn btn-primary btn-sm" onclick="sendReply('${b.id}')"><i class="fas fa-reply"></i></button></div>`:''}
+    </div>`;
+  });
+}
+
+/* ========== AUTH ========== */
+async function handleLogin(e){
+  e.preventDefault();
+  try{
+    const res=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:document.getElementById('loginEmail').value,password:document.getElementById('loginPass').value})});
+    const d=await res.json();
+    if(d.success){
+      currentUser=d.member;localStorage.setItem('wa_user',JSON.stringify(currentUser));
+      closeModal('loginModal');updateNav();renderBoards();
+      if(d.member.isAdmin && confirm('管理者ページに移動しますか？')) window.location.href='/admin.html';
+    }else alert(d.error||'ログイン失敗');
+  }catch{alert('エラーが発生しました')}
+}
+
+async function handleRegister(e){
+  e.preventDefault();
+  let avatarUrl='';
+  const file=document.getElementById('regAvatar').files[0];
+  if(file){
+    const fd=new FormData();fd.append('image',file);
+    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+    if(up.success) avatarUrl=up.url;
+  }
+  try{
+    const body={name:document.getElementById('regName').value,furigana:document.getElementById('regFuri').value,
+      email:document.getElementById('regEmail').value,password:document.getElementById('regPass').value,
+      phone:document.getElementById('regPhone').value,business:document.getElementById('regBiz').value,
+      businessCategory:document.getElementById('regCat').value,location:document.getElementById('regLoc').value,
+      website:document.getElementById('regWeb').value,instagram:document.getElementById('regInsta').value};
+    if(avatarUrl) body.avatar=avatarUrl;
+    const res=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await res.json();
+    if(d.success){
+      currentUser=d.member;localStorage.setItem('wa_user',JSON.stringify(currentUser));
+      closeModal('regModal');updateNav();renderBoards();loadAll();alert('登録が完了しました！');
+    }else alert(d.error||'登録失敗');
+  }catch{alert('エラーが発生しました')}
+}
+
+function logout(){currentUser=null;localStorage.removeItem('wa_user');updateNav();renderBoards()}
+
+function updateNav(){
+  const el=document.getElementById('navAuth');
+  if(currentUser){
+    el.innerHTML=`<div class="user-bar">
+      <img src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
+      <span class="uname" onclick="openMypage()">${currentUser.name}</span>
+      ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-ghost btn-sm"><i class="fas fa-cog"></i> 管理</a>':''}
+      <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+    </div>`;
+  }else{
+    el.innerHTML='<button class="btn btn-primary btn-sm" onclick="openModal(\'loginModal\')"><i class="fas fa-sign-in-alt"></i> ログイン</button>';
+  }
+}
+
+/* ========== MYPAGE ========== */
+function openMypage(){
+  if(!currentUser) return;
+  const c=document.getElementById('mypageContent');
+  c.innerHTML=`
+    <div class="mypage-header">
+      <div class="avatar-upload">
+        <img class="mypage-avatar" id="mpAvatar" src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/80'">
+        <input type="file" accept="image/*" onchange="uploadMyAvatar(this)">
+        <div class="avatar-overlay"><i class="fas fa-camera"></i></div>
+      </div>
+      <div class="mypage-info"><h3>${currentUser.name}</h3><p>${currentUser.business} / ${currentUser.location}</p></div>
+    </div>
+    <form onsubmit="saveMypage(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+        <div class="fg"><label>お名前</label><input id="mpName" value="${currentUser.name||''}"></div>
+        <div class="fg"><label>ふりがな</label><input id="mpFuri" value="${currentUser.furigana||''}"></div>
+      </div>
+      <div class="fg"><label>事業内容</label><input id="mpBiz" value="${currentUser.business||''}"></div>
+      <div class="fg"><label>自己紹介</label><textarea id="mpIntro">${currentUser.introduction||''}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+        <div class="fg"><label>電話番号</label><input id="mpPhone" value="${currentUser.phone||''}"></div>
+        <div class="fg"><label>地域</label><input id="mpLoc" value="${currentUser.location||''}"></div>
+      </div>
+      <div class="fg"><label>ホームページ</label><input id="mpWeb" value="${currentUser.website||''}"></div>
+      <div class="fg"><label>Instagram ID</label><input id="mpInsta" value="${currentUser.instagram||''}"></div>
+      <div class="fg"><label>公開設定</label><select id="mpPublic"><option value="true" ${currentUser.isPublic?'selected':''}>公開</option><option value="false" ${!currentUser.isPublic?'selected':''}>非公開</option></select></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存する</button>
+    </form>`;
+  openModal('mypageModal');
+}
+
+async function uploadMyAvatar(input){
+  const file=input.files[0];if(!file) return;
+  const fd=new FormData();fd.append('image',file);
+  const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+  if(r.success){document.getElementById('mpAvatar').src=r.url;currentUser.avatar=r.url}
+}
+
+async function saveMypage(e){
+  e.preventDefault();
+  const body={name:document.getElementById('mpName').value,furigana:document.getElementById('mpFuri').value,
+    business:document.getElementById('mpBiz').value,introduction:document.getElementById('mpIntro').value,
+    phone:document.getElementById('mpPhone').value,website:document.getElementById('mpWeb').value,
+    instagram:document.getElementById('mpInsta').value,location:document.getElementById('mpLoc').value,
+    isPublic:document.getElementById('mpPublic').value==='true',avatar:currentUser.avatar};
+  try{
+    const r=await fetch(`/api/members/${currentUser.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(d.success){currentUser={...currentUser,...d.member};localStorage.setItem('wa_user',JSON.stringify(currentUser));updateNav();loadAll();alert('保存しました');closeModal('mypageModal')}
+  }catch{alert('エラー')}
+}
+
+/* ========== BOARD ========== */
+async function handleBoardPost(e){
+  e.preventDefault();
+  const body={authorId:currentUser.id,authorName:currentUser.name,authorAvatar:getMemberImage(currentUser),
+    title:document.getElementById('bpTitle').value,content:document.getElementById('bpContent').value,
+    category:document.getElementById('bpCat').value};
+  const r=await fetch('/api/boards',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){closeModal('boardPostModal');allBoards.unshift(r.post);renderBoards();
+    document.getElementById('bpTitle').value='';document.getElementById('bpContent').value=''}
+}
+
+async function sendReply(boardId){
+  const input=document.getElementById('rp-'+boardId);if(!input.value.trim()) return;
+  const body={authorId:currentUser.id,authorName:currentUser.name,authorAvatar:getMemberImage(currentUser),content:input.value};
+  const r=await fetch(`/api/boards/${boardId}/reply`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){const post=allBoards.find(b=>b.id===boardId);if(post)post.replies.push(r.reply);renderBoards()}
+}
+
+/* ========== UTILS ========== */
+function openModal(id){document.getElementById(id).classList.add('active')}
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+function goHome(){window.scrollTo({top:0,behavior:'smooth'})}
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('active')});
+
+/* Ripple on buttons */
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.btn');if(!btn) return;
+  const r=document.createElement('span');r.className='btn-ripple';
+  const rect=btn.getBoundingClientRect();
+  r.style.left=(e.clientX-rect.left)+'px';r.style.top=(e.clientY-rect.top)+'px';
+  btn.appendChild(r);setTimeout(()=>r.remove(),600);
+});
+</script>
+</body>
+</html>
