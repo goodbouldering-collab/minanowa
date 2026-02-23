@@ -743,6 +743,21 @@ app.delete('/api/admin/members/:id', async (req, res) => {
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 
+// Boards admin edit
+app.put('/api/admin/boards/:id', async (req, res) => {
+    try {
+        const data = await readData();
+        const post = (data.boards || []).find(b => b.id === req.params.id);
+        if (!post) return res.status(404).json({ error: 'not found' });
+        post.title = req.body.title || post.title;
+        post.content = req.body.content || post.content;
+        post.category = req.body.category || post.category;
+        post.updatedAt = new Date().toISOString();
+        await writeData(data);
+        res.json({ success: true, post });
+    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+});
+
 // Boards admin delete
 app.delete('/api/admin/boards/:id', async (req, res) => {
     try {

@@ -428,13 +428,19 @@
       "isPast": false,
       "applicationUrl": "https://www.instagram.com/jtpahikone",
       "registrations": [
-        "member-002"
+        "member-002",
+        "member-1771839544455-czhfrbvqh"
       ],
       "regDetails": {
         "member-002": {
           "paymentMethod": "onsite",
           "paymentStatus": "onsite",
           "registeredAt": "2026-02-22T11:17:31.445Z"
+        },
+        "member-1771839544455-czhfrbvqh": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-23T10:20:52.851Z"
         }
       }
     }
@@ -590,7 +596,7 @@
       "category": "質問",
       "replies": [],
       "createdAt": "2026-02-23T09:35:09.697Z",
-      "updatedAt": "2026-02-23T09:41:52.593Z"
+      "updatedAt": "2026-02-23T14:10:00.528Z"
     },
     {
       "id": "board-1771175631079-rp5xwrtfc",

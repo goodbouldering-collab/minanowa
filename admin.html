@@ -636,6 +636,23 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   </div>
 </div>
 
+<!-- BOARD EDIT MODAL -->
+<div id="boardEditModal" class="modal" style="display:none">
+  <div class="modal-box" style="max-width:520px">
+    <button class="modal-close" onclick="document.getElementById('boardEditModal').style.display='none'">&times;</button>
+    <div class="modal-title"><i class="fas fa-edit"></i> 掲示板投稿を編集</div>
+    <form onsubmit="saveBoardEdit(event)">
+      <input type="hidden" id="bdEditId">
+      <div class="fg"><label>カテゴリ</label>
+        <select id="bdEditCat"><option>コラボ募集</option><option>イベント企画</option><option>お知らせ</option><option>質問</option><option>その他</option></select>
+      </div>
+      <div class="fg"><label>タイトル</label><input id="bdEditTitle" required></div>
+      <div class="fg"><label>内容</label><textarea id="bdEditContent" rows="5" required></textarea></div>
+      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存する</button>
+    </form>
+  </div>
+</div>
+
 <script>
 let admin=null,members=[],events=[],blogs=[],boards=[],settings={},opMemberIds=[];
 let _blogFilter='all'; // current blog tab filter
@@ -1104,14 +1121,34 @@ function renderBoardAdmin(){
         </div>
         <div style="font-size:.68rem;color:var(--tl);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
           <span><i class="fas fa-user" style="margin-right:.15rem"></i>${b.authorName}</span>
-          <span><i class="fas fa-clock" style="margin-right:.15rem"></i>${new Date(b.createdAt).toLocaleDateString('ja-JP')}</span>
+          <span><i class="fas fa-clock" style="margin-right:.15rem"></i>${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</span>
           <span><i class="fas fa-reply" style="margin-right:.15rem"></i>返信${(b.replies||[]).length}件</span>
         </div>
         <div style="font-size:.75rem;margin-top:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tl)">${b.content}</div>
       </div>
-      <button class="btn btn-danger btn-sm" onclick="delBoard('${b.id}')"><i class="fas fa-trash"></i></button>
+      <div style="display:flex;gap:.3rem;flex-shrink:0">
+        <button class="btn btn-sm" style="background:var(--c5);color:var(--c1)" onclick="openBoardEdit('${b.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm" onclick="delBoard('${b.id}')"><i class="fas fa-trash"></i></button>
+      </div>
     </div>`;
   });
+}
+function openBoardEdit(id){
+  const b=boards.find(x=>x.id===id);if(!b)return;
+  document.getElementById('bdEditId').value=b.id;
+  document.getElementById('bdEditCat').value=b.category||'その他';
+  document.getElementById('bdEditTitle').value=b.title;
+  document.getElementById('bdEditContent').value=b.content;
+  document.getElementById('boardEditModal').style.display='flex';
+}
+async function saveBoardEdit(e){
+  e.preventDefault();
+  const id=document.getElementById('bdEditId').value;
+  const body={title:document.getElementById('bdEditTitle').value,
+    content:document.getElementById('bdEditContent').value,
+    category:document.getElementById('bdEditCat').value};
+  const r=await fetch(`/api/admin/boards/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  if(r.success){document.getElementById('boardEditModal').style.display='none';loadAll();showToast('更新しました')}
 }
 async function delBoard(id){if(confirm('削除しますか？')){await fetch(`/api/admin/boards/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
 
