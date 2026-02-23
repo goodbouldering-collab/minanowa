@@ -377,7 +377,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 
 <!-- HERO EDIT -->
 <div class="panel" id="panel-hero">
-  <div class="panel-head"><h2><i class="fas fa-image"></i> トップページ編集</h2></div>
+  <div class="panel-head"><h2><i class="fas fa-image"></i> トップページ</h2></div>
   <div style="display:grid;grid-template-columns:1fr;gap:.6rem">
     <div class="admin-card">
       <h3><i class="fas fa-edit"></i> コンテンツ設定</h3>
@@ -422,7 +422,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 
 <!-- EVENTS -->
 <div class="panel" id="panel-events">
-  <div class="panel-head"><h2><i class="fas fa-calendar-alt"></i> イベント管理</h2>
+  <div class="panel-head"><h2><i class="fas fa-calendar-alt"></i> イベント</h2>
     <button class="btn btn-primary" onclick="openEventForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
   <div class="tbl-wrap"><table><thead><tr><th>タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>フォーム</th><th>状態</th><th>操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
   <div id="evRegPanel" style="display:none;margin-top:.6rem" class="admin-card">
@@ -441,12 +441,8 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 
 <!-- BLOGS (UNIFIED: お知らせ + 活動レポート + 活動ムービー) -->
 <div class="panel" id="panel-blogs">
-  <div class="panel-head"><h2><i class="fas fa-newspaper"></i> お知らせ・活動レポート管理</h2>
-    <div style="display:flex;gap:.3rem">
-      <button class="btn btn-outline" onclick="openBlogForm(null,'お知らせ')"><i class="fas fa-bullhorn"></i> お知らせ</button>
-      <button class="btn btn-outline" onclick="openBlogForm(null,'活動レポート')"><i class="fas fa-file-alt"></i> レポート</button>
-      <button class="btn btn-primary" onclick="openBlogForm(null,'活動ムービー')"><i class="fas fa-film"></i> ムービー</button>
-    </div>
+  <div class="panel-head"><h2><i class="fas fa-newspaper"></i> お知らせ・活動レポート</h2>
+    <button class="btn btn-primary" onclick="openBlogForm()"><i class="fas fa-plus"></i> 新規作成</button>
   </div>
   <!-- Category tabs -->
   <div class="blog-tabs" style="display:flex;gap:.3rem;margin-bottom:.6rem;flex-wrap:wrap">
@@ -460,7 +456,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 
 <!-- MEMBERS -->
 <div class="panel" id="panel-members">
-  <div class="panel-head"><h2><i class="fas fa-users"></i> メンバー管理</h2>
+  <div class="panel-head"><h2><i class="fas fa-users"></i> メンバー</h2>
     <span style="font-size:.72rem;color:var(--tl)" id="memCount"></span></div>
   <div class="mem-search-wrap">
     <div class="mem-search-box">
@@ -475,7 +471,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 
 <!-- BOARDS -->
 <div class="panel" id="panel-boards">
-  <div class="panel-head"><h2><i class="fas fa-comments"></i> 掲示板管理</h2></div>
+  <div class="panel-head"><h2><i class="fas fa-comments"></i> 掲示板</h2></div>
   <div id="boardAdminList"></div>
 </div>
 
