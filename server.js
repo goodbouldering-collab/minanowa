@@ -588,6 +588,33 @@ app.post('/api/boards/:id/reply', async (req, res) => {
         res.json({ success: true, reply });
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
+// Edit own board post
+app.put('/api/boards/:id', async (req, res) => {
+    try {
+        const data = await readData();
+        const post = (data.boards || []).find(b => b.id === req.params.id);
+        if (!post) return res.status(404).json({ error: 'not found' });
+        if (post.authorId !== req.body.authorId) return res.status(403).json({ error: '自分の投稿のみ編集できます' });
+        post.title = req.body.title || post.title;
+        post.content = req.body.content || post.content;
+        post.category = req.body.category || post.category;
+        post.updatedAt = new Date().toISOString();
+        await writeData(data);
+        res.json({ success: true, post });
+    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+});
+// Delete own board post
+app.delete('/api/boards/:id', async (req, res) => {
+    try {
+        const data = await readData();
+        const idx = (data.boards || []).findIndex(b => b.id === req.params.id);
+        if (idx === -1) return res.status(404).json({ error: 'not found' });
+        if (data.boards[idx].authorId !== req.body.authorId) return res.status(403).json({ error: '自分の投稿のみ削除できます' });
+        data.boards.splice(idx, 1);
+        await writeData(data);
+        res.json({ success: true });
+    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+});
 
 // ==================== SITE SETTINGS ====================
 app.get('/api/site-settings', async (req, res) => {

@@ -149,6 +149,33 @@
       "joinDate": "2026-02-14",
       "isPublic": true,
       "isAdmin": true
+    },
+    {
+      "id": "member-1771839544455-czhfrbvqh",
+      "email": "e.ueda@hikonerire.com",
+      "googleId": "100787754911218348240",
+      "password": "$2b$10$D5SoJdiMxobW09g96ItUieLP/IbN7yxMhR8d9eLreMNtmQXOm15Y2",
+      "name": "上田永吉",
+      "furigana": "うえだえいきち",
+      "phone": "0749238823",
+      "business": "整骨院、運動教室",
+      "businessCategory": "サービス",
+      "introduction": "",
+      "avatar": "/uploads/img-1771839519639-478650562.JPG",
+      "location": "彦根市",
+      "website": "http://www.hikoneseitai.com",
+      "instagram": "rireseikotsuin",
+      "googleMapUrl": "https://maps.app.goo.gl/ia5iyjo7ez22Z6va9?g_st=ic",
+      "profession": "りーる整骨院",
+      "homepage": "http://www.hikoneseitai.com",
+      "photos": [
+        "/uploads/img-1771839532702-178918568.JPG"
+      ],
+      "sns": {},
+      "skills": [],
+      "joinDate": "2026-02-23",
+      "isPublic": true,
+      "isAdmin": false
     }
   ],
   "events": [
@@ -554,6 +581,18 @@
   ],
   "boards": [
     {
+      "id": "board-1771839309697-ptmcr896p",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "掲示板の活用方法につ",
+      "content": "掲示板の活用方法が外部なのか内部限定なのかそれとも相談や問い合わせなのか。各店舗を紹介するセクションを作ったほうがいいのかなどいろいろ悩んでいます。",
+      "category": "質問",
+      "replies": [],
+      "createdAt": "2026-02-23T09:35:09.697Z",
+      "updatedAt": "2026-02-23T09:41:52.593Z"
+    },
+    {
       "id": "board-1771175631079-rp5xwrtfc",
       "authorId": "member-1770561743721-xye9l5j2u",
       "authorName": "大倉有希",
@@ -633,6 +672,7 @@
     "member-1770561743721-xye9l5j2u",
     "member-1771049563225-y6kchm0mm",
     "member-1771053000213-yv4odgrga",
-    "admin-001"
+    "admin-001",
+    "member-1771839544455-czhfrbvqh"
   ]
 }
