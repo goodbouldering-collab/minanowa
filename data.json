@@ -3,7 +3,7 @@
     "heroTitle": "つながりが地元を熱くする",
     "heroSubtitle": "彦根周辺のビジネスを加速させる交流の場",
     "aboutTitle": "みんなのWAとは",
-    "aboutText": "事業者がつながり、成長し合うコミュニティ",
+    "aboutText": "名刺交換で終わらない、売上が生まれる仕組み",
     "instagramAccount": "minnano_wa.shiga",
     "stripePublishableKey": "",
     "googleClientId": "955088621164-8145av4u1mhm1jh57jj1nrl8k9hctpee.apps.googleusercontent.com"
@@ -586,6 +586,58 @@
     }
   ],
   "boards": [
+    {
+      "id": "board-1771958335349-jbqka1buw",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "使ってみた感想を",
+      "content": "YouTubeやSNS投稿もここで経験したり、教えあったりしたら、皆さんの事業にも役に立てると思います。リモート配信やTikTokもやっているので、いろいろ教えることができると思います。",
+      "category": "質問",
+      "mentionToId": "member-1771839544455-czhfrbvqh",
+      "mentionToName": "りーる整骨院",
+      "replies": [],
+      "createdAt": "2026-02-24T18:38:55.349Z"
+    },
+    {
+      "id": "board-1771958274560-jycl9x4hh",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "動画運用や投稿について",
+      "content": "皆さんで手分けして動画運用やSNS投稿ができる環境を整えたいです。時間も1日20分まで位で考えています。楽しくできればいいですね。リモート配信やYouTubeもよくやっているので、みんなでチャーケすれば簡単だと思います。",
+      "category": "質問",
+      "mentionToId": "member-1771053000213-yv4odgrga",
+      "mentionToName": "爪職人マナ",
+      "replies": [],
+      "createdAt": "2026-02-24T18:37:54.560Z"
+    },
+    {
+      "id": "board-1771958186218-h6mmfctsd",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "このサイトについて",
+      "content": "要望があれば、テスト段階で何でもコメントに書いてみてください。これは個人宛でできます。",
+      "category": "質問",
+      "mentionToId": "member-1771049563225-y6kchm0mm",
+      "mentionToName": "AromaOrange",
+      "replies": [],
+      "createdAt": "2026-02-24T18:36:26.218Z"
+    },
+    {
+      "id": "board-1771958144275-r36fn21n8",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "運営方法の相談",
+      "content": "掲示板は公開したほうが良いのか、個人限定したほうがいいのかどちらでしょうか？",
+      "category": "質問",
+      "mentionToId": "member-1770561743721-xye9l5j2u",
+      "mentionToName": "T-3Cプライベートジム",
+      "replies": [],
+      "createdAt": "2026-02-24T18:35:44.275Z"
+    },
     {
       "id": "board-1771839309697-ptmcr896p",
       "authorId": "member-002",
