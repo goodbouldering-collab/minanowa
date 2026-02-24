@@ -196,7 +196,14 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
   background:linear-gradient(135deg,var(--c1),var(--c3));color:#fff;
   box-shadow:0 1px 4px rgba(13,124,102,.2)}
 .card-title{font-size:1.18rem;font-weight:700;line-height:1.45;margin-bottom:.4rem;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--td)}
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;color:var(--td)}
+.card-cat-badge{position:absolute;top:.6rem;left:.6rem;z-index:3;padding:.2rem .6rem;
+  border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.03em;
+  backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:.25rem}
+.card-cat-badge i{font-size:.6rem}
+.card-cat-badge.cat-notice{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
+.card-cat-badge.cat-report{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
+.card-cat-badge.cat-movie{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
 .card-meta{color:var(--tl);font-size:.95rem;display:flex;gap:.5rem;align-items:center}
 
 /* ========== BUTTON ========== */
@@ -1052,7 +1059,7 @@ nav.at-top .hamburger{color:#fff}
 .mem-photo-strip{display:none}
 
 /* ========== BLOG CARD ========== */
-.blog-card{width:270px;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease}
+.blog-card{width:290px;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease}
 .blog-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(13,124,102,.15)}
 .blog-card .card-body{position:relative}
 .blog-detail-img{width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:1rem}
@@ -1701,24 +1708,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   .hero-glow{display:none}
 }
 
-/* ========== AI ASSISTANT (Top Banner + Chat) ========== */
-.ai-top-banner{position:fixed;top:0;left:0;right:0;z-index:1100;
-  background:linear-gradient(135deg,var(--c1),#0fa678,var(--c2));
-  color:#fff;padding:.45rem 1rem;display:flex;align-items:center;justify-content:center;gap:.6rem;
-  cursor:pointer;transition:all .3s;font-size:.82rem;font-weight:600;
-  box-shadow:0 2px 12px rgba(13,124,102,.25);letter-spacing:.02em}
-.ai-top-banner:hover{filter:brightness(1.08)}
-.ai-top-banner i{font-size:1rem;animation:ai-icon-bounce 2s ease infinite}
-.ai-top-banner .ai-banner-pulse{width:8px;height:8px;border-radius:50%;background:#4ade80;
-  animation:ai-dot-pulse 1.5s ease infinite;margin-left:.2rem}
-@keyframes ai-icon-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
-@keyframes ai-dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.ai-top-banner .ai-banner-close{background:none;border:none;color:rgba(255,255,255,.7);
-  cursor:pointer;font-size:.9rem;padding:2px 6px;margin-left:.3rem;transition:color .2s}
-.ai-top-banner .ai-banner-close:hover{color:#fff}
-body.ai-banner-visible nav#navbar{top:34px}
-body.ai-banner-visible .ai-top-banner~*{}
-
+/* ========== AI ASSISTANT (Chat) ========== */
 .ai-fab{position:fixed;bottom:24px;right:24px;z-index:950;width:60px;height:60px;
   border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
   border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
@@ -1779,11 +1769,9 @@ body.ai-banner-visible .ai-top-banner~*{}
 @keyframes ai-typing-dot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
 
 @media(max-width:600px){
-  .ai-top-banner{font-size:.75rem;padding:.35rem .6rem}
   .ai-fab{width:52px;height:52px;font-size:1.3rem;bottom:16px;right:16px}
   .ai-fab .ai-fab-label{display:none}
   .ai-chat{right:8px;left:8px;width:auto;bottom:76px;max-height:70vh}
-  body.ai-banner-visible nav#navbar{top:30px}
 }
 </style>
 </head>
@@ -2987,6 +2975,18 @@ function getYoutubeId(b){
   const m2=txt.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
   return m2?m2[1]:'';
 }
+function getBlogCatClass(cat){
+  if(!cat) return 'cat-report';
+  if(cat.includes('お知らせ')) return 'cat-notice';
+  if(cat.includes('ムービー')||cat.includes('動画')) return 'cat-movie';
+  return 'cat-report';
+}
+function getBlogCatIcon(cat){
+  if(!cat) return 'fa-file-alt';
+  if(cat.includes('お知らせ')) return 'fa-bullhorn';
+  if(cat.includes('ムービー')||cat.includes('動画')) return 'fa-video';
+  return 'fa-file-alt';
+}
 function renderBlogs(){
   const t=document.getElementById('blogTrack');t.innerHTML='';
   allBlogs.forEach((b,i)=>{
@@ -2997,26 +2997,30 @@ function renderBlogs(){
     if(ytId){
       // Video card with thumbnail and play button
       const thumbUrl=`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
+      const catCls2=getBlogCatClass(b.category||'活動ムービー');
+      const catIcon2=getBlogCatIcon(b.category||'活動ムービー');
       card.innerHTML=`<div class="card-img-wrap" style="position:relative">
           <img class="card-img" src="${thumbUrl}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=60'">
           <div class="card-img-overlay"></div>
+          <span class="card-cat-badge ${catCls2}"><i class="fas ${catIcon2}"></i> ${b.category||'活動ムービー'}</span>
           <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);transition:background .3s"><i class="fas fa-play-circle" style="font-size:2.2rem;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));transition:transform .3s"></i></div>
         </div>
         <div class="card-body">
           <div class="blog-date-badge"><i class="fas fa-clock"></i> ${b.date}</div>
-          <span class="card-tag">${b.category||'活動ムービー'}</span>
           <div class="card-title">${b.title}</div>
           <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
           <div class="read-more"><span><i class="fas fa-play" style="font-size:.6rem"></i> 動画を見る</span><i class="fas fa-arrow-right"></i></div>
         </div>`;
     } else {
+      const catCls=getBlogCatClass(b.category);
+      const catIcon=getBlogCatIcon(b.category);
       card.innerHTML=`<div class="card-img-wrap">
           <img class="card-img" src="${b.imageUrl}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
           <div class="card-img-overlay"></div>
+          <span class="card-cat-badge ${catCls}"><i class="fas ${catIcon}"></i> ${b.category}</span>
         </div>
         <div class="card-body">
           <div class="blog-date-badge"><i class="fas fa-clock"></i> ${b.date}</div>
-          <span class="card-tag">${b.category}</span>
           <div class="card-title">${b.title}</div>
           <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
           <div class="read-more"><span>続きを読む</span><i class="fas fa-arrow-right"></i></div>
@@ -4051,13 +4055,6 @@ window.addEventListener('scroll',()=>{
 </script>
 
 <!-- AI PERSONALIZATION UI -->
-<!-- AI Top Banner -->
-<div class="ai-top-banner" id="aiTopBanner" onclick="openAiChat()">
-  <i class="fas fa-robot"></i>
-  <span id="aiBannerText">AIアシスタントに何でも聞いてみよう！</span>
-  <span class="ai-banner-pulse"></span>
-  <button class="ai-banner-close" onclick="event.stopPropagation();closeAiBanner()">&times;</button>
-</div>
 
 <!-- AI FAB -->
 <button class="ai-fab" id="aiFab" onclick="openAiChat()" title="AIアシスタント">
@@ -4127,34 +4124,6 @@ function trackSectionViews(){
   document.querySelectorAll('section[id]').forEach(s=>observer.observe(s));
 }
 
-/* --- Top Banner --- */
-function showAiBanner(){
-  const profile=getAiProfile();
-  if(profile.dismissed.banner && Date.now()-profile.dismissed.banner<86400000) return;
-  const time=getTimeGreeting();
-  const name=currentUser?currentUser.name+'さん':'';
-  const bannerEl=document.getElementById('aiBannerText');
-  const isNew=profile.visits<=1;
-  if(isNew){
-    bannerEl.textContent=`${time.emoji} ${time.greeting}${name?'、'+name:''}！彦根の起業・事業の相談、AIアシスタントに何でも聞いてみよう`;
-  }else{
-    const msgs=[
-      '彦根で起業するコツ、聞いてみない？',
-      'コラボの始め方、AIに聞いてみよう！',
-      '集客のヒント、AIが答えます',
-      '何でも質問OK！AIアシスタントに聞いてみよう'
-    ];
-    bannerEl.textContent=`${time.emoji} ${msgs[Math.floor(Math.random()*msgs.length)]}`;
-  }
-  document.body.classList.add('ai-banner-visible');
-}
-
-function closeAiBanner(){
-  document.body.classList.remove('ai-banner-visible');
-  document.getElementById('aiTopBanner').style.display='none';
-  const p=getAiProfile();p.dismissed.banner=Date.now();saveAiProfile(p);
-}
-
 /* --- Chat --- */
 let aiChatOpen=false;
 
@@ -4168,8 +4137,6 @@ function openAiChat(){
   fab.onclick=closeAiChat;
   if(!document.getElementById('aiChatBody').children.length) initAiChat();
   setTimeout(()=>document.getElementById('aiChatInput').focus(),300);
-  // Hide banner when chat opens
-  closeAiBanner();
 }
 
 function closeAiChat(){
@@ -4297,13 +4264,10 @@ function initAiPersonalization(){
   profile.lastVisit=now;
   saveAiProfile(profile);
 
-  showAiBanner();
   trackSectionViews();
 
-  // Auto-open chat for first-time visitors after a short delay
-  if(profile.visits<=1){
-    setTimeout(()=>{if(!aiChatOpen) openAiChat()},2500);
-  }
+  // Auto-open AI chat on page load (after loading screen)
+  setTimeout(()=>{if(!aiChatOpen) openAiChat()},2200);
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
