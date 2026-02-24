@@ -4032,7 +4032,7 @@ window.addEventListener('scroll',()=>{
 <!-- AI PERSONALIZATION UI -->
 <div class="ai-greeting" id="aiGreeting">
   <button class="ai-greeting-close" onclick="dismissGreeting()">&times;</button>
-  <div class="ai-tag"><i class="fas fa-sparkles"></i> AIパーソナライズ</div>
+  <div class="ai-tag"><i class="fas fa-lightbulb"></i> 彦根起業のリアル</div>
   <div class="ai-greeting-text" id="aiGreetingText"></div>
   <div class="ai-recommend" id="aiRecommend"></div>
 </div>
@@ -4043,15 +4043,15 @@ window.addEventListener('scroll',()=>{
   <button class="ai-dismiss" onclick="dismissInsight()">&times;</button>
 </div>
 
-<button class="ai-fab" id="aiFab" onclick="toggleAiChat()" title="AIアシスタント">
-  <i class="fas fa-robot"></i>
+<button class="ai-fab" id="aiFab" onclick="toggleAiChat()" title="彦根起業のコツ">
+  <i class="fas fa-comment-dots"></i>
   <span class="ai-pulse"></span>
 </button>
 
 <div class="ai-chat" id="aiChat">
   <div class="ai-chat-head">
-    <i class="fas fa-robot"></i>
-    <span>AIアシスタント</span>
+    <i class="fas fa-comment-dots"></i>
+    <span>彦根起業のリアル</span>
   </div>
   <div class="ai-chat-body" id="aiChatBody"></div>
   <div class="ai-quick-actions" id="aiQuickActions"></div>
@@ -4096,16 +4096,16 @@ function showAiGreeting(){
   const rec=document.getElementById('aiRecommend');
 
   if(isNew){
-    el.innerHTML=`${time.emoji} ${time.greeting}${name?'、<strong>'+name+'</strong>':''}！<br>ようこそ <strong>みんなのWA</strong> へ。<br>あなたにぴったりの情報をお届けします。`;
-    rec.innerHTML=['about','events','members'].map(id=>
+    el.innerHTML=`${time.emoji} ${time.greeting}${name?'、<strong>'+name+'</strong>':''}！<br>彦根で事業を始めたい・伸ばしたいあなたへ。<br><strong>仲間と一緒に成長</strong>するヒントをお届けします。`;
+    rec.innerHTML=['events','members','blogs'].map(id=>
       `<a href="#${id}">${SECTION_NAMES[id]||id}</a>`).join('');
   }else{
     const tops=getTopSections(profile);
     const daysSince=profile.lastVisit?Math.floor((Date.now()-new Date(profile.lastVisit).getTime())/(1000*60*60*24)):0;
     let msg=`${time.emoji} ${time.greeting}${name?'、<strong>'+name+'</strong>':''}！`;
-    if(daysSince>7) msg+=`<br>${daysSince}日ぶりですね！新しい情報が届いています。`;
-    else if(daysSince>0) msg+=`<br>おかえりなさい！最新情報をチェックしましょう。`;
-    else msg+=`<br>いつもご利用ありがとうございます。`;
+    if(daysSince>7) msg+=`<br>${daysSince}日ぶりですね！彦根の仲間たちが待ってますよ 🏯`;
+    else if(daysSince>0) msg+=`<br>おかえりなさい！今日も彦根から元気を発信しましょう。`;
+    else msg+=`<br>今日も彦根から一歩前へ。仲間の活動をチェック！`;
     el.innerHTML=msg;
     if(tops.length){
       rec.innerHTML=`<span style="font-size:.65rem;color:var(--tl);width:100%;margin-bottom:2px">あなたへのおすすめ:</span>`+
@@ -4148,12 +4148,12 @@ function showSmartInsight(){
   const tops=getTopSections(profile,1);
   if(profile.visits<3||!tops.length) return;
   const insights={
-    events:'新しいイベントが追加されました！参加してメンバーとつながりましょう。',
-    members:'メンバーが増えています！新しい仲間をチェックしてみませんか？',
-    board:'掲示板に新しい投稿があります。コミュニティの声を聞いてみましょう。',
-    about:'みんなのWAの最新情報をお届けしています。',
-    blogs:'新しいブログ記事が公開されました！',
-    memberMap:'近くのメンバーを探してみませんか？マップで確認できます。'
+    events:'新しい交流会が追加されました！彦根の仲間に会いに行こう 🏯',
+    members:'メンバーが増えてます！新しい仲間をチェックしてみない？',
+    board:'掲示板にコラボ募集が来てるよ。チャンスかも！',
+    about:'彦根で起業するメリット、知ってる？WAとはセクションをチェック。',
+    blogs:'交流会レポートが更新されました。みんなの活動を見てみよう！',
+    memberMap:'近くのメンバーをマップで発見。経路検索もできるよ 📍'
   };
   const txt=insights[tops[0]];
   if(!txt) return;
@@ -4173,7 +4173,7 @@ function toggleAiChat(){
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
   chat.classList.toggle('open',aiChatOpen);
-  fab.innerHTML=aiChatOpen?'<i class="fas fa-times"></i>':'<i class="fas fa-robot"></i><span class="ai-pulse"></span>';
+  fab.innerHTML=aiChatOpen?'<i class="fas fa-times"></i>':'<i class="fas fa-comment-dots"></i><span class="ai-pulse"></span>';
   if(aiChatOpen && !document.getElementById('aiChatBody').children.length) initAiChat();
 }
 
@@ -4181,12 +4181,7 @@ function initAiChat(){
   const body=document.getElementById('aiChatBody');
   const time=getTimeGreeting();
   const name=currentUser?currentUser.name+'さん':'';
-  addAiMsg('bot',`${time.emoji} ${time.greeting}${name?'、'+name:''}！\nみんなのWAについて何でもお聞きください。`);
-  const profile=getAiProfile();
-  const tops=getTopSections(profile,2);
-  if(tops.length){
-    addAiMsg('bot',`あなたは${tops.map(id=>SECTION_NAMES[id]).join('や')}に興味がありそうですね！`);
-  }
+  addAiMsg('bot',`${time.emoji} ${time.greeting}${name?'、'+name:''}！\n彦根で起業・事業をがんばるあなたを応援します。\n気になるトピックをタップしてね`);
   updateQuickActions();
 }
 
@@ -4194,30 +4189,26 @@ function addAiMsg(type,text){
   const body=document.getElementById('aiChatBody');
   const msg=document.createElement('div');
   msg.className='ai-msg '+type;
-  msg.textContent=text;
+  msg.innerHTML=text.replace(/\n/g,'<br>');
   body.appendChild(msg);
   body.scrollTop=body.scrollHeight;
 }
 
 const AI_ANSWERS={
-  'イベントについて':'交流会やセミナーなど、定期的にイベントを開催しています。イベントセクションから詳細を確認し、参加申し込みができます！',
-  '参加方法':'無料で参加できます！「会員登録」ボタンから登録するだけ。Googleアカウントでも登録可能です。',
-  'メンバーについて':'IT・Web、飲食、教育、建設など様々な業種の事業者が参加しています。メンバーセクションで全員のプロフィールを閲覧できます。',
-  '掲示板について':'悩み相談・コラボ募集・告知など、自由に投稿できます。ログイン後に「投稿する」ボタンから利用できます。',
-  '料金について':'みんなのWAへの参加は無料です。一部イベントに参加費が必要な場合があります。',
-  '場所について':'彦根市を中心に活動しています。メンバーマップで近くのメンバーを確認できます。'
+  '彦根で起業ってどう？':'正直、最高です。家賃は都会の1/3くらいだし、琵琶湖のそばで暮らしながら仕事できる。しかも人のつながりが濃いから「あの人紹介するよ」が日常。彦根城を眺めながら朝カフェで仕事するの、控えめに言って幸せすぎる ☕🏯',
+  '起業の第一歩は？':'まず「みんなのWA」の交流会に来てみて。月1回、彦根で異業種の事業者が集まってるから、仲間がすぐできる。一人で悩んでたことが「あ、それ得意！」って人に30秒で出会えたりする。マジで。行動するだけで世界変わるよ 🚀',
+  '集客のコツ教えて':'彦根は人口11万人の"顔が見える街"。だからSNSよりも口コミが最強。みんなのWAのメンバー同士でお互いのサービスを使い合うだけで、信頼ベースのお客さんが増える。あとInstagramは地域タグ #彦根 #滋賀 つけるだけで反応全然違うよ 📱',
+  'コラボってどうやる？':'交流会で「こういうことやりたいんだよね〜」って言うだけでOK。美容師×カフェで「カット後にラテ無料」とか、IT×農家で「ECサイト作ろう」とか実際に生まれてる。掲示板に書くのもアリ。異業種だからこそ化学反応が起きるんだよね ✨',
+  '失敗が怖い…':'わかる、めっちゃわかる。でも彦根のいいところは「失敗しても応援してくれる人がいる」こと。みんなのWAには同じ道を歩んだ先輩がいるし、相談できる掲示板もある。完璧を目指すより、まず小さく始めてみよう。仲間がいれば怖くない 💪',
+  'メンバーの雰囲気は？':'一言で言うと「ギブ精神の塊」。みんな自分の経験やスキルを惜しみなくシェアしてくれる。美容、飲食、IT、トレーナー…業種バラバラだけど「彦根を盛り上げたい」って想いは同じ。初めてでも絶対馴染めるから安心して 🤝',
+  '彦根の魅力って？':'国宝・彦根城、琵琶湖の絶景、近江牛、ひこにゃん…観光だけじゃないのよ。大阪・京都から1時間でアクセス良いのに家賃安い。子育て環境も◎。「ちょうどいい田舎」で事業しながら豊かに暮らせる、それが彦根の本当の魅力 🌿'
 };
 
 function handleAiQuestion(q){
   addAiMsg('user',q);
   setTimeout(()=>{
-    const answer=AI_ANSWERS[q]||'お問い合わせありがとうございます。より詳しい情報はお問い合わせフォームからご連絡ください！';
+    const answer=AI_ANSWERS[q]||'いい質問！もっと詳しく知りたい場合はお問い合わせフォームから聞いてね 📩';
     addAiMsg('bot',answer);
-    // Navigate to relevant section
-    const sectionMap={'イベントについて':'events','メンバーについて':'members','掲示板について':'board','場所について':'memberMap'};
-    if(sectionMap[q]){
-      addAiMsg('bot',`👉 ${SECTION_NAMES[sectionMap[q]]}セクションへ移動しますか？`);
-    }
   },600);
 }
 
