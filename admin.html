@@ -328,6 +328,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <div class="menu-item" onclick="showPanel('blogs',this)"><i class="fas fa-newspaper"></i><span>お知らせ・活動レポート</span></div>
     <div class="menu-item" onclick="showPanel('members',this)"><i class="fas fa-users"></i><span>メンバー</span></div>
     <div class="menu-item" onclick="showPanel('boards',this)"><i class="fas fa-comments"></i><span>掲示板</span></div>
+    <div class="menu-item" onclick="showPanel('ai',this)"><i class="fas fa-robot"></i><span>AIアシスタント</span></div>
     <div class="menu-item" onclick="showPanel('backup',this)"><i class="fas fa-database"></i><span>バックアップ</span></div>
   </div>
 </div>
@@ -475,6 +476,45 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   <div id="boardAdminList"></div>
 </div>
 
+
+
+<!-- AI ASSISTANT -->
+<div class="panel" id="panel-ai">
+  <div class="panel-head">
+    <h2><i class="fas fa-robot"></i> AIアシスタント</h2>
+    <button class="btn btn-primary" onclick="saveAiSettings()"><i class="fas fa-save"></i> 保存</button>
+  </div>
+  <div id="aiSaveMsg" style="font-size:.78rem;color:var(--c2);margin-bottom:.5rem;display:none"></div>
+
+  <!-- Quick Questions -->
+  <div class="admin-card" style="margin-bottom:.8rem">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+      <div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2));flex-shrink:0"><i class="fas fa-list"></i></div>
+      <div><div style="font-weight:700;font-size:.85rem">クイック質問ボタン</div><div style="font-size:.68rem;color:var(--tl)">AIチャット下部に表示されるボタンのテキスト（改行区切り）</div></div>
+    </div>
+    <textarea id="aiQuickQ" rows="4" style="width:100%;padding:.5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:10px;font-size:.78rem;line-height:1.6;resize:vertical;font-family:inherit" placeholder="彦根で起業ってどう？&#10;起業の第一歩は？&#10;集客のコツ教えて"></textarea>
+  </div>
+
+  <!-- Preset Q&A -->
+  <div class="admin-card" style="margin-bottom:.8rem">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+      <div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff;background:linear-gradient(135deg,#3b82f6,#2563eb);flex-shrink:0"><i class="fas fa-comment-dots"></i></div>
+      <div><div style="font-weight:700;font-size:.85rem">プリセットQ&A（完全一致）</div><div style="font-size:.68rem;color:var(--tl)">質問テキストが完全に一致した場合に返す回答</div></div>
+    </div>
+    <div id="aiAnswersList"></div>
+    <button class="btn" style="margin-top:.4rem;background:var(--cbg2);border:1.5px solid rgba(16,185,129,.15);color:var(--c1);font-size:.72rem" onclick="addAiAnswerRow()"><i class="fas fa-plus"></i> 追加</button>
+  </div>
+
+  <!-- Keyword Patterns -->
+  <div class="admin-card">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+      <div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff;background:linear-gradient(135deg,#f59e0b,#d97706);flex-shrink:0"><i class="fas fa-search"></i></div>
+      <div><div style="font-weight:700;font-size:.85rem">キーワードパターン（部分一致）</div><div style="font-size:.68rem;color:var(--tl)">正規表現パターンにマッチした場合に返す回答（例: 起業|開業|独立）</div></div>
+    </div>
+    <div id="aiKeywordsList"></div>
+    <button class="btn" style="margin-top:.4rem;background:var(--cbg2);border:1.5px solid rgba(245,158,11,.15);color:#d97706;font-size:.72rem" onclick="addAiKeywordRow()"><i class="fas fa-plus"></i> 追加</button>
+  </div>
+</div>
 
 
 <!-- BACKUP -->
@@ -702,7 +742,7 @@ async function loadAll(){
     fetch('/api/site-settings').then(r=>r.json()),
     fetch('/api/admin/operating-members').then(r=>r.json())
   ]);
-  renderDash();renderEvTbl();renderBlogTbl();renderMemTbl();renderBoardAdmin();
+  renderDash();renderEvTbl();renderBlogTbl();renderMemTbl();renderBoardAdmin();renderAiPanel();
   document.getElementById('hTitle').value=settings.heroTitle||'';
   document.getElementById('hSub').value=settings.heroSubtitle||'';
   document.getElementById('hAbout').value=settings.aboutTitle||'';
@@ -727,6 +767,7 @@ function showPanel(id,el){
   document.getElementById('panel-'+id).classList.add('active');
   if(el) el.classList.add('active');
   if(id==='backup') loadBackupList();
+  if(id==='ai') renderAiPanel();
 }
 
 // Dashboard
@@ -1151,6 +1192,117 @@ async function saveBoardEdit(e){
   if(r.success){document.getElementById('boardEditModal').style.display='none';loadAll();showToast('更新しました')}
 }
 async function delBoard(id){if(confirm('削除しますか？')){await fetch(`/api/admin/boards/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
+
+// AI Assistant settings
+function renderAiPanel(){
+  const answers=settings.aiAnswers||{};
+  const keywords=settings.aiKeywords||{};
+  const quickQ=settings.aiQuickQuestions||[];
+
+  // Quick questions
+  const qEl=document.getElementById('aiQuickQ');
+  if(quickQ.length){
+    qEl.value=quickQ.join('\n');
+  }else{
+    qEl.value='彦根で起業ってどう？\n起業の第一歩は？\n集客のコツ教えて\nコラボってどうやる？\n失敗が怖い…\nメンバーの雰囲気は？\n交流会って何するの？\nみんなのWAって何？';
+  }
+
+  // Preset Q&A rows
+  const aList=document.getElementById('aiAnswersList');aList.innerHTML='';
+  const aEntries=Object.entries(answers);
+  if(aEntries.length){
+    aEntries.forEach(([q,a])=>aList.appendChild(makeAiAnswerRow(q,a)));
+  }else{
+    // Show defaults
+    const defaults={'彦根で起業ってどう？':'正直、最高です。家賃は都会の1/3くらい…',
+      '起業の第一歩は？':'まず「みんなのWA」の交流会に来てみて…',
+      '集客のコツ教えて':'彦根は口コミが最強の街…',
+      'コラボってどうやる？':'交流会で言うだけでOK…',
+      '失敗が怖い…':'みんなのWAには仲間がいる…',
+      'メンバーの雰囲気は？':'ギブ精神の塊！…',
+      '彦根の魅力って？':'国宝・彦根城、琵琶湖の絶景…',
+      '交流会って何するの？':'月1回の定期開催…',
+      '会費はいくら？':'登録は無料！…',
+      'みんなのWAって何？':'彦根市を拠点とした異業種交流コミュニティ…'};
+    Object.entries(defaults).forEach(([q,a])=>aList.appendChild(makeAiAnswerRow(q,a)));
+  }
+
+  // Keyword pattern rows
+  const kList=document.getElementById('aiKeywordsList');kList.innerHTML='';
+  const kEntries=Object.entries(keywords);
+  if(kEntries.length){
+    kEntries.forEach(([p,a])=>kList.appendChild(makeAiKeywordRow(p,a)));
+  }else{
+    const defaults={'起業|はじめ|始め|スタート|独立|開業':'彦根での起業は最高の選択肢！…',
+      '集客|お客|客|売上|マーケ|宣伝':'彦根は口コミが最強の街…',
+      'コラボ|協力|一緒|共同':'交流会で言うだけでコラボが生まれる！…',
+      '不安|怖い|心配|失敗|リスク':'不安は当然。でも仲間がいる！…',
+      '彦根|滋賀|琵琶湖|近江':'彦根は国宝・彦根城と琵琶湖が自慢…',
+      '交流会|イベント|参加':'月1回の定期開催！…',
+      'メンバー|仲間|人|雰囲気':'ギブ精神の塊なメンバーばかり！…',
+      '費用|料金|会費|お金':'登録は完全無料！…',
+      'WA|わ|コミュニティ':'みんなのWAは彦根市の異業種交流コミュニティ…',
+      '登録|入会|申込':'ページ上部のボタンから簡単登録！…',
+      'SNS|インスタ|Instagram':'Instagramで活動発信中！…',
+      '場所|アクセス|どこ':'彦根市を拠点に活動…',
+      '掲示板|相談|質問':'掲示板で自由に投稿できるよ…'};
+    Object.entries(defaults).forEach(([p,a])=>kList.appendChild(makeAiKeywordRow(p,a)));
+  }
+}
+
+function makeAiAnswerRow(q,a){
+  const row=document.createElement('div');
+  row.style.cssText='display:grid;grid-template-columns:1fr 2fr auto;gap:.3rem;margin-bottom:.3rem;align-items:start';
+  row.innerHTML=`<input class="ai-q-input" value="${escH(q)}" placeholder="質問" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;font-family:inherit">
+    <textarea class="ai-a-input" rows="2" placeholder="回答" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;resize:vertical;font-family:inherit;line-height:1.5">${escH(a)}</textarea>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:.2rem;font-size:.8rem"><i class="fas fa-trash-alt"></i></button>`;
+  return row;
+}
+function addAiAnswerRow(){document.getElementById('aiAnswersList').appendChild(makeAiAnswerRow('',''))}
+
+function makeAiKeywordRow(p,a){
+  const row=document.createElement('div');
+  row.style.cssText='display:grid;grid-template-columns:1fr 2fr auto;gap:.3rem;margin-bottom:.3rem;align-items:start';
+  row.innerHTML=`<input class="ai-p-input" value="${escH(p)}" placeholder="パターン（例: 起業|開業）" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;font-family:inherit">
+    <textarea class="ai-ka-input" rows="2" placeholder="回答" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;resize:vertical;font-family:inherit;line-height:1.5">${escH(a)}</textarea>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:.2rem;font-size:.8rem"><i class="fas fa-trash-alt"></i></button>`;
+  return row;
+}
+function addAiKeywordRow(){document.getElementById('aiKeywordsList').appendChild(makeAiKeywordRow('',''))}
+
+function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+async function saveAiSettings(){
+  // Collect preset Q&A
+  const aiAnswers={};
+  document.querySelectorAll('#aiAnswersList > div').forEach(row=>{
+    const q=row.querySelector('.ai-q-input').value.trim();
+    const a=row.querySelector('.ai-a-input').value.trim();
+    if(q&&a) aiAnswers[q]=a;
+  });
+  // Collect keyword patterns
+  const aiKeywords={};
+  document.querySelectorAll('#aiKeywordsList > div').forEach(row=>{
+    const p=row.querySelector('.ai-p-input').value.trim();
+    const a=row.querySelector('.ai-ka-input').value.trim();
+    if(p&&a) aiKeywords[p]=a;
+  });
+  // Quick questions
+  const aiQuickQuestions=document.getElementById('aiQuickQ').value.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  try{
+    const r=await fetch('/api/site-settings',{
+      method:'PUT',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({aiAnswers,aiKeywords,aiQuickQuestions})
+    }).then(r=>r.json());
+    if(r.success){
+      settings.aiAnswers=aiAnswers;
+      settings.aiKeywords=aiKeywords;
+      settings.aiQuickQuestions=aiQuickQuestions;
+      showToast('AIアシスタント設定を保存しました');
+    }
+  }catch(e){showToast('保存に失敗しました','error')}
+}
 
 // Backup
 async function doBackup(){

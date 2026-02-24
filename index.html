@@ -4275,23 +4275,16 @@ function closeAiChat(){
 }
 
 function initAiChat(){
+  const body=document.getElementById('aiChatBody');
   const time=getTimeGreeting();
   const name=currentUser?currentUser.name+'さん':'';
   const profile=getAiProfile();
   const isNew=profile.visits<=1;
-  let welcomeMsg=`${time.emoji} ${time.greeting}${name?'、'+name:''}！\n`;
-  if(isNew){
-    welcomeMsg+=`彦根で事業を始めたい・伸ばしたいあなたへ。\n何でも気軽に質問してくださいね！`;
-  }else{
-    welcomeMsg+=`彦根での起業・事業の悩みや質問、何でもどうぞ！`;
-  }
-  addAiMsg('bot',welcomeMsg);
 
-  // Show personal notifications if logged in
+  // Show personal notifications FIRST if logged in
   if(currentUser){
     const notifHtml=buildAiNotifCards();
     if(notifHtml){
-      const body=document.getElementById('aiChatBody');
       const section=document.createElement('div');
       section.className='ai-notif-section';
       section.innerHTML=notifHtml;
@@ -4311,9 +4304,18 @@ function initAiChat(){
           if(ev) showEventDetail(ev);
         });
       });
-      body.scrollTop=body.scrollHeight;
     }
   }
+
+  // Show greeting AFTER personal info
+  let welcomeMsg=`${time.emoji} ${time.greeting}${name?'、'+name:''}！\n`;
+  if(isNew){
+    welcomeMsg+=`彦根で事業を始めたい・伸ばしたいあなたへ。\n何でも気軽に質問してくださいね！`;
+  }else{
+    welcomeMsg+=`彦根での起業・事業の悩みや質問、何でもどうぞ！`;
+  }
+  addAiMsg('bot',welcomeMsg);
+  body.scrollTop=body.scrollHeight;
 
   updateQuickActions();
 }
@@ -4443,8 +4445,8 @@ function removeAiTyping(){
   if(el) el.remove();
 }
 
-/* --- AI Knowledge Base --- */
-const AI_ANSWERS={
+/* --- AI Knowledge Base (defaults, overridden by server settings) --- */
+let AI_ANSWERS={
   '彦根で起業ってどう？':'正直、最高です。家賃は都会の1/3くらいだし、琵琶湖のそばで暮らしながら仕事できる。しかも人のつながりが濃いから「あの人紹介するよ」が日常。彦根城を眺めながら朝カフェで仕事するの、控えめに言って幸せすぎる ☕🏯',
   '起業の第一歩は？':'まず「みんなのWA」の交流会に来てみて。月1回、彦根で異業種の事業者が集まってるから、仲間がすぐできる。一人で悩んでたことが「あ、それ得意！」って人に30秒で出会えたりする。マジで。行動するだけで世界変わるよ 🚀',
   '集客のコツ教えて':'彦根は人口11万人の"顔が見える街"。だからSNSよりも口コミが最強。みんなのWAのメンバー同士でお互いのサービスを使い合うだけで、信頼ベースのお客さんが増える。あとInstagramは地域タグ #彦根 #滋賀 つけるだけで反応全然違うよ 📱',
@@ -4457,8 +4459,8 @@ const AI_ANSWERS={
   'みんなのWAって何？':'彦根市を拠点とした異業種交流コミュニティだよ。事業者同士がつながって、お互いのお客さんになったり、コラボしたり、スキルをシェアしたり。「仲間がいるから頑張れる」、そんな場所。登録無料だからまず見てみて！'
 };
 
-/* --- Intelligent Answer Matching --- */
-const AI_KEYWORDS={
+/* --- Intelligent Answer Matching (defaults, overridden by server settings) --- */
+let AI_KEYWORDS={
   '起業|はじめ|始め|スタート|独立|開業':'彦根での起業は最高の選択肢！家賃が安くて、人のつながりが濃い。みんなのWAの交流会で仲間を見つけるのが第一歩。一人で悩まないで、まず来てみて！ 🚀',
   '集客|お客|客|売上|マーケ|宣伝|広告|PR':'彦根は口コミが最強の街。みんなのWAのメンバー同士でサービスを使い合うのが一番効果的。Instagram の #彦根 タグも効果大。地域密着がカギだよ 📱',
   'コラボ|協力|一緒|共同|パートナー':'交流会で「こんなことやりたい」って言うだけでコラボが生まれる！異業種だからこそ面白いアイデアが出るんだよね。掲示板にも募集できるよ ✨',
@@ -4473,6 +4475,23 @@ const AI_KEYWORDS={
   '場所|アクセス|どこ|住所':'彦根市を拠点に活動してるよ。交流会は彦根市内のカフェやスペースで開催。JR彦根駅からもアクセスしやすい場所が多い。詳しくはイベント情報をチェック！ 📍',
   '掲示板|相談|質問|投稿|書き込み':'掲示板では質問、コラボ募集、イベント告知など自由に投稿できるよ。メンバーが親切に答えてくれるから、困ったことがあったら気軽に書いてみて！ 📋'
 };
+
+/* --- Load AI settings from server (override defaults) --- */
+async function loadAiSettings(){
+  try{
+    const s=await fetch('/api/site-settings').then(r=>r.json());
+    if(s.aiAnswers && typeof s.aiAnswers==='object' && Object.keys(s.aiAnswers).length){
+      AI_ANSWERS=s.aiAnswers;
+    }
+    if(s.aiKeywords && typeof s.aiKeywords==='object' && Object.keys(s.aiKeywords).length){
+      AI_KEYWORDS=s.aiKeywords;
+    }
+    if(s.aiQuickQuestions && Array.isArray(s.aiQuickQuestions) && s.aiQuickQuestions.length){
+      window._aiQuickQuestions=s.aiQuickQuestions;
+    }
+  }catch(e){/* use defaults */}
+}
+loadAiSettings();
 
 function findSmartAnswer(question){
   // First check exact matches
@@ -4508,10 +4527,9 @@ function sendAiMessage(){
 
 function updateQuickActions(){
   const qa=document.getElementById('aiQuickActions');
-  const questions=['彦根で起業ってどう？','起業の第一歩は？','集客のコツ教えて','コラボってどうやる？',
-    '失敗が怖い…','メンバーの雰囲気は？','交流会って何するの？','みんなのWAって何？'];
+  const questions=window._aiQuickQuestions||Object.keys(AI_ANSWERS).slice(0,8);
   qa.innerHTML=questions.map(q=>
-    `<button class="ai-quick-btn" onclick="handleAiQuestion('${q}')">${q}</button>`
+    `<button class="ai-quick-btn" onclick="handleAiQuestion('${q.replace(/'/g,"\\'")}')">${q}</button>`
   ).join('');
 }
 
