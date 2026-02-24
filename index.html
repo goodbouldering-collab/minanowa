@@ -1120,6 +1120,25 @@ nav.at-top .hamburger{color:#fff}
 .board-reply-form input{flex:1;padding:.4rem .6rem;border:1px solid rgba(0,0,0,.08);
   border-radius:10px;font-size:.75rem;background:#fff}
 .board-reply-form input:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 2px rgba(13,124,102,.06)}
+.board-mention-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.7rem;font-weight:600;
+  padding:.15rem .5rem;border-radius:6px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;
+  margin-left:.3rem;box-shadow:0 1px 4px rgba(59,130,246,.25)}
+.board-mention-badge i{font-size:.6rem}
+.mem-board-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:600;
+  padding:.3rem .65rem;border-radius:8px;border:1px solid rgba(13,124,102,.15);
+  background:rgba(13,124,102,.04);color:var(--c1);cursor:pointer;transition:all .2s;
+  margin-top:.3rem;font-family:inherit}
+.mem-board-btn:hover{background:var(--c1);color:#fff;border-color:var(--c1);transform:translateY(-1px)}
+.hero-board-notif{display:flex;align-items:center;gap:.5rem;padding:.45rem .7rem;
+  background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(37,99,235,.1));
+  border:1px solid rgba(59,130,246,.2);border-radius:10px;cursor:pointer;
+  transition:all .3s;margin-top:.25rem}
+.hero-board-notif:hover{background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(37,99,235,.15));transform:translateX(2px)}
+.hero-board-notif i{color:#60a5fa;font-size:.9rem}
+.hero-board-notif-text{flex:1;font-size:.82rem;color:#bfdbfe;font-weight:600}
+.hero-board-notif-count{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;
+  font-size:.68rem;font-weight:800;padding:.15rem .5rem;border-radius:10px;
+  box-shadow:0 2px 6px rgba(59,130,246,.3)}
 
 /* ========== FAQ ========== */
 .faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:.6rem}
@@ -1858,6 +1877,7 @@ html,body{max-width:100vw;overflow-x:hidden}
     <div class="hero-events-wrap" id="heroEventsWrap" style="display:none">
       <div class="hero-events-track" id="heroEventsTrack"></div>
     </div>
+    <div id="heroBoardNotif" style="width:100%;max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:.3rem"></div>
     <div class="hero-cta">
       <button class="btn btn-white" id="heroRegBtn" onclick="openModal('regModal')"><i class="fas fa-user-plus"></i> 会員登録</button>
       <button class="btn btn-glass" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})"><i class="fas fa-arrow-down"></i> もっと見る</button>
@@ -2226,6 +2246,12 @@ html,body{max-width:100vw;overflow-x:hidden}
     <button class="modal-close" onclick="closeModal('boardPostModal')">&times;</button>
     <div class="modal-title"><i class="fas fa-pen-fancy"></i> 掲示板に投稿</div>
     <form onsubmit="handleBoardPost(event)">
+      <input type="hidden" id="bpMentionToId" value="">
+      <input type="hidden" id="bpMentionToName" value="">
+      <div id="bpMentionDisplay" style="display:none;margin-bottom:.5rem;padding:.4rem .7rem;background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(37,99,235,.05));border:1px solid rgba(59,130,246,.15);border-radius:8px;font-size:.82rem;color:#3b82f6;font-weight:600">
+        <i class="fas fa-at"></i> <span id="bpMentionName"></span> さん宛
+        <button type="button" onclick="clearBoardMention()" style="background:none;border:none;color:#94a3b8;cursor:pointer;margin-left:.3rem;font-size:.8rem">&times;</button>
+      </div>
       <div class="fg"><label>カテゴリ</label>
         <select id="bpCat"><option>コラボ募集</option><option>イベント企画</option><option>お知らせ</option><option>質問</option><option>その他</option></select>
       </div>
@@ -2537,7 +2563,7 @@ async function loadAll(){
     animHeroStats();
     allEvents.sort((a,b)=>new Date(b.date)-new Date(a.date));
     await loadMemberRanks();
-    renderEvents();renderMembers();renderBlogs();renderBoards();renderOpMembers();renderInstaFeed(settings);renderMemberMap();renderHeroNextEvent();initHeroVideoDigest();
+    renderEvents();renderMembers();renderBlogs();renderBoards();renderOpMembers();renderInstaFeed(settings);renderMemberMap();renderHeroNextEvent();renderHeroBoardNotif();initHeroVideoDigest();
     // Handle Stripe success callback
     handleStripeCallback();
     handleDeepLink();
@@ -2921,6 +2947,7 @@ function renderMembers(list){
     const nameBlock = m.profession
       ? `${shopNameEl}<div class="mem-name-sub">${m.name}</div>`
       : `<div class="mem-name">${m.name}</div>`;
+    const boardBtn=currentUser&&currentUser.id!==m.id?`<button class="mem-board-btn" onclick="event.stopPropagation();openBoardPostForMember('${m.id}','${(m.profession||m.name).replace(/'/g,"\\'")}')"><i class="fas fa-comment-dots"></i> 掲示板に投稿</button>`:'';
     card.innerHTML=`<div class="mem-avatar-wrap">
         <img class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
         <div class="mem-status"></div>
@@ -2932,7 +2959,8 @@ function renderMembers(list){
       <div class="mem-loc"><i class="fas fa-map-marker-alt"></i> ${m.location}</div>
       ${introHtml}
       <div class="mem-skills">${skills}</div>
-      ${linksHtml}`;
+      ${linksHtml}
+      ${boardBtn}`;
     // Attach map pan event to map icon
     const mapBtn=card.querySelector('.mem-map-btn');
     if(mapBtn){
@@ -3142,10 +3170,12 @@ function renderBoards(){
     const post=document.createElement('div');
     post.className='board-post reveal';
     post.style.transitionDelay=(i*100)+'ms';
+    const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-at"></i> ${b.mentionToName}さん宛</span>`:'';
     post.innerHTML=`<div class="board-header">
         <img src="${b.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">
         <div class="bh-info"><div class="bh-name">${b.authorName}</div><div class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</div></div>
         <span class="board-cat">${b.category||''}</span>
+        ${mentionHtml}
         ${ownerBtns}
       </div>
       <div class="board-title">${b.title}</div>
@@ -3499,7 +3529,7 @@ async function onGoogleCredentialResponse(response){
       // Existing user - log in
       currentUser=d.member;localStorage.setItem('wa_user',JSON.stringify(currentUser));
       closeModal('loginModal');closeModal('regModal');
-      updateNav();renderBoards();renderEvents();renderHeroNextEvent();
+      updateNav();renderBoards();renderEvents();renderHeroNextEvent();renderHeroBoardNotif();
       showToast('Googleでログインしました');
       if(d.member.isAdmin && confirm('管理者ページに移動しますか？')) window.location.href='/admin.html';
     }else{
@@ -3528,7 +3558,7 @@ async function handleLogin(e){
     const d=await res.json();
     if(d.success){
       currentUser=d.member;localStorage.setItem('wa_user',JSON.stringify(currentUser));
-      closeModal('loginModal');updateNav();renderBoards();renderEvents();renderHeroNextEvent();
+      closeModal('loginModal');updateNav();renderBoards();renderEvents();renderHeroNextEvent();renderHeroBoardNotif();
       showToast('ログインしました');
       if(d.member.isAdmin && confirm('管理者ページに移動しますか？')) window.location.href='/admin.html';
     }else showToast(d.error||'ログイン失敗');
@@ -3588,7 +3618,7 @@ async function handleRegister(e){
   }catch{showToast('エラーが発生しました')}
 }
 
-function logout(){currentUser=null;localStorage.removeItem('wa_user');updateNav();renderBoards();renderEvents();renderHeroNextEvent();showToast('ログアウトしました')}
+function logout(){currentUser=null;localStorage.removeItem('wa_user');updateNav();renderBoards();renderEvents();renderHeroNextEvent();renderHeroBoardNotif();renderMembers();showToast('ログアウトしました')}
 
 /* ========== PASSWORD RESET ========== */
 let _resetToken='';
@@ -3788,19 +3818,94 @@ async function saveMypage(e){
 /* ========== BOARD ========== */
 async function handleBoardPost(e){
   e.preventDefault();
+  const mentionToId=document.getElementById('bpMentionToId').value;
+  const mentionToName=document.getElementById('bpMentionToName').value;
   const body={authorId:currentUser.id,authorName:currentUser.name,authorAvatar:getMemberImage(currentUser),
     title:document.getElementById('bpTitle').value,content:document.getElementById('bpContent').value,
     category:document.getElementById('bpCat').value};
+  if(mentionToId){body.mentionToId=mentionToId;body.mentionToName=mentionToName}
   const r=await fetch('/api/boards',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
-  if(r.success){closeModal('boardPostModal');allBoards.unshift(r.post);renderBoards();
-    document.getElementById('bpTitle').value='';document.getElementById('bpContent').value='';showToast('投稿しました')}
+  if(r.success){closeModal('boardPostModal');allBoards.unshift(r.post);renderBoards();renderHeroBoardNotif();
+    document.getElementById('bpTitle').value='';document.getElementById('bpContent').value='';clearBoardMention();showToast('投稿しました')}
 }
 
 async function sendReply(boardId){
   const input=document.getElementById('rp-'+boardId);if(!input.value.trim()) return;
   const body={authorId:currentUser.id,authorName:currentUser.name,authorAvatar:getMemberImage(currentUser),content:input.value};
   const r=await fetch(`/api/boards/${boardId}/reply`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
-  if(r.success){const post=allBoards.find(b=>b.id===boardId);if(post)post.replies.push(r.reply);renderBoards();showToast('返信しました')}
+  if(r.success){const post=allBoards.find(b=>b.id===boardId);if(post)post.replies.push(r.reply);renderBoards();renderHeroBoardNotif();showToast('返信しました')}
+}
+
+function openBoardPostForMember(memberId,memberName){
+  if(!currentUser){openModal('loginModal');return}
+  document.getElementById('bpMentionToId').value=memberId;
+  document.getElementById('bpMentionToName').value=memberName;
+  document.getElementById('bpMentionName').textContent=memberName;
+  document.getElementById('bpMentionDisplay').style.display='block';
+  openModal('boardPostModal');
+}
+function clearBoardMention(){
+  document.getElementById('bpMentionToId').value='';
+  document.getElementById('bpMentionToName').value='';
+  document.getElementById('bpMentionDisplay').style.display='none';
+}
+
+function getMyBoardNotifications(){
+  if(!currentUser) return{posts:[],replies:[]};
+  const myId=currentUser.id;
+  // Posts mentioning me
+  const mentionPosts=allBoards.filter(b=>b.mentionToId===myId && b.authorId!==myId);
+  // Replies on my posts by others
+  const replyNotifs=[];
+  allBoards.forEach(b=>{
+    if(b.authorId===myId){
+      (b.replies||[]).forEach(r=>{
+        if(r.authorId!==myId) replyNotifs.push({board:b,reply:r});
+      });
+    }
+    // Also replies on posts mentioning me
+    if(b.mentionToId===myId){
+      (b.replies||[]).forEach(r=>{
+        if(r.authorId!==myId) replyNotifs.push({board:b,reply:r});
+      });
+    }
+  });
+  return{posts:mentionPosts,replies:replyNotifs};
+}
+
+function renderHeroBoardNotif(){
+  let container=document.getElementById('heroBoardNotif');
+  if(!container) return;
+  container.innerHTML='';
+  if(!currentUser) return;
+  const notif=getMyBoardNotifications();
+  const total=notif.posts.length+notif.replies.length;
+  if(total===0) return;
+  // Show notification cards
+  const items=[];
+  notif.posts.forEach(b=>{
+    items.push({icon:'fa-at',text:`${b.authorName}さんからの投稿: ${b.title}`,boardId:b.id});
+  });
+  notif.replies.forEach(({board,reply})=>{
+    items.push({icon:'fa-reply',text:`${reply.authorName}さんが返信: ${board.title}`,boardId:board.id});
+  });
+  // Show max 3 notifications
+  items.slice(0,3).forEach(item=>{
+    const el=document.createElement('div');
+    el.className='hero-board-notif';
+    el.innerHTML=`<i class="fas ${item.icon}"></i><span class="hero-board-notif-text">${item.text}</span>`;
+    el.addEventListener('click',()=>{
+      document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'});
+    });
+    container.appendChild(el);
+  });
+  if(total>3){
+    const more=document.createElement('div');
+    more.className='hero-board-notif';
+    more.innerHTML=`<i class="fas fa-ellipsis-h"></i><span class="hero-board-notif-text">他 ${total-3} 件の通知</span>`;
+    more.addEventListener('click',()=>{document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'})});
+    container.appendChild(more);
+  }
 }
 
 function openBoardEdit(id){
