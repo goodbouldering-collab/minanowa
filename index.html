@@ -1701,48 +1701,57 @@ html,body{max-width:100vw;overflow-x:hidden}
   .hero-glow{display:none}
 }
 
-/* ========== AI PERSONALIZATION ========== */
-.ai-greeting{position:fixed;top:80px;right:20px;z-index:900;background:var(--glass3);
-  border:1px solid rgba(13,124,102,.12);border-radius:16px;padding:1rem 1.4rem;
-  box-shadow:0 8px 32px rgba(0,0,0,.1);max-width:320px;transform:translateX(120%);
-  transition:transform .5s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(16px)}
-.ai-greeting.show{transform:translateX(0)}
-.ai-greeting-text{font-size:.88rem;line-height:1.6;color:var(--td)}
-.ai-greeting-text strong{color:var(--c1)}
-.ai-greeting-close{position:absolute;top:6px;right:10px;background:none;border:none;
-  font-size:1rem;color:var(--tl);cursor:pointer;padding:4px}
-.ai-greeting .ai-tag{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--c4),var(--c5));
-  color:var(--c1);font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:6px;letter-spacing:.04em}
-.ai-greeting .ai-tag i{font-size:.55rem}
+/* ========== AI ASSISTANT (Top Banner + Chat) ========== */
+.ai-top-banner{position:fixed;top:0;left:0;right:0;z-index:1100;
+  background:linear-gradient(135deg,var(--c1),#0fa678,var(--c2));
+  color:#fff;padding:.45rem 1rem;display:flex;align-items:center;justify-content:center;gap:.6rem;
+  cursor:pointer;transition:all .3s;font-size:.82rem;font-weight:600;
+  box-shadow:0 2px 12px rgba(13,124,102,.25);letter-spacing:.02em}
+.ai-top-banner:hover{filter:brightness(1.08)}
+.ai-top-banner i{font-size:1rem;animation:ai-icon-bounce 2s ease infinite}
+.ai-top-banner .ai-banner-pulse{width:8px;height:8px;border-radius:50%;background:#4ade80;
+  animation:ai-dot-pulse 1.5s ease infinite;margin-left:.2rem}
+@keyframes ai-icon-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes ai-dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.ai-top-banner .ai-banner-close{background:none;border:none;color:rgba(255,255,255,.7);
+  cursor:pointer;font-size:.9rem;padding:2px 6px;margin-left:.3rem;transition:color .2s}
+.ai-top-banner .ai-banner-close:hover{color:#fff}
+body.ai-banner-visible nav#navbar{top:34px}
+body.ai-banner-visible .ai-top-banner~*{}
 
-.ai-recommend{margin-top:.6rem;display:flex;flex-wrap:wrap;gap:.4rem}
-.ai-recommend a{font-size:.72rem;padding:.3rem .65rem;border-radius:20px;
-  background:rgba(13,124,102,.08);color:var(--c1);font-weight:600;text-decoration:none;
-  transition:all .2s;border:1px solid rgba(13,124,102,.1)}
-.ai-recommend a:hover{background:var(--c1);color:#fff}
-
-.ai-fab{position:fixed;bottom:24px;right:24px;z-index:950;width:56px;height:56px;
+.ai-fab{position:fixed;bottom:24px;right:24px;z-index:950;width:60px;height:60px;
   border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
   border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;box-shadow:0 4px 20px rgba(13,124,102,.3);transition:all .3s}
-.ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(13,124,102,.4)}
-.ai-fab .ai-pulse{position:absolute;inset:-4px;border-radius:50%;
+  font-size:1.5rem;box-shadow:0 4px 24px rgba(13,124,102,.35);transition:all .3s}
+.ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(13,124,102,.45)}
+.ai-fab .ai-pulse{position:absolute;inset:-5px;border-radius:50%;
   border:2px solid var(--c3);animation:ai-pulse 2s ease-out infinite;opacity:0}
+.ai-fab .ai-fab-label{position:absolute;right:68px;white-space:nowrap;background:var(--td);
+  color:#fff;font-size:.7rem;font-weight:600;padding:.3rem .7rem;border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);pointer-events:none;
+  animation:ai-label-show 4s ease forwards}
+.ai-fab .ai-fab-label::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);
+  border:5px solid transparent;border-left-color:var(--td)}
+@keyframes ai-label-show{0%{opacity:0;transform:translateX(8px)}10%{opacity:1;transform:translateX(0)}
+  80%{opacity:1}100%{opacity:0;transform:translateX(8px)}}
 @keyframes ai-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.5);opacity:0}}
 
-.ai-chat{position:fixed;bottom:92px;right:24px;z-index:940;width:340px;max-height:460px;
+.ai-chat{position:fixed;bottom:92px;right:24px;z-index:940;width:380px;max-height:540px;
   background:var(--glass3);border:1px solid rgba(13,124,102,.12);border-radius:20px;
-  box-shadow:0 12px 48px rgba(0,0,0,.12);display:none;flex-direction:column;overflow:hidden;
+  box-shadow:0 12px 48px rgba(0,0,0,.15);display:none;flex-direction:column;overflow:hidden;
   backdrop-filter:blur(20px)}
 .ai-chat.open{display:flex}
-.ai-chat-head{padding:.8rem 1rem;background:linear-gradient(135deg,var(--c1),var(--c2));
+.ai-chat-head{padding:.7rem 1rem;background:linear-gradient(135deg,var(--c1),var(--c2));
   color:#fff;display:flex;align-items:center;gap:.5rem}
 .ai-chat-head i{font-size:1.1rem}
-.ai-chat-head span{font-weight:700;font-size:.9rem}
+.ai-chat-head span{font-weight:700;font-size:.9rem;flex:1}
+.ai-chat-head .ai-chat-close{background:none;border:none;color:rgba(255,255,255,.7);
+  cursor:pointer;font-size:1rem;padding:4px;transition:color .2s}
+.ai-chat-head .ai-chat-close:hover{color:#fff}
 .ai-chat-body{flex:1;overflow-y:auto;padding:.8rem;display:flex;flex-direction:column;gap:.5rem;
-  max-height:320px;scrollbar-width:thin}
-.ai-msg{max-width:85%;padding:.55rem .85rem;border-radius:14px;font-size:.82rem;line-height:1.5;
-  animation:ai-msg-in .3s ease}
+  max-height:300px;scrollbar-width:thin}
+.ai-msg{max-width:88%;padding:.6rem .9rem;border-radius:16px;font-size:.83rem;line-height:1.6;
+  animation:ai-msg-in .3s ease;word-break:break-word}
 .ai-msg.bot{background:rgba(13,124,102,.08);color:var(--td);align-self:flex-start;border-bottom-left-radius:4px}
 .ai-msg.user{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
 @keyframes ai-msg-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -1750,19 +1759,31 @@ html,body{max-width:100vw;overflow-x:hidden}
 .ai-quick-btn{font-size:.7rem;padding:.35rem .7rem;border-radius:20px;border:1px solid rgba(13,124,102,.15);
   background:rgba(13,124,102,.04);color:var(--c1);cursor:pointer;font-weight:600;transition:all .2s;font-family:inherit}
 .ai-quick-btn:hover{background:var(--c1);color:#fff;border-color:var(--c1)}
-
-.ai-insight-bar{background:linear-gradient(90deg,rgba(13,124,102,.04),rgba(52,211,153,.06));
-  border-bottom:1px solid rgba(13,124,102,.08);padding:.4rem 1rem;display:none;
-  align-items:center;gap:.5rem;font-size:.75rem;color:var(--c1)}
-.ai-insight-bar.show{display:flex}
-.ai-insight-bar i{font-size:.85rem;color:var(--c2)}
-.ai-insight-bar span{flex:1}
-.ai-insight-bar .ai-dismiss{background:none;border:none;color:var(--tl);cursor:pointer;font-size:.8rem;padding:2px 6px}
+.ai-chat-input{display:flex;align-items:center;gap:.4rem;padding:.5rem .7rem;
+  border-top:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.5)}
+.ai-chat-input input{flex:1;border:1px solid rgba(13,124,102,.15);border-radius:20px;
+  padding:.45rem .9rem;font-size:.82rem;font-family:inherit;outline:none;
+  background:rgba(255,255,255,.8);transition:border-color .2s;color:var(--td)}
+.ai-chat-input input:focus{border-color:var(--c1)}
+.ai-chat-input input::placeholder{color:var(--tl);font-size:.78rem}
+.ai-chat-input button{width:34px;height:34px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .2s;
+  flex-shrink:0}
+.ai-chat-input button:hover{transform:scale(1.08)}
+.ai-chat-input button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.ai-typing{display:flex;gap:4px;padding:.4rem .8rem;align-self:flex-start}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--c2);animation:ai-typing-dot .6s ease infinite}
+.ai-typing span:nth-child(2){animation-delay:.15s}
+.ai-typing span:nth-child(3){animation-delay:.3s}
+@keyframes ai-typing-dot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
 
 @media(max-width:600px){
-  .ai-greeting{right:10px;left:10px;max-width:none;top:70px}
-  .ai-fab{width:48px;height:48px;font-size:1.2rem;bottom:16px;right:16px}
-  .ai-chat{right:10px;left:10px;width:auto;bottom:76px}
+  .ai-top-banner{font-size:.75rem;padding:.35rem .6rem}
+  .ai-fab{width:52px;height:52px;font-size:1.3rem;bottom:16px;right:16px}
+  .ai-fab .ai-fab-label{display:none}
+  .ai-chat{right:8px;left:8px;width:auto;bottom:76px;max-height:70vh}
+  body.ai-banner-visible nav#navbar{top:30px}
 }
 </style>
 </head>
@@ -4030,35 +4051,38 @@ window.addEventListener('scroll',()=>{
 </script>
 
 <!-- AI PERSONALIZATION UI -->
-<div class="ai-greeting" id="aiGreeting">
-  <button class="ai-greeting-close" onclick="dismissGreeting()">&times;</button>
-  <div class="ai-tag"><i class="fas fa-lightbulb"></i> 彦根起業のリアル</div>
-  <div class="ai-greeting-text" id="aiGreetingText"></div>
-  <div class="ai-recommend" id="aiRecommend"></div>
+<!-- AI Top Banner -->
+<div class="ai-top-banner" id="aiTopBanner" onclick="openAiChat()">
+  <i class="fas fa-robot"></i>
+  <span id="aiBannerText">AIアシスタントに何でも聞いてみよう！</span>
+  <span class="ai-banner-pulse"></span>
+  <button class="ai-banner-close" onclick="event.stopPropagation();closeAiBanner()">&times;</button>
 </div>
 
-<div class="ai-insight-bar" id="aiInsightBar">
-  <i class="fas fa-lightbulb"></i>
-  <span id="aiInsightText"></span>
-  <button class="ai-dismiss" onclick="dismissInsight()">&times;</button>
-</div>
-
-<button class="ai-fab" id="aiFab" onclick="toggleAiChat()" title="彦根起業のコツ">
-  <i class="fas fa-comment-dots"></i>
+<!-- AI FAB -->
+<button class="ai-fab" id="aiFab" onclick="openAiChat()" title="AIアシスタント">
+  <i class="fas fa-robot"></i>
   <span class="ai-pulse"></span>
+  <span class="ai-fab-label" id="aiFabLabel">質問してみよう！</span>
 </button>
 
+<!-- AI Chat Window -->
 <div class="ai-chat" id="aiChat">
   <div class="ai-chat-head">
-    <i class="fas fa-comment-dots"></i>
-    <span>彦根起業のリアル</span>
+    <i class="fas fa-robot"></i>
+    <span>AIアシスタント</span>
+    <button class="ai-chat-close" onclick="closeAiChat()">&times;</button>
   </div>
   <div class="ai-chat-body" id="aiChatBody"></div>
   <div class="ai-quick-actions" id="aiQuickActions"></div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiChatInput" placeholder="何でも聞いてください..." onkeydown="if(event.key==='Enter')sendAiMessage()">
+    <button onclick="sendAiMessage()" id="aiSendBtn"><i class="fas fa-paper-plane"></i></button>
+  </div>
 </div>
 
 <script>
-/* ========== AI PERSONALIZATION ENGINE ========== */
+/* ========== AI ASSISTANT ENGINE ========== */
 const AI_STORAGE_KEY='wa_ai_profile';
 
 function getAiProfile(){
@@ -4086,44 +4110,6 @@ const SECTION_NAMES={about:'みんなのWAとは',events:'イベント',members:
   memberMap:'マップ',blogs:'お知らせ・活動レポート',board:'掲示板',faq:'FAQ',contact:'お問い合わせ',
   opMembers:'運営メンバー'};
 
-function showAiGreeting(){
-  const profile=getAiProfile();
-  if(profile.dismissed.greeting && Date.now()-profile.dismissed.greeting<86400000) return;
-  const time=getTimeGreeting();
-  const name=currentUser?currentUser.name+'さん':'';
-  const isNew=profile.visits<=1;
-  const el=document.getElementById('aiGreetingText');
-  const rec=document.getElementById('aiRecommend');
-
-  if(isNew){
-    el.innerHTML=`${time.emoji} ${time.greeting}${name?'、<strong>'+name+'</strong>':''}！<br>彦根で事業を始めたい・伸ばしたいあなたへ。<br><strong>仲間と一緒に成長</strong>するヒントをお届けします。`;
-    rec.innerHTML=['events','members','blogs'].map(id=>
-      `<a href="#${id}">${SECTION_NAMES[id]||id}</a>`).join('');
-  }else{
-    const tops=getTopSections(profile);
-    const daysSince=profile.lastVisit?Math.floor((Date.now()-new Date(profile.lastVisit).getTime())/(1000*60*60*24)):0;
-    let msg=`${time.emoji} ${time.greeting}${name?'、<strong>'+name+'</strong>':''}！`;
-    if(daysSince>7) msg+=`<br>${daysSince}日ぶりですね！彦根の仲間たちが待ってますよ 🏯`;
-    else if(daysSince>0) msg+=`<br>おかえりなさい！今日も彦根から元気を発信しましょう。`;
-    else msg+=`<br>今日も彦根から一歩前へ。仲間の活動をチェック！`;
-    el.innerHTML=msg;
-    if(tops.length){
-      rec.innerHTML=`<span style="font-size:.65rem;color:var(--tl);width:100%;margin-bottom:2px">あなたへのおすすめ:</span>`+
-        tops.map(id=>`<a href="#${id}">${SECTION_NAMES[id]||id}</a>`).join('');
-    }
-  }
-  setTimeout(()=>document.getElementById('aiGreeting').classList.add('show'),1500);
-  setTimeout(()=>{
-    const g=document.getElementById('aiGreeting');
-    if(g.classList.contains('show')) g.classList.remove('show');
-  },12000);
-}
-
-function dismissGreeting(){
-  document.getElementById('aiGreeting').classList.remove('show');
-  const p=getAiProfile();p.dismissed.greeting=Date.now();saveAiProfile(p);
-}
-
 // Section view tracking
 function trackSectionViews(){
   const observer=new IntersectionObserver((entries)=>{
@@ -4141,47 +4127,72 @@ function trackSectionViews(){
   document.querySelectorAll('section[id]').forEach(s=>observer.observe(s));
 }
 
-// Smart insights based on behavior
-function showSmartInsight(){
+/* --- Top Banner --- */
+function showAiBanner(){
   const profile=getAiProfile();
-  if(profile.dismissed.insight && Date.now()-profile.dismissed.insight<3600000) return;
-  const tops=getTopSections(profile,1);
-  if(profile.visits<3||!tops.length) return;
-  const insights={
-    events:'新しい交流会が追加されました！彦根の仲間に会いに行こう 🏯',
-    members:'メンバーが増えてます！新しい仲間をチェックしてみない？',
-    board:'掲示板にコラボ募集が来てるよ。チャンスかも！',
-    about:'彦根で起業するメリット、知ってる？みんなのWAとはセクションをチェック。',
-    blogs:'交流会レポートが更新されました。みんなの活動を見てみよう！',
-    memberMap:'近くのメンバーをマップで発見。経路検索もできるよ 📍'
-  };
-  const txt=insights[tops[0]];
-  if(!txt) return;
-  document.getElementById('aiInsightText').textContent=txt;
-  setTimeout(()=>document.getElementById('aiInsightBar').classList.add('show'),3000);
+  if(profile.dismissed.banner && Date.now()-profile.dismissed.banner<86400000) return;
+  const time=getTimeGreeting();
+  const name=currentUser?currentUser.name+'さん':'';
+  const bannerEl=document.getElementById('aiBannerText');
+  const isNew=profile.visits<=1;
+  if(isNew){
+    bannerEl.textContent=`${time.emoji} ${time.greeting}${name?'、'+name:''}！彦根の起業・事業の相談、AIアシスタントに何でも聞いてみよう`;
+  }else{
+    const msgs=[
+      '彦根で起業するコツ、聞いてみない？',
+      'コラボの始め方、AIに聞いてみよう！',
+      '集客のヒント、AIが答えます',
+      '何でも質問OK！AIアシスタントに聞いてみよう'
+    ];
+    bannerEl.textContent=`${time.emoji} ${msgs[Math.floor(Math.random()*msgs.length)]}`;
+  }
+  document.body.classList.add('ai-banner-visible');
 }
 
-function dismissInsight(){
-  document.getElementById('aiInsightBar').classList.remove('show');
-  const p=getAiProfile();p.dismissed.insight=Date.now();saveAiProfile(p);
+function closeAiBanner(){
+  document.body.classList.remove('ai-banner-visible');
+  document.getElementById('aiTopBanner').style.display='none';
+  const p=getAiProfile();p.dismissed.banner=Date.now();saveAiProfile(p);
 }
 
-// AI Chat Assistant
+/* --- Chat --- */
 let aiChatOpen=false;
-function toggleAiChat(){
-  aiChatOpen=!aiChatOpen;
+
+function openAiChat(){
+  if(aiChatOpen) return;
+  aiChatOpen=true;
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
-  chat.classList.toggle('open',aiChatOpen);
-  fab.innerHTML=aiChatOpen?'<i class="fas fa-times"></i>':'<i class="fas fa-comment-dots"></i><span class="ai-pulse"></span>';
-  if(aiChatOpen && !document.getElementById('aiChatBody').children.length) initAiChat();
+  chat.classList.add('open');
+  fab.innerHTML='<i class="fas fa-times"></i>';
+  fab.onclick=closeAiChat;
+  if(!document.getElementById('aiChatBody').children.length) initAiChat();
+  setTimeout(()=>document.getElementById('aiChatInput').focus(),300);
+  // Hide banner when chat opens
+  closeAiBanner();
+}
+
+function closeAiChat(){
+  aiChatOpen=false;
+  const chat=document.getElementById('aiChat');
+  const fab=document.getElementById('aiFab');
+  chat.classList.remove('open');
+  fab.innerHTML='<i class="fas fa-robot"></i><span class="ai-pulse"></span>';
+  fab.onclick=function(){openAiChat()};
 }
 
 function initAiChat(){
-  const body=document.getElementById('aiChatBody');
   const time=getTimeGreeting();
   const name=currentUser?currentUser.name+'さん':'';
-  addAiMsg('bot',`${time.emoji} ${time.greeting}${name?'、'+name:''}！\n彦根で起業・事業をがんばるあなたを応援します。\n気になるトピックをタップしてね`);
+  const profile=getAiProfile();
+  const isNew=profile.visits<=1;
+  let welcomeMsg=`${time.emoji} ${time.greeting}${name?'、'+name:''}！\n`;
+  if(isNew){
+    welcomeMsg+=`彦根で事業を始めたい・伸ばしたいあなたへ。\n何でも気軽に質問してくださいね！`;
+  }else{
+    welcomeMsg+=`彦根での起業・事業の悩みや質問、何でもどうぞ！\n下のボタンをタップするか、自由に入力してください`;
+  }
+  addAiMsg('bot',welcomeMsg);
   updateQuickActions();
 }
 
@@ -4194,6 +4205,19 @@ function addAiMsg(type,text){
   body.scrollTop=body.scrollHeight;
 }
 
+function addAiTyping(){
+  const body=document.getElementById('aiChatBody');
+  const el=document.createElement('div');
+  el.className='ai-typing';el.id='aiTypingIndicator';
+  el.innerHTML='<span></span><span></span><span></span>';
+  body.appendChild(el);body.scrollTop=body.scrollHeight;
+}
+function removeAiTyping(){
+  const el=document.getElementById('aiTypingIndicator');
+  if(el) el.remove();
+}
+
+/* --- AI Knowledge Base --- */
 const AI_ANSWERS={
   '彦根で起業ってどう？':'正直、最高です。家賃は都会の1/3くらいだし、琵琶湖のそばで暮らしながら仕事できる。しかも人のつながりが濃いから「あの人紹介するよ」が日常。彦根城を眺めながら朝カフェで仕事するの、控えめに言って幸せすぎる ☕🏯',
   '起業の第一歩は？':'まず「みんなのWA」の交流会に来てみて。月1回、彦根で異業種の事業者が集まってるから、仲間がすぐできる。一人で悩んでたことが「あ、それ得意！」って人に30秒で出会えたりする。マジで。行動するだけで世界変わるよ 🚀',
@@ -4201,25 +4225,71 @@ const AI_ANSWERS={
   'コラボってどうやる？':'交流会で「こういうことやりたいんだよね〜」って言うだけでOK。美容師×カフェで「カット後にラテ無料」とか、IT×農家で「ECサイト作ろう」とか実際に生まれてる。掲示板に書くのもアリ。異業種だからこそ化学反応が起きるんだよね ✨',
   '失敗が怖い…':'わかる、めっちゃわかる。でも彦根のいいところは「失敗しても応援してくれる人がいる」こと。みんなのWAには同じ道を歩んだ先輩がいるし、相談できる掲示板もある。完璧を目指すより、まず小さく始めてみよう。仲間がいれば怖くない 💪',
   'メンバーの雰囲気は？':'一言で言うと「ギブ精神の塊」。みんな自分の経験やスキルを惜しみなくシェアしてくれる。美容、飲食、IT、トレーナー…業種バラバラだけど「彦根を盛り上げたい」って想いは同じ。初めてでも絶対馴染めるから安心して 🤝',
-  '彦根の魅力って？':'国宝・彦根城、琵琶湖の絶景、近江牛、ひこにゃん…観光だけじゃないのよ。大阪・京都から1時間でアクセス良いのに家賃安い。子育て環境も◎。「ちょうどいい田舎」で事業しながら豊かに暮らせる、それが彦根の本当の魅力 🌿'
+  '彦根の魅力って？':'国宝・彦根城、琵琶湖の絶景、近江牛、ひこにゃん…観光だけじゃないのよ。大阪・京都から1時間でアクセス良いのに家賃安い。子育て環境も◎。「ちょうどいい田舎」で事業しながら豊かに暮らせる、それが彦根の本当の魅力 🌿',
+  '交流会って何するの？':'月1回の定期開催で、異業種の事業者が集まってフリートーク＋ミニセミナー。名刺交換会みたいな堅い雰囲気じゃなくて、カフェでおしゃべりする感覚。「あ、それうちでできるよ！」っていうコラボが自然に生まれるのが最高 ☕',
+  '会費はいくら？':'みんなのWAへの登録は無料！交流会は参加費が必要だけど、そこで得られる人脈やコラボのチャンスを考えたら、めちゃくちゃコスパ良い投資だよ。まずは気軽に登録してみて 🙌',
+  'みんなのWAって何？':'彦根市を拠点とした異業種交流コミュニティだよ。事業者同士がつながって、お互いのお客さんになったり、コラボしたり、スキルをシェアしたり。「仲間がいるから頑張れる」、そんな場所。登録無料だからまず見てみて！'
 };
+
+/* --- Intelligent Answer Matching --- */
+const AI_KEYWORDS={
+  '起業|はじめ|始め|スタート|独立|開業':'彦根での起業は最高の選択肢！家賃が安くて、人のつながりが濃い。みんなのWAの交流会で仲間を見つけるのが第一歩。一人で悩まないで、まず来てみて！ 🚀',
+  '集客|お客|客|売上|マーケ|宣伝|広告|PR':'彦根は口コミが最強の街。みんなのWAのメンバー同士でサービスを使い合うのが一番効果的。Instagram の #彦根 タグも効果大。地域密着がカギだよ 📱',
+  'コラボ|協力|一緒|共同|パートナー':'交流会で「こんなことやりたい」って言うだけでコラボが生まれる！異業種だからこそ面白いアイデアが出るんだよね。掲示板にも募集できるよ ✨',
+  '不安|怖い|心配|失敗|リスク':'不安は当然。でも彦根には仲間がいる！みんなのWAで同じ経験をした先輩に相談できるし、掲示板でも気軽に質問OK。完璧を目指すより、まず小さく始めよう 💪',
+  '彦根|滋賀|琵琶湖|近江':'彦根は国宝・彦根城と琵琶湖の絶景が自慢。大阪・京都から1時間なのに家賃は格安。子育て環境も良くて、ちょうどいい田舎で事業ができる最高の場所！ 🏯',
+  '交流会|イベント|参加|行きたい':'月1回の定期開催！カフェみたいな雰囲気で異業種の事業者と気軽に話せる。「あ、それうちでできるよ！」って自然にコラボが生まれるよ。ぜひ来てみて ☕',
+  'メンバー|仲間|人|雰囲気|どんな人':'「ギブ精神の塊」なメンバーばかり！美容、飲食、IT、トレーナー…業種はバラバラだけど「彦根を盛り上げたい」って想いは同じ。初めてでも馴染めるよ 🤝',
+  '費用|料金|会費|お金|値段|価格':'みんなのWAへの登録は完全無料！交流会は参加費があるけど、得られる人脈・コラボのチャンスを考えたらコスパ最高。まずは無料登録してみて！ 🙌',
+  'WA|わ|コミュニティ|何|どういう':'みんなのWAは彦根市の異業種交流コミュニティ。事業者同士がつながって、お客さんを紹介し合ったり、コラボしたり。登録無料で、月1回の交流会があるよ！',
+  '登録|入会|申込|申し込み|入り方':'ページ上部の「会員登録」ボタンから簡単に登録できるよ！無料だし、すぐに掲示板やメンバー情報にアクセスできるようになる。まずは気軽にどうぞ 📝',
+  'SNS|インスタ|Instagram|Twitter|X|LINE':'みんなのWAはInstagramで活動を発信中！LINEオープンチャットもあるから、メンバー同士で日常的にやり取りできるよ。フォロー＆参加してね 📲',
+  '場所|アクセス|どこ|住所':'彦根市を拠点に活動してるよ。交流会は彦根市内のカフェやスペースで開催。JR彦根駅からもアクセスしやすい場所が多い。詳しくはイベント情報をチェック！ 📍',
+  '掲示板|相談|質問|投稿|書き込み':'掲示板では質問、コラボ募集、イベント告知など自由に投稿できるよ。メンバーが親切に答えてくれるから、困ったことがあったら気軽に書いてみて！ 📋'
+};
+
+function findSmartAnswer(question){
+  // First check exact matches
+  if(AI_ANSWERS[question]) return AI_ANSWERS[question];
+  // Then keyword matching
+  const q=question.toLowerCase();
+  for(const [pattern,answer] of Object.entries(AI_KEYWORDS)){
+    const regex=new RegExp(pattern,'i');
+    if(regex.test(q)) return answer;
+  }
+  // Default: helpful fallback that guides the user
+  return `いい質問ですね！「${question}」について、もっと詳しく知りたい場合は：\n\n📩 <a href="#contact" style="color:var(--c1);font-weight:600">お問い合わせフォーム</a>から直接聞いてみてね\n🤝 <a href="#events" style="color:var(--c1);font-weight:600">交流会</a>に来ると、経験者から直接アドバイスがもらえるよ\n📋 <a href="#board" style="color:var(--c1);font-weight:600">掲示板</a>に投稿すればメンバーが答えてくれる！\n\n下のボタンから他の質問も選んでみてね 👇`;
+}
 
 function handleAiQuestion(q){
   addAiMsg('user',q);
+  addAiTyping();
+  const delay=400+Math.random()*400;
   setTimeout(()=>{
-    const answer=AI_ANSWERS[q]||'いい質問！もっと詳しく知りたい場合はお問い合わせフォームから聞いてね 📩';
+    removeAiTyping();
+    const answer=findSmartAnswer(q);
     addAiMsg('bot',answer);
-  },600);
+  },delay);
+}
+
+function sendAiMessage(){
+  const input=document.getElementById('aiChatInput');
+  const q=input.value.trim();
+  if(!q) return;
+  input.value='';
+  handleAiQuestion(q);
 }
 
 function updateQuickActions(){
   const qa=document.getElementById('aiQuickActions');
-  qa.innerHTML=Object.keys(AI_ANSWERS).map(q=>
+  const questions=['彦根で起業ってどう？','起業の第一歩は？','集客のコツ教えて','コラボってどうやる？',
+    '失敗が怖い…','メンバーの雰囲気は？','交流会って何するの？','みんなのWAって何？'];
+  qa.innerHTML=questions.map(q=>
     `<button class="ai-quick-btn" onclick="handleAiQuestion('${q}')">${q}</button>`
   ).join('');
 }
 
-// Initialize AI Personalization
+/* --- Initialize --- */
 function initAiPersonalization(){
   const profile=getAiProfile();
   profile.visits=(profile.visits||0)+1;
@@ -4227,9 +4297,13 @@ function initAiPersonalization(){
   profile.lastVisit=now;
   saveAiProfile(profile);
 
-  showAiGreeting();
+  showAiBanner();
   trackSectionViews();
-  showSmartInsight();
+
+  // Auto-open chat for first-time visitors after a short delay
+  if(profile.visits<=1){
+    setTimeout(()=>{if(!aiChatOpen) openAiChat()},2500);
+  }
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
