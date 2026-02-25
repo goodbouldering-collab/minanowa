@@ -1,0 +1,24 @@
+# ============================================================
+# render.yaml - Render デプロイ設定
+# ============================================================
+# Render.com で「New > Blueprint」からこのファイルを使ってデプロイ
+# https://render.com/docs/blueprint-spec
+# ============================================================
+
+services:
+  - type: web
+    name: minanowa
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+    disk:
+      name: minanowa-data
+      mountPath: /app/data
+      sizeGB: 1
+    healthCheckPath: /

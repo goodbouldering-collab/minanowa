@@ -31,3 +31,12 @@ Thumbs.db
 tmp/
 temp/
 backups/20260219_backup_pre_ai_personalization.tar.gz
+
+# Build output (Cloudflare Pages)
+public/
+
+# Data (production)
+data.json
+
+# Backup HTML files
+*.backup_*
