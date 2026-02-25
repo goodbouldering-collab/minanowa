@@ -415,18 +415,29 @@ app.get('/api/events', async (req, res) => {
 app.post('/api/events/:id/register', async (req, res) => {
     try {
         const data = await readData();
-        const { memberId, paymentMethod } = req.body;
+        const { memberId, paymentMethod, referrerId } = req.body;
         if (!memberId) return res.status(400).json({ error: 'memberId is required' });
         const ev = data.events.find(e => e.id === req.params.id);
         if (!ev) return res.status(404).json({ error: 'not found' });
         if (!ev.registrations) ev.registrations = [];
         if (!ev.regDetails) ev.regDetails = {};
+        if (!ev.referrals) ev.referrals = {};
         if (ev.registrations.includes(memberId)) return res.status(400).json({ error: '既に登録済み' });
         // Check capacity
         const cap = parseInt(ev.participants) || 0;
         if (cap > 0 && ev.registrations.length >= cap) return res.status(400).json({ error: '定員に達しました' });
         ev.registrations.push(memberId);
         ev.regDetails[memberId] = { paymentMethod: paymentMethod || 'onsite', paymentStatus: paymentMethod === 'stripe' ? 'pending' : 'onsite', registeredAt: new Date().toISOString() };
+        // Handle referral: first-timer nominates a referrer who gets 500 yen discount
+        if (referrerId && referrerId !== memberId) {
+            ev.referrals[memberId] = { referrerId, discount: 500, createdAt: new Date().toISOString() };
+            // Apply discount to referrer's regDetails
+            if (ev.regDetails[referrerId]) {
+                ev.regDetails[referrerId].referralDiscount = (ev.regDetails[referrerId].referralDiscount || 0) + 500;
+                ev.regDetails[referrerId].referredBy = ev.regDetails[referrerId].referredBy || [];
+                ev.regDetails[referrerId].referredBy.push(memberId);
+            }
+        }
         await writeData(data);
         res.json({ success: true, registrations: ev.registrations, regDetails: ev.regDetails });
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
@@ -452,10 +463,12 @@ app.get('/api/events/:id/registrations', async (req, res) => {
         const regs = ev.registrations || [];
         const members = regs.map(mid => {
             const m = data.members.find(x => x.id === mid);
-            if (!m) return { id: mid, name: '(退会済み)', avatar: '', payment: (ev.regDetails||{})[mid] || {} };
-            return { id: m.id, name: m.name, avatar: m.avatar, profession: m.profession, business: m.business, location: m.location, payment: (ev.regDetails||{})[mid] || {} };
+            const payment = (ev.regDetails||{})[mid] || {};
+            const referral = (ev.referrals||{})[mid] || null;
+            if (!m) return { id: mid, name: '(退会済み)', avatar: '', payment, referral };
+            return { id: m.id, name: m.name, avatar: m.avatar, profession: m.profession, business: m.business, location: m.location, payment, referral };
         });
-        res.json({ registrations: members, count: regs.length });
+        res.json({ registrations: members, count: regs.length, referrals: ev.referrals || {} });
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 

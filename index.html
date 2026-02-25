@@ -1055,6 +1055,17 @@ nav.at-top .hamburger{color:#fff}
 .ev-pay-opt .pay-desc{font-size:.68rem;color:var(--tl);margin-top:.1rem}
 .ev-pay-opt.pay-stripe i{color:#12a47c}
 .ev-pay-opt.pay-onsite i{color:#f59e0b}
+.ev-referral-section{margin-top:.6rem;padding:.6rem;background:linear-gradient(135deg,rgba(59,130,246,.04),rgba(139,92,246,.04));border:1.5px solid rgba(59,130,246,.12);border-radius:12px}
+.ev-referral-toggle{display:flex;align-items:center;gap:.5rem;cursor:pointer;user-select:none}
+.ev-referral-toggle input[type=checkbox]{accent-color:#3b82f6;width:16px;height:16px;cursor:pointer}
+.ev-referral-toggle label{font-size:.82rem;font-weight:600;color:var(--td);cursor:pointer}
+.ev-referral-toggle .ref-badge{font-size:.62rem;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:.15rem .45rem;border-radius:8px;font-weight:700}
+.ev-referral-body{margin-top:.5rem;display:none}
+.ev-referral-body.open{display:block}
+.ev-referral-select{width:100%;padding:.4rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.78rem;font-family:inherit;background:#fff;cursor:pointer}
+.ev-referral-note{font-size:.68rem;color:var(--tl);margin-top:.3rem;line-height:1.5}
+.ev-referral-note strong{color:#3b82f6}
+.ev-referral-discount{display:inline-flex;align-items:center;gap:.25rem;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:8px;margin-top:.3rem}
 .mem-photos{display:none}
 .mem-photo-strip{display:none}
 
@@ -2686,7 +2697,25 @@ function showEventDetail(ev){
   if(isPast){applyHtml=`<span class="ev-detail-apply disabled"><i class="fas fa-times-circle"></i> 受付終了</span>`}
   else if(isRegistered){applyHtml=`<button class="ev-detail-apply registered" id="evDetailRegBtn" data-event-id="${ev.id}" onclick="unregisterEvent('${ev.id}')"><i class="fas fa-check-circle"></i> ✓ 参加申し込み済み（タップでキャンセル）</button>`}
   else if(isFull){applyHtml=`<span class="ev-detail-apply disabled"><i class="fas fa-ban"></i> 定員に達しました</span>`}
-  else{applyHtml=`<div class="ev-payment-select" id="evPaymentSelect">
+  else{
+    // Check if first-time participant (no past event registrations)
+    const isFirstTimer=currentUser && !allEvents.some(e=>new Date(e.date)<new Date() && (e.registrations||[]).includes(currentUser.id));
+    const referralHtml=isFirstTimer?`<div class="ev-referral-section" id="evReferralSection">
+      <div class="ev-referral-toggle">
+        <input type="checkbox" id="evReferralCheck" onchange="toggleReferral(this.checked)">
+        <label for="evReferralCheck">紹介メンバーがいる</label>
+        <span class="ref-badge">初参加</span>
+      </div>
+      <div class="ev-referral-body" id="evReferralBody">
+        <select class="ev-referral-select" id="evReferralSelect">
+          <option value="">-- 紹介者を選択 --</option>
+          ${allMembers.filter(m=>m.id!==currentUser.id).map(m=>`<option value="${m.id}">${m.name}${m.business?' ('+m.business+')':''}</option>`).join('')}
+        </select>
+        <div class="ev-referral-note">紹介者に選ばれたメンバーは、このイベントの参加費が <strong>500円割引</strong> になります</div>
+        <div class="ev-referral-discount"><i class="fas fa-gift"></i> 紹介者特典: -500円</div>
+      </div>
+    </div>`:'';
+    applyHtml=`<div class="ev-payment-select" id="evPaymentSelect">
     <div class="ev-payment-title"><i class="fas fa-credit-card"></i> お支払い方法を選択</div>
     <div class="ev-payment-opts">
       <div class="ev-pay-opt pay-onsite selected" data-method="onsite" onclick="selectPayMethod(this,'onsite')">
@@ -2697,6 +2726,7 @@ function showEventDetail(ev){
       </div>
     </div>
   </div>
+  ${referralHtml}
   <button class="ev-detail-apply" id="evDetailRegBtn" data-event-id="${ev.id}" onclick="registerEventWithPayment('${ev.id}')"><i class="fas fa-paper-plane"></i> このイベントに参加を申し込む</button>`}
   const regInfoHtml=regCount>0?`<div class="ev-detail-reg-info">
     <i class="fas fa-user-check" style="color:#12a47c;font-size:1rem"></i>
@@ -2734,8 +2764,8 @@ function showEventDetail(ev){
     history.pushState({eventId:ev.id},'','/event/'+ev.id);
   }
   window._currentDetailEventId=ev.id;
-  // Load registration avatars
-  if(regCount>0){
+  // Load registration avatars and referral info
+  if(regCount>0 || currentUser){
     fetch('/api/events/'+ev.id+'/registrations').then(r=>r.json()).then(d=>{
       const wrap=document.getElementById('evDetailRegAvatars');
       if(wrap&&d.registrations){
@@ -2743,13 +2773,27 @@ function showEventDetail(ev){
           `<img src="${m.avatar||'https://i.pravatar.cc/40?img=0'}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/40?img=0'">`
         ).join('')+(d.count>5?`<span style="font-size:.7rem;color:var(--tl);margin-left:.3rem">+${d.count-5}</span>`:'');
       }
+      // Show discount badge for current user if they have referral discount
+      if(currentUser && d.registrations){
+        const myReg=d.registrations.find(m=>m.id===currentUser.id);
+        if(myReg && myReg.payment && myReg.payment.referralDiscount>0){
+          const badge=document.createElement('div');
+          badge.className='ev-referral-discount';
+          badge.style.marginTop='.5rem';
+          badge.innerHTML=`<i class="fas fa-gift"></i> 紹介割引: -${myReg.payment.referralDiscount}円 (${(myReg.payment.referredBy||[]).length}名紹介)`;
+          const applyArea=document.getElementById('evDetailRegBtn');
+          if(applyArea) applyArea.parentElement.insertBefore(badge,applyArea);
+        }
+      }
     }).catch(()=>{});
   }
 }
-async function registerEvent(eventId,paymentMethod){
+async function registerEvent(eventId,paymentMethod,referrerId){
   if(!currentUser){openModal('loginModal');return}
   try{
-    const res=await fetch('/api/events/'+eventId+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:currentUser.id,paymentMethod:paymentMethod||'onsite'})});
+    const body={memberId:currentUser.id,paymentMethod:paymentMethod||'onsite'};
+    if(referrerId) body.referrerId=referrerId;
+    const res=await fetch('/api/events/'+eventId+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     const d=await res.json();
     if(d.success){
       const ev=allEvents.find(e=>e.id===eventId);
@@ -2793,25 +2837,33 @@ function selectPayMethod(el,method){
   el.classList.add('selected');
   el.closest('.ev-payment-select').dataset.method=method;
 }
+function toggleReferral(checked){
+  const body=document.getElementById('evReferralBody');
+  if(body) body.classList.toggle('open',checked);
+}
 async function registerEventWithPayment(eventId){
   if(!currentUser){openModal('loginModal');return}
   const sel=document.getElementById('evPaymentSelect');
   const method=sel?sel.dataset.method||'onsite':'onsite';
+  // Get referral info
+  const refCheck=document.getElementById('evReferralCheck');
+  const refSelect=document.getElementById('evReferralSelect');
+  const referrerId=(refCheck&&refCheck.checked&&refSelect)?refSelect.value:'';
+  if(refCheck&&refCheck.checked&&!referrerId){
+    showToast('紹介メンバーを選択してください','error');return;
+  }
   if(method==='stripe'){
-    // Stripe checkout
     try{
       showToast('決済ページへ移動します...','info');
       const res=await fetch('/api/events/'+eventId+'/create-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:currentUser.id})});
       const d=await res.json();
       if(d.success&&d.url){
-        // Register first, then redirect to Stripe
-        await fetch('/api/events/'+eventId+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:currentUser.id,paymentMethod:'stripe'})});
+        await fetch('/api/events/'+eventId+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId:currentUser.id,paymentMethod:'stripe',referrerId:referrerId||undefined})});
         window.location.href=d.url;
       }else{showToast(d.error||'Stripe決済エラー','error')}
     }catch(e){showToast('通信エラーが発生しました','error')}
   }else{
-    // Onsite payment - register directly
-    registerEvent(eventId,'onsite');
+    registerEvent(eventId,'onsite',referrerId||undefined);
   }
 }
 function handleStripeCallback(){
