@@ -1234,7 +1234,16 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, async () => {
     console.log(`🎉 みんなのWA Server running on port ${PORT}`);
-    console.log(`🔐 Admin: admin@minanowa.com / password123`);
+    console.log(`📁 Data file: ${DATA_FILE}`);
+    // Ensure data.json exists on first run
+    try {
+        await fs.access(DATA_FILE);
+    } catch {
+        console.log('📝 Creating initial data.json...');
+        await writeData({ members: [], events: [], blogs: [], messages: [], groupChats: [], boards: [], siteSettings: {}, interviews: [], operatingMembers: [] });
+    }
+    // Ensure uploads directory exists
+    await fs.mkdir(uploadDir, { recursive: true }).catch(() => {});
     // Auto-migrate interviews into blogs on startup
     await migrateInterviewsToBlogs();
 });

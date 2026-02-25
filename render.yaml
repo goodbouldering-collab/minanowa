@@ -2,6 +2,7 @@
 # render.yaml - Render デプロイ設定
 # ============================================================
 # Render.com で「New > Blueprint」からこのファイルを使ってデプロイ
+# または「New > Web Service」でGitHubリポジトリを接続
 # https://render.com/docs/blueprint-spec
 # ============================================================
 
@@ -9,6 +10,7 @@ services:
   - type: web
     name: minanowa
     runtime: node
+    region: singapore
     plan: free
     buildCommand: npm install
     startCommand: node server.js
@@ -16,9 +18,5 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: "3000"
-    disk:
-      name: minanowa-data
-      mountPath: /app/data
-      sizeGB: 1
+        value: "10000"
     healthCheckPath: /
