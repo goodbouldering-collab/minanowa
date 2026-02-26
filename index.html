@@ -1131,10 +1131,14 @@ nav.at-top .hamburger{color:#fff}
 .board-reply-form input{flex:1;padding:.4rem .6rem;border:1px solid rgba(0,0,0,.08);
   border-radius:10px;font-size:.75rem;background:#fff}
 .board-reply-form input:focus{outline:none;border-color:var(--c1);box-shadow:0 0 0 2px rgba(13,124,102,.06)}
-.board-mention-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.7rem;font-weight:600;
-  padding:.15rem .5rem;border-radius:6px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;
-  margin-left:.3rem;box-shadow:0 1px 4px rgba(59,130,246,.25)}
-.board-mention-badge i{font-size:.6rem}
+.board-mention-badge{display:inline-flex;align-items:center;gap:.2rem;font-size:.72rem;font-weight:600;
+  color:#2563eb;margin-left:0;vertical-align:middle}
+.board-mention-badge .bm-arrow{font-size:.55rem;color:var(--tl);margin:0 .1rem}
+.board-mention-badge .bm-icon{display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);
+  color:#fff;font-size:.5rem;flex-shrink:0}
+.board-mention-badge .bm-name{color:#2563eb;font-weight:700;max-width:120px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
 .mem-board-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:600;
   padding:.3rem .65rem;border-radius:8px;border:1px solid rgba(13,124,102,.15);
   background:rgba(13,124,102,.04);color:var(--c1);cursor:pointer;transition:all .2s;
@@ -1620,6 +1624,8 @@ html,body{max-width:100vw;overflow-x:hidden}
   .board-post{padding:.8rem .85rem}
   .board-header img{width:32px;height:32px}
   .bh-name{font-size:.88rem}
+  .board-mention-badge .bm-name{max-width:90px;font-size:.65rem}
+  .board-mention-badge .bm-icon{width:16px;height:16px;font-size:.45rem}
   .board-title{font-size:.95rem}
   .board-text{font-size:.86rem}
   .board-action{font-size:.76rem}
@@ -1722,6 +1728,8 @@ html,body{max-width:100vw;overflow-x:hidden}
   .faq-q{font-size:.78rem;padding:.6rem .8rem}
   .faq-a{font-size:.72rem}
   .board-post{padding:.6rem .7rem}
+  .board-mention-badge .bm-name{max-width:70px;font-size:.6rem}
+  .board-mention-badge{gap:.12rem}
   .board-title{font-size:.78rem}
   .board-text{font-size:.72rem}
   .contact-box{padding:.9rem}
@@ -3272,12 +3280,11 @@ function renderBoards(){
     const post=document.createElement('div');
     post.className='board-post reveal';
     post.style.transitionDelay=(i*100)+'ms';
-    const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-at"></i> ${b.mentionToName}さん宛</span>`:'';
+    const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-long-arrow-alt-right bm-arrow"></i><span class="bm-icon"><i class="fas fa-user"></i></span><span class="bm-name">${b.mentionToName}</span></span>`:'';
     post.innerHTML=`<div class="board-header">
         <img src="${b.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">
-        <div class="bh-info"><div class="bh-name">${b.authorName}</div><div class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</div></div>
+        <div class="bh-info"><div class="bh-name">${b.authorName} ${mentionHtml}</div><div class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</div></div>
         <span class="board-cat">${b.category||''}</span>
-        ${mentionHtml}
         ${ownerBtns}
       </div>
       <div class="board-title">${b.title}</div>
