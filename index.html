@@ -1039,7 +1039,8 @@ nav.at-top .hamburger{color:#fff}
 .mem-rank-guide{display:flex;align-items:center;justify-content:center;gap:.6rem;
   flex-wrap:wrap;margin:0 auto .8rem;padding:.4rem .8rem;max-width:680px;
   background:rgba(0,0,0,.02);border-radius:10px;border:1px solid rgba(0,0,0,.04)}
-.mem-rank-guide-item{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--tl);white-space:nowrap}
+.mem-rank-guide-item{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--tl);white-space:nowrap;cursor:pointer;padding:.2rem .35rem;border-radius:8px;transition:background .2s}
+.mem-rank-guide-item:hover{background:rgba(0,0,0,.04)}
 .mem-rank-guide-item .mem-rank{margin:0;font-size:.68rem;padding:.12rem .45rem}
 .mem-rank-guide-item .rg-cond{font-weight:600;color:var(--td);font-size:.68rem}
 /* Event capacity bar */
@@ -2100,9 +2101,9 @@ html,body{max-width:100vw;overflow-x:hidden}
 <section class="sec" id="members">
   <div class="sec-head"><h2><i class="fas fa-user-friends"></i> メンバー</h2><p>彦根を中心に活躍する事業者たち。この仲間があなたの「お客さん」になります</p></div>
   <div class="mem-rank-guide">
-    <div class="mem-rank-guide-item"><span class="mem-rank mem-rank-bronze"><i class="fas fa-award"></i> ブロンズ</span><span class="rg-cond">3回〜</span></div>
-    <div class="mem-rank-guide-item"><span class="mem-rank mem-rank-silver"><i class="fas fa-medal"></i> シルバー</span><span class="rg-cond">6回〜</span></div>
-    <div class="mem-rank-guide-item"><span class="mem-rank mem-rank-gold"><i class="fas fa-crown"></i> ゴールド</span><span class="rg-cond">12回〜</span></div>
+    <div class="mem-rank-guide-item" onclick="showRankModal('bronze')"><span class="mem-rank mem-rank-bronze"><i class="fas fa-award"></i> ブロンズ</span><span class="rg-cond">3回〜</span></div>
+    <div class="mem-rank-guide-item" onclick="showRankModal('silver')"><span class="mem-rank mem-rank-silver"><i class="fas fa-medal"></i> シルバー</span><span class="rg-cond">6回〜</span></div>
+    <div class="mem-rank-guide-item" onclick="showRankModal('gold')"><span class="mem-rank mem-rank-gold"><i class="fas fa-crown"></i> ゴールド</span><span class="rg-cond">12回〜</span></div>
   </div>
   <div class="search-box"><input type="text" id="memSearch" placeholder="店名、業種、地域、名前で検索..."><i class="fas fa-search"></i></div>
   <div class="carousel-wrap">
@@ -2648,6 +2649,7 @@ async function loadAll(){
     allBlogs.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
     // Store Stripe publishable key
     window._stripePublishableKey=settings.stripePublishableKey||'';
+    window._siteSettings=settings;
     if(settings.heroTitle) heroTitleText=settings.heroTitle;
     typeHeroTitle(heroTitleText);
     if(settings.heroSubtitle) document.getElementById('heroSubtitle').textContent=settings.heroSubtitle;
@@ -3056,9 +3058,32 @@ function getRankHtml(memberId){
   if(!info||info.rank==='none') return info&&info.count>0?`<div class="mem-rank-count"><i class="fas fa-calendar-check"></i> ${info.count}回参加</div>`:'';
   const labels={bronze:'ブロンズ',silver:'シルバー',gold:'ゴールド'};
   const icons={bronze:'fa-award',silver:'fa-medal',gold:'fa-crown'};
-  return `<span class="mem-rank mem-rank-${info.rank}"><i class="fas ${icons[info.rank]}"></i>${labels[info.rank]}</span>
+  return `<span class="mem-rank mem-rank-${info.rank}" onclick="showRankModal('${info.rank}')" style="cursor:pointer"><i class="fas ${icons[info.rank]}"></i>${labels[info.rank]}</span>
     <div class="mem-rank-count">${info.count}回参加</div>`;
 }
+
+const _defaultRankBenefits={
+  bronze:{title:'\u30d6\u30ed\u30f3\u30ba',icon:'fa-award',cond:'\u4ea4\u6d41\u4f1a3\u56de\u4ee5\u4e0a\u53c2\u52a0',benefits:'\u30e1\u30f3\u30d0\u30fc\u30ab\u30fc\u30c9\u306b\u30d0\u30c3\u30b8\u8868\u793a'},
+  silver:{title:'\u30b7\u30eb\u30d0\u30fc',icon:'fa-medal',cond:'\u4ea4\u6d41\u4f1a6\u56de\u4ee5\u4e0a\u53c2\u52a0',benefits:'\u30b5\u30a4\u30c8\u4e0a\u4f4d\u8868\u793a\u30fb\u7d39\u4ecb\u512a\u5148'},
+  gold:{title:'\u30b4\u30fc\u30eb\u30c9',icon:'fa-crown',cond:'\u4ea4\u6d41\u4f1a12\u56de\u4ee5\u4e0a\u53c2\u52a0',benefits:'\u7279\u5225\u30b3\u30e9\u30dc\u6848\u5185\u30fb\u904b\u55b6\u63a8\u85a6'}
+};
+function showRankModal(rank){
+  const ss=window._siteSettings||{};
+  const custom=ss.rankBenefits||{};
+  const d=Object.assign({},_defaultRankBenefits[rank]||{},custom[rank]||{});
+  const colors={bronze:'#cd7f32',silver:'#a8a8a8',gold:'#ffd700'};
+  const el=document.createElement('div');
+  el.className='modal active';el.id='rankModal';
+  el.onclick=e=>{if(e.target===el)el.remove()};
+  el.innerHTML=`<div class="modal-box" style="max-width:360px;text-align:center;padding:1.5rem">
+    <button class="modal-close" onclick="document.getElementById('rankModal').remove()">&times;</button>
+    <div style="margin-bottom:.8rem"><span class="mem-rank mem-rank-${rank}" style="font-size:1rem;padding:.3rem 1rem"><i class="fas ${d.icon}"></i> ${d.title}</span></div>
+    <div style="font-size:.85rem;font-weight:700;color:var(--td);margin-bottom:.4rem"><i class="fas fa-calendar-check" style="color:var(--c1)"></i> ${d.cond}</div>
+    <div style="font-size:.9rem;color:var(--tl);line-height:1.7;white-space:pre-line">${d.benefits}</div>
+  </div>`;
+  document.body.appendChild(el);
+}
+
 function renderMembers(list){
   const t=document.getElementById('memTrack');t.innerHTML='';
   (list||allMembers).forEach((m,i)=>{

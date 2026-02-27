@@ -468,6 +468,17 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   </div>
   <div class="tbl-wrap"><table><thead><tr><th style="min-width:120px">名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th>写真</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
   <style>#memTbl td:nth-child(8){width:40px;text-align:center;padding:.3rem}</style>
+  <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,.08)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
+      <h3 style="font-size:1rem;font-weight:800;display:flex;align-items:center;gap:.4rem"><i class="fas fa-trophy" style="color:#ffd700"></i> ランクメリット編集</h3>
+      <button class="btn btn-primary btn-sm" onclick="saveRankBenefits()"><i class="fas fa-save"></i> 保存</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.6rem" id="rankBenefitsEditor">
+      <div style="display:flex;align-items:center;gap:.5rem"><span style="min-width:80px;font-weight:700;color:#cd7f32;font-size:.85rem"><i class="fas fa-award"></i> ブロンズ</span><textarea id="rbBronze" rows="2" style="flex:1;font-size:.82rem;padding:.4rem .6rem;border:1px solid rgba(0,0,0,.1);border-radius:8px;resize:vertical;font-family:inherit">メンバーカードにバッジ表示</textarea></div>
+      <div style="display:flex;align-items:center;gap:.5rem"><span style="min-width:80px;font-weight:700;color:#a8a8a8;font-size:.85rem"><i class="fas fa-medal"></i> シルバー</span><textarea id="rbSilver" rows="2" style="flex:1;font-size:.82rem;padding:.4rem .6rem;border:1px solid rgba(0,0,0,.1);border-radius:8px;resize:vertical;font-family:inherit">サイト上位表示・紹介優先</textarea></div>
+      <div style="display:flex;align-items:center;gap:.5rem"><span style="min-width:80px;font-weight:700;color:#d4a700;font-size:.85rem"><i class="fas fa-crown"></i> ゴールド</span><textarea id="rbGold" rows="2" style="flex:1;font-size:.82rem;padding:.4rem .6rem;border:1px solid rgba(0,0,0,.1);border-radius:8px;resize:vertical;font-family:inherit">特別コラボ案内・運営推薦</textarea></div>
+    </div>
+  </div>
 </div>
 
 <!-- BOARDS -->
@@ -752,6 +763,10 @@ async function loadAll(){
   document.getElementById('hStripeSk').value=settings.stripeSecretKey?'••••••••':'';
   document.getElementById('hStripeSk').dataset.hasKey=settings.stripeSecretKey?'1':'0';
   document.getElementById('hGoogleClientId').value=settings.googleClientId||'';
+  const rb=settings.rankBenefits||{};
+  if(rb.bronze)document.getElementById('rbBronze').value=rb.bronze.benefits||'';
+  if(rb.silver)document.getElementById('rbSilver').value=rb.silver.benefits||'';
+  if(rb.gold)document.getElementById('rbGold').value=rb.gold.benefits||'';
   updatePreview();
   ['hTitle','hSub'].forEach(id=>document.getElementById(id).addEventListener('input',updatePreview));
 }
@@ -1310,6 +1325,18 @@ async function saveAiSettings(){
       settings.aiQuickQuestions=aiQuickQuestions;
       showToast('AIアシスタント設定を保存しました');
     }
+  }catch(e){showToast('保存に失敗しました','error')}
+}
+
+async function saveRankBenefits(){
+  const rankBenefits={
+    bronze:{benefits:document.getElementById('rbBronze').value.trim()},
+    silver:{benefits:document.getElementById('rbSilver').value.trim()},
+    gold:{benefits:document.getElementById('rbGold').value.trim()}
+  };
+  try{
+    const r=await fetch('/api/site-settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rankBenefits})}).then(r=>r.json());
+    if(r.success){settings.rankBenefits=rankBenefits;showToast('ランクメリットを保存しました')}
   }catch(e){showToast('保存に失敗しました','error')}
 }
 
