@@ -1056,10 +1056,10 @@ nav.at-top .hamburger{color:#fff}
   animation:goldShine 3s ease-in-out infinite}
 @keyframes goldShine{0%,100%{box-shadow:0 2px 10px rgba(255,215,0,.5)}50%{box-shadow:0 3px 16px rgba(255,215,0,.7)}}
 .mem-rank-count{font-size:.58rem;color:var(--tl);margin-top:.15rem;font-weight:500}
-.mem-rank-guide{display:flex;align-items:center;justify-content:center;gap:.6rem;
-  flex-wrap:wrap;margin:0 auto .8rem;padding:.4rem .8rem;max-width:680px;
+.mem-rank-guide{display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:nowrap;
+  margin:0 auto .5rem;padding:.3rem .6rem;max-width:500px;
   background:rgba(0,0,0,.02);border-radius:10px;border:1px solid rgba(0,0,0,.04)}
-.mem-rank-guide-item{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--tl);white-space:nowrap;cursor:pointer;padding:.2rem .35rem;border-radius:8px;transition:background .2s}
+.mem-rank-guide-item{display:inline-flex;align-items:center;gap:.25rem;font-size:.72rem;color:var(--tl);white-space:nowrap;cursor:pointer;padding:.15rem .4rem;border-radius:8px;transition:background .2s;flex-shrink:0}
 .mem-rank-guide-item:hover{background:rgba(0,0,0,.04)}
 .mem-rank-guide-item .mem-rank{margin:0;font-size:.68rem;padding:.12rem .45rem}
 .mem-rank-guide-item .rg-cond{font-weight:600;color:var(--td);font-size:.68rem}
@@ -2209,7 +2209,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <!-- MEMBERS: full width -->
 <div class="bento-cell bento-full reveal">
 <section class="sec" id="members">
-  <div class="sec-head"><h2><i class="fas fa-user-friends"></i> メンバー</h2><p>彦根を中心に活躍する事業者たち。この仲間があなたの「お客さん」になります</p></div>
+  <div class="sec-head" style="margin-bottom:.8rem"><h2><i class="fas fa-user-friends"></i> メンバー</h2><p>彦根を中心に活躍する事業者たち。この仲間があなたの「お客さん」になります</p></div>
   <div class="mem-rank-guide">
     <div class="mem-rank-guide-item" onclick="showRankModal('bronze')"><span class="mem-rank mem-rank-bronze"><i class="fas fa-award"></i> ブロンズ</span><span class="rg-cond">3回〜</span></div>
     <div class="mem-rank-guide-item" onclick="showRankModal('silver')"><span class="mem-rank mem-rank-silver"><i class="fas fa-medal"></i> シルバー</span><span class="rg-cond">6回〜</span></div>
