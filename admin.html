@@ -290,9 +290,20 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   .stat-row{grid-template-columns:repeat(2,1fr)}
   .dash-grid{grid-template-columns:1fr !important}
 }
+/* ========== GLOBAL SPINNER OVERLAY ========== */
+.g-spinner-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.35);
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.g-spinner-overlay.active{display:flex}
+.g-spinner-box{background:#fff;border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;gap:.8rem;
+  box-shadow:0 12px 40px rgba(0,0,0,.15);min-width:180px}
+.g-spinner-ring{width:28px;height:28px;border:3px solid rgba(16,185,129,.15);border-top-color:var(--c1);
+  border-radius:50%;animation:g-spin .7s linear infinite;flex-shrink:0}
+@keyframes g-spin{to{transform:rotate(360deg)}}
+.g-spinner-text{font-size:.85rem;font-weight:600;color:var(--td)}
 </style>
 </head>
 <body>
+<div class="g-spinner-overlay" id="gSpinner"><div class="g-spinner-box"><div class="g-spinner-ring"></div><div class="g-spinner-text" id="gSpinnerText">処理中...</div></div></div>
 
 <!-- LOADING -->
 <div id="adminLoading">
@@ -707,6 +718,9 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 <script>
 let admin=null,members=[],events=[],blogs=[],boards=[],settings={},opMemberIds=[];
 let _blogFilter='all'; // current blog tab filter
+let _spinnerCount=0;
+function showSpinner(msg){_spinnerCount++;const o=document.getElementById('gSpinner');document.getElementById('gSpinnerText').textContent=msg||'処理中...';o.classList.add('active')}
+function hideSpinner(){_spinnerCount=Math.max(0,_spinnerCount-1);if(!_spinnerCount)document.getElementById('gSpinner').classList.remove('active')}
 
 /* Loading */
 window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('adminLoading').classList.add('hide')},800)});
@@ -868,16 +882,18 @@ function animStat(id,t){
 // Hero
 async function saveHero(e){
   e.preventDefault();
+  showSpinner('保存中...');
+  try{
   const skInput=document.getElementById('hStripeSk');
   const body={heroTitle:document.getElementById('hTitle').value,heroSubtitle:document.getElementById('hSub').value,
     aboutTitle:document.getElementById('hAbout').value,aboutText:document.getElementById('hAboutText').value,
     instagramAccount:document.getElementById('hInsta').value.replace(/^@/,''),
     stripePublishableKey:document.getElementById('hStripePk').value,
     googleClientId:document.getElementById('hGoogleClientId').value};
-  // Only send secret key if changed (not placeholder dots)
   if(skInput.value&&!skInput.value.startsWith('••')) body.stripeSecretKey=skInput.value;
   const r=await fetch('/api/site-settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success) showToast('保存しました');
+  }finally{hideSpinner()}
 }
 
 // Events
@@ -940,10 +956,11 @@ async function showEvRegs(eventId,title){
 }
 async function removeEvReg(eventId,memberId,name){
   if(!confirm(name+'さんの参加を取り消しますか？'))return;
-  try{
+  showSpinner('取り消し中...');try{
     const r=await fetch('/api/events/'+eventId+'/register',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId})}).then(r=>r.json());
     if(r.success){showToast(name+'さんの参加を取り消しました');loadAll();showEvRegs(eventId,_currentEvRegTitle)}
   }catch(e){showToast('エラーが発生しました','error')}
+  finally{hideSpinner()}
 }
 function exportEvRegs(){
   if(!_currentEvRegs||!_currentEvRegs.data||!_currentEvRegs.data.registrations||!_currentEvRegs.data.registrations.length){showToast('出力する参加者がいません','error');return}
@@ -976,7 +993,8 @@ function openEventForm(ev){
 }
 function editEvent(id){openEventForm(events.find(e=>e.id===id))}
 async function saveEvent(e){
-  e.preventDefault();
+  e.preventDefault();showSpinner('保存中...');
+  try{
   const id=document.getElementById('evId').value;
   const body={title:document.getElementById('evTitle').value,date:document.getElementById('evDate').value,
     time:document.getElementById('evTime').value,location:document.getElementById('evLoc').value,
@@ -987,8 +1005,9 @@ async function saveEvent(e){
   const url=id?`/api/admin/events/${id}`:'/api/admin/events';
   const r=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){closeM('evModal');loadAll();showToast(id?'更新しました':'作成しました')}
+  }finally{hideSpinner()}
 }
-async function delEvent(id){if(confirm('削除しますか？')){await fetch(`/api/admin/events/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
+async function delEvent(id){if(confirm('削除しますか？')){showSpinner('削除中...');try{await fetch(`/api/admin/events/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}finally{hideSpinner()}}}
 
 // Blogs (unified)
 function getCatBadge(cat){
@@ -1078,7 +1097,8 @@ function openBlogForm(b,defaultCat){
 }
 function editBlog(id){openBlogForm(blogs.find(b=>b.id===id))}
 async function saveBlog(e){
-  e.preventDefault();
+  e.preventDefault();showSpinner('保存中...');
+  try{
   const id=document.getElementById('blogId').value;
   const cat=document.getElementById('blogCat').value;
   const isMovie=cat==='活動ムービー';
@@ -1101,8 +1121,9 @@ async function saveBlog(e){
   const url=id?`/api/admin/blogs/${id}`:'/api/admin/blogs';
   const r=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){closeM('blogModal');loadAll();showToast(id?'更新しました':'作成しました')}
+  }finally{hideSpinner()}
 }
-async function delBlog(id){if(confirm('削除しますか？')){await fetch(`/api/admin/blogs/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
+async function delBlog(id){if(confirm('削除しますか？')){showSpinner('削除中...');try{await fetch(`/api/admin/blogs/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}finally{hideSpinner()}}}
 
 // YouTube URL preview in blog form
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1143,10 +1164,12 @@ function renderMemTbl(){
   });
 }
 async function toggleAdmin(id,val){
+  showSpinner('更新中...');try{
   await fetch(`/api/admin/members/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({isAdmin:val})});
   loadAll();showToast('更新しました');
+  }finally{hideSpinner()}
 }
-async function delMember(id){if(confirm('削除しますか？')){await fetch(`/api/admin/members/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
+async function delMember(id){if(confirm('削除しますか？')){showSpinner('削除中...');try{await fetch(`/api/admin/members/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}finally{hideSpinner()}}}
 
 function filterMemTbl(){
   const q=(document.getElementById('memAdminSearch').value||'').toLowerCase().trim();
@@ -1207,15 +1230,17 @@ function openBoardEdit(id){
   document.getElementById('boardEditModal').style.display='flex';
 }
 async function saveBoardEdit(e){
-  e.preventDefault();
+  e.preventDefault();showSpinner('保存中...');
+  try{
   const id=document.getElementById('bdEditId').value;
   const body={title:document.getElementById('bdEditTitle').value,
     content:document.getElementById('bdEditContent').value,
     category:document.getElementById('bdEditCat').value};
   const r=await fetch(`/api/admin/boards/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){document.getElementById('boardEditModal').style.display='none';loadAll();showToast('更新しました')}
+  }finally{hideSpinner()}
 }
-async function delBoard(id){if(confirm('削除しますか？')){await fetch(`/api/admin/boards/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}}
+async function delBoard(id){if(confirm('削除しますか？')){showSpinner('削除中...');try{await fetch(`/api/admin/boards/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}finally{hideSpinner()}}}
 
 // AI Assistant settings
 function renderAiPanel(){
@@ -1297,24 +1322,24 @@ function addAiKeywordRow(){document.getElementById('aiKeywordsList').appendChild
 function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
 async function saveAiSettings(){
-  // Collect preset Q&A
-  const aiAnswers={};
-  document.querySelectorAll('#aiAnswersList > div').forEach(row=>{
-    const q=row.querySelector('.ai-q-input').value.trim();
-    const a=row.querySelector('.ai-a-input').value.trim();
-    if(q&&a) aiAnswers[q]=a;
-  });
-  // Collect keyword patterns
-  const aiKeywords={};
-  document.querySelectorAll('#aiKeywordsList > div').forEach(row=>{
-    const p=row.querySelector('.ai-p-input').value.trim();
-    const a=row.querySelector('.ai-ka-input').value.trim();
-    if(p&&a) aiKeywords[p]=a;
-  });
-  // Quick questions
-  const aiQuickQuestions=document.getElementById('aiQuickQ').value.split('\n').map(s=>s.trim()).filter(Boolean);
-
+  showSpinner('AI設定保存中...');
   try{
+    // Collect preset Q&A
+    const aiAnswers={};
+    document.querySelectorAll('#aiAnswersList > div').forEach(row=>{
+      const q=row.querySelector('.ai-q-input').value.trim();
+      const a=row.querySelector('.ai-a-input').value.trim();
+      if(q&&a) aiAnswers[q]=a;
+    });
+    // Collect keyword patterns
+    const aiKeywords={};
+    document.querySelectorAll('#aiKeywordsList > div').forEach(row=>{
+      const p=row.querySelector('.ai-p-input').value.trim();
+      const a=row.querySelector('.ai-ka-input').value.trim();
+      if(p&&a) aiKeywords[p]=a;
+    });
+    // Quick questions
+    const aiQuickQuestions=document.getElementById('aiQuickQ').value.split('\n').map(s=>s.trim()).filter(Boolean);
     const r=await fetch('/api/site-settings',{
       method:'PUT',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({aiAnswers,aiKeywords,aiQuickQuestions})
@@ -1326,9 +1351,11 @@ async function saveAiSettings(){
       showToast('AIアシスタント設定を保存しました');
     }
   }catch(e){showToast('保存に失敗しました','error')}
+  finally{hideSpinner()}
 }
 
 async function saveRankBenefits(){
+  showSpinner('ランク設定保存中...');
   const rankBenefits={
     bronze:{benefits:document.getElementById('rbBronze').value.trim()},
     silver:{benefits:document.getElementById('rbSilver').value.trim()},
@@ -1338,15 +1365,18 @@ async function saveRankBenefits(){
     const r=await fetch('/api/site-settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rankBenefits})}).then(r=>r.json());
     if(r.success){settings.rankBenefits=rankBenefits;showToast('ランクメリットを保存しました')}
   }catch(e){showToast('保存に失敗しました','error')}
+  finally{hideSpinner()}
 }
 
 // Backup
 async function doBackup(){
+  showSpinner('バックアップ中...');try{
   const r=await fetch('/api/admin/backup').then(r=>r.json());
   document.getElementById('backupResult').innerHTML=r.success?
     `<div style="display:flex;align-items:center;gap:.3rem;margin-top:.3rem"><i class="fas fa-check-circle" style="color:var(--c1)"></i> ${r.filename}</div>`:
     '<i class="fas fa-times-circle" style="color:#ef4444"></i> エラー';
   if(r.success){showToast('バックアップ完了');loadBackupList()}
+  }finally{hideSpinner()}
 }
 
 async function loadBackupList(){
@@ -1384,7 +1414,7 @@ async function loadBackupList(){
 
 async function doRestore(fn){
   if(!confirm(`バックアップ「${fn}」を復元しますか？\n\n現在のデータは自動でバックアップされます。\nこの操作は元に戻せますが、現在のデータは上書きされます。`))return;
-  try{
+  showSpinner('復元中...');try{
     const r=await fetch(`/api/admin/backups/${fn}/restore`,{method:'POST'}).then(r=>r.json());
     if(r.success){
       const p=r.preview;
@@ -1392,6 +1422,7 @@ async function doRestore(fn){
       loadAll();loadBackupList();
     }else{showToast(r.error||'復元エラー')}
   }catch(e){showToast('復元に失敗しました')}
+  finally{hideSpinner()}
 }
 
 function doDownloadBackup(fn){
@@ -1400,17 +1431,19 @@ function doDownloadBackup(fn){
 
 async function doDeleteBackup(fn){
   if(!confirm(`バックアップ「${fn}」を削除しますか？\nこの操作は取り消せません。`))return;
-  try{
+  showSpinner('削除中...');try{
     const r=await fetch(`/api/admin/backups/${fn}`,{method:'DELETE'}).then(r=>r.json());
     if(r.success){showToast('削除しました');loadBackupList()}
     else{showToast(r.error||'削除エラー')}
   }catch(e){showToast('削除に失敗しました')}
+  finally{hideSpinner()}
 }
 
 async function doUploadRestore(input){
   const file=input.files[0];if(!file)return;
   if(!file.name.endsWith('.json')){showToast('JSONファイルのみ対応しています');input.value='';return}
   if(!confirm(`ファイル「${file.name}」からリストアしますか？\n\n現在のデータは自動でバックアップされます。`))return;
+  showSpinner('リストア中...');
   const fd=new FormData();fd.append('backup',file);
   try{
     const r=await fetch('/api/admin/backups/upload',{method:'POST',body:fd}).then(r=>r.json());
@@ -1421,15 +1454,20 @@ async function doUploadRestore(input){
       showToast('ファイルからリストア完了');loadAll();loadBackupList();
     }else{el.innerHTML=`<div style="color:#ef4444"><i class="fas fa-times-circle"></i> ${r.error||'エラー'}</div>`}
   }catch(e){document.getElementById('uploadRestoreResult').innerHTML='<div style="color:#ef4444">アップロード失敗</div>'}
+  finally{hideSpinner()}
   input.value='';
 }
 
 // Upload helper
 async function uploadImg(input,targetId){
   const file=input.files[0];if(!file) return;
-  const fd=new FormData();fd.append('image',file);
-  const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
-  if(r.success){document.getElementById(targetId).value=r.url;showToast('画像をアップロードしました')}
+  showSpinner('画像アップロード中...');
+  try{
+    const fd=new FormData();fd.append('image',file);
+    const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+    if(r.success){document.getElementById(targetId).value=r.url;showToast('画像をアップロードしました')}
+  }catch(e){showToast('アップロードに失敗しました','error')}
+  finally{hideSpinner()}
 }
 
 // Modal
@@ -1500,6 +1538,8 @@ function removeMemEditPhoto(idx){
 }
 async function saveMemEdit(e){
   e.preventDefault();
+  showSpinner('メンバー情報保存中...');
+  try{
   const modal=document.getElementById('memEditModal');
   const id=document.getElementById('meId').value;
   // Upload new avatar if selected
@@ -1539,14 +1579,17 @@ async function saveMemEdit(e){
   const r=await fetch(`/api/admin/members/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){modal.style.display='none';loadAll();showToast('メンバー情報を更新しました')}
   else showToast('更新に失敗しました');
+  }finally{hideSpinner()}
 }
 async function toggleOpMember(id){
+  showSpinner('更新中...');try{
   let ids=[...opMemberIds];
   if(ids.includes(id)) ids=ids.filter(x=>x!==id);
   else ids.push(id);
   const r=await fetch('/api/admin/operating-members',{method:'PUT',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({memberIds:ids})}).then(r=>r.json());
   if(r.success){opMemberIds=ids;renderMemTbl();showToast(ids.includes(id)?'運営メンバーに追加しました':'運営メンバーから外しました')}
+  }finally{hideSpinner()}
 }
 
 function adminLogout(){localStorage.removeItem('wa_user');window.location.href='/';}
