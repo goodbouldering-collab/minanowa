@@ -4535,7 +4535,7 @@ window.addEventListener('scroll',()=>{
 <!-- AI PERSONALIZATION UI -->
 
 <!-- AI FAB -->
-<button class="ai-fab" id="aiFab" onclick="openAiChat()" title="AIアシスタント" style="transform:translateX(80px);opacity:0">
+<button class="ai-fab ai-fab-enter" id="aiFab" onclick="openAiChat()" title="AIアシスタント">
   <div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div>
   <span class="ai-pulse"></span>
   <span class="ai-fab-label" id="aiFabLabel">何か聞きたいことある？</span>
@@ -4904,12 +4904,8 @@ function initAiPersonalization(){
 
   trackSectionViews();
 
-  // Slide the character in from the right edge
-  const fab=document.getElementById('aiFab');
-  if(fab){fab.classList.add('ai-fab-enter');fab.style.transform='';fab.style.opacity='';}
-
-  // Auto-open AI chat after character is visible for a while
-  setTimeout(()=>{if(!aiChatOpen) openAiChat()},4000);
+  // Auto-open AI chat
+  setTimeout(()=>{if(!aiChatOpen) openAiChat()},2000);
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
@@ -4919,11 +4915,11 @@ function initAiPersonalization(){
   });
 }
 
-// Run after DOM ready (1 minute delay)
+// Run after DOM ready (10 seconds delay for auto-open chat)
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(initAiPersonalization,60000));
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(initAiPersonalization,10000));
 }else{
-  setTimeout(initAiPersonalization,60000);
+  setTimeout(initAiPersonalization,10000);
 }
 </script>
 </body>
