@@ -1788,26 +1788,43 @@ html,body{max-width:100vw;overflow-x:hidden}
 }
 
 /* ========== AI ASSISTANT (Chat) ========== */
-.ai-fab{position:fixed;bottom:24px;right:24px;z-index:950;width:64px;height:64px;
+.ai-fab{position:fixed;bottom:24px;right:-16px;z-index:950;width:72px;height:72px;
   border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;
-  border:3px solid rgba(255,255,255,.3);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;box-shadow:0 4px 28px rgba(99,102,241,.4),0 0 0 0 rgba(139,92,246,.3);transition:all .3s;
-  animation:ai-fab-glow 3s ease-in-out infinite}
-@keyframes ai-fab-glow{0%,100%{box-shadow:0 4px 28px rgba(99,102,241,.4),0 0 0 0 rgba(139,92,246,.3)}
-  50%{box-shadow:0 6px 36px rgba(99,102,241,.5),0 0 0 8px rgba(139,92,246,.08)}}
-.ai-fab:hover{transform:scale(1.12);box-shadow:0 8px 40px rgba(99,102,241,.55);
-  animation:none;border-color:rgba(255,255,255,.5)}
+  border:3px solid rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;box-shadow:0 4px 28px rgba(99,102,241,.4);transition:all .4s cubic-bezier(.175,.885,.32,1.275);
+  animation:ai-fab-peek 3s ease-in-out infinite;overflow:visible}
+@keyframes ai-fab-peek{
+  0%,100%{transform:translateX(0)}
+  15%{transform:translateX(-8px)}
+  30%{transform:translateX(0)}
+  45%{transform:translateX(-5px)}
+  60%{transform:translateX(0)}}
+.ai-fab:hover{transform:translateX(-24px) scale(1.05)!important;
+  box-shadow:0 8px 40px rgba(99,102,241,.55);animation:none;border-color:rgba(255,255,255,.7)}
+.ai-fab .ai-char{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.ai-fab .ai-char-face{font-size:1.8rem;line-height:1;position:relative;left:-2px}
+.ai-fab .ai-char-eye{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;
+  animation:ai-blink 4s ease-in-out infinite}
+.ai-fab .ai-char-eye.l{top:28px;left:22px}
+.ai-fab .ai-char-eye.r{top:28px;left:38px}
+@keyframes ai-blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.1)}}
 .ai-fab .ai-pulse{position:absolute;inset:-6px;border-radius:50%;
   border:2.5px solid #a855f7;animation:ai-pulse 2s ease-out infinite;opacity:0}
-.ai-fab .ai-fab-label{position:absolute;right:74px;white-space:nowrap;
+.ai-fab .ai-fab-label{position:absolute;right:80px;white-space:nowrap;
   background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:.72rem;font-weight:700;
-  padding:.35rem .8rem;border-radius:10px;box-shadow:0 4px 16px rgba(99,102,241,.3);
-  pointer-events:none;animation:ai-label-show 5s ease forwards;letter-spacing:.02em}
+  padding:.4rem .9rem;border-radius:12px;box-shadow:0 4px 16px rgba(99,102,241,.3);
+  pointer-events:none;animation:ai-label-show 8s ease forwards;letter-spacing:.02em}
 .ai-fab .ai-fab-label::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);
   border:6px solid transparent;border-left-color:#8b5cf6}
-@keyframes ai-label-show{0%{opacity:0;transform:translateX(10px)}8%{opacity:1;transform:translateX(0)}
-  75%{opacity:1}100%{opacity:0;transform:translateX(10px)}}
+@keyframes ai-label-show{0%{opacity:0;transform:translateX(10px)}5%{opacity:1;transform:translateX(0)}
+  80%{opacity:1}100%{opacity:0;transform:translateX(10px)}}
 @keyframes ai-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+.ai-fab-enter{animation:ai-fab-enter .8s cubic-bezier(.175,.885,.32,1.275) forwards}
+@keyframes ai-fab-enter{
+  0%{transform:translateX(80px);opacity:0}
+  60%{transform:translateX(-20px);opacity:1}
+  80%{transform:translateX(4px)}
+  100%{transform:translateX(0);opacity:1}}
 
 .ai-chat{position:fixed;bottom:96px;right:24px;z-index:940;width:390px;max-height:600px;
   background:var(--glass3);border:1.5px solid rgba(99,102,241,.15);border-radius:22px;
@@ -1901,9 +1918,9 @@ html,body{max-width:100vw;overflow-x:hidden}
 .ai-greeting .ai-greet-sub{font-size:.72rem;color:var(--tl);margin-top:.15rem}
 
 @media(max-width:600px){
-  .ai-fab{width:52px;height:52px;font-size:1.3rem;bottom:16px;right:16px}
+  .ai-fab{width:60px;height:60px;font-size:1.3rem;bottom:16px;right:-14px}
   .ai-fab .ai-fab-label{display:none}
-  .ai-chat{right:8px;left:8px;width:auto;bottom:76px;max-height:70vh}
+  .ai-chat{right:8px;left:8px;width:auto;bottom:84px;max-height:70vh}
 }
 /* ========== MAGNETIC TILT INTERACTION ========== */
 .tilt-hover{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;will-change:transform}
@@ -4518,10 +4535,10 @@ window.addEventListener('scroll',()=>{
 <!-- AI PERSONALIZATION UI -->
 
 <!-- AI FAB -->
-<button class="ai-fab" id="aiFab" onclick="openAiChat()" title="AIアシスタント">
-  <i class="fas fa-robot"></i>
+<button class="ai-fab" id="aiFab" onclick="openAiChat()" title="AIアシスタント" style="transform:translateX(80px);opacity:0">
+  <div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div>
   <span class="ai-pulse"></span>
-  <span class="ai-fab-label" id="aiFabLabel">質問してみよう！</span>
+  <span class="ai-fab-label" id="aiFabLabel">何か聞きたいことある？</span>
 </button>
 
 <!-- AI Chat Window -->
@@ -4594,7 +4611,9 @@ function openAiChat(){
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
   chat.classList.add('open');
-  fab.innerHTML='<i class="fas fa-times"></i>';
+  fab.style.animation='none';
+  fab.style.transform='translateX(-24px)';
+  fab.innerHTML='<i class="fas fa-times" style="font-size:1.4rem"></i>';
   fab.onclick=closeAiChat;
   if(!document.getElementById('aiChatBody').children.length) initAiChat();
   setTimeout(()=>document.getElementById('aiChatInput').focus(),300);
@@ -4605,7 +4624,9 @@ function closeAiChat(){
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
   chat.classList.remove('open');
-  fab.innerHTML='<i class="fas fa-robot"></i><span class="ai-pulse"></span>';
+  fab.style.transform='';
+  fab.style.animation='';
+  fab.innerHTML='<div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div><span class="ai-pulse"></span>';
   fab.onclick=function(){openAiChat()};
 }
 
@@ -4883,8 +4904,12 @@ function initAiPersonalization(){
 
   trackSectionViews();
 
-  // Auto-open AI chat on page load (after loading screen)
-  setTimeout(()=>{if(!aiChatOpen) openAiChat()},2200);
+  // Slide the character in from the right edge
+  const fab=document.getElementById('aiFab');
+  if(fab){fab.classList.add('ai-fab-enter');fab.style.transform='';fab.style.opacity='';}
+
+  // Auto-open AI chat after character is visible for a while
+  setTimeout(()=>{if(!aiChatOpen) openAiChat()},4000);
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
@@ -4894,11 +4919,11 @@ function initAiPersonalization(){
   });
 }
 
-// Run after DOM ready
+// Run after DOM ready (1 minute delay)
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(initAiPersonalization,6000));
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(initAiPersonalization,60000));
 }else{
-  setTimeout(initAiPersonalization,6000);
+  setTimeout(initAiPersonalization,60000);
 }
 </script>
 </body>
