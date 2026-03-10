@@ -1774,20 +1774,22 @@ html,body{max-width:100vw;overflow-x:hidden}
 }
 
 /* ========== AI ASSISTANT (Chat) ========== */
-.ai-fab{position:fixed;bottom:24px;right:20px;z-index:950;width:72px;height:72px;
+.ai-fab{position:fixed;bottom:24px;right:-28px;z-index:950;width:72px;height:72px;
   border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;
   border:3px solid rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;box-shadow:0 4px 28px rgba(99,102,241,.4);transition:all .4s cubic-bezier(.175,.885,.32,1.275);
-  animation:ai-fab-dokidoki 1.8s ease-in-out infinite;overflow:visible}
-@keyframes ai-fab-dokidoki{
-  0%,100%{transform:scale(1)}
-  10%{transform:scale(1.12)}
-  20%{transform:scale(1)}
-  30%{transform:scale(1.08)}
-  40%{transform:scale(1)}
+  font-size:1.6rem;box-shadow:0 4px 28px rgba(99,102,241,.4);
+  transition:transform .5s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease,border-color .3s ease;
+  animation:ai-fab-peek 3s ease-in-out infinite;overflow:visible}
+@keyframes ai-fab-peek{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-10px)}
+  50%{transform:translateX(0)}
+  65%{transform:translateX(-6px)}
+  80%{transform:translateX(0)}
 }
-.ai-fab:hover{transform:scale(1.13)!important;
+.ai-fab:hover{transform:translateX(-28px)!important;
   box-shadow:0 8px 40px rgba(99,102,241,.55);animation:none;border-color:rgba(255,255,255,.7)}
+.ai-fab.popped{right:20px;animation:none;transform:translateX(0)}
 .ai-fab .ai-char{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
 .ai-fab .ai-char-face{font-size:1.8rem;line-height:1;position:relative;left:-2px}
 .ai-fab .ai-char-eye{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;
@@ -1797,7 +1799,7 @@ html,body{max-width:100vw;overflow-x:hidden}
 @keyframes ai-blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.1)}}
 .ai-fab .ai-pulse{position:absolute;inset:-6px;border-radius:50%;
   border:2.5px solid #a855f7;animation:ai-pulse 2s ease-out infinite;opacity:0}
-.ai-bubble{position:fixed;bottom:60px;right:100px;z-index:951;
+.ai-bubble{position:fixed;bottom:56px;right:52px;z-index:951;
   background:#fff;border-radius:14px 14px 4px 14px;padding:.5rem .85rem;
   box-shadow:0 4px 20px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.06);
   border:1.5px solid rgba(99,102,241,.12);pointer-events:none;
@@ -1810,13 +1812,12 @@ html,body{max-width:100vw;overflow-x:hidden}
 .ai-bubble-arrow{position:absolute;right:-7px;bottom:6px;width:0;height:0;
   border:7px solid transparent;border-left-color:#fff;filter:drop-shadow(2px 0 1px rgba(99,102,241,.08))}
 @keyframes ai-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
-.ai-fab-enter{animation:ai-fab-enter .9s cubic-bezier(.175,.885,.32,1.275) forwards}
-@keyframes ai-fab-enter{
-  0%{transform:scale(0) rotate(-180deg);opacity:0}
-  50%{transform:scale(1.2) rotate(10deg);opacity:1}
-  70%{transform:scale(.9) rotate(-5deg)}
-  85%{transform:scale(1.05) rotate(2deg)}
-  100%{transform:scale(1) rotate(0deg);opacity:1}}
+.ai-fab-enter{animation:ai-fab-slide-in .7s cubic-bezier(.175,.885,.32,1.275) forwards}
+@keyframes ai-fab-slide-in{
+  0%{right:-72px;opacity:0}
+  60%{right:-20px;opacity:1}
+  80%{right:-32px}
+  100%{right:-28px;opacity:1}}
 
 .ai-chat{position:fixed;bottom:96px;right:24px;z-index:940;width:390px;max-height:600px;
   background:var(--glass3);border:1.5px solid rgba(99,102,241,.15);border-radius:22px;
@@ -1910,8 +1911,9 @@ html,body{max-width:100vw;overflow-x:hidden}
 .ai-greeting .ai-greet-sub{font-size:.72rem;color:var(--tl);margin-top:.15rem}
 
 @media(max-width:600px){
-  .ai-fab{width:60px;height:60px;font-size:1.3rem;bottom:16px;right:12px}
-  .ai-bubble{bottom:44px;right:80px;padding:.35rem .6rem;max-width:150px}
+  .ai-fab{width:60px;height:60px;font-size:1.3rem;bottom:16px;right:-24px}
+  .ai-fab.popped{right:12px}
+  .ai-bubble{bottom:40px;right:44px;padding:.35rem .6rem;max-width:150px}
   .ai-bubble-text{font-size:.65rem}
   .ai-chat{right:8px;left:8px;width:auto;bottom:84px;max-height:70vh}
 }
@@ -4521,7 +4523,7 @@ window.addEventListener('scroll',()=>{
 <!-- AI PERSONALIZATION UI -->
 
 <!-- AI FAB -->
-<button class="ai-fab ai-fab-enter" id="aiFab" onclick="openAiChat()" title="AIアシスタント">
+<button class="ai-fab ai-fab-enter" id="aiFab" onclick="handleFabClick()" title="AIアシスタント">
   <div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div>
   <span class="ai-pulse"></span>
 </button>
@@ -4593,18 +4595,46 @@ function trackSectionViews(){
 
 /* --- Chat --- */
 let aiChatOpen=false;
+let aiFabPopped=false;
+
+function handleFabClick(){
+  if(aiChatOpen){closeAiChat();return}
+  if(!aiFabPopped){popFab();return}
+  openAiChat();
+}
+
+function popFab(){
+  const fab=document.getElementById('aiFab');
+  aiFabPopped=true;
+  fab.classList.add('popped');
+  fab.style.animation='none';
+  /* Auto-retract after 4s if not opened */
+  clearTimeout(fab._retractTimer);
+  fab._retractTimer=setTimeout(()=>{if(!aiChatOpen) retractFab()},4000);
+}
+
+function retractFab(){
+  const fab=document.getElementById('aiFab');
+  aiFabPopped=false;
+  fab.classList.remove('popped');
+  fab.style.animation='';
+  fab.innerHTML='<div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div><span class="ai-pulse"></span>';
+  fab.onclick=handleFabClick;
+}
 
 function openAiChat(){
   if(aiChatOpen) return;
   aiChatOpen=true;
+  aiFabPopped=true;
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
   const bubble=document.getElementById('aiBubble');
   chat.classList.add('open');
+  fab.classList.add('popped');
   fab.style.animation='none';
-  fab.style.transform='scale(1)';
   fab.innerHTML='<i class="fas fa-times" style="font-size:1.4rem"></i>';
-  fab.onclick=closeAiChat;
+  fab.onclick=handleFabClick;
+  clearTimeout(fab._retractTimer);
   if(bubble) bubble.classList.remove('visible');
   stopAiBubbleCycle();
   if(!document.getElementById('aiChatBody').children.length) initAiChat();
@@ -4616,10 +4646,8 @@ function closeAiChat(){
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
   chat.classList.remove('open');
-  fab.style.transform='';
-  fab.style.animation='';
-  fab.innerHTML='<div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div><span class="ai-pulse"></span>';
-  fab.onclick=function(){openAiChat()};
+  /* Return to peeking state */
+  retractFab();
   startAiBubbleCycle();
 }
 
@@ -4931,7 +4959,7 @@ function initAiPersonalization(){
 
   // Start bubble cycle and auto-open chat
   startAiBubbleCycle();
-  setTimeout(()=>{if(!aiChatOpen){stopAiBubbleCycle();openAiChat()}},2000);
+  setTimeout(()=>{if(!aiChatOpen){popFab();setTimeout(()=>{if(!aiChatOpen){stopAiBubbleCycle();openAiChat()}},1500)}},2000);
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
