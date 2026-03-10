@@ -1774,18 +1774,19 @@ html,body{max-width:100vw;overflow-x:hidden}
 }
 
 /* ========== AI ASSISTANT (Chat) ========== */
-.ai-fab{position:fixed;bottom:24px;right:-16px;z-index:950;width:72px;height:72px;
+.ai-fab{position:fixed;bottom:24px;right:20px;z-index:950;width:72px;height:72px;
   border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;
   border:3px solid rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;
   font-size:1.6rem;box-shadow:0 4px 28px rgba(99,102,241,.4);transition:all .4s cubic-bezier(.175,.885,.32,1.275);
-  animation:ai-fab-peek 3s ease-in-out infinite;overflow:visible}
-@keyframes ai-fab-peek{
-  0%,100%{transform:translateX(0)}
-  15%{transform:translateX(-8px)}
-  30%{transform:translateX(0)}
-  45%{transform:translateX(-5px)}
-  60%{transform:translateX(0)}}
-.ai-fab:hover{transform:translateX(-24px) scale(1.05)!important;
+  animation:ai-fab-dokidoki 1.8s ease-in-out infinite;overflow:visible}
+@keyframes ai-fab-dokidoki{
+  0%,100%{transform:scale(1)}
+  10%{transform:scale(1.12)}
+  20%{transform:scale(1)}
+  30%{transform:scale(1.08)}
+  40%{transform:scale(1)}
+}
+.ai-fab:hover{transform:scale(1.13)!important;
   box-shadow:0 8px 40px rgba(99,102,241,.55);animation:none;border-color:rgba(255,255,255,.7)}
 .ai-fab .ai-char{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
 .ai-fab .ai-char-face{font-size:1.8rem;line-height:1;position:relative;left:-2px}
@@ -1796,21 +1797,26 @@ html,body{max-width:100vw;overflow-x:hidden}
 @keyframes ai-blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.1)}}
 .ai-fab .ai-pulse{position:absolute;inset:-6px;border-radius:50%;
   border:2.5px solid #a855f7;animation:ai-pulse 2s ease-out infinite;opacity:0}
-.ai-fab .ai-fab-label{position:absolute;right:80px;white-space:nowrap;
-  background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:.72rem;font-weight:700;
-  padding:.4rem .9rem;border-radius:12px;box-shadow:0 4px 16px rgba(99,102,241,.3);
-  pointer-events:none;animation:ai-label-show 8s ease forwards;letter-spacing:.02em}
-.ai-fab .ai-fab-label::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);
-  border:6px solid transparent;border-left-color:#8b5cf6}
-@keyframes ai-label-show{0%{opacity:0;transform:translateX(10px)}5%{opacity:1;transform:translateX(0)}
-  80%{opacity:1}100%{opacity:0;transform:translateX(10px)}}
+.ai-bubble{position:fixed;bottom:60px;right:100px;z-index:951;
+  background:#fff;border-radius:14px 14px 4px 14px;padding:.5rem .85rem;
+  box-shadow:0 4px 20px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.06);
+  border:1.5px solid rgba(99,102,241,.12);pointer-events:none;
+  opacity:0;transform:translateX(10px) scale(.9);
+  transition:opacity .4s ease,transform .4s cubic-bezier(.175,.885,.32,1.275);
+  max-width:180px;white-space:normal}
+.ai-bubble.visible{opacity:1;transform:translateX(0) scale(1)}
+.ai-bubble-text{font-size:.73rem;font-weight:600;color:#6366f1;
+  display:flex;align-items:center;gap:.3rem;line-height:1.4}
+.ai-bubble-arrow{position:absolute;right:-7px;bottom:6px;width:0;height:0;
+  border:7px solid transparent;border-left-color:#fff;filter:drop-shadow(2px 0 1px rgba(99,102,241,.08))}
 @keyframes ai-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
-.ai-fab-enter{animation:ai-fab-enter .8s cubic-bezier(.175,.885,.32,1.275) forwards}
+.ai-fab-enter{animation:ai-fab-enter .9s cubic-bezier(.175,.885,.32,1.275) forwards}
 @keyframes ai-fab-enter{
-  0%{transform:translateX(80px);opacity:0}
-  60%{transform:translateX(-20px);opacity:1}
-  80%{transform:translateX(4px)}
-  100%{transform:translateX(0);opacity:1}}
+  0%{transform:scale(0) rotate(-180deg);opacity:0}
+  50%{transform:scale(1.2) rotate(10deg);opacity:1}
+  70%{transform:scale(.9) rotate(-5deg)}
+  85%{transform:scale(1.05) rotate(2deg)}
+  100%{transform:scale(1) rotate(0deg);opacity:1}}
 
 .ai-chat{position:fixed;bottom:96px;right:24px;z-index:940;width:390px;max-height:600px;
   background:var(--glass3);border:1.5px solid rgba(99,102,241,.15);border-radius:22px;
@@ -1904,8 +1910,9 @@ html,body{max-width:100vw;overflow-x:hidden}
 .ai-greeting .ai-greet-sub{font-size:.72rem;color:var(--tl);margin-top:.15rem}
 
 @media(max-width:600px){
-  .ai-fab{width:60px;height:60px;font-size:1.3rem;bottom:16px;right:-14px}
-  .ai-fab .ai-fab-label{display:none}
+  .ai-fab{width:60px;height:60px;font-size:1.3rem;bottom:16px;right:12px}
+  .ai-bubble{bottom:44px;right:80px;padding:.35rem .6rem;max-width:150px}
+  .ai-bubble-text{font-size:.65rem}
   .ai-chat{right:8px;left:8px;width:auto;bottom:84px;max-height:70vh}
 }
 /* ========== MAGNETIC TILT INTERACTION ========== */
@@ -2072,7 +2079,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
     </div>
     <div class="hero-cta">
       <button class="btn btn-white" id="heroRegBtn" onclick="openModal('regModal')"><i class="fas fa-user-plus"></i> 会員登録</button>
-      <button class="btn btn-glass" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><i class="fas fa-calendar-alt"></i> イベントを見る</button>
+      <button class="btn btn-glass" id="heroEvBtn" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><i class="fas fa-calendar-alt"></i> イベントを見る</button>
     </div>
   </div>
   <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
@@ -4057,6 +4064,7 @@ function checkResetToken(){
 function updateNav(){
   const el=document.getElementById('navAuth');
   const heroBtn=document.getElementById('heroRegBtn');
+  const heroEvBtn=document.getElementById('heroEvBtn');
   const lineCtaSec=document.getElementById('lineCta');
   if(currentUser){
     el.innerHTML=`<div class="user-bar">
@@ -4065,10 +4073,11 @@ function updateNav(){
       ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-ghost btn-sm"><i class="fas fa-cog"></i> 管理</a>':''}
       <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
     </div>`;
-    /* Hero: switch to LINE open chat button */
+    /* Hero left: switch to LINE open chat button */
     if(heroBtn){
       heroBtn.innerHTML='<i class="fab fa-line"></i> オープンチャット';
       heroBtn.onclick=function(){window.open('https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default','_blank')};
+      heroBtn.className='btn btn-white';
     }
     /* Hide LINE CTA section */
     if(lineCtaSec) lineCtaSec.style.display='none';
@@ -4078,9 +4087,10 @@ function updateNav(){
     }
   }else{
     el.innerHTML='<button class="btn btn-primary btn-sm" onclick="openModal(\'loginModal\')"><i class="fas fa-sign-in-alt"></i> ログイン</button>';
-    /* Hero: restore registration button */
+    /* Hero left: restore registration button */
     if(heroBtn){
       heroBtn.innerHTML='<i class="fas fa-user-plus"></i> 会員登録';
+      heroBtn.className='btn btn-white';
       heroBtn.onclick=function(){openModal('regModal')};
     }
     /* Show LINE CTA section */
@@ -4514,8 +4524,11 @@ window.addEventListener('scroll',()=>{
 <button class="ai-fab ai-fab-enter" id="aiFab" onclick="openAiChat()" title="AIアシスタント">
   <div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div>
   <span class="ai-pulse"></span>
-  <span class="ai-fab-label" id="aiFabLabel">何か聞きたいことある？</span>
 </button>
+<div class="ai-bubble" id="aiBubble">
+  <span class="ai-bubble-text" id="aiBubbleText"></span>
+  <div class="ai-bubble-arrow"></div>
+</div>
 
 <!-- AI Chat Window -->
 <div class="ai-chat" id="aiChat">
@@ -4586,11 +4599,14 @@ function openAiChat(){
   aiChatOpen=true;
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
+  const bubble=document.getElementById('aiBubble');
   chat.classList.add('open');
   fab.style.animation='none';
-  fab.style.transform='translateX(-24px)';
+  fab.style.transform='scale(1)';
   fab.innerHTML='<i class="fas fa-times" style="font-size:1.4rem"></i>';
   fab.onclick=closeAiChat;
+  if(bubble) bubble.classList.remove('visible');
+  stopAiBubbleCycle();
   if(!document.getElementById('aiChatBody').children.length) initAiChat();
   setTimeout(()=>document.getElementById('aiChatInput').focus(),300);
 }
@@ -4604,6 +4620,39 @@ function closeAiChat(){
   fab.style.animation='';
   fab.innerHTML='<div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div><span class="ai-pulse"></span>';
   fab.onclick=function(){openAiChat()};
+  startAiBubbleCycle();
+}
+
+/* --- AI Bubble trending words --- */
+let _aiBubbleTimer=null;
+const AI_TRENDING_WORDS=[
+  '🔥 交流会って何するの？',
+  '💡 集客のコツ教えて',
+  '🤝 コラボってどうやる？',
+  '🌟 メンバーの雰囲気は？',
+  '📍 彦根で起業ってどう？',
+  '✨ 起業の第一歩は？',
+  '😟 失敗が怖い…',
+  '🎯 みんなのWAって何？'
+];
+let _aiBubbleIdx=0;
+
+function startAiBubbleCycle(){
+  const bubble=document.getElementById('aiBubble');
+  const text=document.getElementById('aiBubbleText');
+  if(!bubble||!text||aiChatOpen) return;
+  function show(){
+    if(aiChatOpen){bubble.classList.remove('visible');return}
+    text.textContent=AI_TRENDING_WORDS[_aiBubbleIdx%AI_TRENDING_WORDS.length];
+    _aiBubbleIdx++;
+    bubble.classList.add('visible');
+    setTimeout(()=>{bubble.classList.remove('visible')},3500);
+  }
+  show();
+  _aiBubbleTimer=setInterval(show,5500);
+}
+function stopAiBubbleCycle(){
+  if(_aiBubbleTimer){clearInterval(_aiBubbleTimer);_aiBubbleTimer=null}
 }
 
 function initAiChat(){
@@ -4880,8 +4929,9 @@ function initAiPersonalization(){
 
   trackSectionViews();
 
-  // Auto-open AI chat
-  setTimeout(()=>{if(!aiChatOpen) openAiChat()},2000);
+  // Start bubble cycle and auto-open chat
+  startAiBubbleCycle();
+  setTimeout(()=>{if(!aiChatOpen){stopAiBubbleCycle();openAiChat()}},2000);
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
