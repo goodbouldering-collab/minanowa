@@ -446,8 +446,16 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
         <button class="btn btn-ghost btn-sm" onclick="document.getElementById('evRegPanel').style.display='none'"><i class="fas fa-times"></i></button>
       </div>
     </div>
+    <!-- Payment method filter tabs -->
+    <div id="evRegFilterTabs" style="display:none;margin-bottom:.5rem;gap:.3rem;flex-wrap:wrap">
+      <button class="blog-tab active" data-pay-filter="all" onclick="filterEvRegByPayment('all',this)"><i class="fas fa-users"></i> 全員 <span class="tab-count" id="payFilterAll">0</span></button>
+      <button class="blog-tab" data-pay-filter="onsite" onclick="filterEvRegByPayment('onsite',this)"><i class="fas fa-money-bill-wave"></i> 現場払い <span class="tab-count" id="payFilterOnsite">0</span></button>
+      <button class="blog-tab" data-pay-filter="stripe" onclick="filterEvRegByPayment('stripe',this)"><i class="fas fa-credit-card"></i> カード決済 <span class="tab-count" id="payFilterStripe">0</span></button>
+      <button class="blog-tab" data-pay-filter="stripe-paid" onclick="filterEvRegByPayment('stripe-paid',this)"><i class="fas fa-check-circle"></i> カード済 <span class="tab-count" id="payFilterStripePaid">0</span></button>
+      <button class="blog-tab" data-pay-filter="stripe-pending" onclick="filterEvRegByPayment('stripe-pending',this)"><i class="fas fa-clock"></i> カード未 <span class="tab-count" id="payFilterStripePending">0</span></button>
+    </div>
     <div class="tbl-wrap" style="margin-bottom:0"><table><thead><tr><th>アバター</th><th>名前</th><th>店名</th><th>業種</th><th>地域</th><th>支払</th><th>操作</th></tr></thead><tbody id="evRegTbl"></tbody></table></div>
-    <div id="evRegEmpty" style="display:none;text-align:center;padding:1.5rem;color:var(--tl);font-size:.8rem"><i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:.3rem;color:var(--c5)"></i>参加者はまだいません</div>
+    <div id="evRegEmpty" style="display:none;text-align:center;padding:1.5rem;color:var(--tl);font-size:.8rem"><i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:.3rem;color:var(--c5)"></i><span id="evRegEmptyMsg">参加者はまだいません</span></div>
   </div>
 </div>
 
@@ -913,14 +921,84 @@ function renderEvTbl(){
       <button class="btn btn-danger btn-sm" onclick="delEvent('${ev.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
   });
 }
-let _currentEvRegs=null,_currentEvRegTitle='';
+let _currentEvRegs=null,_currentEvRegTitle='',_currentPayFilter='all';
+function _buildEvRegRow(m,eventId,allRegs){
+  const p=m.payment||{};
+  const payLabel=p.paymentMethod==='stripe'?(p.paymentStatus==='paid'?'<span style="color:#10b981;font-weight:700"><i class="fas fa-check-circle"></i> カード済</span>':'<span style="color:#f59e0b;font-weight:700"><i class="fas fa-clock"></i> カード未</span>'):'<span style="color:var(--tl)"><i class="fas fa-money-bill-wave"></i> 現場</span>';
+  let refLabel='';
+  if(m.referral&&m.referral.referrerId){
+    const refMem=allRegs.find(x=>x.id===m.referral.referrerId);
+    refLabel=`<span style="font-size:.62rem;color:#3b82f6" title="紹介者: ${refMem?refMem.name:m.referral.referrerId}"><i class="fas fa-user-plus"></i> 初</span>`;
+  }
+  if(p.referralDiscount>0){
+    refLabel+=`<span style="font-size:.62rem;color:#f59e0b;margin-left:.2rem" title="${(p.referredBy||[]).length}名紹介で${p.referralDiscount}円割引"><i class="fas fa-gift"></i> -${p.referralDiscount}円</span>`;
+  }
+  return `<tr>
+    <td><img src="${m.avatar||'https://i.pravatar.cc/30?img=0'}" onerror="this.src='https://i.pravatar.cc/30?img=0'" class="tbl-avatar" style="width:30px;height:30px"></td>
+    <td style="font-weight:600">${m.name} ${refLabel}</td>
+    <td style="color:var(--c1);font-size:.72rem">${m.profession||'-'}</td>
+    <td style="font-size:.72rem">${m.business||'-'}</td>
+    <td style="font-size:.72rem">${m.location||'-'}</td>
+    <td style="font-size:.7rem">${payLabel}</td>
+    <td><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i></button></td>
+  </tr>`;
+}
+function _matchPayFilter(m,filter){
+  const p=m.payment||{};
+  if(filter==='all') return true;
+  if(filter==='onsite') return p.paymentMethod!=='stripe';
+  if(filter==='stripe') return p.paymentMethod==='stripe';
+  if(filter==='stripe-paid') return p.paymentMethod==='stripe'&&p.paymentStatus==='paid';
+  if(filter==='stripe-pending') return p.paymentMethod==='stripe'&&p.paymentStatus!=='paid';
+  return true;
+}
+function _updatePayFilterCounts(regs){
+  const all=regs.length;
+  const onsite=regs.filter(m=>(m.payment||{}).paymentMethod!=='stripe').length;
+  const stripe=regs.filter(m=>(m.payment||{}).paymentMethod==='stripe').length;
+  const stripePaid=regs.filter(m=>{const p=m.payment||{};return p.paymentMethod==='stripe'&&p.paymentStatus==='paid'}).length;
+  const stripePending=regs.filter(m=>{const p=m.payment||{};return p.paymentMethod==='stripe'&&p.paymentStatus!=='paid'}).length;
+  document.getElementById('payFilterAll').textContent=all;
+  document.getElementById('payFilterOnsite').textContent=onsite;
+  document.getElementById('payFilterStripe').textContent=stripe;
+  document.getElementById('payFilterStripePaid').textContent=stripePaid;
+  document.getElementById('payFilterStripePending').textContent=stripePending;
+}
+function _renderFilteredEvRegs(){
+  if(!_currentEvRegs||!_currentEvRegs.data||!_currentEvRegs.data.registrations) return;
+  const allRegs=_currentEvRegs.data.registrations;
+  const filtered=allRegs.filter(m=>_matchPayFilter(m,_currentPayFilter));
+  const tbl=document.getElementById('evRegTbl');
+  const empty=document.getElementById('evRegEmpty');
+  if(filtered.length===0){
+    tbl.innerHTML='';
+    empty.style.display='block';
+    empty.querySelector('i').className=_currentPayFilter==='all'?'fas fa-inbox':'fas fa-filter';
+    document.getElementById('evRegEmptyMsg').textContent=_currentPayFilter==='all'?'参加者はまだいません':'該当する参加者はいません';
+  }else{
+    empty.style.display='none';
+    tbl.innerHTML=filtered.map(m=>_buildEvRegRow(m,_currentEvRegs.eventId,allRegs)).join('');
+  }
+}
+function filterEvRegByPayment(filter,btn){
+  _currentPayFilter=filter;
+  document.querySelectorAll('#evRegFilterTabs .blog-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  _renderFilteredEvRegs();
+}
 async function showEvRegs(eventId,title){
   const panel=document.getElementById('evRegPanel');
   panel.style.display='block';
   _currentEvRegTitle=title;
+  _currentPayFilter='all';
   document.getElementById('evRegTitle').textContent=title+' - 参加者一覧';
   document.getElementById('evRegTbl').innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--tl)">読み込み中...</td></tr>';
   document.getElementById('evRegEmpty').style.display='none';
+  // Reset filter tabs
+  const filterTabs=document.getElementById('evRegFilterTabs');
+  filterTabs.style.display='none';
+  filterTabs.querySelectorAll('.blog-tab').forEach(b=>b.classList.remove('active'));
+  filterTabs.querySelector('[data-pay-filter="all"]').classList.add('active');
   try{
     const d=await fetch('/api/events/'+eventId+'/registrations').then(r=>r.json());
     _currentEvRegs={eventId,title,data:d};
@@ -928,30 +1006,14 @@ async function showEvRegs(eventId,title){
     if(!d.registrations||d.registrations.length===0){
       document.getElementById('evRegTbl').innerHTML='';
       document.getElementById('evRegEmpty').style.display='block';
+      filterTabs.style.display='none';
       return;
     }
+    // Show filter tabs & update counts
+    filterTabs.style.display='flex';
+    _updatePayFilterCounts(d.registrations);
     document.getElementById('evRegEmpty').style.display='none';
-    document.getElementById('evRegTbl').innerHTML=d.registrations.map((m,i)=>{
-      const p=m.payment||{};
-      const payLabel=p.paymentMethod==='stripe'?(p.paymentStatus==='paid'?'<span style="color:#10b981;font-weight:700"><i class="fas fa-check-circle"></i> カード済</span>':'<span style="color:#f59e0b;font-weight:700"><i class="fas fa-clock"></i> カード未</span>'):'<span style="color:var(--tl)"><i class="fas fa-money-bill-wave"></i> 現場</span>';
-      // Referral info
-      let refLabel='';
-      if(m.referral&&m.referral.referrerId){
-        const refMem=d.registrations.find(x=>x.id===m.referral.referrerId);
-        refLabel=`<span style="font-size:.62rem;color:#3b82f6" title="紹介者: ${refMem?refMem.name:m.referral.referrerId}"><i class="fas fa-user-plus"></i> 初</span>`;
-      }
-      if(p.referralDiscount>0){
-        refLabel+=`<span style="font-size:.62rem;color:#f59e0b;margin-left:.2rem" title="${(p.referredBy||[]).length}名紹介で${p.referralDiscount}円割引"><i class="fas fa-gift"></i> -${p.referralDiscount}円</span>`;
-      }
-      return `<tr>
-      <td><img src="${m.avatar||'https://i.pravatar.cc/30?img=0'}" onerror="this.src='https://i.pravatar.cc/30?img=0'" class="tbl-avatar" style="width:30px;height:30px"></td>
-      <td style="font-weight:600">${m.name} ${refLabel}</td>
-      <td style="color:var(--c1);font-size:.72rem">${m.profession||'-'}</td>
-      <td style="font-size:.72rem">${m.business||'-'}</td>
-      <td style="font-size:.72rem">${m.location||'-'}</td>
-      <td style="font-size:.7rem">${payLabel}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i></button></td>
-    </tr>`}).join('');
+    _renderFilteredEvRegs();
   }catch(e){document.getElementById('evRegTbl').innerHTML='<tr><td colspan="7" style="text-align:center;color:#ef4444">読み込みに失敗しました</td></tr>'}
 }
 async function removeEvReg(eventId,memberId,name){
