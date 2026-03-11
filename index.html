@@ -441,7 +441,8 @@ nav.at-top .hamburger{color:#fff}
   .footer-bot{font-size:.82rem;padding-top:1rem}
   
   /* === MODALS === */
-  .modal-box{width:94%;padding:1.6rem 1.4rem;border-radius:20px;max-height:88vh}
+  .modal-box{width:94%;border-radius:20px;max-height:88vh}
+  .modal-box-inner{padding:1.6rem 1.4rem}
   .modal-title{font-size:1.2rem}
   .mypage-avatar{width:64px;height:64px}
   
@@ -1251,21 +1252,25 @@ footer::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
 
 /* ========== MODAL ========== */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(8px);
-  z-index:2000;align-items:center;justify-content:center}
+  z-index:2000;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.active{display:flex}
-.modal-box{background:var(--white);border-radius:var(--r);padding:2rem;max-width:500px;width:92%;
-  max-height:85vh;overflow-y:auto;animation:modal-in .4s cubic-bezier(.175,.885,.32,1.275);
+.modal-box{background:var(--white);border-radius:var(--r);padding:0;max-width:500px;width:92%;
+  max-height:85vh;display:flex;flex-direction:column;overflow:hidden;position:relative;
+  animation:modal-in .4s cubic-bezier(.175,.885,.32,1.275);
   box-shadow:0 8px 24px rgba(0,0,0,.05),0 24px 80px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.04)}
+.modal-box-inner{flex:1;overflow-y:auto;padding:2rem;min-height:0}
 @keyframes modal-in{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.modal-close{float:right;font-size:1.3rem;cursor:pointer;color:var(--tl);transition:var(--spring);
-  background:none;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modal-close{position:absolute;top:.6rem;right:.6rem;font-size:1.3rem;cursor:pointer;color:var(--tl);transition:var(--spring);
+  background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  z-index:5;backdrop-filter:blur(4px)}
 .modal-close:hover{color:var(--c1);background:rgba(13,124,102,.06);transform:rotate(90deg)}
 .btn-google{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.7rem 1rem;
   border:1px solid rgba(0,0,0,.15);border-radius:var(--r);background:#fff;color:#3c4043;font-size:.9rem;
   font-weight:600;cursor:pointer;transition:var(--spring);font-family:inherit}
 .btn-google:hover{background:#f7f8f8;border-color:rgba(0,0,0,.25);box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .modal-title{font-size:1.4rem;font-weight:800;color:var(--td);
-  margin-bottom:1.3rem;display:flex;align-items:center;gap:.4rem;letter-spacing:.01em}
+  margin-bottom:1.3rem;display:flex;align-items:center;gap:.4rem;letter-spacing:.01em;
+  padding-right:2rem;word-break:break-word;line-height:1.4}
 /* Event Share Bar */
 .ev-share-bar{display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;padding:.55rem .7rem;
   background:linear-gradient(135deg,rgba(240,253,244,.6),rgba(204,251,241,.3));
@@ -1546,7 +1551,7 @@ html,body{max-width:100vw;overflow-x:hidden}
 @supports(padding: env(safe-area-inset-bottom)){
   body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
   footer{padding-bottom:calc(1.2rem + env(safe-area-inset-bottom))}
-  .modal-box{padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}
+  .modal-box-inner{padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}
   .toast{top:calc(70px + env(safe-area-inset-top))}
 }
 
@@ -1685,7 +1690,8 @@ html,body{max-width:100vw;overflow-x:hidden}
   .footer-bot{font-size:.78rem}
   
   /* === MODALS === */
-  .modal-box{width:96%;padding:1.4rem 1.1rem;border-radius:18px}
+  .modal-box{width:96%;border-radius:18px}
+  .modal-box-inner{padding:1.4rem 1.1rem}
   .modal-title{font-size:1.1rem}
   .mypage-header{flex-direction:column;text-align:center;gap:.6rem}
   .mypage-avatar{width:60px;height:60px}
@@ -1746,7 +1752,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   .footer-grid{gap:1rem}
   .footer-grid h4{font-size:.78rem}
   .footer-grid a{font-size:.72rem}
-  .modal-box{padding:1.1rem .9rem}
+  .modal-box-inner{padding:1.1rem .9rem}
   .dx-step-num{width:26px;height:26px;font-size:.62rem;border-radius:8px}
   .dx-steps::before{left:calc(.2rem + 11px)}
   .dx-step-content{padding:.55rem .65rem}
@@ -1774,52 +1780,57 @@ html,body{max-width:100vw;overflow-x:hidden}
 }
 
 /* ========== AI ASSISTANT (Chat) ========== */
-.ai-fab{position:fixed;bottom:24px;right:-28px;z-index:950;width:72px;height:72px;
-  border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;
-  border:3px solid rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;box-shadow:0 4px 28px rgba(99,102,241,.4);
-  transition:transform .5s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease,border-color .3s ease;
-  animation:ai-fab-peek 3s ease-in-out infinite;overflow:visible}
-@keyframes ai-fab-peek{
-  0%,100%{transform:translateX(0)}
-  25%{transform:translateX(-10px)}
-  50%{transform:translateX(0)}
-  65%{transform:translateX(-6px)}
-  80%{transform:translateX(0)}
+.ai-fab{position:fixed;bottom:18px;right:-12px;z-index:950;width:48px;height:48px;
+  border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
+  border:2px solid rgba(255,255,255,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;box-shadow:0 2px 16px rgba(99,102,241,.25);
+  transition:right .5s cubic-bezier(.175,.885,.32,1.275),transform .4s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease,border-color .3s ease,opacity .3s ease;
+  overflow:visible;opacity:.85;
+  animation:ai-peek 4s ease-in-out infinite}
+@keyframes ai-peek{
+  0%,100%{right:-12px}
+  30%{right:2px}
+  50%{right:2px}
+  70%{right:-12px}
 }
-.ai-fab:hover{transform:translateX(-28px)!important;
-  box-shadow:0 8px 40px rgba(99,102,241,.55);animation:none;border-color:rgba(255,255,255,.7)}
-.ai-fab.popped{right:20px;animation:none;transform:translateX(0)}
+.ai-fab:hover{opacity:1;right:4px!important;transform:scale(1.08);
+  box-shadow:0 4px 24px rgba(99,102,241,.4);border-color:rgba(255,255,255,.6);animation:none}
+.ai-fab.popped{right:14px!important;opacity:1;animation:none}
 .ai-fab .ai-char{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
-.ai-fab .ai-char-face{font-size:1.8rem;line-height:1;position:relative;left:-2px}
-.ai-fab .ai-char-eye{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;
-  animation:ai-blink 4s ease-in-out infinite}
-.ai-fab .ai-char-eye.l{top:28px;left:22px}
-.ai-fab .ai-char-eye.r{top:28px;left:38px}
-@keyframes ai-blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.1)}}
-.ai-fab .ai-pulse{position:absolute;inset:-6px;border-radius:50%;
-  border:2.5px solid #a855f7;animation:ai-pulse 2s ease-out infinite;opacity:0}
-.ai-bubble{position:fixed;bottom:56px;right:52px;z-index:951;
-  background:#fff;border-radius:14px 14px 4px 14px;padding:.5rem .85rem;
-  box-shadow:0 4px 20px rgba(99,102,241,.18),0 1px 4px rgba(0,0,0,.06);
-  border:1.5px solid rgba(99,102,241,.12);pointer-events:none;
-  opacity:0;transform:translateX(10px) scale(.9);
+.ai-fab .ai-char-face{font-size:1.15rem;line-height:1;position:relative;
+  animation:ai-wave 3s ease-in-out infinite}
+@keyframes ai-wave{
+  0%,60%,100%{transform:rotate(0deg)}
+  10%{transform:rotate(14deg)}
+  20%{transform:rotate(-8deg)}
+  30%{transform:rotate(14deg)}
+  40%{transform:rotate(-4deg)}
+  50%{transform:rotate(10deg)}
+}
+.ai-fab .ai-char-eye{display:none}
+.ai-fab .ai-pulse{position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid #a855f7;animation:ai-pulse 3s ease-out infinite;opacity:0}
+.ai-bubble{position:fixed;bottom:10px;right:44px;z-index:951;
+  background:#fff;border-radius:12px 4px 12px 12px;padding:.4rem .7rem;
+  box-shadow:0 2px 14px rgba(99,102,241,.14),0 1px 4px rgba(0,0,0,.05);
+  border:1px solid rgba(99,102,241,.1);pointer-events:none;
+  opacity:0;transform:translateX(8px) scale(.9);
   transition:opacity .4s ease,transform .4s cubic-bezier(.175,.885,.32,1.275);
-  max-width:180px;white-space:normal}
+  max-width:160px;white-space:normal}
 .ai-bubble.visible{opacity:1;transform:translateX(0) scale(1)}
-.ai-bubble-text{font-size:.73rem;font-weight:600;color:#6366f1;
-  display:flex;align-items:center;gap:.3rem;line-height:1.4}
-.ai-bubble-arrow{position:absolute;right:-7px;bottom:6px;width:0;height:0;
-  border:7px solid transparent;border-left-color:#fff;filter:drop-shadow(2px 0 1px rgba(99,102,241,.08))}
-@keyframes ai-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
-.ai-fab-enter{animation:ai-fab-slide-in .7s cubic-bezier(.175,.885,.32,1.275) forwards}
+.ai-bubble-text{font-size:.65rem;font-weight:600;color:#6366f1;
+  display:flex;align-items:center;gap:.25rem;line-height:1.35}
+.ai-bubble-arrow{position:absolute;right:-6px;top:50%;margin-top:-6px;width:0;height:0;
+  border:6px solid transparent;border-left-color:#fff;filter:drop-shadow(1px 0 1px rgba(99,102,241,.08))}
+@keyframes ai-pulse{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.8);opacity:0}}
+.ai-fab-enter{animation:ai-fab-slide-in .8s cubic-bezier(.175,.885,.32,1.275) forwards}
 @keyframes ai-fab-slide-in{
-  0%{right:-72px;opacity:0}
-  60%{right:-20px;opacity:1}
-  80%{right:-32px}
-  100%{right:-28px;opacity:1}}
+  0%{right:-48px;opacity:0}
+  60%{right:0px;opacity:1}
+  80%{right:-16px}
+  100%{right:-12px;opacity:.85}}
 
-.ai-chat{position:fixed;bottom:96px;right:24px;z-index:940;width:390px;max-height:600px;
+.ai-chat{position:fixed;bottom:72px;right:14px;z-index:940;width:390px;max-height:600px;
   background:var(--glass3);border:1.5px solid rgba(99,102,241,.15);border-radius:22px;
   box-shadow:0 16px 56px rgba(99,102,241,.12),0 4px 16px rgba(0,0,0,.08);display:none;
   flex-direction:column;overflow:hidden;backdrop-filter:blur(24px)}
@@ -1911,11 +1922,11 @@ html,body{max-width:100vw;overflow-x:hidden}
 .ai-greeting .ai-greet-sub{font-size:.72rem;color:var(--tl);margin-top:.15rem}
 
 @media(max-width:600px){
-  .ai-fab{width:60px;height:60px;font-size:1.3rem;bottom:16px;right:-24px}
-  .ai-fab.popped{right:12px}
-  .ai-bubble{bottom:40px;right:44px;padding:.35rem .6rem;max-width:150px}
-  .ai-bubble-text{font-size:.65rem}
-  .ai-chat{right:8px;left:8px;width:auto;bottom:84px;max-height:70vh}
+  .ai-fab{width:42px;height:42px;font-size:1rem;bottom:12px;right:-10px}
+  .ai-fab.popped{right:10px!important}
+  .ai-bubble{bottom:6px;right:38px;padding:.3rem .55rem;max-width:130px}
+  .ai-bubble-text{font-size:.6rem}
+  .ai-chat{right:8px;left:8px;width:auto;bottom:62px;max-height:70vh}
 }
 /* ========== MAGNETIC TILT INTERACTION ========== */
 .tilt-hover{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;will-change:transform}
@@ -2356,6 +2367,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="loginModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-sign-in-alt"></i> ログイン</div>
     <form onsubmit="handleLogin(event)">
       <div class="fg"><label>メールアドレス</label><input type="email" id="loginEmail" required placeholder="you@example.com"></div>
@@ -2368,6 +2380,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
     <p style="margin-top:.8rem;text-align:center;font-size:.78rem;color:var(--tl)">
       アカウントをお持ちでない方は <a href="#" style="color:var(--c1);font-weight:600" onclick="closeModal('loginModal');openModal('regModal')">新規登録</a>
     </p>
+    </div>
   </div>
 </div>
 
@@ -2375,6 +2388,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="resetRequestModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('resetRequestModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-key"></i> パスワード再発行</div>
     <p style="font-size:.9rem;color:var(--tl);margin-bottom:1rem;line-height:1.6">
       登録済みのメールアドレスを入力してください。<br>パスワード再設定用のリンクを発行します。
@@ -2395,6 +2409,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
     <p style="margin-top:.8rem;text-align:center;font-size:.78rem;color:var(--tl)">
       <a href="#" style="color:var(--c1);font-weight:500" onclick="event.preventDefault();closeModal('resetRequestModal');openModal('loginModal')"><i class="fas fa-arrow-left" style="margin-right:.2rem"></i>ログインに戻る</a>
     </p>
+    </div>
   </div>
 </div>
 
@@ -2402,6 +2417,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="resetConfirmModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('resetConfirmModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-lock-open"></i> 新しいパスワードを設定</div>
     <p id="resetConfirmEmail" style="font-size:.85rem;color:var(--tl);margin-bottom:1rem;text-align:center"></p>
     <form onsubmit="handleResetConfirm(event)">
@@ -2409,6 +2425,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
       <div class="fg"><label>新しいパスワード（確認）</label><input type="password" id="newPasswordConfirm" required minlength="6" placeholder="もう一度入力"></div>
       <button type="submit" class="btn btn-primary btn-full" id="resetConfirmBtn"><i class="fas fa-check"></i> パスワードを更新する</button>
     </form>
+    </div>
   </div>
 </div>
 
@@ -2416,6 +2433,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="regModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('regModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-user-plus"></i> 会員登録</div>
     <div id="googleRegBtn" style="display:flex;justify-content:center;margin-bottom:.8rem"></div>
     <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem"><div style="flex:1;height:1px;background:rgba(0,0,0,.1)"></div><span style="font-size:.75rem;color:var(--tl)">またはメールで登録</span><div style="flex:1;height:1px;background:rgba(0,0,0,.1)"></div></div>
@@ -2447,6 +2465,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
       <div class="fg"><label>事業写真（複数可）</label><input type="file" id="regPhotos" accept="image/*" multiple><p style="font-size:.65rem;color:var(--tl);margin-top:.15rem"><i class="fas fa-info-circle" style="color:var(--c1);margin-right:.2rem"></i>お店や商品の写真を最大5枚まで登録できます</p></div>
       <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-check"></i> 登録する</button>
     </form>
+    </div>
   </div>
 </div>
 
@@ -2454,8 +2473,10 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="mypageModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('mypageModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-user-cog"></i> マイページ</div>
     <div id="mypageContent"></div>
+    </div>
   </div>
 </div>
 
@@ -2463,6 +2484,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="boardPostModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('boardPostModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-pen-fancy"></i> 掲示板に投稿</div>
     <form onsubmit="handleBoardPost(event)">
       <input type="hidden" id="bpMentionToId" value="">
@@ -2478,6 +2500,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
       <div class="fg"><label>内容 *</label><textarea id="bpContent" required></textarea></div>
       <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-paper-plane"></i> 投稿する</button>
     </form>
+    </div>
   </div>
 </div>
 
@@ -2485,6 +2508,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="boardEditModal" class="modal-overlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('boardEditModal')">&times;</button>
+    <div class="modal-box-inner">
     <div class="modal-title"><i class="fas fa-edit"></i> 投稿を編集</div>
     <form onsubmit="handleBoardEdit(event)">
       <input type="hidden" id="beId">
@@ -2495,6 +2519,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
       <div class="fg"><label>内容 *</label><textarea id="beContent" required></textarea></div>
       <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存する</button>
     </form>
+    </div>
   </div>
 </div>
 
@@ -2502,7 +2527,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="evDetailModal" class="modal-overlay">
   <div class="modal-box" style="max-width:560px">
     <button class="modal-close" onclick="closeModal('evDetailModal')">&times;</button>
-    <div id="evDetailContent"></div>
+    <div class="modal-box-inner" id="evDetailContent"></div>
   </div>
 </div>
 
@@ -2510,7 +2535,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
 <div id="blogDetailModal" class="modal-overlay">
   <div class="modal-box" style="max-width:560px">
     <button class="modal-close" onclick="closeModal('blogDetailModal')">&times;</button>
-    <div id="blogDetailContent"></div>
+    <div class="modal-box-inner" id="blogDetailContent"></div>
   </div>
 </div>
 
@@ -3244,13 +3269,15 @@ function showRankModal(rank){
   const d=Object.assign({},_defaultRankBenefits[rank]||{},custom[rank]||{});
   const colors={bronze:'#cd7f32',silver:'#a8a8a8',gold:'#ffd700'};
   const el=document.createElement('div');
-  el.className='modal active';el.id='rankModal';
+  el.className='modal-overlay active';el.id='rankModal';
   el.onclick=e=>{if(e.target===el)el.remove()};
-  el.innerHTML=`<div class="modal-box" style="max-width:360px;text-align:center;padding:1.5rem">
+  el.innerHTML=`<div class="modal-box" style="max-width:360px;text-align:center">
     <button class="modal-close" onclick="document.getElementById('rankModal').remove()">&times;</button>
+    <div class="modal-box-inner" style="padding:1.5rem">
     <div style="margin-bottom:.8rem"><span class="mem-rank mem-rank-${rank}" style="font-size:1rem;padding:.3rem 1rem"><i class="fas ${d.icon}"></i> ${d.title}</span></div>
     <div style="font-size:.85rem;font-weight:700;color:var(--td);margin-bottom:.4rem"><i class="fas fa-calendar-check" style="color:var(--c1)"></i> ${d.cond}</div>
     <div style="font-size:.9rem;color:var(--tl);line-height:1.7;white-space:pre-line">${d.benefits}</div>
+    </div>
   </div>`;
   document.body.appendChild(el);
 }
@@ -4599,7 +4626,6 @@ let aiFabPopped=false;
 
 function handleFabClick(){
   if(aiChatOpen){closeAiChat();return}
-  if(!aiFabPopped){popFab();return}
   openAiChat();
 }
 
@@ -4607,19 +4633,12 @@ function popFab(){
   const fab=document.getElementById('aiFab');
   aiFabPopped=true;
   fab.classList.add('popped');
-  fab.style.animation='none';
-  /* Auto-retract after 4s if not opened */
-  clearTimeout(fab._retractTimer);
-  fab._retractTimer=setTimeout(()=>{if(!aiChatOpen) retractFab()},4000);
 }
 
 function retractFab(){
   const fab=document.getElementById('aiFab');
   aiFabPopped=false;
   fab.classList.remove('popped');
-  fab.style.animation='';
-  fab.innerHTML='<div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div><span class="ai-pulse"></span>';
-  fab.onclick=handleFabClick;
 }
 
 function openAiChat(){
@@ -4631,10 +4650,8 @@ function openAiChat(){
   const bubble=document.getElementById('aiBubble');
   chat.classList.add('open');
   fab.classList.add('popped');
-  fab.style.animation='none';
-  fab.innerHTML='<i class="fas fa-times" style="font-size:1.4rem"></i>';
+  fab.innerHTML='<i class="fas fa-times" style="font-size:1rem"></i>';
   fab.onclick=handleFabClick;
-  clearTimeout(fab._retractTimer);
   if(bubble) bubble.classList.remove('visible');
   stopAiBubbleCycle();
   if(!document.getElementById('aiChatBody').children.length) initAiChat();
@@ -4646,7 +4663,9 @@ function closeAiChat(){
   const chat=document.getElementById('aiChat');
   const fab=document.getElementById('aiFab');
   chat.classList.remove('open');
-  /* Return to peeking state */
+  fab.classList.remove('popped');
+  fab.innerHTML='<div class="ai-char"><span class="ai-char-face"><i class="fas fa-robot"></i></span></div><span class="ai-pulse"></span>';
+  fab.onclick=handleFabClick;
   retractFab();
   startAiBubbleCycle();
 }
@@ -4669,15 +4688,20 @@ function startAiBubbleCycle(){
   const bubble=document.getElementById('aiBubble');
   const text=document.getElementById('aiBubbleText');
   if(!bubble||!text||aiChatOpen) return;
+  let showCount=0;
   function show(){
     if(aiChatOpen){bubble.classList.remove('visible');return}
+    // Only show bubble occasionally (every 3rd cycle)
+    showCount++;
+    if(showCount % 3 !== 1) return;
     text.textContent=AI_TRENDING_WORDS[_aiBubbleIdx%AI_TRENDING_WORDS.length];
     _aiBubbleIdx++;
     bubble.classList.add('visible');
-    setTimeout(()=>{bubble.classList.remove('visible')},3500);
+    setTimeout(()=>{bubble.classList.remove('visible')},3000);
   }
-  show();
-  _aiBubbleTimer=setInterval(show,5500);
+  _aiBubbleTimer=setInterval(show,12000);
+  // First show after a long delay
+  setTimeout(()=>{if(!aiChatOpen) show()},20000);
 }
 function stopAiBubbleCycle(){
   if(_aiBubbleTimer){clearInterval(_aiBubbleTimer);_aiBubbleTimer=null}
@@ -4957,9 +4981,8 @@ function initAiPersonalization(){
 
   trackSectionViews();
 
-  // Start bubble cycle and auto-open chat
+  // Start bubble cycle (no auto-open)
   startAiBubbleCycle();
-  setTimeout(()=>{if(!aiChatOpen){popFab();setTimeout(()=>{if(!aiChatOpen){stopAiBubbleCycle();openAiChat()}},1500)}},2000);
 
   // Nav highlight for frequent sections
   const tops=getTopSections(profile,2);
