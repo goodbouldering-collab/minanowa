@@ -2099,7 +2099,7 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
     <div class="hero-cta">
       <button class="btn btn-white" id="heroEvBtn" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><i class="fas fa-calendar-alt"></i> イベント</button>
       <button class="btn btn-map" id="heroMapBtn" onclick="document.getElementById('memberMap').scrollIntoView({behavior:'smooth'})"><i class="fas fa-store"></i> メンバーのお店</button>
-      <button class="btn btn-glass" id="heroChatBtn" onclick="window.open('https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default','_blank')"><i class="fab fa-line"></i> グループチャット</button>
+      <button class="btn btn-glass" id="heroChatBtn" onclick="openModal('loginModal')"><i class="fas fa-sign-in-alt"></i> ログイン / 登録</button>
     </div>
   </div>
   <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
@@ -4102,6 +4102,7 @@ function checkResetToken(){
 function updateNav(){
   const el=document.getElementById('navAuth');
   const lineCtaSec=document.getElementById('lineCta');
+  const heroChatBtn=document.getElementById('heroChatBtn');
   if(currentUser){
     el.innerHTML=`<div class="user-bar">
       <img src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
@@ -4109,6 +4110,11 @@ function updateNav(){
       ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-ghost btn-sm"><i class="fas fa-cog"></i> 管理</a>':''}
       <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
     </div>`;
+    /* Hero: switch to LINE group chat */
+    if(heroChatBtn){
+      heroChatBtn.innerHTML='<i class="fab fa-line"></i> グループチャット';
+      heroChatBtn.onclick=function(){window.open('https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default','_blank')};
+    }
     /* Hide LINE CTA section (hero already has chat button) */
     if(lineCtaSec) lineCtaSec.style.display='none';
     if(lineCtaSec&&lineCtaSec.nextElementSibling&&lineCtaSec.nextElementSibling.classList.contains('sec-divider')){
@@ -4116,6 +4122,11 @@ function updateNav(){
     }
   }else{
     el.innerHTML='<button class="btn btn-primary btn-sm" onclick="openModal(\'loginModal\')"><i class="fas fa-sign-in-alt"></i> ログイン</button>';
+    /* Hero: show login/register button */
+    if(heroChatBtn){
+      heroChatBtn.innerHTML='<i class="fas fa-sign-in-alt"></i> ログイン / 登録';
+      heroChatBtn.onclick=function(){openModal('loginModal')};
+    }
     /* Show LINE CTA section */
     if(lineCtaSec) lineCtaSec.style.display='';
     if(lineCtaSec&&lineCtaSec.nextElementSibling&&lineCtaSec.nextElementSibling.classList.contains('sec-divider')){
