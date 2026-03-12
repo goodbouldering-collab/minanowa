@@ -122,6 +122,52 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 /* TABLE */
 .tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid rgba(16,185,129,.06);
   background:var(--glass2);backdrop-filter:blur(12px);box-shadow:var(--sh)}
+#evTblWrap{position:relative}
+#evTblWrap thead th{position:sticky;top:0;z-index:4;background:rgba(240,253,244,1)}
+.ev-title-cell{font-weight:600;max-width:0;width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.ev-title-cell:hover span{text-decoration-color:var(--c1)}
+.ev-reg-link{background:none;border:none;cursor:pointer;color:var(--c1);font-weight:700;font-size:.82rem;text-decoration:underline}
+
+/* ===== UNIFIED LIST STYLES ===== */
+/* Row with avatar + name */
+.tbl-name-cell{display:flex;align-items:center;gap:.5rem;min-width:0}
+.tbl-name-cell .tbl-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  border:2px solid rgba(16,185,129,.12);transition:var(--transition)}
+.tbl-name-cell .name{font-weight:700;font-size:.8rem;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl-name-cell .sub{font-size:.62rem;color:var(--tl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+tr:hover .tbl-name-cell .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,.15)}
+/* Compact meta text */
+.tbl-meta{font-size:.72rem;color:var(--tl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl-meta a{color:var(--c1);text-decoration:none}
+.tbl-meta a:hover{text-decoration:underline}
+/* Link cell */
+.tbl-link{font-size:.68rem;color:var(--c1);display:inline-flex;align-items:center;gap:.2rem}
+.tbl-link:hover{text-decoration:underline}
+.tbl-muted{font-size:.62rem;color:var(--tl)}
+/* Action buttons consistent */
+.tbl-actions{display:flex;gap:.25rem;align-items:center;flex-wrap:nowrap}
+.tbl-actions .btn{font-size:.6rem;padding:.25rem .45rem}
+
+/* ===== EVENTS SECTION: Active vs Past split ===== */
+.ev-section-label{display:flex;align-items:center;gap:.4rem;margin:.8rem 0 .4rem;font-size:.78rem;font-weight:700;color:var(--c2)}
+.ev-section-label i{font-size:.7rem}
+.ev-section-label .ev-count{font-size:.62rem;font-weight:600;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2));
+  padding:.1rem .4rem;border-radius:10px;min-width:20px;text-align:center}
+.ev-past-toggle{display:flex;align-items:center;gap:.4rem;margin:.8rem 0 .4rem;font-size:.78rem;
+  font-weight:700;color:var(--tl);cursor:pointer;transition:var(--transition);user-select:none}
+.ev-past-toggle:hover{color:var(--c1)}
+.ev-past-toggle i.chevron{font-size:.6rem;transition:transform .3s ease}
+.ev-past-toggle.open i.chevron{transform:rotate(90deg)}
+.ev-past-list{display:none;margin-bottom:.5rem}
+.ev-past-list.open{display:block}
+.ev-past-item{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-bottom:1px solid rgba(16,185,129,.04);
+  transition:var(--transition);cursor:pointer;border-radius:var(--r2)}
+.ev-past-item:hover{background:rgba(16,185,129,.03)}
+.ev-past-item .ev-past-date{font-size:.65rem;color:var(--tl);min-width:70px;flex-shrink:0}
+.ev-past-item .ev-past-title{font-size:.75rem;font-weight:600;color:var(--td);flex:1;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-past-item .ev-past-reg{font-size:.62rem;color:var(--c1);font-weight:700;min-width:40px;text-align:right;flex-shrink:0}
+.ev-past-item .ev-past-actions{display:flex;gap:.2rem;flex-shrink:0}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:.78rem}
 th{background:rgba(16,185,129,.03);font-weight:600;text-align:left;padding:.55rem .7rem;color:var(--c2);
   white-space:nowrap;border-bottom:1.5px solid rgba(16,185,129,.08);font-size:.72rem;letter-spacing:.02em;text-transform:uppercase}
@@ -436,7 +482,13 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 <div class="panel" id="panel-events">
   <div class="panel-head"><h2><i class="fas fa-calendar-alt"></i> イベント</h2>
     <button class="btn btn-primary" onclick="openEventForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
-  <div class="tbl-wrap"><table><thead><tr><th>タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>フォーム</th><th>状態</th><th>操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
+  <!-- Active events (table, max 6 rows) -->
+  <div class="ev-section-label"><i class="fas fa-bolt"></i> 受付中・直近のイベント <span class="ev-count" id="evActiveCount">0</span></div>
+  <div class="tbl-wrap" id="evTblWrap"><table><thead><tr><th>タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>状態</th><th>操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
+  <!-- Past events (collapsible simple list) -->
+  <div class="ev-past-toggle" id="evPastToggle" onclick="togglePastEvents()"><i class="fas fa-chevron-right chevron"></i><i class="fas fa-history"></i> 過去のイベント <span class="ev-count" id="evPastCount" style="background:linear-gradient(135deg,#94a3b8,#64748b)">0</span></div>
+  <div class="ev-past-list" id="evPastList"></div>
+  <!-- Participant panel (shared) -->
   <div id="evRegPanel" style="display:none;margin-top:.6rem" class="admin-card">
     <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap">
       <h3 style="font-size:.85rem;font-weight:700"><i class="fas fa-users" style="color:var(--c1);margin-right:.3rem"></i> <span id="evRegTitle"></span></h3>
@@ -454,7 +506,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <button class="blog-tab" data-pay-filter="stripe-paid" onclick="filterEvRegByPayment('stripe-paid',this)"><i class="fas fa-check-circle"></i> カード済 <span class="tab-count" id="payFilterStripePaid">0</span></button>
       <button class="blog-tab" data-pay-filter="stripe-pending" onclick="filterEvRegByPayment('stripe-pending',this)"><i class="fas fa-clock"></i> カード未 <span class="tab-count" id="payFilterStripePending">0</span></button>
     </div>
-    <div class="tbl-wrap" style="margin-bottom:0"><table><thead><tr><th>アバター</th><th>名前</th><th>店名</th><th>業種</th><th>地域</th><th>支払</th><th>操作</th></tr></thead><tbody id="evRegTbl"></tbody></table></div>
+    <div class="tbl-wrap" style="margin-bottom:0"><table><thead><tr><th>名前</th><th>店名</th><th>業種</th><th>地域</th><th>支払</th><th>操作</th></tr></thead><tbody id="evRegTbl"></tbody></table></div>
     <div id="evRegEmpty" style="display:none;text-align:center;padding:1.5rem;color:var(--tl);font-size:.8rem"><i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:.3rem;color:var(--c5)"></i><span id="evRegEmptyMsg">参加者はまだいません</span></div>
   </div>
 </div>
@@ -485,8 +537,9 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <span class="mem-search-count" id="memSearchCount"></span>
     </div>
   </div>
-  <div class="tbl-wrap"><table><thead><tr><th style="min-width:120px">名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th>写真</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
-  <style>#memTbl td:nth-child(8){width:40px;text-align:center;padding:.3rem}</style>
+  <div class="tbl-wrap"><table><thead><tr><th>名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th>写真</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
+  <style>#memTbl td:nth-child(8){width:40px;text-align:center;padding:.3rem}
+  #memTbl .tbl-name-cell{min-width:130px}</style>
   <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,.08)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
       <h3 style="font-size:1rem;font-weight:800;display:flex;align-items:center;gap:.4rem"><i class="fas fa-trophy" style="color:#ffd700"></i> ランクメリット編集</h3>
@@ -875,7 +928,7 @@ function renderDash(){
   // Recent members table
   const tbl=document.getElementById('dMemTbl');tbl.innerHTML='';
   members.slice(-5).reverse().forEach(m=>{
-    tbl.innerHTML+=`<tr><td style="font-weight:600"><div style="display:flex;align-items:center;gap:.4rem"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">${m.name}</div></td><td style="font-size:.68rem">${m.businessCategory||''}</td><td style="font-size:.68rem">${m.location||''}</td></tr>`;
+    tbl.innerHTML+=`<tr><td><div class="tbl-name-cell"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div class="name">${_escAttr(m.name)}</div></div></td><td class="tbl-meta">${_escAttr(m.businessCategory||'')}</td><td class="tbl-meta">${_escAttr(m.location||'')}</td></tr>`;
   });
 }
 
@@ -905,21 +958,73 @@ async function saveHero(e){
 }
 
 // Events
+function _escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function renderEvTbl(){
   const t=document.getElementById('evTbl');t.innerHTML='';
   const sorted=[...events].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  sorted.forEach(ev=>{
+  const now=new Date();
+  const active=sorted.filter(ev=>new Date(ev.date)>=now);
+  const past=sorted.filter(ev=>new Date(ev.date)<now);
+
+  // Show max 6 active/recent events in table
+  const shown=active.length?active:sorted.slice(0,6);
+  const tableList=active.length>=6?active.slice(0,6):(active.length?[...active,...past.slice(0,6-active.length)]:sorted.slice(0,6));
+
+  document.getElementById('evActiveCount').textContent=tableList.length;
+  tableList.forEach(ev=>{
     const regCount=(ev.registrations||[]).length;
-    const isPast=new Date(ev.date)<new Date();
-    t.innerHTML+=`<tr><td style="font-weight:600">${ev.title}</td>
-      <td style="font-size:.72rem">${ev.date} ${ev.time}</td><td style="font-size:.72rem">${ev.location}</td>
-      <td>${ev.participants||''}</td>
-      <td><button onclick="showEvRegs('${ev.id}','${ev.title.replace(/'/g,"\\'")}')" style="background:none;border:none;cursor:pointer;color:var(--c1);font-weight:700;font-size:.82rem;text-decoration:underline">${regCount}名</button></td>
-      <td>${ev.applicationUrl?`<a href="${ev.applicationUrl}" target="_blank" style="color:var(--c1);font-size:.72rem"><i class="fas fa-external-link-alt"></i> あり</a>`:'<span style="color:var(--tl);font-size:.72rem">なし</span>'}</td>
+    const isPast=new Date(ev.date)<now;
+    const safeTitle=_escAttr(ev.title);
+    const tr=document.createElement('tr');
+    if(isPast) tr.style.opacity='.6';
+    tr.innerHTML=`<td class="ev-title-cell" title="${safeTitle}"><span style="color:var(--c1);text-decoration:underline">${safeTitle}</span></td>
+      <td class="tbl-meta">${_escAttr(ev.date)} ${_escAttr(ev.time)}</td>
+      <td class="tbl-meta">${_escAttr(ev.location)}</td>
+      <td class="tbl-meta">${ev.participants||'-'}</td>
+      <td><span class="ev-reg-link">${regCount}名</span></td>
       <td><span class="status-tag ${isPast?'inactive':'active'}">${isPast?'終了':'受付中'}</span></td>
-      <td><button class="btn btn-outline btn-sm" onclick="editEvent('${ev.id}')"><i class="fas fa-edit"></i></button>
-      <button class="btn btn-danger btn-sm" onclick="delEvent('${ev.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+      <td><div class="tbl-actions">
+        <button class="btn btn-outline btn-sm ev-edit-btn"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm ev-del-btn"><i class="fas fa-trash"></i></button></div></td>`;
+    tr.querySelector('.ev-title-cell').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
+    tr.querySelector('.ev-reg-link').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
+    tr.querySelector('.ev-edit-btn').addEventListener('click',()=>editEvent(ev.id));
+    tr.querySelector('.ev-del-btn').addEventListener('click',()=>delEvent(ev.id));
+    t.appendChild(tr);
   });
+
+  // Past events simple list
+  const pastForList=past.filter(ev=>!tableList.includes(ev));
+  const pastEl=document.getElementById('evPastList');pastEl.innerHTML='';
+  document.getElementById('evPastCount').textContent=pastForList.length;
+  if(!pastForList.length){
+    document.getElementById('evPastToggle').style.display='none';
+  }else{
+    document.getElementById('evPastToggle').style.display='flex';
+    pastForList.forEach(ev=>{
+      const regCount=(ev.registrations||[]).length;
+      const safeTitle=_escAttr(ev.title);
+      const item=document.createElement('div');
+      item.className='ev-past-item';
+      item.innerHTML=`<span class="ev-past-date">${_escAttr(ev.date)}</span>
+        <span class="ev-past-title" title="${safeTitle}">${safeTitle}</span>
+        <span class="ev-past-reg">${regCount}名</span>
+        <div class="ev-past-actions">
+          <button class="btn btn-outline btn-sm ev-past-reg-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-users"></i></button>
+          <button class="btn btn-outline btn-sm ev-past-edit-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-edit"></i></button>
+        </div>`;
+      item.querySelector('.ev-past-title').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
+      item.querySelector('.ev-past-reg-btn').addEventListener('click',(e)=>{e.stopPropagation();showEvRegs(ev.id,ev.title)});
+      item.querySelector('.ev-past-edit-btn').addEventListener('click',(e)=>{e.stopPropagation();editEvent(ev.id)});
+      pastEl.appendChild(item);
+    });
+  }
+}
+function togglePastEvents(){
+  const toggle=document.getElementById('evPastToggle');
+  const list=document.getElementById('evPastList');
+  toggle.classList.toggle('open');
+  list.classList.toggle('open');
 }
 let _currentEvRegs=null,_currentEvRegTitle='',_currentPayFilter='all';
 function _buildEvRegRow(m,eventId,allRegs){
@@ -934,13 +1039,12 @@ function _buildEvRegRow(m,eventId,allRegs){
     refLabel+=`<span style="font-size:.62rem;color:#f59e0b;margin-left:.2rem" title="${(p.referredBy||[]).length}名紹介で${p.referralDiscount}円割引"><i class="fas fa-gift"></i> -${p.referralDiscount}円</span>`;
   }
   return `<tr>
-    <td><img src="${m.avatar||'https://i.pravatar.cc/30?img=0'}" onerror="this.src='https://i.pravatar.cc/30?img=0'" class="tbl-avatar" style="width:30px;height:30px"></td>
-    <td style="font-weight:600">${m.name} ${refLabel}</td>
-    <td style="color:var(--c1);font-size:.72rem">${m.profession||'-'}</td>
-    <td style="font-size:.72rem">${m.business||'-'}</td>
-    <td style="font-size:.72rem">${m.location||'-'}</td>
+    <td><div class="tbl-name-cell"><img src="${m.avatar||'https://i.pravatar.cc/30?img=0'}" onerror="this.src='https://i.pravatar.cc/30?img=0'" class="tbl-avatar"><div><div class="name">${m.name} ${refLabel}</div></div></div></td>
+    <td class="tbl-meta">${m.profession||'-'}</td>
+    <td class="tbl-meta">${m.business||'-'}</td>
+    <td class="tbl-meta">${m.location||'-'}</td>
     <td style="font-size:.7rem">${payLabel}</td>
-    <td><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i></button></td>
+    <td><div class="tbl-actions"><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i></button></div></td>
   </tr>`;
 }
 function _matchPayFilter(m,filter){
@@ -992,7 +1096,7 @@ async function showEvRegs(eventId,title){
   _currentEvRegTitle=title;
   _currentPayFilter='all';
   document.getElementById('evRegTitle').textContent=title+' - 参加者一覧';
-  document.getElementById('evRegTbl').innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--tl)">読み込み中...</td></tr>';
+  document.getElementById('evRegTbl').innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--tl)">読み込み中...</td></tr>';
   document.getElementById('evRegEmpty').style.display='none';
   // Reset filter tabs
   const filterTabs=document.getElementById('evRegFilterTabs');
@@ -1014,7 +1118,7 @@ async function showEvRegs(eventId,title){
     _updatePayFilterCounts(d.registrations);
     document.getElementById('evRegEmpty').style.display='none';
     _renderFilteredEvRegs();
-  }catch(e){document.getElementById('evRegTbl').innerHTML='<tr><td colspan="7" style="text-align:center;color:#ef4444">読み込みに失敗しました</td></tr>'}
+  }catch(e){document.getElementById('evRegTbl').innerHTML='<tr><td colspan="6" style="text-align:center;color:#ef4444">読み込みに失敗しました</td></tr>'}
 }
 async function removeEvReg(eventId,memberId,name){
   if(!confirm(name+'さんの参加を取り消しますか？'))return;
@@ -1098,17 +1202,24 @@ function renderBlogTbl(){
   }
   sorted.forEach(b=>{
     const isMovie=b.category==='活動ムービー'&&b.youtubeId;
-    const thumb=isMovie?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" style="width:60px;height:34px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
-      :(b.imageUrl?`<img src="${b.imageUrl}" style="width:60px;height:34px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
-      :'<span style="color:var(--tl);font-size:.6rem">-</span>');
-    t.innerHTML+=`<tr>
-      <td>${thumb}</td>
-      <td style="font-weight:600">${b.title}${isMovie?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem"></i>':''}</td>
+    const thumb=isMovie?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" style="width:50px;height:30px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
+      :(b.imageUrl?`<img src="${b.imageUrl}" style="width:50px;height:30px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
+      :'<span class="tbl-muted">-</span>');
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${thumb}</td>
+      <td style="font-weight:600;font-size:.78rem">${_escAttr(b.title)}${isMovie?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem"></i>':''}</td>
       <td>${getCatBadge(b.category)}</td>
-      <td style="font-size:.72rem">${b.date||'--'}</td>
-      <td style="font-size:.72rem">${b.author||'--'}</td>
-      <td><button class="btn btn-outline btn-sm" onclick="editBlog('${b.id}')"><i class="fas fa-edit"></i></button>
-      <button class="btn btn-danger btn-sm" onclick="delBlog('${b.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+      <td class="tbl-meta">${b.date||'--'}</td>
+      <td class="tbl-meta">${_escAttr(b.author||'--')}</td>
+      <td><div class="tbl-actions"></div></td>`;
+    const acts=tr.querySelector('.tbl-actions');
+    const editBtn=document.createElement('button');
+    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i>';
+    editBtn.addEventListener('click',()=>editBlog(b.id));acts.appendChild(editBtn);
+    const delBtn=document.createElement('button');
+    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i>';
+    delBtn.addEventListener('click',()=>delBlog(b.id));acts.appendChild(delBtn);
+    t.appendChild(tr);
   });
 }
 function filterBlogTab(cat,el){
@@ -1204,25 +1315,57 @@ document.addEventListener('DOMContentLoaded',()=>{
 function renderMemTbl(){
   const t=document.getElementById('memTbl');t.innerHTML='';
   document.getElementById('memCount').textContent=`全${members.length}名`;
-  const onStyle='background:var(--c1);color:#fff;';
-  const offStyle='background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1);';
-  const dangerOn='background:#ef4444;color:#fff;';
   members.forEach(m=>{
     const isOp=opMemberIds.includes(m.id);
     const isAdmin=m.isAdmin;
-    const mapLink=m.googleMapUrl?`<a href="${m.googleMapUrl}" target="_blank" style="color:var(--c1);font-size:.65rem"><i class="fas fa-map-marker-alt"></i> 表示</a>`:'<span style="font-size:.62rem;color:var(--tl)">-</span>';
-    const hpLink=(m.homepage||m.website)?`<a href="${m.homepage||m.website}" target="_blank" style="color:var(--c1);font-size:.65rem"><i class="fas fa-globe"></i> 表示</a>`:'<span style="font-size:.62rem;color:var(--tl)">-</span>';
-    const photoCount=(m.photos&&m.photos.length)?`<span style="font-size:.65rem;color:var(--c1)"><i class="fas fa-images"></i> ${m.photos.length}枚</span>`:'<span style="font-size:.62rem;color:var(--tl)">-</span>';
-    t.innerHTML+=`<tr>
-      <td style="font-weight:600"><div style="display:flex;align-items:center;gap:.45rem"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">${m.name}</div></td><td style="font-size:.72rem">${m.profession||''}</td><td style="font-size:.72rem">${m.businessCategory||''}</td>
-      <td style="font-size:.65rem;color:var(--tl)">${m.email}</td><td style="font-size:.72rem">${m.location||''}</td>
+    const mapLink=m.googleMapUrl?`<a href="${m.googleMapUrl}" target="_blank" class="tbl-link"><i class="fas fa-map-marker-alt"></i> 表示</a>`:'<span class="tbl-muted">-</span>';
+    const hpLink=(m.homepage||m.website)?`<a href="${m.homepage||m.website}" target="_blank" class="tbl-link"><i class="fas fa-globe"></i> 表示</a>`:'<span class="tbl-muted">-</span>';
+    const photoCount=(m.photos&&m.photos.length)?`<span class="tbl-link"><i class="fas fa-images"></i> ${m.photos.length}</span>`:'<span class="tbl-muted">-</span>';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><div class="tbl-name-cell"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><div class="name">${_escAttr(m.name)}</div>${m.location?'<div class="sub"><i class="fas fa-map-pin" style="margin-right:.15rem"></i>'+_escAttr(m.location)+'</div>':''}</div></div></td>
+      <td class="tbl-meta">${_escAttr(m.profession||'')}</td>
+      <td class="tbl-meta">${_escAttr(m.businessCategory||'')}</td>
+      <td class="tbl-meta" style="font-size:.65rem;color:var(--tl)">${_escAttr(m.email)}</td>
+      <td class="tbl-meta">${_escAttr(m.location||'')}</td>
       <td>${mapLink}</td><td>${hpLink}</td><td>${photoCount}</td>
-      <td><div style="display:flex;gap:.25rem;align-items:center">
-        <button class="btn btn-sm" onclick="openMemEdit('${m.id}')" style="${onStyle}font-size:.58rem"><i class="fas fa-edit"></i> 編集</button>
-        <button class="btn btn-sm" onclick="toggleOpMember('${m.id}')" style="${isOp?onStyle:offStyle}font-size:.58rem"><i class="fas fa-user-shield"></i> 運営</button>
-        ${m.id!=='admin-001'?`<button class="btn btn-sm" onclick="toggleAdmin('${m.id}',${!isAdmin})" style="${isAdmin?'background:#f59e0b;color:#fff;':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1);'}font-size:.58rem"><i class="fas fa-crown"></i> 管理者</button>
-        <button class="btn btn-sm" onclick="delMember('${m.id}')" style="${offStyle}font-size:.58rem"><i class="fas fa-trash"></i> 削除</button>`:
-        '<span style="font-size:.6rem;color:var(--tl);padding:.15rem .3rem">オーナー</span>'}</div></td></tr>`;
+      <td><div class="tbl-actions"></div></td>`;
+    // Build action buttons via JS to avoid XSS
+    const actions=tr.querySelector('.tbl-actions');
+    const editBtn=document.createElement('button');
+    editBtn.className='btn btn-sm';editBtn.style.cssText='background:var(--c1);color:#fff';
+    editBtn.innerHTML='<i class="fas fa-edit"></i>';
+    editBtn.addEventListener('click',()=>openMemEdit(m.id));
+    actions.appendChild(editBtn);
+
+    const opBtn=document.createElement('button');
+    opBtn.className='btn btn-sm';
+    opBtn.style.cssText=isOp?'background:var(--c1);color:#fff':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1)';
+    opBtn.innerHTML='<i class="fas fa-user-shield"></i>';
+    opBtn.title='運営';
+    opBtn.addEventListener('click',()=>toggleOpMember(m.id));
+    actions.appendChild(opBtn);
+
+    if(m.id!=='admin-001'){
+      const adminBtn=document.createElement('button');
+      adminBtn.className='btn btn-sm';
+      adminBtn.style.cssText=isAdmin?'background:#f59e0b;color:#fff':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1)';
+      adminBtn.innerHTML='<i class="fas fa-crown"></i>';
+      adminBtn.title='管理者';
+      adminBtn.addEventListener('click',()=>toggleAdmin(m.id,!isAdmin));
+      actions.appendChild(adminBtn);
+
+      const delBtn=document.createElement('button');
+      delBtn.className='btn btn-danger btn-sm';
+      delBtn.innerHTML='<i class="fas fa-trash"></i>';
+      delBtn.addEventListener('click',()=>delMember(m.id));
+      actions.appendChild(delBtn);
+    }else{
+      const ownerTag=document.createElement('span');
+      ownerTag.style.cssText='font-size:.6rem;color:var(--tl);padding:.15rem .3rem';
+      ownerTag.textContent='オーナー';
+      actions.appendChild(ownerTag);
+    }
+    t.appendChild(tr);
   });
 }
 async function toggleAdmin(id,val){
@@ -1263,24 +1406,31 @@ function renderBoardAdmin(){
   const el=document.getElementById('boardAdminList');el.innerHTML='';
   if(!boards.length){el.innerHTML='<div class="admin-card" style="text-align:center;color:var(--tl);padding:1.5rem"><i class="fas fa-inbox" style="font-size:1.5rem;color:var(--c5);display:block;margin-bottom:.5rem"></i>投稿はまだありません</div>';return}
   boards.forEach(b=>{
-    el.innerHTML+=`<div class="admin-card" style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
-      <div style="flex:1;min-width:0">
+    const item=document.createElement('div');
+    item.className='admin-card';
+    item.style.cssText='display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem';
+    item.innerHTML=`<div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem">
-          <span class="status-tag active">${b.category||''}</span>
-          <span style="font-weight:700;font-size:.82rem">${b.title}</span>
+          <span class="status-tag active">${_escAttr(b.category||'')}</span>
+          <span style="font-weight:700;font-size:.82rem">${_escAttr(b.title)}</span>
         </div>
-        <div style="font-size:.68rem;color:var(--tl);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-          <span><i class="fas fa-user" style="margin-right:.15rem"></i>${b.authorName}</span>
+        <div class="tbl-meta" style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+          <span><i class="fas fa-user" style="margin-right:.15rem"></i>${_escAttr(b.authorName)}</span>
           <span><i class="fas fa-clock" style="margin-right:.15rem"></i>${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</span>
           <span><i class="fas fa-reply" style="margin-right:.15rem"></i>返信${(b.replies||[]).length}件</span>
         </div>
-        <div style="font-size:.75rem;margin-top:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tl)">${b.content}</div>
+        <div style="font-size:.75rem;margin-top:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tl)">${_escAttr(b.content)}</div>
       </div>
-      <div style="display:flex;gap:.3rem;flex-shrink:0">
-        <button class="btn btn-sm" style="background:var(--c5);color:var(--c1)" onclick="openBoardEdit('${b.id}')"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm" onclick="delBoard('${b.id}')"><i class="fas fa-trash"></i></button>
-      </div>
-    </div>`;
+      <div class="tbl-actions"></div>`;
+    const acts=item.querySelector('.tbl-actions');
+    const editBtn=document.createElement('button');
+    editBtn.className='btn btn-sm';editBtn.style.cssText='background:var(--c5);color:var(--c1)';
+    editBtn.innerHTML='<i class="fas fa-edit"></i>';
+    editBtn.addEventListener('click',()=>openBoardEdit(b.id));acts.appendChild(editBtn);
+    const delBtn=document.createElement('button');
+    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i>';
+    delBtn.addEventListener('click',()=>delBoard(b.id));acts.appendChild(delBtn);
+    el.appendChild(item);
   });
 }
 function openBoardEdit(id){
