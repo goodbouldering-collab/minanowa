@@ -745,6 +745,10 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
         <div class="fg"><label>Instagram</label><input id="meInsta" placeholder="your_id"></div>
       </div>
       <div class="fg"><label>Google Maps URL</label><input id="meGmap" type="url" placeholder="https://maps.google.com/..."></div>
+      <div class="fg" style="background:linear-gradient(135deg,rgba(245,158,11,.04),rgba(251,191,36,.04));border:1.5px solid rgba(245,158,11,.15);border-radius:var(--r2);padding:.5rem .6rem;margin-bottom:.6rem">
+        <label style="color:#b45309;display:flex;align-items:center;gap:.3rem"><i class="fas fa-gift" style="color:#f59e0b"></i> メンバー特典 <span style="font-size:.58rem;color:var(--tl);font-weight:400">(メンバー同士で使える割引・特典)</span></label>
+        <input id="meBenefit" placeholder="例: みんなのWAメンバー初回10%OFF、ドリンク1杯無料 等" style="border-color:rgba(245,158,11,.2)">
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
         <div class="fg"><label>公開設定</label><select id="mePublic"><option value="true">公開</option><option value="false">非公開</option></select></div>
         <div class="fg"><label>事業写真（最大5枚）</label><input type="file" id="mePhotos" accept="image/*" multiple onchange="previewNewPhotos(this)"></div>
@@ -1321,8 +1325,9 @@ function renderMemTbl(){
     const mapLink=m.googleMapUrl?`<a href="${m.googleMapUrl}" target="_blank" class="tbl-link"><i class="fas fa-map-marker-alt"></i> 表示</a>`:'<span class="tbl-muted">-</span>';
     const hpLink=(m.homepage||m.website)?`<a href="${m.homepage||m.website}" target="_blank" class="tbl-link"><i class="fas fa-globe"></i> 表示</a>`:'<span class="tbl-muted">-</span>';
     const photoCount=(m.photos&&m.photos.length)?`<span class="tbl-link"><i class="fas fa-images"></i> ${m.photos.length}</span>`:'<span class="tbl-muted">-</span>';
+    const benefitBadge=m.memberBenefit?`<span style="font-size:.55rem;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;padding:.08rem .3rem;border-radius:6px;font-weight:700;margin-left:.3rem" title="${_escAttr(m.memberBenefit)}"><i class="fas fa-gift"></i> 特典</span>`:'';
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td><div class="tbl-name-cell"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><div class="name">${_escAttr(m.name)}</div>${m.location?'<div class="sub"><i class="fas fa-map-pin" style="margin-right:.15rem"></i>'+_escAttr(m.location)+'</div>':''}</div></div></td>
+    tr.innerHTML=`<td><div class="tbl-name-cell"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><div class="name">${_escAttr(m.name)}${benefitBadge}</div>${m.location?'<div class="sub"><i class="fas fa-map-pin" style="margin-right:.15rem"></i>'+_escAttr(m.location)+'</div>':''}</div></div></td>
       <td class="tbl-meta">${_escAttr(m.profession||'')}</td>
       <td class="tbl-meta">${_escAttr(m.businessCategory||'')}</td>
       <td class="tbl-meta" style="font-size:.65rem;color:var(--tl)">${_escAttr(m.email)}</td>
@@ -1705,6 +1710,7 @@ function openMemEdit(id){
   document.getElementById('meWeb').value=m.website||m.homepage||'';
   document.getElementById('meInsta').value=m.instagram||'';
   document.getElementById('meGmap').value=m.googleMapUrl||'';
+  document.getElementById('meBenefit').value=m.memberBenefit||'';
   document.getElementById('mePublic').value=m.isPublic===false?'false':'true';
   // Photo preview
   const pp=document.getElementById('mePhotoPreview');
@@ -1784,6 +1790,7 @@ async function saveMemEdit(e){
     homepage:document.getElementById('meWeb').value,
     instagram:document.getElementById('meInsta').value,
     googleMapUrl:document.getElementById('meGmap').value,
+    memberBenefit:document.getElementById('meBenefit').value.trim(),
     isPublic:document.getElementById('mePublic').value==='true',
     avatar:avatar,
     photos:photos
