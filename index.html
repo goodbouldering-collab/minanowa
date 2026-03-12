@@ -300,8 +300,8 @@ nav.at-top .hamburger{color:#fff}
   .hero-vid-showcase{max-width:100%;margin:.6rem auto 0;border-radius:12px}
   .hero-vid-dots{padding:.3rem 0}
   .hero-vid-dot{width:7px;height:7px}
-  .hero-cta{margin-top:1.5rem;gap:.6rem}
-  .hero-cta .btn{padding:.75rem 1.8rem;font-size:1rem;border-radius:14px;width:auto}
+  .hero-cta{margin-top:1.5rem;gap:.5rem}
+  .hero-cta .btn{padding:.65rem 1.2rem;font-size:.88rem;border-radius:12px;width:auto}
   .hero-photos-container{gap:3px !important}
   .hero-photos-row{gap:3px !important;animation-duration:25s !important}
   .hero-photo{width:75px !important;height:75px !important;border-radius:10px !important}
@@ -667,11 +667,14 @@ nav.at-top .hamburger{color:#fff}
 .hero-events-dots{display:flex;justify-content:center;gap:.3rem;margin-top:.4rem}
 .hero-events-dots .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s}
 .hero-events-dots .dot.active{background:#fff;transform:scale(1.3)}
-.hero-cta{margin-top:.5rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
-.hero-cta .btn{padding:.8rem 2.5rem;font-size:1.1rem;border-radius:14px;backdrop-filter:blur(8px);font-weight:700;letter-spacing:.03em}
+.hero-cta{margin-top:.5rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.hero-cta .btn{padding:.7rem 1.6rem;font-size:1rem;border-radius:14px;backdrop-filter:blur(8px);font-weight:700;letter-spacing:.03em}
 .hero-cta .btn-white{background:#fff;color:var(--c2);
   box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.08)}
 .hero-cta .btn-white:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.1),0 14px 44px rgba(0,0,0,.12),0 0 20px rgba(13,124,102,.06)}
+.hero-cta .btn-map{background:linear-gradient(135deg,rgba(245,158,11,.85),rgba(234,88,12,.8));color:#fff;
+  border:1px solid rgba(255,255,255,.2);box-shadow:0 2px 12px rgba(245,158,11,.25)}
+.hero-cta .btn-map:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(245,158,11,.35);background:linear-gradient(135deg,rgba(245,158,11,.95),rgba(234,88,12,.9))}
 .hero-cta .btn-glass{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}
 .hero-cta .btn-glass:hover{background:rgba(255,255,255,.15);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.12)}
 .hero-scroll{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:10;
@@ -1600,7 +1603,7 @@ html,body{max-width:100vw;overflow-x:hidden}
   .hm-ring-bg{stroke-width:3.5}
   .hm-card b{font-size:1.2rem}
   .hm-card span{font-size:.65rem}
-  .hero-cta .btn{padding:.65rem 1.4rem;font-size:.92rem}
+  .hero-cta .btn{padding:.55rem 1rem;font-size:.82rem}
   .hero-photo{width:60px !important;height:60px !important;border-radius:8px !important}
   
   /* === SECTIONS === */
@@ -1735,8 +1738,8 @@ html,body{max-width:100vw;overflow-x:hidden}
   html{font-size:13.5px}
   .hero h1{font-size:1.55rem !important}
   .hero p{font-size:.88rem}
-  .hero-cta{flex-direction:column;align-items:center}
-  .hero-cta .btn{width:80%;text-align:center;justify-content:center}
+  .hero-cta{flex-direction:row;align-items:center;flex-wrap:wrap;gap:.4rem}
+  .hero-cta .btn{width:auto;text-align:center;justify-content:center;padding:.5rem .8rem;font-size:.75rem}
   .hm-card{padding:.25rem .1rem .2rem}
   .hm-ring{width:30px;height:30px}
   .hm-ring i{font-size:.55rem}
@@ -2094,8 +2097,9 @@ nav.scrolled{background:rgba(255,255,255,.92) !important;backdrop-filter:blur(20
       <div class="hero-vid-dots" id="heroVidDots"></div>
     </div>
     <div class="hero-cta">
-      <button class="btn btn-white" id="heroRegBtn" onclick="openModal('regModal')"><i class="fas fa-user-plus"></i> 会員登録</button>
-      <button class="btn btn-glass" id="heroEvBtn" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><i class="fas fa-calendar-alt"></i> イベントを見る</button>
+      <button class="btn btn-white" id="heroEvBtn" onclick="document.getElementById('events').scrollIntoView({behavior:'smooth'})"><i class="fas fa-calendar-alt"></i> イベント</button>
+      <button class="btn btn-map" id="heroMapBtn" onclick="document.getElementById('memberMap').scrollIntoView({behavior:'smooth'})"><i class="fas fa-map-marked-alt"></i> メンバーマップ</button>
+      <button class="btn btn-glass" id="heroChatBtn" onclick="window.open('https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default','_blank')"><i class="fab fa-line"></i> グループチャット</button>
     </div>
   </div>
   <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
@@ -4097,8 +4101,6 @@ function checkResetToken(){
 
 function updateNav(){
   const el=document.getElementById('navAuth');
-  const heroBtn=document.getElementById('heroRegBtn');
-  const heroEvBtn=document.getElementById('heroEvBtn');
   const lineCtaSec=document.getElementById('lineCta');
   if(currentUser){
     el.innerHTML=`<div class="user-bar">
@@ -4107,26 +4109,13 @@ function updateNav(){
       ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-ghost btn-sm"><i class="fas fa-cog"></i> 管理</a>':''}
       <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
     </div>`;
-    /* Hero left: switch to LINE open chat button */
-    if(heroBtn){
-      heroBtn.innerHTML='<i class="fab fa-line"></i> オープンチャット';
-      heroBtn.onclick=function(){window.open('https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default','_blank')};
-      heroBtn.className='btn btn-white';
-    }
-    /* Hide LINE CTA section */
+    /* Hide LINE CTA section (hero already has chat button) */
     if(lineCtaSec) lineCtaSec.style.display='none';
-    /* Hide divider after LINE CTA */
     if(lineCtaSec&&lineCtaSec.nextElementSibling&&lineCtaSec.nextElementSibling.classList.contains('sec-divider')){
       lineCtaSec.nextElementSibling.style.display='none';
     }
   }else{
     el.innerHTML='<button class="btn btn-primary btn-sm" onclick="openModal(\'loginModal\')"><i class="fas fa-sign-in-alt"></i> ログイン</button>';
-    /* Hero left: restore registration button */
-    if(heroBtn){
-      heroBtn.innerHTML='<i class="fas fa-user-plus"></i> 会員登録';
-      heroBtn.className='btn btn-white';
-      heroBtn.onclick=function(){openModal('regModal')};
-    }
     /* Show LINE CTA section */
     if(lineCtaSec) lineCtaSec.style.display='';
     if(lineCtaSec&&lineCtaSec.nextElementSibling&&lineCtaSec.nextElementSibling.classList.contains('sec-divider')){
