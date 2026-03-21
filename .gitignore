@@ -33,7 +33,7 @@ temp/
 backups/20260219_backup_pre_ai_personalization.tar.gz
 
 # Data (production)
-data.json
+# data.json  ← リポジトリに含める（除外しない）
 
 # Backup HTML files
 *.backup_*

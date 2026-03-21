@@ -1,0 +1,977 @@
+{
+  "siteSettings": {
+    "heroTitle": "つながりが地元を熱くする",
+    "heroSubtitle": "彦根周辺のビジネスを加速させる交流の場",
+    "aboutTitle": "みんなのWAとは",
+    "aboutText": "名刺交換で終わらない、売上が生まれる仕組み",
+    "instagramAccount": "minnano_wa.shiga",
+    "stripePublishableKey": "",
+    "googleClientId": "955088621164-8145av4u1mhm1jh57jj1nrl8k9hctpee.apps.googleusercontent.com"
+  },
+  "members": [
+    {
+      "id": "admin-001",
+      "email": "admin@minanowa.com",
+      "password": "$2b$10$BDcrYfsc9T9Uvr7dOIIzrOvti06NNA..ma1gMqM7dA/8StEMPgeYa",
+      "name": "運営事務局",
+      "furigana": "うんえいじむきょく",
+      "phone": "",
+      "business": "コミュニティ運営",
+      "businessCategory": "その他",
+      "introduction": "みんなのWAの運営を行っています。",
+      "avatar": "/uploads/img-1771067869672-255024257.jpeg",
+      "location": "彦根市",
+      "website": "https://minanowa.com",
+      "instagram": "minanowa_hikone",
+      "sns": {
+        "twitter": "@minanowa_hikone"
+      },
+      "skills": [
+        "イベント企画",
+        "コミュニティ運営"
+      ],
+      "joinDate": "2024-01-01",
+      "isPublic": true,
+      "isAdmin": true,
+      "profession": "みんなのWA",
+      "homepage": "https://minanowa.com",
+      "googleMapUrl": "https://maps.app.goo.gl/wtGtq6UHRxTQbawz8?g_st=ic",
+      "role": "admin"
+    },
+    {
+      "id": "member-002",
+      "email": "lossismore@gmail.com",
+      "password": "$2b$10$KzemNB89rHOYeKSMuLEVXe4KE8kEXxf/7b5kpocHBV4ux/gPgDcAK",
+      "name": "由井辰美",
+      "furigana": "ゆいたつみ",
+      "phone": "08038283985",
+      "business": "ボルダリング/美肌脱毛ホワイトニング",
+      "businessCategory": "サービス",
+      "introduction": "ビバシティ正面でボルダリングカフェとエステを展開。ボルダリングジムは2480円から、エステは初回2,200円からとリーズナブル！",
+      "avatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "location": "彦根市",
+      "website": "https://goodbouldering.com/",
+      "instagram": "goodbouldering",
+      "sns": {},
+      "skills": [
+        "コーヒー焙煎",
+        "スイーツ製造"
+      ],
+      "joinDate": "2024-03-10",
+      "isPublic": true,
+      "isAdmin": true,
+      "profession": "Notエステ/グッぼる",
+      "homepage": "https://goodbouldering.com/",
+      "googleMapUrl": "https://maps.app.goo.gl/jFRzV6bVKPY8npi9A?g_st=ic",
+      "googleId": "102095419415103604540",
+      "memberBenefit": "初回施術2000円"
+    },
+    {
+      "id": "member-1770561743721-xye9l5j2u",
+      "email": "okurayuki0211@gmail.com",
+      "password": "$2b$10$gIvw5qxdqlBJSGyd.erQWOT.RIKmhgL1AYBT3erH80gpM2PaNdpa6",
+      "name": "大倉有希",
+      "furigana": "おおくらゆき",
+      "phone": "09085276617",
+      "business": "パーソナルトレーニング、ストレッチ施術/軽貨物人事、採用",
+      "businessCategory": "サービス",
+      "introduction": "ダイエット実績多数💪✨\nストレッチも口コミ高評価で人気です！\n天性の人繋ぎ役🙊💞\nジムの他に人材採用、イベント企画運営をしてます(^^)",
+      "avatar": "/uploads/img-1771175015613-279954592.png",
+      "location": "彦根市",
+      "website": "https://t-3c-private-gym.studio.site/",
+      "instagram": "https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+      "sns": {},
+      "skills": [],
+      "joinDate": "2026-02-08",
+      "isPublic": true,
+      "isAdmin": true,
+      "profession": "T-3Cプライベートジム",
+      "homepage": "https://t-3c-private-gym.studio.site/",
+      "googleMapUrl": "https://maps.app.goo.gl/wtGtq6UHRxTQbawz8?g_st=ic",
+      "memberBenefit": "メンバー初回体験50%OFF！"
+    },
+    {
+      "id": "member-1771049563225-y6kchm0mm",
+      "email": "bbbxk350@gmail.com",
+      "password": "$2b$10$8i2UPOkMYELG2mIYYZqOcOIPeVCZYKIkqH0CGZnDJn7i.FVjYBSLK",
+      "name": "市山早苗",
+      "furigana": "いちやまさなえ",
+      "phone": "09010740155",
+      "business": "アロマサロン",
+      "businessCategory": "サービス",
+      "introduction": "",
+      "avatar": "/uploads/img-1771049677066-885541728.jpeg",
+      "location": "彦根市",
+      "website": "https://aroma-orange.jp/",
+      "instagram": "sanae_ichiyama",
+      "googleMapUrl": "https://maps.app.goo.gl/fsj9N2pzs4abEhL68?g_st=ic",
+      "profession": "AromaOrange",
+      "homepage": "https://aroma-orange.jp/",
+      "sns": {},
+      "skills": [],
+      "joinDate": "2026-02-14",
+      "isPublic": true,
+      "isAdmin": true,
+      "memberBenefit": "WAメンバーアロマ施術500円引き"
+    },
+    {
+      "id": "member-1771053000213-yv4odgrga",
+      "email": "f.eel_69@icloud.com",
+      "password": "$2b$10$J2MK1MCYUoarLIEuHFCmzOsIkWRQ6tbWL0C7szVvkqWx9ZvX33HG6",
+      "name": "松村愛美",
+      "furigana": "まつむらまなみ",
+      "phone": "09019606969",
+      "business": "＊指先を通して心を笑顔に＊。ネイルサロン、結婚相談所、オフ会企画",
+      "businessCategory": "サービス",
+      "introduction": "爪を整えるだけで、こんなにも自分が大切で大好きになる不思議なアイテム💎✨",
+      "avatar": "/uploads/img-1771053149778-96208801.jpeg",
+      "location": "長浜市",
+      "website": "https://lin.ee/KgVzU0z",
+      "instagram": "https://www.instagram.com/manami_beauty.salon/",
+      "googleMapUrl": "https://maps.app.goo.gl/2JjeLni4KNVGaRGC9?g_st=ic",
+      "profession": "爪職人マナ",
+      "homepage": "https://lin.ee/KgVzU0z",
+      "sns": {},
+      "skills": [],
+      "joinDate": "2026-02-14",
+      "isPublic": true,
+      "isAdmin": true,
+      "memberBenefit": "メンバー限定！ジェルネイル1,000円OFF"
+    },
+    {
+      "id": "member-1771839544455-czhfrbvqh",
+      "email": "e.ueda@hikonerire.com",
+      "googleId": "100787754911218348240",
+      "password": "$2b$10$D5SoJdiMxobW09g96ItUieLP/IbN7yxMhR8d9eLreMNtmQXOm15Y2",
+      "name": "上田永吉",
+      "furigana": "うえだえいきち",
+      "phone": "0749238823",
+      "business": "整骨院、運動教室",
+      "businessCategory": "サービス",
+      "introduction": "",
+      "avatar": "/uploads/img-1771839519639-478650562.JPG",
+      "location": "彦根市",
+      "website": "http://www.hikoneseitai.com",
+      "instagram": "rireseikotsuin",
+      "googleMapUrl": "https://maps.app.goo.gl/ia5iyjo7ez22Z6va9?g_st=ic",
+      "profession": "りーる整骨院",
+      "homepage": "http://www.hikoneseitai.com",
+      "sns": {},
+      "skills": [],
+      "joinDate": "2026-02-23",
+      "isPublic": true,
+      "isAdmin": true
+    },
+    {
+      "id": "member-1772608766526-oxuo1qmbf",
+      "email": "n-designs@ymail.ne.jp",
+      "password": "$2b$10$MEYf5zo.emLGFmRXSfUv2.jC0eOkWMdRbEsJ9idsWDMxQV.ICJxva",
+      "name": "西野逸夫",
+      "furigana": "にしのいつお",
+      "phone": "09069744620",
+      "business": "建築、不動産業",
+      "businessCategory": "建設・不動産",
+      "introduction": "",
+      "avatar": "",
+      "location": "彦根市",
+      "website": "",
+      "instagram": "",
+      "googleMapUrl": "",
+      "profession": "株式会社N-デザイン",
+      "homepage": "",
+      "sns": {},
+      "skills": [],
+      "joinDate": "2026-03-04",
+      "isPublic": true,
+      "isAdmin": false
+    }
+  ],
+  "events": [
+    {
+      "id": "event-004",
+      "title": "みんなで体験会！",
+      "date": "2026-03-03",
+      "time": "19:00-21:00",
+      "location": "グッぼる",
+      "description": "実際のサービスを体験し、感想を動画にします。",
+      "detailedInfo": "単に体験することによって、通常のお客様と違う目線で、サービスの向上のアドバイスなどを相互で行える新しい体験会です。",
+      "participants": 30,
+      "fee": "1,500円",
+      "imageUrl": "/uploads/img-1770824068998-393067735.jpeg",
+      "registrations": [
+        "member-002",
+        "admin-001"
+      ],
+      "isPast": false,
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "regDetails": {
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:57:57.786Z"
+        },
+        "admin-001": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T14:19:31.190Z"
+        },
+        "member-1771049563225-y6kchm0mm": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T20:56:19.795Z"
+        }
+      }
+    },
+    {
+      "id": "event-1770724265860-3xavrr1g4",
+      "title": "第24回みんなのＷＡ彦根交流会",
+      "date": "2025-02-04",
+      "time": "12:00-15:00",
+      "location": "彦根市高宮町1410 ハウスセレクション内 デスミさん展示場",
+      "description": "フリートーク式での人脈作り・名刺交換・事業の説明や体験。12:30〜希望者のみ1分自己紹介タイムあり。ハイハイレースも同時開催！",
+      "detailedInfo": "⚫︎内容\nフリートーク式での人脈作り\n参加者同士の名刺、連絡先交換\nそれぞれの事業の説明や体験\n\n12:30〜（希望者のみ、当日参加ok）\n1分自己紹介（2回目の方は30秒）\n名前、やってること、どんな人と出会いたいか、想い　などを\n紹介する場を設けます💁‍♀️\n\n他、\n初めての参加の方へこの会の説明\nお悩み相談、交流会での繋がりなどのシェア会\n\n※午前12:00まで\n@上田永吉@りーる整骨院、赤ちゃん整体 による\nハイハイレース実施されます！\n\n⚫︎持ち寄り一品例\nお菓子、マクドのポテトやナゲット、手作り料理、からあげ、アイス、自社商品などなど。\n人数分で無くても大丈夫です👌\n\nみなさんで多くの人を巻き込み、\nこの交流会を盛り上げていけたら嬉しいです！！\n【目指せ1000人！！！🤍🤝】\nみんなで成し遂げましょう！\n\nではお会いできること楽しみにしております✨",
+      "participants": 30,
+      "fee": "3,000円＋持ち寄り一品 or 4,000円",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "imageUrl": "/uploads/img-1772678590888-442055097.jpeg",
+      "registrations": [
+        "member-002"
+      ],
+      "regDetails": {
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:58:08.279Z"
+        }
+      }
+    },
+    {
+      "id": "event-1770746627727-z80luhg5d",
+      "title": "第23回みんなのＷＡ彦根交流会",
+      "date": "2025-01-07",
+      "time": "12:00-15:00",
+      "location": "彦根市高宮町1410 ハウスセレクション内 デスミさん展示場",
+      "description": "今年1発目！㊙️ゲストが来てくださいます🤭 フリートーク式での人脈作り・名刺交換・事業の説明や体験。",
+      "detailedInfo": "あけましておめでとうございます🎍\n今年もどうぞよろしくお願い致します😌✨\n\nみんなのＷＡを盛り上げるために㊙️ゲストが来てくださいます🤭‼️\nお楽しみに〜！！\n\n⚫︎内容\nフリートーク式での人脈作り\n参加者同士の名刺、連絡先交換\nそれぞれの事業の説明や体験\n\n12:30〜（希望者のみ、当日参加ok）\n1分自己紹介（2回目の方は30秒）\n名前、やってること、どんな人と出会いたいか、想い　などを\n紹介する場を設けます💁‍♀️\n\n他、\n初めての参加の方へこの会の説明\nお悩み相談、交流会での繋がりなどのシェア会\n\n⚫︎持ち寄り一品例\nお菓子、マクドのポテトやナゲット、手作り料理、からあげ、アイス、自社商品などなど。\n人数分で無くても大丈夫です👌\n\nみなさんで多くの人を巻き込み、\nこの交流会を盛り上げていけたら嬉しいです！！\n【目指せ1000人！！！🤍🤝】\nみんなで成し遂げましょう！\n\nではお会いできること楽しみにしております✨",
+      "participants": 0,
+      "fee": "3,000円＋持ち寄り一品 or 4,000円",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "imageUrl": "/uploads/img-1770824293056-777872030.jpeg",
+      "registrations": [
+        "member-002"
+      ],
+      "regDetails": {
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:58:08.339Z"
+        }
+      }
+    },
+    {
+      "id": "event-1770746627748-8y2j3yg11",
+      "title": "第22回みんなのＷＡ彦根交流会（年内最後）",
+      "date": "2024-12-04",
+      "time": "12:00-15:00",
+      "location": "彦根市高宮町1410 ハウスセレクション内 デスミさん展示場",
+      "description": "年内最後の彦根交流会。おかげさまで無事終了しました☺️✨",
+      "detailedInfo": "年内最後の彦根交流会、みんなのＷＡにご参加いただきありがとうございました！\nおかげさまで第22回も無事終わりました☺️✨\n\n【随時募集】\n運営をお手伝いいただける方は、大倉までご連絡ください✨",
+      "participants": 0,
+      "fee": "3,000円＋持ち寄り一品 or 4,000円",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "imageUrl": "/uploads/img-1770824387357-927009265.jpeg",
+      "registrations": [
+        "member-002"
+      ],
+      "regDetails": {
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:58:08.385Z"
+        }
+      }
+    },
+    {
+      "id": "event-1770746627756-gbi6if98y",
+      "title": "第1回長浜交流会",
+      "date": "2024-12-13",
+      "time": "18:00-20:00",
+      "location": "長浜市内",
+      "description": "長浜エリアでの交流会開催！",
+      "detailedInfo": "長浜エリアでの交流会です。\n詳細は大倉までお問い合わせください。",
+      "participants": 15,
+      "fee": "",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "imageUrl": "",
+      "registrations": []
+    },
+    {
+      "id": "event-1770746627765-d5t70066i",
+      "title": "🎈 気球が彦根にやってくる！！",
+      "date": "2026-03-14",
+      "time": "6:15受付開始 / 6:30体験開始",
+      "location": "彦根市石寺町 救助犬訓練施設",
+      "description": "空から見る、いつもと違う景色。子どもたちに、忘れられない体験を。定員100名・参加費500円（保険代込み）",
+      "detailedInfo": "🎈 気球が彦根にやってくる！！\n〜空から見る、いつもと違う景色。子どもたちに、忘れられない体験を。〜\n\n━━━━━━━━━━━━━━━━━━\n📅 開催日時\n━━━━━━━━━━━━━━━━━━\n2026年3月14日（土）\n6:15　受付開始\n6:30　体験開始\n\n⚠️ 予備日：2026年3月15日（日）\n※天候により中止・延期となる場合があります\n\n━━━━━━━━━━━━━━━━━━\n📍 開催場所\n━━━━━━━━━━━━━━━━━━\n彦根市石寺町　救助犬訓練施設\n\n━━━━━━━━━━━━━━━━━━\n👦 対象\n━━━━━━━━━━━━━━━━━━\n小学4・5・6年生\n※小学3年生以下のお子様も体験可能ですが、\nカゴの小窓からの景色となります（カゴ高さ130cm）\n\n━━━━━━━━━━━━━━━━━━\n👥 定員\n━━━━━━━━━━━━━━━━━━\n100名\n\n━━━━━━━━━━━━━━━━━━\n💰 参加費\n━━━━━━━━━━━━━━━━━━\nお一人 500円（保険代込み）\n\n━━━━━━━━━━━━━━━━━━\n⚠️ 注意事項\n━━━━━━━━━━━━━━━━━━\n・天候により中止・延期となる場合があります\n・予備日：2026年3月15日（日）\n\n━━━━━━━━━━━━━━━━━━\n🏢 主催\n━━━━━━━━━━━━━━━━━━\nT-3C プライベートジム\n大倉 有希\n\n※ボランティアスタッフも募集しています🙏\nお手伝いいただける方は大倉までご連絡ください✨",
+      "participants": 100,
+      "fee": "500円（保険代込み）",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSeQ_tEssp_uZKWd91Q2aVNYV6jQ8uban3L-dHlMWvzZ2LDYfQ/viewform?usp=send_form",
+      "imageUrl": "/uploads/img-1770823479697-237299786.jpeg",
+      "registrations": [
+        "admin-001",
+        "member-1770561743721-xye9l5j2u",
+        "member-1771053000213-yv4odgrga"
+      ],
+      "regDetails": {
+        "admin-001": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T03:20:36.402Z"
+        },
+        "member-1770561743721-xye9l5j2u": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T16:58:00.054Z"
+        },
+        "member-1771053000213-yv4odgrga": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-03-13T05:24:07.021Z"
+        }
+      },
+      "referrals": {}
+    },
+    {
+      "id": "event-1770746627777-071uqm9lc",
+      "title": "☕️まったりAI講習",
+      "date": "2025-01-15",
+      "time": "14:00-16:00",
+      "location": "グッぼる ボルダリングカフェ",
+      "description": "AIの思考と概念を中心に楽しく学べる講習。事業をブーストさせたい方におすすめ！",
+      "detailedInfo": "みんなのWAの2名からリクエストを受け開催。\nご紹介1名、SNSから1名が参加！\nAIの思考と概念を中心に楽しく伝えることができました。\nみんなのWAに感謝😊\n\n告知した結果、AI活用と起業相談の問い合わせが多数きて驚き！\n次回は近日予定。\n事業をキチンとブーストさせたいなら参加して損はないと思います。\n\n【彦根】カフェでまったりAI講習\nhttps://goodbouldering.com/?pid=188553378",
+      "participants": 8,
+      "fee": "",
+      "applicationUrl": "https://goodbouldering.com/?pid=188553378",
+      "imageUrl": "/uploads/img-1770824154311-249199665.jpeg",
+      "registrations": [],
+      "regDetails": {
+        "member-001": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:58:17.548Z"
+        },
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:58:17.582Z"
+        },
+        "member-003": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-14T12:58:17.651Z"
+        }
+      }
+    },
+    {
+      "id": "event-1770746627785-la3kl65qg",
+      "title": "第25回 みんなのWA彦根交流会",
+      "date": "2026-03-04",
+      "time": "12:00〜15:00（11:00搬入可／16:00完全撤収）",
+      "location": "彦根市高宮町1410 ハウスセレクション内 デスミ様展示場",
+      "description": "経営者・事業者の皆様とのご縁を広げる場。フリートーク形式での人脈構築・名刺交換・事業紹介。希望者による1分自己紹介（13:00〜）。参加費3,000円＋持ち寄り一品 or 4,000円",
+      "detailedInfo": "この度、経営者・事業者の皆様とのご縁を広げる場として\n第25回 みんなのWA彦根交流会 を開催いたします。\n\n━━━━━━━━━━━━━━━━━━\n📅 日時\n━━━━━━━━━━━━━━━━━━\n3月4日（水）12:00〜15:00\n（11:00搬入可／16:00完全撤収）\n\n━━━━━━━━━━━━━━━━━━\n📍 場所\n━━━━━━━━━━━━━━━━━━\n彦根市高宮町1410\nハウスセレクション内 デスミ様展示場\n\n━━━━━━━━━━━━━━━━━━\n💰 参加費\n━━━━━━━━━━━━━━━━━━\n3,000円＋持ち寄り一品\nまたは 4,000円\n\n※ご新規の経営者様をご紹介いただいた場合、\nお一人につき500円キャッシュバック（上限なし）させていただきます。\n\n━━━━━━━━━━━━━━━━━━\n📋 内容\n━━━━━━━━━━━━━━━━━━\n・フリートーク形式での人脈構築\n・名刺交換／事業紹介\n・希望者による1分自己紹介（13:00〜）\n・お悩み相談／ビジネスシェア\n\n━━━━━━━━━━━━━━━━━━\n\n「彦根から本気の経営者ネットワークをつくる」\nその第一歩として、継続開催しております。\n\nただの名刺交換会ではなく、\n応援し合える関係性づくりを大切にしています。\n\nご多忙とは存じますが、\nぜひ一度お越しいただけましたら幸いです。\n\nご縁が広がる時間をご一緒できることを楽しみにしております。",
+      "participants": 30,
+      "fee": "3,000円＋持ち寄り一品 or 4,000円",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "imageUrl": "/uploads/img-1770824558107-46562658.jpeg",
+      "registrations": [
+        "member-1770561743721-xye9l5j2u",
+        "member-002"
+      ],
+      "regDetails": {
+        "member-1770561743721-xye9l5j2u": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T16:59:08.605Z"
+        },
+        "admin-001": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T20:50:47.353Z"
+        },
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-25T04:34:16.893Z"
+        }
+      },
+      "referrals": {}
+    },
+    {
+      "id": "event-1770820974785-4y53bjn7h",
+      "title": "📣 距離近め！コミュニケーション講座「集客できる人は頭の中で何をしてる？」",
+      "date": "2026-03-07",
+      "time": "14:00〜16:45（受付13:30〜）",
+      "location": "dew spot 会議室（滋賀県彦根市芹川町528）",
+      "description": "集客で悩んでいるあなたにオススメ！吉本芸人しもばやし氏×大倉有希の特別対談＆ワークショップ＆交流会。参加費3,000円",
+      "detailedInfo": "📣 距離近め！コミュニケーション講座\n「集客できる人は頭の中で何をしてる？」\n\n集客で悩んでいるあなたにオススメ。\n笑いと本音で人を惹きつける、会話のプロと語る。\n\n━━━━━━━━━━━━━━━━━━\n📅 開催日時\n━━━━━━━━━━━━━━━━━━\n2026年3月7日（土）\n14:00 スタート（受付 13:30〜）\n※17時には完全撤収となります\n\n━━━━━━━━━━━━━━━━━━\n📍 会場\n━━━━━━━━━━━━━━━━━━\ndew spot 会議室\n住所：滋賀県彦根市芹川町528\n🅿️ 駐車場 30台\n※混む可能性があるので早めにお越しください\n\n━━━━━━━━━━━━━━━━━━\n💰 参加費\n━━━━━━━━━━━━━━━━━━\nお一人様 3,000円\n※団体割あり（詳細はお問い合わせください）\n\n━━━━━━━━━━━━━━━━━━\n🎤 プログラム\n━━━━━━━━━━━━━━━━━━\n\n【第1部】14:00〜15:00\n🎙️ 特別対談「人を惹きつける心の在り方」\nGuest：しもばやし氏（ファミリーレストラン／吉本興業所属）\nNavigator：大倉 有希（T-3Cプライベートジム）\n\n集客の本質を知る二人が語る。\n小手先のテクニックを捨て、相手の心に深く届く\n「本物の関係性」を築くための脳内を公開！\n\n【第2部】15:00〜16:00\n💡 実践ワークショップ\n「年内500人の輪を創る！集客マインド」\n\n一人で頑張る集客からみんなで支え合う循環へ。\n年内500人の仲間づくりに向けて、\nみんなで楽しくアイデアを出し合う作戦会議。\n\n【第3部】16:00〜16:45\n🤝 ミニ交流会「参加者同士で繋がる」\n\n協賛ブースでは最新ビジネスの紹介や、\nここでしかできない体験も盛りだくさん！\n\n━━━━━━━━━━━━━━━━━━\n👤 登壇者プロフィール\n━━━━━━━━━━━━━━━━━━\n\n【Guest】しもばやし氏（ファミリーレストラン）\n滋賀県住みます芸人として地域活性化に貢献。\n会話術やコミュニケーション術、個人の悩み相談など\n幅広く活動中。「相手を喜ばせるリアクション」や\n「話を聞く力」を武器に、ロジカルな思考で\n自分自身の未来を切り拓いてきた。\n\n【Navigator】大倉 有希（T-3Cプライベートジム）\n滋賀・彦根を拠点に活動するパーソナルトレーナー。\n栄養士として食品メーカーでの経験を活かし、\n数字とデータに基づいた再現性のある体づくりを得意とする。\n「JUST DO IT!! 考えるより動く」をモットーに\n異業種交流会の開催など地域をつなぐ活動にも取り組んでいる。\n\n━━━━━━━━━━━━━━━━━━\n✅ こんな方にオススメ\n━━━━━━━━━━━━━━━━━━\n・一人で集客することに限界を感じている\n・人との距離の縮め方が知りたい\n・滋賀・地元をもっと盛り上げたい\n・気軽だけど中身のある学びを求めている\n・仕事や地域活動でのコミュニケーション力を高めたい\n\n━━━━━━━━━━━━━━━━━━\n🏢 主催\n━━━━━━━━━━━━━━━━━━\n大倉 有希\n\nみんなで創る、滋賀の未来！\nこのイベントは、年内500人参加目標のコミュニティ\n「みんなのWA」のキックオフです。\nあなたも参加して今すぐこのプロジェクトの仲間になろう！\n\n※本イベントのご連絡・当日のご案内はLINEオープンチャットにて",
+      "participants": 30,
+      "fee": "3,000円",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSfLEiyxwL7yM497sMnkhRsn3JA-CPmKrTFk9-fEtBwiwfokxg/viewform",
+      "imageUrl": "/uploads/img-1770823707183-486564662.jpeg",
+      "registrations": [
+        "admin-001",
+        "member-1770561743721-xye9l5j2u"
+      ],
+      "regDetails": {
+        "admin-001": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T03:20:47.959Z"
+        },
+        "member-1770561743721-xye9l5j2u": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-15T16:58:30.894Z"
+        }
+      }
+    },
+    {
+      "id": "event-1771758210002-0k058rzhk",
+      "title": "第3回 体幹・かけっこ教室",
+      "date": "2026-03-22",
+      "time": "09:10-12:10",
+      "location": "プロシードアリーナHIKONE サブアリーナ（〒522-0043 滋賀県彦根市小泉町640番地）",
+      "description": "日本トレーニング推進協会彦根支部主催の体幹・かけっこ教室（第3回）です。年中〜小学6年生を対象に、3つの時間帯で開催します。参加費無料！個別相談ブースも常設しています。",
+      "detailedInfo": "【スケジュール（3部制）】\n①09:10〜10:00　対象：小学3・4・5・6年\n②10:15〜11:05　対象：年長・小学1・2年\n③11:20〜12:10　対象：年中・年長・小学1・2年\n\n【定員】各回40名ずつ\n\n【持ち物】\n・室内シューズ\n・外靴入れ（ビニール袋）\n・飲み物\n・タオル\n\n【お知らせ】\n・今回は全体での姿勢チェックをなくし、たくさん運動します。\n・姿勢チェック希望者は次のクールの時間の時に行う予定です。\n・常時、個別相談ブースを設けますので気軽にご相談ください。\n\n【申込期間】1/5以降〜3/21 19時まで\n\n【お問い合わせ】\n公式LINEアカウントにご登録いただくと、お問い合わせフォームがメッセージにて届きます。\nリンクから、ご希望の時間帯の専用フォームよりお申し込みください。\n\n【主催】日本トレーニング推進協会彦根支部\n代表：上田 永吉\nTEL：090-9166-1443\nInstagram：https://www.instagram.com/jtpahikone",
+      "participants": 120,
+      "fee": "無料",
+      "imageUrl": "/uploads/img-1771758919057-894533804.jpeg",
+      "isPast": false,
+      "applicationUrl": "https://www.instagram.com/jtpahikone",
+      "registrations": [
+        "member-1771839544455-czhfrbvqh"
+      ],
+      "regDetails": {
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-22T11:17:31.445Z"
+        },
+        "member-1771839544455-czhfrbvqh": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-02-23T10:20:52.851Z"
+        }
+      }
+    },
+    {
+      "id": "event-1772646570426-5qhkhuk7g",
+      "title": "第26回みんなのＷＡ彦根交流会",
+      "date": "2026-04-01",
+      "time": "12:00〜15:00（11:00搬入可／16:00完全撤収）",
+      "location": "彦根市高宮町1410 ハウスセレクション内 デスミさん展示場",
+      "description": "フリートーク式での人脈作り・名刺交換・事業紹介。13:00〜希望者による1分自己紹介。新規お連れ様1人につき500円キャッシュバック（上限なし）。体験会のみ参加は参加費不要。目指せ1000人！",
+      "detailedInfo": "【お知らせ】第26回みんなのＷＡ彦根交流会\n\nぜひお友達もお誘い合わせの上ご参加ください！\n\n━━━━━━━━━━━━━━━━━━\n📅 日時\n━━━━━━━━━━━━━━━━━━\n4/1（水）\n12:00〜15:00 交流会\n（11:00〜搬入可能、16:00完全撤収）\n\n━━━━━━━━━━━━━━━━━━\n📍 場所\n━━━━━━━━━━━━━━━━━━\n彦根市高宮町1410 ハウスセレクション内\nデスミさん展示場\n\n━━━━━━━━━━━━━━━━━━\n💰 参加費\n━━━━━━━━━━━━━━━━━━\n3,000円＋持ち寄り一品\nor 4,000円\n\n🌟本交流会のご新規お連れ様1人につき、\n500円キャッシュバックさせていただきます！\n（上限人数なしとします）\n\n※体験会のみ参加の方は、参加費不要\n\n【持ち寄り一品例】\nお菓子、マクドのポテトやナゲット、手作り料理、\nからあげ、アイス、自社商品などなど。\n人数分で無くても大丈夫です👌\n\n━━━━━━━━━━━━━━━━━━\n📋 内容\n━━━━━━━━━━━━━━━━━━\n・フリートーク式での人脈作り\n・参加者同士の名刺、連絡先交換\n・それぞれの事業の説明や体験\n\n13:00〜（希望者のみ、当日参加ok）\n1分自己紹介（2回目の方は30秒）\n名前、やってること、どんな人と出会いたいか、想い\nなどを紹介する場を設けます💁‍♀️\n\n他、\n・初めての参加の方へこの会の説明\n・お悩み相談、交流会での繋がりなどのシェア会\n\n━━━━━━━━━━━━━━━━━━\n\nみなさんで多くの人を巻き込み、\nみんなで大きいフロントをつくる！！\nこの交流会を盛り上げていけたら嬉しいです！！\n\n【目指せ1000人！！！🤝】\nみんなで成し遂げましょう！",
+      "fee": "3,000円＋持ち寄り一品 or 4,000円",
+      "participants": 30,
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLSd9surQUgkx4hEh-TFfrdgLPd2WhVQgd0QfFGt4kUdMlZRjNw/viewform",
+      "isPast": false,
+      "registrations": [
+        "admin-001",
+        "member-002",
+        "member-1770561743721-xye9l5j2u",
+        "member-1771839544455-czhfrbvqh"
+      ],
+      "imageUrl": "/uploads/img-1772676799886-559049591.jpeg",
+      "regDetails": {
+        "admin-001": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-03-04T21:04:59.901Z"
+        },
+        "member-002": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-03-10T03:56:32.129Z"
+        },
+        "member-1770561743721-xye9l5j2u": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-03-10T17:07:14.946Z"
+        },
+        "member-1771839544455-czhfrbvqh": {
+          "paymentMethod": "onsite",
+          "paymentStatus": "onsite",
+          "registeredAt": "2026-03-13T12:17:34.930Z"
+        }
+      },
+      "referrals": {}
+    }
+  ],
+  "blogs": [
+    {
+      "id": "blog-001",
+      "title": "第1回交流会レポート ～20名の事業者が集結～",
+      "date": "2024-12-15",
+      "category": "活動レポート",
+      "excerpt": "記念すべき第1回交流会を開催。20名の事業者が集まり大盛況でした。",
+      "content": "2024年12月10日、彦根市民交流センターにて第1回交流会を開催しました。",
+      "author": "運営事務局",
+      "imageUrl": "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80"
+    },
+    {
+      "id": "blog-002",
+      "title": "メンバー紹介 Vol.1 ～山田太郎さん～",
+      "date": "2025-01-10",
+      "category": "ブログ",
+      "excerpt": "フリーランスWebデザイナーとして活躍する山田太郎さんをご紹介します。",
+      "content": "メンバー紹介企画第1回は山田太郎さんです。",
+      "author": "運営事務局",
+      "imageUrl": "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800&q=80"
+    },
+    {
+      "id": "blog-003",
+      "title": "第2回交流会のご案内",
+      "date": "2026-01-20",
+      "category": "お知らせ",
+      "excerpt": "2026年2月20日に第2回交流会を開催します。テーマは春のコラボレーション企画！",
+      "content": "第2回交流会の開催が決定しました。",
+      "author": "運営事務局",
+      "imageUrl": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80"
+    },
+    {
+      "id": "blog-004",
+      "title": "コラボ事例紹介 ～カフェ × Webデザイナー～",
+      "date": "2026-02-01",
+      "category": "活動レポート",
+      "excerpt": "第1回交流会から生まれたコラボレーション事例をご紹介。SNS運用で来店数30%アップ！",
+      "content": "田中さんと山田さんのコラボレーション事例をご紹介します。",
+      "author": "運営事務局",
+      "imageUrl": "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800&q=80"
+    },
+    {
+      "id": "blog-005",
+      "title": "地域活性化プロジェクト始動のお知らせ",
+      "date": "2026-02-03",
+      "category": "お知らせ",
+      "excerpt": "彦根市と連携した地域活性化プロジェクトが正式にスタートしました。",
+      "content": "みんなのWAと彦根市が連携し、地域活性化プロジェクトを推進します。",
+      "author": "運営事務局",
+      "imageUrl": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+    },
+    {
+      "id": "blog-006",
+      "title": "会員限定セミナー「SNSマーケティング入門」開催レポート",
+      "date": "2026-02-05",
+      "category": "ブログ",
+      "excerpt": "SNSマーケティング入門セミナーを開催。15名の会員が参加し実践的なノウハウを共有。",
+      "content": "会員限定のSNSマーケティングセミナーを開催しました。",
+      "author": "運営事務局",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
+    },
+    {
+      "id": "interview-002",
+      "title": "【交流会】第24回彦根交流会の風景 2026/2/4",
+      "date": "2026-02-04",
+      "category": "活動ムービー",
+      "excerpt": "彦根のビバシティ横のデスにて毎月行っている定例交流会の様子です。12時から15時まで誰でも参加できます。事業者間の集客や学習の場となっています。",
+      "content": "彦根のビバシティ横のデスにて毎月行っている定例交流会の様子です。12時から15時まで誰でも参加できます。事業者間の集客や学習の場となっています。",
+      "author": "参加者全員",
+      "imageUrl": "https://img.youtube.com/vi/tXkoH9hxIJ8/hqdefault.jpg",
+      "youtubeUrl": "https://youtu.be/tXkoH9hxIJ8",
+      "youtubeId": "tXkoH9hxIJ8",
+      "order": 2
+    },
+    {
+      "id": "interview-003",
+      "title": "【交流会】サプライズ！主催ゆきさん誕生日サプライズの様子 第24回彦根交流会にて",
+      "date": "2026-02-04",
+      "category": "活動ムービー",
+      "excerpt": "由紀さんの誕生日のサプライズをしました。ケーキも参加者の中から体に良い米粉を使ったケーキとなっています。参加者のカンパで行いました。",
+      "content": "由紀さんの誕生日のサプライズをしました。ケーキも参加者の中から体に良い米粉を使ったケーキとなっています。参加者のカンパで行いました。",
+      "author": "高橋 健太",
+      "imageUrl": "https://img.youtube.com/vi/VEFYmdGe1vs/hqdefault.jpg",
+      "youtubeUrl": "https://youtu.be/VEFYmdGe1vs",
+      "youtubeId": "VEFYmdGe1vs",
+      "order": 3
+    },
+    {
+      "id": "interview-1770539713805-021n1yq7o",
+      "title": "【講習】予約サイトからマップ集客や通販まで一人で最短構築",
+      "date": "2026-02-04",
+      "category": "活動ムービー",
+      "excerpt": "一気痛感でできる1番安く早くできるスクエアのシステムを使って簡単に予約サイトとGoogle Maps集客を可能にするための事前説明動画です。実際の講座は2000円。みんなのWA会員限定。",
+      "content": "一気痛感でできる1番安く早くできるスクエアのシステムを使って簡単に予約サイトとGoogle Maps集客を可能にするための事前説明動画です。実際の講座は2000円。みんなのWA会員限定。",
+      "author": "クライミングコンサル",
+      "imageUrl": "https://img.youtube.com/vi/8vs0HsYZvME/hqdefault.jpg",
+      "youtubeUrl": "https://youtu.be/8vs0HsYZvME",
+      "youtubeId": "8vs0HsYZvME",
+      "order": 4
+    },
+    {
+      "id": "interview-1770826208956-bqngvcoln",
+      "title": "【イベント】3/14 気球が彦根にやってくる！",
+      "date": "2026-02-16",
+      "category": "活動ムービー",
+      "excerpt": "■イベント名\n気球が彦根にやってくる！！\n～空から見る、いつもと違う景色。子どもたちに、忘れられない体験を。～\n■開催日時\n2026年3月14日（土）\n6:15 受付開始\n6:30 体験開始\n※予備日：2026年3月15日（日）\n※天候により中止・延期となる場合があります。\n■会場\n彦根市石寺町 救助犬訓練施設\n■定員\n100名\n■対象\n小学4・5・6年生\n※小学3年生以下のお子様も体験可能ですが、カゴの小窓からの景色となります（カゴ高さ130cmのため）。\n■参加費\nお一人 500円（保険代込み）\n■主催\nT-3C プライベートジム（大倉 有希）",
+      "content": "■イベント名\n気球が彦根にやってくる！！\n～空から見る、いつもと違う景色。子どもたちに、忘れられない体験を。～\n■開催日時\n2026年3月14日（土）\n6:15 受付開始\n6:30 体験開始\n※予備日：2026年3月15日（日）\n※天候により中止・延期となる場合があります。\n■会場\n彦根市石寺町 救助犬訓練施設\n■定員\n100名\n■対象\n小学4・5・6年生\n※小学3年生以下のお子様も体験可能ですが、カゴの小窓からの景色となります（カゴ高さ130cmのため）。\n■参加費\nお一人 500円（保険代込み）\n■主催\nT-3C プライベートジム（大倉 有希）",
+      "author": "大倉有希",
+      "imageUrl": "https://img.youtube.com/vi/MUzjR36iDOw/hqdefault.jpg",
+      "youtubeUrl": "https://youtu.be/MUzjR36iDOw?si=p3kiIVSF3sU3W3ZJ",
+      "youtubeId": "MUzjR36iDOw",
+      "order": 5
+    },
+    {
+      "id": "interview-1771782185822-61mkg3877",
+      "title": "【彦根交流会】ギブファーストを実践。まずは知ってもらうために【参加者募集】",
+      "date": "2026-02-23",
+      "category": "活動ムービー",
+      "excerpt": "",
+      "content": "",
+      "author": "運営事務局",
+      "imageUrl": "https://img.youtube.com/vi/R7Rfg3Szjh4/hqdefault.jpg",
+      "youtubeUrl": "https://youtu.be/R7Rfg3Szjh4",
+      "youtubeId": "R7Rfg3Szjh4",
+      "order": 6
+    },
+    {
+      "id": "blog-1772640405782-svtoao09t",
+      "title": "【議事録】第25回 みんなのWA彦根交流会",
+      "date": "2026-03-04",
+      "category": "活動レポート",
+      "excerpt": "開催25回目、3年目を迎えたビジネス交流会。多様な事業者が集まり自己紹介・事業相談が活発に行われました。コミュニティサイト「みんなの輪」構想も発表。",
+      "content": "2026年3月4日（水）、彦根市高宮町のハウスセレクション内デスミ様展示場にて、第25回みんなのWA彦根交流会が開催されました。開始25回・3年目を迎えた本会には、彦根・滋賀地域で活動する多様な事業者が集結。自己紹介を通じた事業共有に加え、コミュニティサイトの構想発表や個別の事業相談が活発に行われました。\n\n\n■ 主催者からのアナウンス\n\n・本会は今回で25回目、運営3年目に入りました\n・名刺交換だけで終わらない、実際の事業に繋がる関係構築のため、複数回の参加が推奨されています\n・イベント告知や交流のためのOpenChatへの登録が案内されました\n・会の様子を伝えるためのYouTube取材への協力者、および会の運営に興味がある方を募集中です\n\n\n■ コミュニティサイト「みんなの輪」構想\n\n開発担当のゆいさんより、地域事業者間の連携を促進するハブとなるウェブサイトの構想が説明されました。地域の経営者同士が繋がることで顧客紹介を活発化させ、地域経済をブーストさせることが目的です。\n\n【主な機能】\n・登録事業者のマッピング表示\n・掲示板を通じた参加者間の直接コミュニケーション\n・コラボ企画の立案・共有\n・AIによる自動広告配信\n\n【開発状況】\nAI（バイブコーディング）を活用して開発中。プログラミングに詳しい協力者を求めており、4月には本番環境へ移行予定。参加者にはサイトの試用とフィードバックが依頼されました。\n\n\n■ 参加者自己紹介\n\n渡辺 久友さん ── 彦根と河瀬で整体・ドライヘッドスパサロンを経営\n土山 早苗さん ── 「アロマオレンジ」として活動。アロマ製品やシフォンケーキを提供\n北村さん ── 元自動車販売。現在、美容系物販の事業を準備中\n中村 直人さん ── ライフセービング。知人が作る手焼き煎餅を紹介\n加藤さん ── 「加藤コーヒー」としてコーヒー焙煎業\nゆいさん ── ボルダリングジム経営者兼投資家。商品開発、起業相談、AI導入相談も対応\n藤田さん ── 草津市で行政書士事務所を経営（車庫証明、運送業許可、外国人技能実習生関連など）\n越智本さん ── 「彦根ビール」でクラフトビールを製造。地域活性化のための土地活用パートナーを募集\n中村さん ── 「コーヒーホリックロースター」を彦根七曲り通りで経営\n三田さん ── FP事務所を運営し、資産運用全般（新NISA、保険、不動産）の相談に対応\n戸山さん ── 法人向け在庫品の買取、空き家・遺品整理などを手がける\n米粉のおやつ屋さん ── 長浜で店舗を持たず、米粉のおやつを製造・販売\n北川 平子さん ── 「ミヤコクリエイト」にて外国人材（高度人材、特定技能等）の紹介・サポート\n\n\n■ 主要な個別相談\n\n会の中では、特にゆいさんを中心に具体的な事業相談が複数行われました。\n\n【不動産活用と富裕層向けビジネス】\n株式会社琥珀商会の方より、所有する土地の活用法（雀荘 vs アパート経営）について相談。ゆいさんは、彦根には高所得者層向けの高級賃貸物件が不足している点を指摘し、富裕層向けビジネスの将来性をアドバイスしました。\n\n【米粉のおやつ事業】\n米粉のおやつ屋さんより、店舗を持たない現在の事業形態でのマネタイズに関する課題が共有されました。\n\n【地域活性化とコーヒービジネス】\nコーヒーホリックロースターの中村さんより、彦根・七曲り通りの活性化の難しさについて相談。ゆいさんは、一般客ではなく京都から流れてくる富裕層をターゲットにする戦略の有効性を、自身の母親が手がける麹ワークショップの成功事例を交えて提案しました。\n\n\n■ 重要なポイント\n\n① 富裕層ビジネスの可能性\n彦根・長浜エリアでは、京都から流れてくる富裕層をターゲットとした高付加価値ビジネスに大きな可能性あり。不動産、飲食、体験型サービスなど多岐にわたります。\n\n② AIと地域DX\nAIを活用したコミュニティサイトの開発が進んでおり、地域のデジタルトランスフォーメーションを推進する動きが具体化しています。\n\n\n■ 決定事項\n\nゆいさんと株式会社琥珀商会の方が、事業相談（養殖業、不動産活用）のため、3月19日（火）18:30に会うことを決定しました。\n\n\n■ 次のアクション\n\n・株式会社琥珀商会 ── 3月19日 18:30にゆいさんの店舗を訪問し、具体的な事業相談を行う\n・北川さん ── 自社へのAI導入について、ゆいさんに相談する意向\n・コーヒーホリックロースター中村さん ── 教わった集客の知見を活かし、Instagramの運用を強化する\n・全参加者 ── OpenChatに参加し、開発中のコミュニティサイト「みんなの輪」に登録・試用してフィードバックを行う",
+      "imageUrl": "/uploads/img-1773572496387-714848808.jpeg",
+      "author": "由井辰美"
+    },
+    {
+      "id": "blog-1772647304744-1o3p0m1ry",
+      "title": "【交流会】第25回彦根交流会の風景 2026/3/4",
+      "category": "活動ムービー",
+      "youtubeUrl": "https://youtu.be/rTefJX_YbbY?si=omnituMi_HVSNWcr",
+      "excerpt": "",
+      "content": "",
+      "author": "由井辰美",
+      "date": "2026-03-04",
+      "youtubeId": "rTefJX_YbbY",
+      "imageUrl": "https://img.youtube.com/vi/rTefJX_YbbY/hqdefault.jpg"
+    },
+    {
+      "id": "blog-1773114045314-iwi5w6hfl",
+      "title": "【開催レポート】コミュニケーション講座「集客できる人は頭の中で何をしてる？」",
+      "category": "report",
+      "content": "2026年3月7日、dew spot 会議室（滋賀県彦根市芹川町528）にて、コミュニケーション講座「集客できる人は頭の中で何をしてる？」が開催されました。集客に課題を持つ個人事業主・経営者を対象に、お笑い芸人としての経験とビジネスコンサルティングの知見を融合させた講師による、密度の濃いセミナー＆ワークショップとなりました。\n\n\n■ 全体のまとめ\n\n表面的な集客テクニックではなく、事業主自身の「あり方」や提供価値の本質を深く掘り下げることからスタート。講師は自身の経験を交えながら、ビジネスの目的と手段を明確にし、顧客にどのような「変化」を提供できるかを定義する重要性を伝えました。\n\n後半のワークショップでは「500人規模のコミュニティイベントを成功させるには？」をテーマにグループワークを実施。ターゲットを絞った専門的イベント、企業・自治体との連携、運営組織の強化など多角的なアイデアが飛び交い、参加者にとって明日から実践できるヒントが詰まった時間となりました。\n\n\n■ 第1部：集客とあり方に関する講演\n\n【行動力の源泉 ── やりたいことの明確化】\n\n行動力を高める第一歩は「自分で決めること」。やりたいことを100個書き出すワークを通じて願望を言語化し、小さな成功体験を積み重ねることが自信と行動の原動力になる。このプロセスが、他者にビジョンを情熱を持って伝える基盤にもなると解説されました。\n\n【集客の本質 ── 何を「本当に」提供しているのか？】\n\n飲食店は美味しい食事だけでなく「体験」を、ジムはトレーニングではなく「元気になって帰れる」「自己肯定感が上がる」というポジティブな変化を提供している。建設業なら建物ではなく顧客の豊かな生活の実現。キッチンカー事業でも、フランクフルトと地ビールの先にあるベネフィットを深く考えることが、集客における強力なメッセージになると結論付けられました。\n\n【ビジネスの核となる「あり方」】\n\n「あり方」とは、礼儀礼節や物事の原理原則といった人間としての根本的な部分で、ビジネスの土台。AI技術が進化する現代でも、人と人との関わりがビジネスの中心であり、信頼の基盤となる「あり方」が極めて重要であるという考えが共有されました。\n\n【成功事例① ── ユキ氏の交流会集客】\n\n月次20人規模の交流会を継続開催しているユキ氏の戦略が分析されました。\n・影響力のある人の力を借りる（集客力を持つ人物をリサーチし協力を仰ぐ）\n・圧倒的な量のアプローチ（100件中10件でも個別メッセージを送り続ける）\n・継続する「覚悟」（参加者が少なくても絶対に辞めない決意が信頼を生む）\nリピーターを増やすには、一人ひとりの目的を理解し満たす努力が不可欠とのこと。\n\n【成功事例② ── 講師のライブ集客（146回継続）】\n\n15年間毎月開催のお笑いライブで安定60〜70人を動員する戦略の核は、LINE公式アカウントと「返報性の法則」。\n・誕生日の深夜0時にパーソナルメッセージ＋ギャグ動画＋ライブペア招待券を送付\n・460人が登録、毎月30〜40人の対象者のうち約20%が来場\n・来場者の約20%が次回以降の有料顧客に転換（毎月3〜4人の新規獲得）\n・招待客の28%が手土産を持参するなど、良好な関係構築にも成功\n\n\n■ 第2部：500人規模イベントの企画ワークショップ\n\n「1ヶ月後に500人規模のイベントを開催する」という仮定で、5グループに分かれて企画を練りました。\n\nグループ1 ── マルシェ型イベント\n農家連携の地産地消マルシェ。実行委員100人体制（1人5人集めれば500人）、大企業コラボで協賛獲得。\n\nグループ2 ── 属性特化型イベント\n電車・アニメ・美容など特定の趣味にフォーカス。関連団体・自治体と連携してスポンサーと情報発信の協力を効率的に獲得。\n\nグループ3 ── 普遍的テーマ×専門性\n「開業セミナー」「LINE運用セミナー」など多くの人が興味を持つテーマを設定し、主催者が圧倒的な専門性を持つことで口コミを生む。来場者はLINE公式でリスト化。\n\nグループ4 ── チアリーディング発表会\n子供チームの発表で親族・友人を自動集客。飲食店・雑貨店の出店で多様な魅力のイベントに。\n\nグループ5 ── 組織づくりが先\n「500人集める意味」を問い直し、まず運営組織を作ることを提案。運営参加のメリット提供（集客講習会など）で実行委員を集め、ホームページ・掲示板で有機的成長を目指す。\n\n\n■ ワークショップ後の議論\n\n【ファネル戦略】\n大規模イベントは見込み客を集める「フロントエンド」。ここから本業の顧客（バックエンド）へ繋げる流れが重要。テーマはバックエンドの事業と関連性を持たせることで効果的に機能する。\n\n【大企業からの協賛獲得】\n参加者の一人が、ディズニーやスターバックスから協賛を獲得した経験を共有。ポイントは「企業のCSR活動に貢献できる」という価値提供。企業のゴミ拾いランニングイベントの企画や、学生を巻き込んだ企業イメージ向上など、実践的な手法が語られました。\n\n\n■ 参加者による告知\n\n・下着メーカー「マルコ」協賛の「下着のあり方」無料セミナー（3/22開催）\n・ラッパー・ゲンタ氏のサブスク楽曲リリース\n・ギタリスト・明日香洋平氏のライブ（3/15 越川にて）\n・米粉と甜菜糖の身体に優しいお菓子「米粉スタイル」マルシェ出店情報\n・講師自身のライブ、会場コワーキングスペースの案内\n\n\n■ 持ち帰りたいアクションアイテム\n\n① 提供価値の再定義 ── 商品・サービスが顧客にどんな「ポジティブな変化」を提供しているか言語化する\n② 「あり方」の確立 ── ビジネスの核となる理念・価値観を明確にし、すべての行動の指針にする\n③ 情熱の発信 ── 事業への想いを会う人すべてに伝え続ける。量が質に転化し応援者を生む\n④ 多角的な集客アプローチ ── 影響力のある人物との連携、高頻度アプローチ、返報性を活かした価値提供を自分のビジネスで試す\n⑤ コミュニティ形成の視点 ── 運営メンバーにもメリットがある仕組みを構築し、持続可能な集客基盤をつくる",
+      "eventId": "event-1770820974785-4y53bjn7h",
+      "date": "2026-03-10"
+    }
+  ],
+  "boards": [
+    {
+      "id": "board-1773847839133-29c8thbsm",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "ホームページの使い心地はどうですか？",
+      "content": "何かテストで感想入れてください",
+      "category": "質問",
+      "mentionToId": "member-1770561743721-xye9l5j2u",
+      "mentionToName": "T-3Cプライベートジム",
+      "replies": [],
+      "createdAt": "2026-03-18T15:30:39.133Z"
+    },
+    {
+      "id": "board-1773558848228-ius35k7nk",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "設定について",
+      "content": "右下のメンバーからサービスの内容を詳しく入れてくれるとありがたいです。",
+      "category": "その他",
+      "mentionToId": "member-1771049563225-y6kchm0mm",
+      "mentionToName": "AromaOrange",
+      "replies": [],
+      "createdAt": "2026-03-15T07:14:08.228Z"
+    },
+    {
+      "id": "board-1772683606853-2bmd7up1p",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "GoogleマップのURLを貼ってもらえるとありがたい",
+      "content": "Google マップの共有からコピーして、プロフィールに貼り付けていただけると、地図に📍が立ちます。",
+      "category": "イベント企画",
+      "mentionToId": "member-1772608766526-oxuo1qmbf",
+      "mentionToName": "株式会社N-デザイン",
+      "replies": [
+        {
+          "id": "reply-1773379397213-r32qvifik",
+          "authorId": "member-1771053000213-yv4odgrga",
+          "authorName": "松村愛美",
+          "authorAvatar": "/uploads/img-1771053149778-96208801.jpeg",
+          "content": "そこからクチコミは書けますか？",
+          "createdAt": "2026-03-13T05:23:17.213Z"
+        },
+        {
+          "id": "reply-1773397159543-82d0tz7uy",
+          "authorId": "member-002",
+          "authorName": "由井辰美",
+          "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+          "content": "はい。書けます。",
+          "createdAt": "2026-03-13T10:19:19.543Z"
+        },
+        {
+          "id": "reply-1773512321302-fr6fqulb3",
+          "authorId": "member-002",
+          "authorName": "由井辰美",
+          "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+          "content": "マップ上に口コミが書けるボタンを追加しました",
+          "createdAt": "2026-03-14T18:18:41.302Z"
+        }
+      ],
+      "createdAt": "2026-03-05T04:06:46.853Z",
+      "updatedAt": "2026-03-15T03:04:30.687Z"
+    },
+    {
+      "id": "board-1771958335349-jbqka1buw",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "使ってみた感想を",
+      "content": "YouTubeやSNS投稿もここで経験したり、教えあったりしたら、皆さんの事業にも役に立てると思います。リモート配信やTikTokもやっているので、いろいろ教えることができると思います。",
+      "category": "質問",
+      "mentionToId": "member-1771839544455-czhfrbvqh",
+      "mentionToName": "りーる整骨院",
+      "replies": [
+        {
+          "id": "reply-1773512294814-xqtg6dwwv",
+          "authorId": "member-002",
+          "authorName": "由井辰美",
+          "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+          "content": "マップ上に口コミが書けるボタンを追加しました",
+          "createdAt": "2026-03-14T18:18:14.814Z"
+        }
+      ],
+      "createdAt": "2026-02-24T18:38:55.349Z"
+    },
+    {
+      "id": "board-1771958274560-jycl9x4hh",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "動画運用や投稿について",
+      "content": "皆さんで手分けして動画運用やSNS投稿ができる環境を整えたいです。時間も1日20分まで位で考えています。楽しくできればいいですね。リモート配信やYouTubeもよくやっているので、みんなでチャーケすれば簡単だと思います。",
+      "category": "質問",
+      "mentionToId": "member-1771053000213-yv4odgrga",
+      "mentionToName": "爪職人マナ",
+      "replies": [],
+      "createdAt": "2026-02-24T18:37:54.560Z"
+    },
+    {
+      "id": "board-1771958186218-h6mmfctsd",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "このサイトについて",
+      "content": "要望があれば、テスト段階で何でもコメントに書いてみてください。これは個人宛でできます。",
+      "category": "質問",
+      "mentionToId": "member-1771049563225-y6kchm0mm",
+      "mentionToName": "AromaOrange",
+      "replies": [],
+      "createdAt": "2026-02-24T18:36:26.218Z"
+    },
+    {
+      "id": "board-1771958144275-r36fn21n8",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "運営方法の相談",
+      "content": "掲示板は公開したほうが良いのか、個人限定したほうがいいのかどちらでしょうか？",
+      "category": "質問",
+      "mentionToId": "member-1770561743721-xye9l5j2u",
+      "mentionToName": "T-3Cプライベートジム",
+      "replies": [
+        {
+          "id": "reply-1773492055641-pyz3ia3g8",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:40:55.641Z"
+        },
+        {
+          "id": "reply-1773492056386-xouzeeaq3",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:40:56.386Z"
+        },
+        {
+          "id": "reply-1773492059838-i2r1l8qj4",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:40:59.838Z"
+        },
+        {
+          "id": "reply-1773492060782-evtnfme6x",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:00.782Z"
+        },
+        {
+          "id": "reply-1773492062769-7gj0ac4w2",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:02.769Z"
+        },
+        {
+          "id": "reply-1773492063653-soj4ec3on",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:03.653Z"
+        },
+        {
+          "id": "reply-1773492064257-ogrwpvvqn",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:04.257Z"
+        },
+        {
+          "id": "reply-1773492064925-89aqn3uc6",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:04.925Z"
+        },
+        {
+          "id": "reply-1773492066440-z6phgv48r",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:06.440Z"
+        },
+        {
+          "id": "reply-1773492067710-1rvrxscex",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:07.710Z"
+        },
+        {
+          "id": "reply-1773492068400-mo4407gfq",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:08.400Z"
+        },
+        {
+          "id": "reply-1773492071104-eaqwrzeyk",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:11.104Z"
+        },
+        {
+          "id": "reply-1773492071396-hkk1dbknv",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:11.396Z"
+        },
+        {
+          "id": "reply-1773492071649-y0bk08c0n",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:11.649Z"
+        },
+        {
+          "id": "reply-1773492072902-swusp5d8g",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:12.902Z"
+        },
+        {
+          "id": "reply-1773492074019-lqqco6t9m",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "掲示板公開できたらです！みんなのwaへの貢献度、ランクのようなものを可視化して利用できる幅が増えたら面白いなと思います",
+          "createdAt": "2026-03-14T12:41:14.019Z"
+        },
+        {
+          "id": "reply-1773492154455-yn3081j6i",
+          "authorId": "member-1770561743721-xye9l5j2u",
+          "authorName": "大倉有希",
+          "authorAvatar": "https://unavatar.io/instagram/https://www.instagram.com/yuki925812?igsh=MXB6bnBmZjY4N2ttYw%3D%3D&utm_source=qr",
+          "content": "返事できてるかわからず押しすぎて、いっぱいいきました🤣これもある意味バグ？",
+          "createdAt": "2026-03-14T12:42:34.455Z"
+        },
+        {
+          "id": "reply-1773492738974-e69dv9z8k",
+          "authorId": "member-002",
+          "authorName": "由井辰美",
+          "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+          "content": "投稿しやすくすると、こういうことになりますが、同じ文言だとチェックが入るようにしときます",
+          "createdAt": "2026-03-14T12:52:18.974Z"
+        }
+      ],
+      "createdAt": "2026-02-24T18:35:44.275Z"
+    },
+    {
+      "id": "board-1771839309697-ptmcr896p",
+      "authorId": "member-002",
+      "authorName": "由井辰美",
+      "authorAvatar": "/uploads/img-1770594083392-615708972.jpeg",
+      "title": "掲示板の活用方法について",
+      "content": "掲示板の活用方法が外部なのか内部限定なのかそれとも相談や問い合わせなのか。各店舗を紹介するセクションを作ったほうがいいのかなどいろいろ悩んでいます。",
+      "category": "質問",
+      "replies": [],
+      "createdAt": "2026-02-23T09:35:09.697Z",
+      "updatedAt": "2026-02-24T16:58:18.596Z"
+    },
+    {
+      "id": "board-1771175631079-rp5xwrtfc",
+      "authorId": "member-1770561743721-xye9l5j2u",
+      "authorName": "大倉有希",
+      "authorAvatar": "/uploads/img-1771175015613-279954592.png",
+      "title": "ストレッチ体験",
+      "content": "店舗にてストレッチの体験施術を受け、口コミ投稿を投稿いただける方、是非ご連絡ください。",
+      "category": "コラボ募集",
+      "replies": [],
+      "createdAt": "2026-02-15T17:13:51.079Z"
+    }
+  ],
+  "messages": [],
+  "groupChats": [],
+  "interviews": [],
+  "operatingMembers": [
+    "member-002",
+    "member-005",
+    "member-1770561743721-xye9l5j2u",
+    "member-1771049563225-y6kchm0mm",
+    "member-1771053000213-yv4odgrga",
+    "admin-001",
+    "member-1771839544455-czhfrbvqh"
+  ]
+}
