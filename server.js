@@ -12,7 +12,16 @@ const { OAuth2Client } = require('google-auth-library');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE = path.join(__dirname, 'data.json');
+
+// ============================================================
+// 🔒 永続ディスク設定 (Render)
+// コード更新(デプロイ)してもデータ・画像・バックアップは維持される
+// ⚠️ 運用ルール: data.jsonはAIデベロッパーで編集しないこと！
+//    データ変更は必ず本番の管理画面から行うこと
+// ============================================================
+const PERSISTENT_DIR = process.env.PERSISTENT_DIR || (process.env.RENDER ? '/data' : __dirname);
+const DATA_FILE = path.join(PERSISTENT_DIR, 'data.json');
+const SEED_DATA_FILE = path.join(__dirname, 'data.json'); // 初期データ(GitHub由来)
 
 // Stripe config (set via env vars or admin settings)
 let stripe = null;
@@ -32,8 +41,8 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(__dirname, { maxAge: '1h', etag: true }));
 
-// Upload directory
-const uploadDir = path.join(__dirname, 'uploads');
+// Upload directory (永続ディスク)
+const uploadDir = path.join(PERSISTENT_DIR, 'uploads');
 fs.mkdir(uploadDir, { recursive: true }).catch(console.error);
 
 // Multer config
@@ -928,7 +937,7 @@ app.post('/api/contact', async (req, res) => {
 app.get('/api/admin/backup', async (req, res) => {
     try {
         const data = await readData();
-        const dir = path.join(__dirname, 'backups');
+        const dir = path.join(PERSISTENT_DIR, 'backups');
         await fs.mkdir(dir, { recursive: true });
         const fn = `data-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
         await fs.writeFile(path.join(dir, fn), JSON.stringify(data, null, 2));
@@ -939,7 +948,7 @@ app.get('/api/admin/backup', async (req, res) => {
 // Backup list
 app.get('/api/admin/backups', async (req, res) => {
     try {
-        const dir = path.join(__dirname, 'backups');
+        const dir = path.join(PERSISTENT_DIR, 'backups');
         try { await fs.access(dir); } catch { return res.json({ backups: [] }); }
         const files = await fs.readdir(dir);
         const jsonFiles = files.filter(f => f.startsWith('data-') && f.endsWith('.json'));
@@ -991,7 +1000,7 @@ app.post('/api/admin/backups/:filename/restore', async (req, res) => {
             return res.status(400).json({ error: 'バックアップデータの形式が不正です' });
         }
         // Create safety backup of current data before restore
-        const dir = path.join(__dirname, 'backups');
+        const dir = path.join(PERSISTENT_DIR, 'backups');
         await fs.mkdir(dir, { recursive: true });
         const currentData = await readData();
         const safetyFn = `data-pre-restore-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
@@ -1035,7 +1044,7 @@ app.post('/api/admin/backups/upload', memUpload.single('backup'), async (req, re
             return res.status(400).json({ error: 'JSONの形式が不正です' });
         }
         // Create safety backup
-        const dir = path.join(__dirname, 'backups');
+        const dir = path.join(PERSISTENT_DIR, 'backups');
         await fs.mkdir(dir, { recursive: true });
         const currentData = await readData();
         const safetyFn = `data-pre-restore-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
@@ -1383,11 +1392,23 @@ app.post('/api/ai/generate-shop-info', async (req, res) => {
 app.listen(PORT, async () => {
     console.log(`🎉 みんなのWA Server running on port ${PORT}`);
     console.log(`📁 Data file: ${DATA_FILE}`);
-    // Ensure data.json exists on first run
+    console.log(`💾 Persistent dir: ${PERSISTENT_DIR}`);
+    console.log(`🔒 運用ルール: data.jsonはAIデベロッパーで編集禁止！管理画面から操作すること`);
+    // 永続ディスクのディレクトリを確保
+    await fs.mkdir(PERSISTENT_DIR, { recursive: true }).catch(() => {});
+    // 初回のみ: data.jsonが永続ディスクに無ければシードデータをコピー
     try {
         await fs.access(DATA_FILE);
+        console.log('✅ 既存データを使用します（永続ディスク）');
     } catch {
-        await fs.writeFile(DATA_FILE, JSON.stringify({ members: [], events: [], blogs: [], boards: [], siteSettings: {} }, null, 2));
+        try {
+            await fs.access(SEED_DATA_FILE);
+            await fs.copyFile(SEED_DATA_FILE, DATA_FILE);
+            console.log('📦 初期データをセットアップしました（GitHub → 永続ディスク）');
+        } catch {
+            await fs.writeFile(DATA_FILE, JSON.stringify({ members: [], events: [], blogs: [], boards: [], siteSettings: {} }, null, 2));
+            console.log('📦 空のデータベースを作成しました');
+        }
     }
     // Auto-fill missing introductions from Google Maps URLs
     try {
