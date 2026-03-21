@@ -37,3 +37,4 @@ data.json
 
 # Backup HTML files
 *.backup_*
+*.bak

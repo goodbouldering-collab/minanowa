@@ -124,7 +124,11 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
   background:var(--glass2);backdrop-filter:blur(12px);box-shadow:var(--sh)}
 #evTblWrap{position:relative}
 #evTblWrap thead th{position:sticky;top:0;z-index:4;background:rgba(240,253,244,1)}
-.ev-title-cell{font-weight:600;max-width:0;width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.tbl-img{width:36px;height:26px;object-fit:cover;object-position:center;border-radius:4px;border:1px solid rgba(16,185,129,.08);display:block}
+.tbl-col-img{width:42px;min-width:42px;max-width:42px;text-align:center;padding-left:.3rem;padding-right:.3rem}
+.tbl-col-img .tbl-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(16,185,129,.12)}
+.tbl-col-title{max-width:110px;min-width:70px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev-title-cell{font-weight:600;max-width:110px;min-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
 .ev-title-cell:hover span{text-decoration-color:var(--c1)}
 .ev-reg-link{background:none;border:none;cursor:pointer;color:var(--c1);font-weight:700;font-size:.82rem;text-decoration:underline}
 
@@ -145,8 +149,9 @@ tr:hover .tbl-name-cell .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px r
 .tbl-link:hover{text-decoration:underline}
 .tbl-muted{font-size:.62rem;color:var(--tl)}
 /* Action buttons consistent */
-.tbl-actions{display:flex;gap:.25rem;align-items:center;flex-wrap:nowrap}
-.tbl-actions .btn{font-size:.6rem;padding:.25rem .45rem}
+.tbl-actions{display:flex;gap:.25rem;align-items:center;flex-wrap:nowrap;position:relative;z-index:3}
+.tbl-actions .btn{font-size:.58rem;padding:.2rem .4rem;white-space:nowrap}
+.tbl-actions .btn i{margin-right:.15rem}
 
 /* ===== EVENTS SECTION: Active vs Past split ===== */
 .ev-section-label{display:flex;align-items:center;gap:.4rem;margin:.8rem 0 .4rem;font-size:.78rem;font-weight:700;color:var(--c2)}
@@ -175,11 +180,15 @@ td{padding:.5rem .7rem;border-bottom:1px solid rgba(16,185,129,.03);vertical-ali
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
 tr{transition:var(--transition)}
 tr:hover td{background:rgba(16,185,129,.015)}
-th:first-child,td:first-child{position:sticky;left:0;z-index:2;background:#fff;min-width:120px}
+th:first-child,td:first-child{position:sticky;left:0;z-index:2;background:#fff;min-width:60px}
 th:first-child{background:rgba(240,253,244,1);z-index:3}
-tr:hover td:first-child{background:rgba(240,253,244,.95)}
+td:last-child,th:last-child{position:sticky;right:0;z-index:4;background:#fff}
+th:last-child{background:rgba(240,253,244,1)}
+tr:hover td:first-child,tr:hover td:last-child{background:rgba(240,253,244,.95)}
 td:first-child::after,th:first-child::after{content:'';position:absolute;top:0;right:-6px;bottom:0;width:6px;
   box-shadow:inset 6px 0 6px -6px rgba(0,0,0,.08);pointer-events:none}
+td:last-child::before,th:last-child::before{content:'';position:absolute;top:0;left:-6px;bottom:0;width:6px;
+  box-shadow:inset -6px 0 6px -6px rgba(0,0,0,.08);pointer-events:none}
 .tbl-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;
   border:2px solid rgba(16,185,129,.12);transition:var(--transition)}
 tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,.15)}
@@ -346,6 +355,11 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   border-radius:50%;animation:g-spin .7s linear infinite;flex-shrink:0}
 @keyframes g-spin{to{transform:rotate(360deg)}}
 .g-spinner-text{font-size:.85rem;font-weight:600;color:var(--td)}
+
+/* iOS auto-zoom prevention */
+@supports (-webkit-touch-callout:none){
+  input,textarea,select{font-size:16px !important}
+}
 </style>
 </head>
 <body>
@@ -484,7 +498,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <button class="btn btn-primary" onclick="openEventForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
   <!-- Active events (table, max 6 rows) -->
   <div class="ev-section-label"><i class="fas fa-bolt"></i> 受付中・直近のイベント <span class="ev-count" id="evActiveCount">0</span></div>
-  <div class="tbl-wrap" id="evTblWrap"><table><thead><tr><th>タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>状態</th><th>操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
+  <div class="tbl-wrap" id="evTblWrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>状態</th><th style="min-width:90px">操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
   <!-- Past events (collapsible simple list) -->
   <div class="ev-past-toggle" id="evPastToggle" onclick="togglePastEvents()"><i class="fas fa-chevron-right chevron"></i><i class="fas fa-history"></i> 過去のイベント <span class="ev-count" id="evPastCount" style="background:linear-gradient(135deg,#94a3b8,#64748b)">0</span></div>
   <div class="ev-past-list" id="evPastList"></div>
@@ -523,7 +537,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <button class="blog-tab" onclick="filterBlogTab('活動レポート',this)"><i class="fas fa-file-alt"></i> 活動レポート <span class="tab-count" id="tabCountReport">0</span></button>
     <button class="blog-tab" onclick="filterBlogTab('活動ムービー',this)"><i class="fas fa-film"></i> 活動ムービー <span class="tab-count" id="tabCountMovie">0</span></button>
   </div>
-  <div class="tbl-wrap"><table><thead><tr><th>サムネイル</th><th>タイトル</th><th>カテゴリ</th><th>日付</th><th>著者</th><th>操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
+  <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">タイトル</th><th>カテゴリ</th><th>日付</th><th>著者</th><th style="min-width:110px">操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
 </div>
 
 <!-- MEMBERS -->
@@ -537,9 +551,8 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <span class="mem-search-count" id="memSearchCount"></span>
     </div>
   </div>
-  <div class="tbl-wrap"><table><thead><tr><th>名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th>写真</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
-  <style>#memTbl td:nth-child(8){width:40px;text-align:center;padding:.3rem}
-  #memTbl .tbl-name-cell{min-width:130px}</style>
+  <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th style="min-width:160px">操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
+  <style>#memTbl .tbl-name-cell{min-width:130px}</style>
   <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,.08)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
       <h3 style="font-size:1rem;font-weight:800;display:flex;align-items:center;gap:.4rem"><i class="fas fa-trophy" style="color:#ffd700"></i> ランクメリット編集</h3>
@@ -749,15 +762,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
         <label style="color:#b45309;display:flex;align-items:center;gap:.3rem"><i class="fas fa-gift" style="color:#f59e0b"></i> メンバー特典 <span style="font-size:.58rem;color:var(--tl);font-weight:400">(メンバー同士で使える割引・特典)</span></label>
         <input id="meBenefit" placeholder="例: みんなのWAメンバー初回10%OFF、ドリンク1杯無料 等" style="border-color:rgba(245,158,11,.2)">
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
-        <div class="fg"><label>公開設定</label><select id="mePublic"><option value="true">公開</option><option value="false">非公開</option></select></div>
-        <div class="fg"><label>事業写真（最大5枚）</label><input type="file" id="mePhotos" accept="image/*" multiple onchange="previewNewPhotos(this)"></div>
-      </div>
-      <div style="margin-bottom:.4rem">
-        <div style="font-size:.62rem;color:var(--tl);margin-bottom:.2rem" id="mePhotoLabel">登録済み写真:</div>
-        <div id="mePhotoPreview" style="display:flex;gap:.3rem;flex-wrap:wrap"></div>
-        <div id="meNewPhotoPreview" style="display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.3rem"></div>
-      </div>
+      <div class="fg"><label>公開設定</label><select id="mePublic"><option value="true">公開</option><option value="false">非公開</option></select></div>
       <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存する</button>
     </form>
   </div>
@@ -981,15 +986,17 @@ function renderEvTbl(){
     const safeTitle=_escAttr(ev.title);
     const tr=document.createElement('tr');
     if(isPast) tr.style.opacity='.6';
-    tr.innerHTML=`<td class="ev-title-cell" title="${safeTitle}"><span style="color:var(--c1);text-decoration:underline">${safeTitle}</span></td>
+    const thumb=ev.imageUrl?`<img src="${ev.imageUrl}" class="tbl-img">`:'<span class="tbl-muted">-</span>';
+    tr.innerHTML=`<td class="tbl-col-img">${thumb}</td>
+      <td class="ev-title-cell" title="${safeTitle}"><span style="color:var(--c1);text-decoration:underline">${safeTitle}</span></td>
       <td class="tbl-meta">${_escAttr(ev.date)} ${_escAttr(ev.time)}</td>
       <td class="tbl-meta">${_escAttr(ev.location)}</td>
       <td class="tbl-meta">${ev.participants||'-'}</td>
       <td><span class="ev-reg-link">${regCount}名</span></td>
       <td><span class="status-tag ${isPast?'inactive':'active'}">${isPast?'終了':'受付中'}</span></td>
       <td><div class="tbl-actions">
-        <button class="btn btn-outline btn-sm ev-edit-btn"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-danger btn-sm ev-del-btn"><i class="fas fa-trash"></i></button></div></td>`;
+        <button class="btn btn-outline btn-sm ev-edit-btn"><i class="fas fa-edit"></i> 編集</button>
+        <button class="btn btn-danger btn-sm ev-del-btn"><i class="fas fa-trash"></i> 削除</button></div></td>`;
     tr.querySelector('.ev-title-cell').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
     tr.querySelector('.ev-reg-link').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
     tr.querySelector('.ev-edit-btn').addEventListener('click',()=>editEvent(ev.id));
@@ -1014,8 +1021,8 @@ function renderEvTbl(){
         <span class="ev-past-title" title="${safeTitle}">${safeTitle}</span>
         <span class="ev-past-reg">${regCount}名</span>
         <div class="ev-past-actions">
-          <button class="btn btn-outline btn-sm ev-past-reg-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-users"></i></button>
-          <button class="btn btn-outline btn-sm ev-past-edit-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-outline btn-sm ev-past-reg-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-users"></i> 参加者</button>
+          <button class="btn btn-outline btn-sm ev-past-edit-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-edit"></i> 編集</button>
         </div>`;
       item.querySelector('.ev-past-title').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
       item.querySelector('.ev-past-reg-btn').addEventListener('click',(e)=>{e.stopPropagation();showEvRegs(ev.id,ev.title)});
@@ -1048,7 +1055,7 @@ function _buildEvRegRow(m,eventId,allRegs){
     <td class="tbl-meta">${m.business||'-'}</td>
     <td class="tbl-meta">${m.location||'-'}</td>
     <td style="font-size:.7rem">${payLabel}</td>
-    <td><div class="tbl-actions"><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i></button></div></td>
+    <td><div class="tbl-actions"><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i> 取消</button></div></td>
   </tr>`;
 }
 function _matchPayFilter(m,filter){
@@ -1206,22 +1213,22 @@ function renderBlogTbl(){
   }
   sorted.forEach(b=>{
     const isMovie=b.category==='活動ムービー'&&b.youtubeId;
-    const thumb=isMovie?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" style="width:50px;height:30px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
-      :(b.imageUrl?`<img src="${b.imageUrl}" style="width:50px;height:30px;object-fit:cover;border-radius:4px;border:1px solid rgba(16,185,129,.08)">`
+    const thumb=isMovie?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" class="tbl-img">`
+      :(b.imageUrl?`<img src="${b.imageUrl}" class="tbl-img">`
       :'<span class="tbl-muted">-</span>');
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${thumb}</td>
-      <td style="font-weight:600;font-size:.78rem">${_escAttr(b.title)}${isMovie?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem"></i>':''}</td>
+    tr.innerHTML=`<td class="tbl-col-img">${thumb}</td>
+      <td class="tbl-col-title" title="${_escAttr(b.title)}">${_escAttr(b.title)}${isMovie?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem"></i>':''}</td>
       <td>${getCatBadge(b.category)}</td>
       <td class="tbl-meta">${b.date||'--'}</td>
       <td class="tbl-meta">${_escAttr(b.author||'--')}</td>
       <td><div class="tbl-actions"></div></td>`;
     const acts=tr.querySelector('.tbl-actions');
     const editBtn=document.createElement('button');
-    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i>';
+    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i> 編集';
     editBtn.addEventListener('click',()=>editBlog(b.id));acts.appendChild(editBtn);
     const delBtn=document.createElement('button');
-    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i>';
+    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i> 削除';
     delBtn.addEventListener('click',()=>delBlog(b.id));acts.appendChild(delBtn);
     t.appendChild(tr);
   });
@@ -1324,29 +1331,29 @@ function renderMemTbl(){
     const isAdmin=m.isAdmin;
     const mapLink=m.googleMapUrl?`<a href="${m.googleMapUrl}" target="_blank" class="tbl-link"><i class="fas fa-map-marker-alt"></i> 表示</a>`:'<span class="tbl-muted">-</span>';
     const hpLink=(m.homepage||m.website)?`<a href="${m.homepage||m.website}" target="_blank" class="tbl-link"><i class="fas fa-globe"></i> 表示</a>`:'<span class="tbl-muted">-</span>';
-    const photoCount=(m.photos&&m.photos.length)?`<span class="tbl-link"><i class="fas fa-images"></i> ${m.photos.length}</span>`:'<span class="tbl-muted">-</span>';
+
     const benefitBadge=m.memberBenefit?`<span style="font-size:.55rem;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;padding:.08rem .3rem;border-radius:6px;font-weight:700;margin-left:.3rem" title="${_escAttr(m.memberBenefit)}"><i class="fas fa-gift"></i> 特典</span>`:'';
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td><div class="tbl-name-cell"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><div class="name">${_escAttr(m.name)}${benefitBadge}</div>${m.location?'<div class="sub"><i class="fas fa-map-pin" style="margin-right:.15rem"></i>'+_escAttr(m.location)+'</div>':''}</div></div></td>
+    tr.innerHTML=`<td class="tbl-col-img"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"></td>
+      <td class="tbl-col-title" title="${_escAttr(m.name)}"><div class="name">${_escAttr(m.name)}${benefitBadge}</div>${m.location?'<div class="sub"><i class="fas fa-map-pin" style="margin-right:.15rem"></i>'+_escAttr(m.location)+'</div>':''}</td>
       <td class="tbl-meta">${_escAttr(m.profession||'')}</td>
       <td class="tbl-meta">${_escAttr(m.businessCategory||'')}</td>
       <td class="tbl-meta" style="font-size:.65rem;color:var(--tl)">${_escAttr(m.email)}</td>
       <td class="tbl-meta">${_escAttr(m.location||'')}</td>
-      <td>${mapLink}</td><td>${hpLink}</td><td>${photoCount}</td>
+      <td>${mapLink}</td><td>${hpLink}</td>
       <td><div class="tbl-actions"></div></td>`;
     // Build action buttons via JS to avoid XSS
     const actions=tr.querySelector('.tbl-actions');
     const editBtn=document.createElement('button');
     editBtn.className='btn btn-sm';editBtn.style.cssText='background:var(--c1);color:#fff';
-    editBtn.innerHTML='<i class="fas fa-edit"></i>';
+    editBtn.innerHTML='<i class="fas fa-edit"></i> 編集';
     editBtn.addEventListener('click',()=>openMemEdit(m.id));
     actions.appendChild(editBtn);
 
     const opBtn=document.createElement('button');
     opBtn.className='btn btn-sm';
     opBtn.style.cssText=isOp?'background:var(--c1);color:#fff':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1)';
-    opBtn.innerHTML='<i class="fas fa-user-shield"></i>';
-    opBtn.title='運営';
+    opBtn.innerHTML=isOp?'<i class="fas fa-user-shield"></i> 運営':'<i class="fas fa-user-shield"></i> 運営';
     opBtn.addEventListener('click',()=>toggleOpMember(m.id));
     actions.appendChild(opBtn);
 
@@ -1354,14 +1361,13 @@ function renderMemTbl(){
       const adminBtn=document.createElement('button');
       adminBtn.className='btn btn-sm';
       adminBtn.style.cssText=isAdmin?'background:#f59e0b;color:#fff':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1)';
-      adminBtn.innerHTML='<i class="fas fa-crown"></i>';
-      adminBtn.title='管理者';
+      adminBtn.innerHTML=isAdmin?'<i class="fas fa-crown"></i> 管理者':'<i class="fas fa-crown"></i> 管理者';
       adminBtn.addEventListener('click',()=>toggleAdmin(m.id,!isAdmin));
       actions.appendChild(adminBtn);
 
       const delBtn=document.createElement('button');
       delBtn.className='btn btn-danger btn-sm';
-      delBtn.innerHTML='<i class="fas fa-trash"></i>';
+      delBtn.innerHTML='<i class="fas fa-trash"></i> 削除';
       delBtn.addEventListener('click',()=>delMember(m.id));
       actions.appendChild(delBtn);
     }else{
@@ -1430,10 +1436,10 @@ function renderBoardAdmin(){
     const acts=item.querySelector('.tbl-actions');
     const editBtn=document.createElement('button');
     editBtn.className='btn btn-sm';editBtn.style.cssText='background:var(--c5);color:var(--c1)';
-    editBtn.innerHTML='<i class="fas fa-edit"></i>';
+    editBtn.innerHTML='<i class="fas fa-edit"></i> 編集';
     editBtn.addEventListener('click',()=>openBoardEdit(b.id));acts.appendChild(editBtn);
     const delBtn=document.createElement('button');
-    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i>';
+    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i> 削除';;
     delBtn.addEventListener('click',()=>delBoard(b.id));acts.appendChild(delBtn);
     el.appendChild(item);
   });
@@ -1712,47 +1718,10 @@ function openMemEdit(id){
   document.getElementById('meGmap').value=m.googleMapUrl||'';
   document.getElementById('meBenefit').value=m.memberBenefit||'';
   document.getElementById('mePublic').value=m.isPublic===false?'false':'true';
-  // Photo preview
-  const pp=document.getElementById('mePhotoPreview');
-  pp.innerHTML=(m.photos||[]).map((p,i)=>`<div style="position:relative;width:50px;height:50px">
-    <img src="${p}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid rgba(0,0,0,.08)">
-    <button type="button" onclick="removeMemEditPhoto(${i})" style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#ef4444;color:#fff;border:none;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center">&times;</button></div>`).join('');
   // Avatar preview
   document.getElementById('meAvatarPreview').src=m.avatar||'https://i.pravatar.cc/60';
-  modal._photos=[...(m.photos||[])];
   modal._avatar=m.avatar||'';
-  // Reset new photo previews and file input
-  document.getElementById('meNewPhotoPreview').innerHTML='';
-  document.getElementById('mePhotos').value='';
-  document.getElementById('mePhotoLabel').textContent=(m.photos&&m.photos.length)?`登録済み写真 (${m.photos.length}枚):`:'写真なし';
   modal.style.display='flex';
-}
-function previewNewPhotos(input){
-  const container=document.getElementById('meNewPhotoPreview');
-  container.innerHTML='';
-  const modal=document.getElementById('memEditModal');
-  const existingCount=(modal._photos||[]).length;
-  const maxNew=5-existingCount;
-  const files=[...input.files].slice(0,maxNew);
-  if(!files.length)return;
-  container.innerHTML='<div style="font-size:.62rem;color:var(--c1);width:100%;margin-bottom:.15rem"><i class="fas fa-plus-circle"></i> 追加予定:</div>';
-  files.forEach((f,i)=>{
-    const url=URL.createObjectURL(f);
-    container.innerHTML+=`<div style="position:relative;width:50px;height:50px">
-      <img src="${url}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:2px dashed var(--c3)">
-      </div>`;
-  });
-  if(files.length<input.files.length){
-    container.innerHTML+=`<div style="font-size:.58rem;color:var(--accent);margin-top:.1rem;width:100%">※最大5枚まで（${input.files.length-files.length}枚超過）</div>`;
-  }
-}
-function removeMemEditPhoto(idx){
-  const modal=document.getElementById('memEditModal');
-  modal._photos.splice(idx,1);
-  const pp=document.getElementById('mePhotoPreview');
-  pp.innerHTML=modal._photos.map((p,i)=>`<div style="position:relative;width:50px;height:50px">
-    <img src="${p}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid rgba(0,0,0,.08)">
-    <button type="button" onclick="removeMemEditPhoto(${i})" style="position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#ef4444;color:#fff;border:none;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center">&times;</button></div>`).join('');
 }
 async function saveMemEdit(e){
   e.preventDefault();
@@ -1767,14 +1736,6 @@ async function saveMemEdit(e){
     const fd=new FormData();fd.append('image',avatarFile);
     const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
     if(up.success) avatar=up.url;
-  }
-  // Upload new photos
-  let photos=[...modal._photos];
-  const photoFiles=document.getElementById('mePhotos').files;
-  for(let i=0;i<Math.min(photoFiles.length,5-photos.length);i++){
-    const fd=new FormData();fd.append('image',photoFiles[i]);
-    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
-    if(up.success) photos.push(up.url);
   }
   const body={
     name:document.getElementById('meName').value,
@@ -1792,8 +1753,7 @@ async function saveMemEdit(e){
     googleMapUrl:document.getElementById('meGmap').value,
     memberBenefit:document.getElementById('meBenefit').value.trim(),
     isPublic:document.getElementById('mePublic').value==='true',
-    avatar:avatar,
-    photos:photos
+    avatar:avatar
   };
   const r=await fetch(`/api/admin/members/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){modal.style.display='none';loadAll();showToast('メンバー情報を更新しました')}

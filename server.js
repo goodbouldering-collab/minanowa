@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
@@ -25,10 +26,11 @@ function getStripe(data) {
 }
 
 // Middleware
+app.use(compression());
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-app.use(express.static(__dirname));
+app.use(express.static(__dirname, { maxAge: '1h', etag: true }));
 
 // Upload directory
 const uploadDir = path.join(__dirname, 'uploads');
@@ -112,7 +114,7 @@ async function migrateInterviewsToBlogs() {
 app.post('/api/register', async (req, res) => {
     try {
         const data = await readData();
-        const { email, password, name, furigana, phone, business, businessCategory, location, website, instagram, profession, homepage, photos } = req.body;
+        const { email, password, name, furigana, phone, business, businessCategory, location, website, instagram, profession, homepage } = req.body;
         if (data.members.find(m => m.email === email))
             return res.status(400).json({ error: 'このメールアドレスは既に登録されています' });
         const newMember = {
@@ -121,7 +123,7 @@ app.post('/api/register', async (req, res) => {
             name, furigana, phone, business, businessCategory,
             introduction: '', avatar: '',
             location, website: website || '', instagram: instagram || '', googleMapUrl: req.body.googleMapUrl || '',
-            profession: profession || '', homepage: homepage || '', photos: photos || [],
+            profession: profession || '', homepage: homepage || '',
             sns: {}, skills: [],
             joinDate: new Date().toISOString().split('T')[0],
             isPublic: true, isAdmin: false
@@ -267,7 +269,7 @@ app.post('/api/auth/google', async (req, res) => {
 app.post('/api/register/google', async (req, res) => {
     try {
         const data = await readData();
-        const { googleId, email, name, furigana, phone, business, businessCategory, location, website, instagram, profession, homepage, photos, avatar, googleMapUrl } = req.body;
+        const { googleId, email, name, furigana, phone, business, businessCategory, location, website, instagram, profession, homepage, avatar, googleMapUrl } = req.body;
         if (!googleId || !email) return res.status(400).json({ error: '必須情報が不足しています' });
         if (data.members.find(m => m.email === email))
             return res.status(400).json({ error: 'このメールアドレスは既に登録されています' });
@@ -278,7 +280,7 @@ app.post('/api/register/google', async (req, res) => {
             name, furigana: furigana || '', phone: phone || '', business: business || '', businessCategory: businessCategory || '',
             introduction: '', avatar: avatar || '',
             location: location || '', website: website || '', instagram: instagram || '', googleMapUrl: googleMapUrl || '',
-            profession: profession || '', homepage: homepage || '', photos: photos || [],
+            profession: profession || '', homepage: homepage || '',
             sns: {}, skills: [],
             joinDate: new Date().toISOString().split('T')[0],
             isPublic: true, isAdmin: false
@@ -374,9 +376,10 @@ app.post('/api/resolve-map-url', async (req, res) => {
             if (qParam) {
                 // Clean address: remove postal code (〒xxx-xxxx), business names, normalize
                 let address = qParam
-                    .replace(/〒?\d{3}-?\d{4}\s*/g, '')  // Remove postal code
+                    .replace(/\+/g, ' ')  // URL-encoded spaces
                     .replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)) // Full-width → half-width numbers
-                    .replace(/−/g, '-')  // Full-width minus → half-width
+                    .replace(/[−－]/g, '-')  // Full-width minus → half-width
+                    .replace(/〒?\d{3}-?\d{4}\s*/g, '')  // Remove postal code (after number normalization)
                     .trim();
                 // Try progressive geocoding: most specific to least specific
                 let coords = await geocodeAddress(address);
@@ -578,12 +581,30 @@ app.get('/api/blogs', async (req, res) => {
 
 // ==================== BOARDS (掲示板) ====================
 app.get('/api/boards', async (req, res) => {
-    try { res.json((await readData()).boards || []); } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    try {
+        const data = await readData();
+        let boards = data.boards || [];
+        // Auto-remove consecutive duplicates (same author + same content)
+        let cleaned = false;
+        const seen = new Set();
+        const filtered = [];
+        for (const b of boards) {
+            const key = (b.authorId||'') + '::' + (b.content||'').trim();
+            if (seen.has(key)) { cleaned = true; continue; }
+            seen.add(key);
+            filtered.push(b);
+        }
+        if (cleaned) { data.boards = filtered; await writeData(data); }
+        res.json(filtered);
+    } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 app.post('/api/boards', async (req, res) => {
     try {
         const data = await readData();
         if (!data.boards) data.boards = [];
+        // Reject if same author posted same content recently
+        const dup = data.boards.find(b => b.authorId === req.body.authorId && (b.content||'').trim() === (req.body.content||'').trim());
+        if (dup) return res.json({ success: true, post: dup, duplicate: true });
         const post = { id: genId('board'), ...req.body, replies: [], createdAt: new Date().toISOString() };
         data.boards.unshift(post);
         await writeData(data);
@@ -595,6 +616,9 @@ app.post('/api/boards/:id/reply', async (req, res) => {
         const data = await readData();
         const post = (data.boards || []).find(b => b.id === req.params.id);
         if (!post) return res.status(404).json({ error: 'not found' });
+        // Reject duplicate reply (same author + same content)
+        const dup = (post.replies||[]).find(r => r.authorId === req.body.authorId && (r.content||'').trim() === (req.body.content||'').trim());
+        if (dup) return res.json({ success: true, reply: dup, duplicate: true });
         const reply = { id: genId('reply'), ...req.body, createdAt: new Date().toISOString() };
         post.replies.push(reply);
         await writeData(data);
@@ -1232,6 +1256,130 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'サーバーエラー' });
 });
 
+// ========== AI: Generate shop info from Google Maps URL ==========
+app.post('/api/ai/generate-shop-info', async (req, res) => {
+    try {
+        const { googleMapUrl } = req.body;
+        if (!googleMapUrl) return res.status(400).json({ error: 'Google Maps URLが必要です' });
+
+        // 1. Resolve short URL to get place info from the final URL
+        let finalUrl = googleMapUrl;
+        try {
+            const https = require('https');
+            const http = require('http');
+            const resolveRedirect = (url) => new Promise((resolve) => {
+                const mod = url.startsWith('https') ? https : http;
+                const rq = mod.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (resp) => {
+                    if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location) {
+                        resolve(resp.headers.location);
+                    } else { resolve(url); }
+                });
+                rq.on('error', () => resolve(url));
+                rq.setTimeout(8000, () => { rq.destroy(); resolve(url); });
+            });
+            for (let i = 0; i < 5; i++) {
+                const next = await resolveRedirect(finalUrl);
+                if (next === finalUrl) break;
+                finalUrl = next;
+            }
+        } catch (e) { /* keep original */ }
+
+        // 2. Extract place name/address from URL
+        const decoded = decodeURIComponent(finalUrl);
+        let placeName = '';
+        // /place/NAME/ pattern (most reliable - actual place name)
+        const placeMatch = decoded.match(/\/place\/([^/@]+)/);
+        if (placeMatch) placeName = placeMatch[1].replace(/\+/g, ' ');
+        // /maps?q= pattern
+        if (!placeName) {
+            const qMatch = decoded.match(/[?&]q=([^&]+)/);
+            if (qMatch) placeName = qMatch[1].replace(/\+/g, ' ');
+        }
+
+        // Clean placeName: remove address-like content, keep only store name
+        // Example: "〒522-0043 滋賀県彦根市小泉町３４−８ Notエステ彦根 美肌脱毛ホワイトニング"
+        //   → "Notエステ彦根 美肌脱毛ホワイトニング"
+        let rawPlaceName = placeName; // keep raw for AI prompt
+        if (placeName) {
+            placeName = placeName
+                .replace(/^〒[\d-]+\s*/, '')          // remove postal code 〒xxx-xxxx
+                .replace(/^\d{3}-?\d{4}\s*/, '')      // remove zip without 〒
+                .replace(/^日本[、,\s]+/, '')           // remove 日本 prefix
+                .trim();
+            // Try to extract store name after address pattern:
+            // address pattern: prefecture + city + town + number
+            const addrStoreMatch = placeName.match(/[都道府県].+?[市区町村郡].+?[町村丁目条].{0,10}?[\d０-９]+[^\s]*\s+(.+)/);
+            if (addrStoreMatch && addrStoreMatch[1]) {
+                placeName = addrStoreMatch[1].trim();
+            } else if (/^[^\s]{1,4}[都道府県]/.test(placeName)) {
+                // Still starts with prefecture - try splitting on last number sequence
+                const numSplit = placeName.match(/[\d０-９]+[−\-号]*\s+(.+)/);
+                if (numSplit && numSplit[1]) {
+                    placeName = numSplit[1].trim();
+                } else {
+                    // Pure address, no store name found
+                    placeName = '';
+                }
+            }
+        }
+
+        // 3. Try AI generation
+        let aiResult = null;
+        try {
+            const OpenAI = require('openai');
+            const yaml = require('js-yaml');
+            const os = require('os');
+            const configPath = path.join(os.homedir(), '.genspark_llm.yaml');
+            let aiConfig = {};
+            try { aiConfig = yaml.load(require('fs').readFileSync(configPath, 'utf8')); } catch (e) {}
+            const apiKey = process.env.OPENAI_API_KEY || aiConfig?.openai?.api_key;
+            const baseURL = process.env.OPENAI_BASE_URL || aiConfig?.openai?.base_url;
+            if (apiKey && baseURL) {
+                const client = new OpenAI({ apiKey, baseURL });
+                const prompt = `Google Maps情報(生データ): ${rawPlaceName || '不明'}\n抽出した店名: ${placeName || '不明'}\nGoogle Maps URL: ${googleMapUrl}\n解決URL: ${decoded.substring(0,300)}\n\n上記のGoogle Maps情報から店舗を特定し、以下のJSON形式で返してください。\n\n【重要ルール】\n- "profession" には店名のみを入れてください。住所・郵便番号・地域名は絶対に含めないでください。例: "○○カフェ" "△△サロン"\n- "business" にはその店が提供する主なサービスや業種を短くまとめてください（例: "カフェ・焙煎豆販売", "美容脱毛・ホワイトニング", "整骨・鍼灸"）\n- "introduction" は店の特徴・魅力・人気メニューやサービスを含めて120文字程度で書いてください\n- 実在する店舗の情報をできる限りリサーチし、正確な内容にしてください\n\n{"profession":"店名のみ","introduction":"120文字程度の紹介文","business":"主なサービス・業種"}`;
+                const completion = await client.chat.completions.create({
+                    model: 'gpt-5-mini',
+                    messages: [
+                        { role: 'system', content: 'あなたはGoogleマップの店舗情報を正確にリサーチし、店名・サービス内容・紹介文を生成するプロのアシスタントです。店名には住所や地域名を絶対に含めないでください。提供サービスをできるだけ具体的に調べてください。JSONのみ返してください。' },
+                        { role: 'user', content: prompt }
+                    ],
+                    temperature: 0.7, max_tokens: 500
+                });
+                const text = completion.choices[0]?.message?.content || '';
+                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                if (jsonMatch) aiResult = JSON.parse(jsonMatch[0]);
+            }
+        } catch (e) { console.log('AI fallback:', e.message, e.status || ''); }
+
+        // 4. Fallback: use URL-extracted info
+        if (aiResult && aiResult.profession) {
+            // Post-process AI result: strip any address from profession
+            aiResult.profession = (aiResult.profession || '')
+                .replace(/^〒[\d-]+\s*/, '')
+                .replace(/^[\d-]+\s*/, '')
+                .replace(/^日本[、,\s]+/, '')
+                .replace(/^[^\s]{1,4}[都道府県][^\s]*[市区町村郡][^\s]*\s*/, '')
+                .trim();
+            return res.json({ success: true, ...aiResult, placeName });
+        }
+        // Fallback result from URL parsing (placeName already cleaned above)
+        if (placeName) {
+            return res.json({
+                success: true,
+                profession: placeName,
+                business: '',
+                introduction: '',
+                placeName,
+                note: 'マップURLから店名を取得しました。紹介文は手動で入力してください。'
+            });
+        }
+        res.status(400).json({ error: 'URLから店舗情報を取得できませんでした。正しいGoogle Maps URLを入力してください。' });
+    } catch (err) {
+        console.error('AI generate error:', err);
+        res.status(500).json({ error: '情報取得に失敗しました: ' + (err.message || '') });
+    }
+});
+
 app.listen(PORT, async () => {
     console.log(`🎉 みんなのWA Server running on port ${PORT}`);
     console.log(`📁 Data file: ${DATA_FILE}`);
@@ -1239,9 +1387,53 @@ app.listen(PORT, async () => {
     try {
         await fs.access(DATA_FILE);
     } catch {
-        console.log('📝 Creating initial data.json...');
-        await writeData({ members: [], events: [], blogs: [], messages: [], groupChats: [], boards: [], siteSettings: {}, interviews: [], operatingMembers: [] });
+        await fs.writeFile(DATA_FILE, JSON.stringify({ members: [], events: [], blogs: [], boards: [], siteSettings: {} }, null, 2));
     }
+    // Auto-fill missing introductions from Google Maps URLs
+    try {
+        const data = await readData();
+        const members = data.members || [];
+        const toFill = members.filter(m => !m.introduction && m.googleMapUrl);
+        if (toFill.length > 0) {
+            console.log(`🤖 Auto-generating introductions for ${toFill.length} member(s)...`);
+            const OpenAI = require('openai');
+            const yaml = require('js-yaml');
+            const os = require('os');
+            const configPath = path.join(os.homedir(), '.genspark_llm.yaml');
+            let aiConfig = {};
+            try { aiConfig = yaml.load(require('fs').readFileSync(configPath, 'utf8')); } catch (e) {}
+            const apiKey = process.env.OPENAI_API_KEY || aiConfig?.openai?.api_key;
+            const baseURL = process.env.OPENAI_BASE_URL || aiConfig?.openai?.base_url;
+            if (apiKey) {
+                const client = new OpenAI({ apiKey, baseURL });
+                for (const m of toFill) {
+                    try {
+                        const name = m.profession || m.name || '';
+                        const biz = m.business || '';
+                        const completion = await client.chat.completions.create({
+                            model: 'gpt-5-mini',
+                            messages: [
+                                { role: 'system', content: 'あなたはGoogleマップの店舗情報を正確にリサーチし、紹介文を生成するプロのアシスタントです。提供サービスや人気メニューをできるだけ具体的に調べてください。JSONのみ返してください。' },
+                                { role: 'user', content: `店名: ${name}\n事業: ${biz}\nGoogle Maps URL: ${m.googleMapUrl}\n\n上記の店舗をリサーチし、提供サービス・人気メニュー・特徴を含めた紹介文を120文字程度で生成してください。JSONで{"introduction":"紹介文"}のみ返してください。` }
+                            ],
+                            temperature: 0.7, max_tokens: 300
+                        });
+                        const text = completion.choices[0]?.message?.content || '';
+                        const jsonMatch = text.match(/\{[\s\S]*\}/);
+                        if (jsonMatch) {
+                            const result = JSON.parse(jsonMatch[0]);
+                            if (result.introduction) {
+                                m.introduction = result.introduction;
+                                console.log(`  ✅ ${name}: ${result.introduction.substring(0, 50)}...`);
+                            }
+                        }
+                    } catch (e) { console.error(`  ❌ ${m.name}: ${e.message}`); }
+                }
+                await writeData(data);
+                console.log('🤖 Auto-generation complete.');
+            }
+        }
+    } catch (e) { console.error('Auto-fill error:', e.message); }
     // Ensure uploads directory exists
     await fs.mkdir(uploadDir, { recursive: true }).catch(() => {});
     // Auto-migrate interviews into blogs on startup
