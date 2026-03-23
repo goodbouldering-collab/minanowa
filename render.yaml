@@ -16,7 +16,7 @@ services:
     runtime: node
     region: singapore
     plan: starter         # 有料プラン（永続ディスク使用のため必須）
-    buildCommand: npm install
+    buildCommand: npm ci
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
