@@ -324,6 +324,22 @@ app.put('/api/members/:id', async (req, res) => {
         if (idx === -1) return res.status(404).json({ error: 'not found' });
         const updates = { ...req.body };
         if (updates.password) updates.password = await bcrypt.hash(updates.password, 10);
+        // Auto-cache map coordinates when googleMapUrl changes
+        if (updates.googleMapUrl && updates.googleMapUrl !== data.members[idx].googleMapUrl) {
+            try {
+                const https = require('https'); const http = require('http');
+                const mod = updates.googleMapUrl.startsWith('https') ? https : http;
+                const r = await new Promise((resolve) => {
+                    mod.get(updates.googleMapUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (resp) => {
+                        if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location) resolve({ resolvedUrl: resp.headers.location });
+                        else { let b=''; resp.on('data',c=>b+=c); resp.on('end',()=>resolve({ resolvedUrl: resp.headers.location || updates.googleMapUrl, body: b })); }
+                    }).on('error', () => resolve({}));
+                });
+                const cm = (r.resolvedUrl||'').match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+                if (cm) { updates.mapLat = parseFloat(cm[1]); updates.mapLng = parseFloat(cm[2]); }
+                else if (r.body) { const cm2 = r.body.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/); if (cm2) { updates.mapLat = parseFloat(cm2[1]); updates.mapLng = parseFloat(cm2[2]); } }
+            } catch(e) { /* keep without coords */ }
+        }
         data.members[idx] = { ...data.members[idx], ...updates, id: data.members[idx].id };
         await writeData(data);
         const { password, ...safe } = data.members[idx];

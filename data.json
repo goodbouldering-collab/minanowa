@@ -36,7 +36,9 @@
       "profession": "みんなのWA",
       "homepage": "https://minanowa.com",
       "googleMapUrl": "https://maps.app.goo.gl/wtGtq6UHRxTQbawz8?g_st=ic",
-      "role": "admin"
+      "role": "admin",
+      "mapLat": 35.2745213,
+      "mapLng": 136.2414192
     },
     {
       "id": "member-002",
@@ -64,7 +66,9 @@
       "homepage": "https://goodbouldering.com/",
       "googleMapUrl": "https://maps.app.goo.gl/jFRzV6bVKPY8npi9A?g_st=ic",
       "googleId": "102095419415103604540",
-      "memberBenefit": "初回施術2000円"
+      "memberBenefit": "初回施術2000円",
+      "mapLat": 35.249386,
+      "mapLng": 136.248535
     },
     {
       "id": "member-1770561743721-xye9l5j2u",
@@ -88,7 +92,9 @@
       "profession": "T-3Cプライベートジム",
       "homepage": "https://t-3c-private-gym.studio.site/",
       "googleMapUrl": "https://maps.app.goo.gl/wtGtq6UHRxTQbawz8?g_st=ic",
-      "memberBenefit": "メンバー初回体験50%OFF！"
+      "memberBenefit": "メンバー初回体験50%OFF！",
+      "mapLat": 35.2745213,
+      "mapLng": 136.2414192
     },
     {
       "id": "member-1771049563225-y6kchm0mm",
@@ -112,7 +118,9 @@
       "joinDate": "2026-02-14",
       "isPublic": true,
       "isAdmin": true,
-      "memberBenefit": "WAメンバーアロマ施術500円引き"
+      "memberBenefit": "WAメンバーアロマ施術500円引き",
+      "mapLat": 35.235438,
+      "mapLng": 136.260158
     },
     {
       "id": "member-1771053000213-yv4odgrga",
@@ -136,7 +144,9 @@
       "joinDate": "2026-02-14",
       "isPublic": true,
       "isAdmin": true,
-      "memberBenefit": "メンバー限定！ジェルネイル1,000円OFF"
+      "memberBenefit": "メンバー限定！ジェルネイル1,000円OFF",
+      "mapLat": 35.386356,
+      "mapLng": 136.2557405
     },
     {
       "id": "member-1771839544455-czhfrbvqh",
@@ -160,7 +170,9 @@
       "skills": [],
       "joinDate": "2026-02-23",
       "isPublic": true,
-      "isAdmin": true
+      "isAdmin": true,
+      "mapLat": 35.257957,
+      "mapLng": 136.242515
     },
     {
       "id": "member-1772608766526-oxuo1qmbf",

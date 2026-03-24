@@ -3689,9 +3689,10 @@ function renderMemberMap(){
     return;
   }
   
-  // Parse coordinates and render map
+  // Parse coordinates and render map (use cached coords first)
   const markers=[];
   let resolvePromises=membersWithMap.map(async(m)=>{
+    if(m.mapLat&&m.mapLng){markers.push({lat:m.mapLat,lng:m.mapLng,member:m});return}
     const coords=await resolveGoogleMapUrl(m.googleMapUrl);
     if(coords)markers.push({...coords,member:m});
   });
