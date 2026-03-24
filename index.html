@@ -2015,18 +2015,18 @@ footer{padding:1.5rem .8rem .8rem}
 .bottom-menu-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
   opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
 .bottom-menu-overlay.open{opacity:1;pointer-events:auto}
-.bottom-menu-panel{position:fixed;bottom:0;left:0;right:0;z-index:9000;
-  background:rgba(255,255,255,.78);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
-  border-radius:16px 16px 0 0;
-  box-shadow:0 -4px 30px rgba(0,0,0,.1);border-top:1px solid rgba(255,255,255,.6);
-  transform:translateY(100%);transition:transform .4s cubic-bezier(.32,1,.23,1);
-  padding:0 0 calc(.5rem + env(safe-area-inset-bottom,0px));max-height:80vh;overflow-y:auto;
+.bottom-menu-panel{position:fixed;top:0;right:0;bottom:auto;left:auto;z-index:9000;width:280px;max-height:85vh;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
+  border-radius:0 0 0 18px;
+  box-shadow:-4px 4px 30px rgba(0,0,0,.12);border-left:1px solid rgba(255,255,255,.6);border-bottom:1px solid rgba(255,255,255,.6);
+  transform:translateX(110%);transition:transform .35s cubic-bezier(.32,1,.23,1);
+  padding:.5rem 0 .8rem;overflow-y:auto;
   will-change:transform}
 .bottom-menu-overlay.open .bottom-menu-panel,
-.bottom-menu-panel.open{transform:translateY(0)}
-.bottom-menu-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .35rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
-.bottom-menu-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
-.bottom-menu-handle::after{content:'下にスワイプして閉じる';display:block;font-size:.6rem;color:rgba(60,60,67,.35);margin-top:.3rem;letter-spacing:.05em;font-weight:500;transition:opacity .3s;pointer-events:none}
+.bottom-menu-panel.open{transform:translateX(0)}
+.bottom-menu-handle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem .4rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bottom-menu-handle::before{content:'メニュー';font-size:.95rem;font-weight:800;color:var(--td)}
+.bottom-menu-handle::after{content:'\f00d';font-family:'Font Awesome 6 Free','Font Awesome 5 Free';font-weight:900;font-size:1rem;color:var(--tl);transition:opacity .3s}
 .bottom-menu-list{list-style:none;padding:.2rem 1rem .5rem;margin:0}
 .bottom-menu-list li{border-bottom:1px solid rgba(0,0,0,.05)}
 .bottom-menu-list li:last-child{border-bottom:none}
@@ -2036,31 +2036,29 @@ footer{padding:1.5rem .8rem .8rem}
 .bottom-menu-list a:hover,.bottom-menu-list a:active{background:rgba(13,124,102,.05);color:var(--c1)}
 .bottom-menu-list a i{width:20px;text-align:center;font-size:.95rem;color:var(--c1);opacity:.8}
 .bottom-menu-list .menu-auth-btn{margin-top:.3rem;padding:0}
-@media(min-width:769px){.bottom-menu-overlay .bottom-menu-panel{max-width:400px;margin:0 auto}
-.mypage-panel{max-width:480px;left:50%;transform:translateX(-50%) translateY(100%)}
-.mypage-overlay.open .mypage-panel{transform:translateX(-50%) translateY(0)}
-.bottom-menu-panel,.mypage-panel{border-radius:14px 14px 0 0}}
+@media(min-width:769px){.bottom-menu-panel{width:320px}
+.mypage-panel{width:400px}}
 /* === MYPAGE SLIDE-UP PANEL === */
 .mypage-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
   opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
 .mypage-overlay.open{opacity:1;pointer-events:auto}
-.mypage-panel{position:fixed;bottom:0;left:0;right:0;z-index:9000;
-  background:rgba(255,255,255,.78);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
-  border-radius:16px 16px 0 0;
-  box-shadow:0 -4px 30px rgba(0,0,0,.1);border-top:1px solid rgba(255,255,255,.6);
-  transform:translateY(100%);transition:transform .4s cubic-bezier(.32,1,.23,1);
-  padding:0 0 calc(.5rem + env(safe-area-inset-bottom,0px));max-height:95vh;overflow-y:auto;
+.mypage-panel{position:fixed;top:0;left:0;bottom:auto;right:auto;z-index:9000;width:320px;max-height:90vh;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
+  border-radius:0 0 18px 0;
+  box-shadow:4px 4px 30px rgba(0,0,0,.12);border-right:1px solid rgba(255,255,255,.6);border-bottom:1px solid rgba(255,255,255,.6);
+  transform:translateX(-110%);transition:transform .35s cubic-bezier(.32,1,.23,1);
+  padding:0 0 .8rem;overflow-y:auto;
   will-change:transform}
-.mypage-overlay.open .mypage-panel{transform:translateY(0)}
-.mypage-panel-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .3rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
-.mypage-panel-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
-.mypage-panel-handle::after{content:'下にスワイプして閉じる';display:block;font-size:.6rem;color:rgba(60,60,67,.35);margin-top:.3rem;letter-spacing:.05em;font-weight:500;transition:opacity .3s;pointer-events:none}
+.mypage-overlay.open .mypage-panel{transform:translateX(0)}
+.mypage-panel-handle{width:100%;display:flex;align-items:center;justify-content:flex-end;padding:.5rem 1rem .2rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mypage-panel-handle::before{display:none}
+.mypage-panel-handle::after{content:'\f00d';font-family:'Font Awesome 6 Free','Font Awesome 5 Free';font-weight:900;font-size:1rem;color:var(--tl);transition:opacity .3s}
 .mypage-panel-head{display:flex;align-items:center;justify-content:space-between;padding:.3rem 1rem .5rem;
   border-bottom:1px solid rgba(0,0,0,.06)}
 .mypage-panel-head h3{font-size:1rem;font-weight:800;color:var(--td);display:flex;align-items:center;gap:.4rem;margin:0}
 .mypage-panel-head h3 i{color:var(--c1)}
 /* close button removed */
-.mypage-panel-body{padding:.3rem .7rem calc(.6rem + 60px)}
+.mypage-panel-body{padding:.3rem .7rem .8rem}
 .mypage-panel-body .mypage-header{margin-bottom:.3rem}
 .mypage-panel-body .fg{margin-bottom:.25rem}
 .mypage-panel-body label{font-size:.68rem;margin-bottom:.05rem;display:block}
@@ -4628,63 +4626,30 @@ function closeBottomMenu(){
 
 /* ========== SWIPE-DOWN-TO-DISMISS (iOS sheet style) ========== */
 (function(){
-  function setupSwipeDismiss(panelSel, closeFn, isDesktopCentered){
+  function setupSwipeDismiss(panelSel, closeFn, isMypage){
     const panel=document.querySelector(panelSel);
     if(!panel) return;
-    let startY=0, currentY=0, dragging=false;
-    const THRESHOLD=60;
-
+    // Handle bar = tap to close
+    const handle=panel.querySelector(isMypage?'.mypage-panel-handle':'.bottom-menu-handle');
+    if(handle) handle.addEventListener('click', closeFn);
+    // Swipe: left=close mypage, right=close menu
+    let startX=0, dragging=false;
     function onStart(e){
-      /* only start drag if at top of scroll or touching handle */
       const t=e.target;
-      const isHandle=t.classList.contains('bottom-menu-handle')||t.classList.contains('mypage-panel-handle')||t.closest('.bottom-menu-handle')||t.closest('.mypage-panel-handle');
-      if(!isHandle && panel.scrollTop>5) return;
-      startY=(e.touches?e.touches[0]:e).clientY;
-      currentY=startY;
+      if(t.closest('input,textarea,select,button,a,.btn')) return;
+      startX=(e.touches?e.touches[0]:e).clientX;
       dragging=true;
-      panel.style.transition='none';
     }
-    function onMove(e){
-      if(!dragging) return;
-      currentY=(e.touches?e.touches[0]:e).clientY;
-      let dy=currentY-startY;
-      if(dy<0) dy=0;
-      /* rubber-band: dampen after threshold */
-      const translateY=dy>THRESHOLD? THRESHOLD+(dy-THRESHOLD)*0.3 : dy;
-      if(isDesktopCentered && window.innerWidth>=769){
-        panel.style.transform='translateX(-50%) translateY('+translateY+'px)';
-      }else{
-        panel.style.transform='translateY('+translateY+'px)';
-      }
-      /* prevent background scroll while dragging */
-      if(dy>3) e.preventDefault();
-    }
-    function onEnd(){
+    function onEnd(e){
       if(!dragging) return;
       dragging=false;
-      const dy=currentY-startY;
-      panel.style.transition='';
-      if(dy>=THRESHOLD){
-        /* dismiss */
-        closeFn();
-        /* reset transform after close animation */
-        setTimeout(function(){ panel.style.transform=''; },400);
-      }else{
-        /* snap back */
-        if(isDesktopCentered && window.innerWidth>=769){
-          panel.style.transform='translateX(-50%) translateY(0)';
-        }else{
-          panel.style.transform='translateY(0)';
-        }
-      }
+      const endX=(e.changedTouches?e.changedTouches[0]:e).clientX;
+      const dx=endX-startX;
+      if(isMypage && dx<-60) closeFn(); // swipe left to close mypage
+      if(!isMypage && dx>60) closeFn(); // swipe right to close menu
     }
     panel.addEventListener('touchstart',onStart,{passive:true});
-    panel.addEventListener('touchmove',onMove,{passive:false});
     panel.addEventListener('touchend',onEnd,{passive:true});
-    /* mouse fallback for testing */
-    panel.addEventListener('mousedown',onStart);
-    window.addEventListener('mousemove',onMove);
-    window.addEventListener('mouseup',onEnd);
   }
   /* wait for DOM */
   if(document.readyState==='loading'){
