@@ -3589,14 +3589,14 @@ function renderBoards(){
     post.className='board-post reveal';
     post.style.transitionDelay=(i*100)+'ms';
     const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-long-arrow-alt-right bm-arrow"></i><span class="bm-icon"><i class="fas fa-user"></i></span><span class="bm-name">${b.mentionToName}</span></span>`:'';
-    post.innerHTML=`<div class="board-header">
+    post.innerHTML=`<div class="board-title">${b.title}</div>
+      <div class="board-header">
         <img src="${b.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">
         <div class="bh-info">
           <div class="bh-name"><span>${b.authorName}</span>${mentionHtml}<span class="board-cat">${b.category||''}</span></div>
           <div class="bh-sub"><span class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</span>${ownerBtns}</div>
         </div>
       </div>
-      <div class="board-title">${b.title}</div>
       <div class="board-text">${b.content}</div>
       <div class="board-actions">
         <span class="board-action"><i class="fas fa-reply"></i> 返信 ${(b.replies||[]).length}</span>
