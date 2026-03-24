@@ -3689,12 +3689,18 @@ function renderMemberMap(){
     return;
   }
   
-  // Parse coordinates and render map (use cached coords first)
+  // Parse coordinates and render map (use cached coords first, then API, then fallback)
   const markers=[];
   let resolvePromises=membersWithMap.map(async(m)=>{
+    // 1. Use cached coordinates from data.json
     if(m.mapLat&&m.mapLng){markers.push({lat:m.mapLat,lng:m.mapLng,member:m});return}
-    const coords=await resolveGoogleMapUrl(m.googleMapUrl);
-    if(coords)markers.push({...coords,member:m});
+    // 2. Try API resolution
+    try{
+      const coords=await resolveGoogleMapUrl(m.googleMapUrl);
+      if(coords){markers.push({...coords,member:m});return}
+    }catch(e){}
+    // 3. Fallback: default Hikone center so pin at least shows on map
+    markers.push({lat:35.276+Math.random()*0.01-0.005,lng:136.252+Math.random()*0.01-0.005,member:m});
   });
   
   Promise.all(resolvePromises).then(()=>{
