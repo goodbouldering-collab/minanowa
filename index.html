@@ -1423,7 +1423,7 @@ footer{padding:2rem 1rem 1rem}
 .faq-item.active{border-color:rgba(13,124,102,.2);box-shadow:var(--sh2);background:linear-gradient(135deg,#f0fdfa,#fff)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1),padding .5s ease;
   padding:0 1.4rem;color:var(--tl);font-size:1.1rem;line-height:1.8}
-.faq-item.active .faq-a{max-height:300px;padding:0 1.3rem 1rem}
+.faq-item.active .faq-a{max-height:500px;padding:0 1.3rem 1rem}
 /* ========== CONTACT ========== */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:800px;margin:0 auto}
 /* contact responsive handled in main media queries above */
@@ -2340,10 +2340,14 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
   <div class="faq-list">
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>具体的にどんなメリットがありますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">大きく3つあります。①メンバー同士がお互いのサービスを利用するので「お客さん」が増える ②異業種コラボで新商品・新企画が生まれる ③運営に関わるとWebサイト制作やSNSマーケティングなどのITスキルが実践で身につく。登録するだけで①②が得られ、③はやる気次第でさらにスキルアップできます。</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>参加費用はかかりますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">会員登録は無料です。交流会参加時には1,000円〜3,000円程度の参加費をいただいていますが、それ以上に「仲間がお客さんになる」リターンが大きいと好評です。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>紹介割引とは何ですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">メンバーが新しい方を交流会にお連れいただくと、紹介者の参加費が500円割引になる制度です。「仲間を増やしてくれてありがとう」という感謝の仕組みです。紹介された方（初参加の方）の参加費は通常どおりです。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>紹介割引を受けるには当日一緒に参加する必要がありますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">はい、原則として紹介者ご本人も当日の交流会にご参加いただくことが条件です。ビジネスの場では「紹介した人が同席して橋渡しをする」ことが大切なマナーと考えています。やむを得ず当日参加できない場合は、事前に運営までご連絡ください。</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>どんな業種の方が参加していますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">IT・Web、飲食、教育、建設、サービス、農業、製造、小売など彦根を中心に様々な業種の事業者が参加しています。業種が違うからこそ「お互いのお客さんになれる」のが最大の強みです。</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>個人事業主でも参加できますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">はい、法人・個人事業主を問わずどなたでもご参加いただけます。むしろ個人事業主だからこそ、仲間の力で「一人ではできないこと」を実現できるのがみんなのWAの価値です。</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>交流会はどんな雰囲気ですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">堅苦しい名刺交換会ではなく、お茶やお菓子を囲みながらリラックスした雰囲気で進みます。初参加の方にはスタッフが付き添うので、人見知りの方でも安心です。</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>彦根市外からでも参加できますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">もちろんです。彦根を拠点にしていますが、近隣市町や県外からの参加者も歓迎しています。オンライン参加が可能なイベントもあります。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>運営メンバーの参加費はどうなっていますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">運営メンバーも参加費をお支払いいただきます。運営だから無料ということはなく、全員が同じ条件で参加することで対等なコミュニティを維持しています。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>彦根市外からでも参加できますか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">もちろんです。彦根を拠点にしていますが、長浜・米原・近江八幡など近隣市町や県外からの参加者も歓迎しています。</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>友人・知人を紹介するにはどうすればいいですか？</span><i class="fas fa-chevron-down"></i></div><div class="faq-a">イベント申し込み時に「紹介者あり」を選択し、紹介する方のお名前をご記入ください。当日は紹介者ご本人が一緒にお越しいただき、初参加の方を他のメンバーにご紹介していただけると助かります。紹介はみんなのWAの成長の原動力です！</div></div>
   </div>
   <div class="faq-bottom-tip" style="margin-top:auto;padding:.5rem .6rem;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(13,148,136,.04));border-radius:10px;border:1px solid rgba(16,185,129,.1);text-align:center">
     <p style="font-size:.75rem;font-weight:700;color:var(--td);margin-bottom:.15rem"><i class="fas fa-lightbulb" style="color:#f59e0b;margin-right:.3rem"></i>まずは気軽にご参加ください</p>
