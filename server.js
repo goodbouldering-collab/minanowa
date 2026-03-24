@@ -375,15 +375,23 @@ app.post('/api/resolve-map-url', async (req, res) => {
         });
         
         const r = await new Promise((resolve, reject) => {
-            mod.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (resp) => {
-                if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location) {
-                    resolve({ resolvedUrl: resp.headers.location });
-                } else {
-                    let body = '';
-                    resp.on('data', c => body += c);
-                    resp.on('end', () => resolve({ resolvedUrl: resp.headers.location || url, body }));
-                }
-            }).on('error', reject);
+            // Follow up to 8 redirects to find final URL
+            const follow = (url, depth) => {
+                if (depth > 8) return resolve({ resolvedUrl: url });
+                const m2 = url.startsWith('https') ? https : http;
+                const rq = m2.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MinnanoWA/1.0)' } }, (resp) => {
+                    if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location) {
+                        follow(resp.headers.location, depth + 1);
+                    } else {
+                        let body = '';
+                        resp.on('data', c => body += c);
+                        resp.on('end', () => resolve({ resolvedUrl: resp.headers.location || url, body }));
+                    }
+                });
+                rq.on('error', () => resolve({ resolvedUrl: url }));
+                rq.setTimeout(10000, () => { rq.destroy(); resolve({ resolvedUrl: url }); });
+            };
+            follow(url, 0);
         });
         // Try to extract coords from resolved URL
         const m = (r.resolvedUrl || '').match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
@@ -1405,6 +1413,27 @@ app.post('/api/ai/generate-shop-info', async (req, res) => {
     }
 });
 
+// Admin: Sync map coordinates from seed data (GitHub) to persistent data
+app.post('/api/admin/sync-map-coords', async (req, res) => {
+    try {
+        const data = await readData();
+        let seedData;
+        try { seedData = JSON.parse(await fs.readFile(SEED_DATA_FILE, 'utf8')); } catch { return res.json({ success: false, error: 'シードデータなし' }); }
+        let count = 0;
+        for (const m of data.members) {
+            if (m.mapLat && m.mapLng) continue;
+            const seed = (seedData.members || []).find(s => s.id === m.id || s.email === m.email);
+            if (seed && seed.mapLat && seed.mapLng) {
+                m.mapLat = seed.mapLat;
+                m.mapLng = seed.mapLng;
+                count++;
+            }
+        }
+        if (count > 0) await writeData(data);
+        res.json({ success: true, synced: count });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 app.listen(PORT, async () => {
     console.log(`🎉 みんなのWA Server running on port ${PORT}`);
     console.log(`📁 Data file: ${DATA_FILE}`);
@@ -1416,6 +1445,26 @@ app.listen(PORT, async () => {
     try {
         await fs.access(DATA_FILE);
         console.log('✅ 既存データを使用します（永続ディスク）');
+        // Merge mapLat/mapLng from seed if missing in persistent data
+        try {
+            const seedRaw = await fs.readFile(SEED_DATA_FILE, 'utf8');
+            const seedData = JSON.parse(seedRaw);
+            const liveData = await readData();
+            let merged = 0;
+            for (const m of liveData.members) {
+                if (m.mapLat && m.mapLng) continue;
+                const seed = (seedData.members || []).find(s => s.id === m.id || s.email === m.email);
+                if (seed && seed.mapLat && seed.mapLng) {
+                    m.mapLat = seed.mapLat;
+                    m.mapLng = seed.mapLng;
+                    merged++;
+                }
+            }
+            if (merged > 0) {
+                await writeData(liveData);
+                console.log(`📍 シードから${merged}人のマップ座標をマージしました`);
+            }
+        } catch (e) { /* seed file may not differ from DATA_FILE */ }
     } catch {
         try {
             await fs.access(SEED_DATA_FILE);
@@ -1473,6 +1522,84 @@ app.listen(PORT, async () => {
     } catch (e) { console.error('Auto-fill error:', e.message); }
     // Ensure uploads directory exists
     await fs.mkdir(uploadDir, { recursive: true }).catch(() => {});
+    // Auto-cache map coordinates for members missing mapLat/mapLng
+    try {
+        const data = await readData();
+        const needCoords = (data.members || []).filter(m => m.googleMapUrl && (!m.mapLat || !m.mapLng));
+        if (needCoords.length > 0) {
+            console.log(`📍 ${needCoords.length}人のマップ座標をキャッシュ中...`);
+            const https = require('https');
+            const http = require('http');
+            const resolveMapCoords = (mapUrl) => new Promise((resolve) => {
+                const followRedirects = (url, depth) => {
+                    if (depth > 8) return resolve(null);
+                    const mod = url.startsWith('https') ? https : http;
+                    const rq = mod.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MinnanoWA/1.0)' } }, (resp) => {
+                        if (resp.statusCode >= 300 && resp.statusCode < 400 && resp.headers.location) {
+                            const loc = resp.headers.location;
+                            const cm = loc.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+                            if (cm) return resolve({ lat: parseFloat(cm[1]), lng: parseFloat(cm[2]) });
+                            followRedirects(loc, depth + 1);
+                        } else {
+                            let body = '';
+                            resp.on('data', c => body += c);
+                            resp.on('end', () => {
+                                const cm = body.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+                                if (cm) return resolve({ lat: parseFloat(cm[1]), lng: parseFloat(cm[2]) });
+                                // Try geocode from ?q= param
+                                try {
+                                    const finalUrl = resp.headers.location || url;
+                                    const urlObj = new URL(finalUrl);
+                                    const q = urlObj.searchParams.get('q');
+                                    if (q) {
+                                        const addr = decodeURIComponent(q).replace(/\+/g,' ')
+                                            .replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
+                                            .replace(/[−－]/g,'-').replace(/〒?\d{3}-?\d{4}\s*/g,'').trim();
+                                        const city = addr.match(/(.*?[市区町村郡])/);
+                                        const geoQ = city ? city[1] : addr.substring(0, 20);
+                                        const geoUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(geoQ)}&limit=1`;
+                                        https.get(geoUrl, { headers: { 'User-Agent': 'MinnanoWA/1.0' } }, (gr) => {
+                                            let gb = '';
+                                            gr.on('data', c => gb += c);
+                                            gr.on('end', () => {
+                                                try {
+                                                    const results = JSON.parse(gb);
+                                                    if (results.length > 0) resolve({ lat: parseFloat(results[0].lat), lng: parseFloat(results[0].lon) });
+                                                    else resolve(null);
+                                                } catch { resolve(null); }
+                                            });
+                                        }).on('error', () => resolve(null));
+                                        return;
+                                    }
+                                } catch {}
+                                resolve(null);
+                            });
+                        }
+                    });
+                    rq.on('error', () => resolve(null));
+                    rq.setTimeout(10000, () => { rq.destroy(); resolve(null); });
+                };
+                followRedirects(mapUrl, 0);
+            });
+            let updated = false;
+            for (const m of needCoords) {
+                try {
+                    const coords = await resolveMapCoords(m.googleMapUrl);
+                    if (coords) {
+                        m.mapLat = coords.lat;
+                        m.mapLng = coords.lng;
+                        updated = true;
+                        console.log(`  ✅ ${m.name}: ${coords.lat}, ${coords.lng}`);
+                    } else {
+                        console.log(`  ⚠️ ${m.name}: 座標取得失敗（後でリトライ）`);
+                    }
+                    // Nominatim rate limit: 1 req/sec
+                    await new Promise(r => setTimeout(r, 1200));
+                } catch (e) { console.log(`  ❌ ${m.name}: ${e.message}`); }
+            }
+            if (updated) { await writeData(data); console.log('📍 マップ座標キャッシュ完了'); }
+        }
+    } catch (e) { console.error('Map cache error:', e.message); }
     // Auto-migrate interviews into blogs on startup
     await migrateInterviewsToBlogs();
 });
