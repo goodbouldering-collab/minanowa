@@ -280,9 +280,9 @@ footer{padding:1.5rem 1rem .8rem;scroll-snap-align:start;scroll-snap-stop:always
 .footer-grid h4{font-size:.85rem}
 .footer-grid a{font-size:.8rem}
 .footer-bot{font-size:.75rem;padding-top:.8rem;margin-top:auto}
-.ai-fab{bottom:55px;right:4px;width:56px;height:56px}
-.ai-fab .ai-char-face svg{width:48px;height:48px}
-.ai-telop{bottom:68px;right:62px}
+.ai-fab{bottom:55px;right:4px;width:44px;height:44px}
+.ai-fab .ai-char-face svg{width:36px;height:36px}
+.ai-telop{bottom:63px;right:50px}
 .ai-chat{right:6px;left:6px;width:auto;bottom:55px;max-height:calc(100vh - 115px);
   max-width:100vw;overflow:hidden}}
 .sec-divider::before{content:'';position:absolute;inset:0;
@@ -1856,17 +1856,17 @@ footer{padding:1.5rem .8rem .8rem}
 .hero-scroll{display:none}
 .hero-glow{display:none}}
 /* ========== AI ASSISTANT (Chat) ========== */
-.ai-fab{position:fixed;bottom:60px;right:6px;z-index:9500;width:64px;height:64px;
+.ai-fab{position:fixed;bottom:60px;right:6px;z-index:9500;width:48px;height:48px;
   border-radius:0;background:none;color:var(--c1);
   border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
   font-size:1.5rem;box-shadow:none;
   transition:transform .3s ease,opacity .3s ease;
-  overflow:visible;opacity:.95;padding:0}
-.ai-fab:hover{opacity:1;box-shadow:none;transform:scale(1.08)}
+  overflow:visible;opacity:.92;padding:0}
+.ai-fab:hover{opacity:1;box-shadow:none}
 .ai-fab .ai-char{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
 .ai-fab .ai-char-face{line-height:1;position:relative;
   transition:transform .25s ease;display:flex;align-items:center;justify-content:center}
-.ai-fab .ai-char-face svg{width:56px;height:56px;filter:drop-shadow(0 3px 12px rgba(232,169,72,.4))}
+.ai-fab .ai-char-face svg{width:40px;height:40px;filter:drop-shadow(0 2px 8px rgba(13,124,102,.3))}
 .ai-fab .ai-char-eye{display:none}
 .ai-fab .ai-pulse{display:none}
 .ai-fab .ai-notif-badge{display:none !important;position:absolute;top:-2px;left:-2px;min-width:18px;height:18px;
@@ -1875,7 +1875,7 @@ footer{padding:1.5rem .8rem .8rem}
   padding:0 4px;line-height:1;box-shadow:0 2px 6px rgba(239,68,68,.4)}
 .ai-fab .ai-notif-badge:empty{display:none}
 /* AI Telop (text next to icon) */
-.ai-telop{position:fixed;bottom:78px;right:72px;z-index:9501;
+.ai-telop{position:fixed;bottom:68px;right:58px;z-index:9501;
   pointer-events:none;opacity:0;transform:translateX(6px);
   transition:opacity .4s ease,transform .4s ease;
   white-space:nowrap}
@@ -4983,60 +4983,32 @@ window.addEventListener('scroll',()=>{
 <!-- AI FAB -->
 <button class="ai-fab ai-fab-enter" id="aiFab" onclick="handleFabClick()" title="AIアシスタント">
   <div class="ai-char">
-    <span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-      <!-- body (round, cute) -->
-      <ellipse cx="58" cy="100" rx="28" ry="22" fill="#e8a948"/>
-      <ellipse cx="58" cy="104" rx="20" ry="16" fill="#fef3dc"/>
-      <!-- left paw (resting) -->
-      <circle cx="38" cy="116" r="8" fill="#e8a948"/>
-      <circle cx="38" cy="116" r="5.5" fill="#fef3dc"/>
-      <circle cx="35.5" cy="113.5" r="1.5" fill="#f0b87a"/>
-      <circle cx="40.5" cy="113.5" r="1.5" fill="#f0b87a"/>
-      <circle cx="38" cy="111" r="1.3" fill="#f0b87a"/>
-      <circle cx="38" cy="116.5" r="1.8" fill="#f0b87a"/>
-      <!-- waving paw (RIGHT side, BIG & CUTE) -->
-      <g id="shibaPaw" transform-origin="108 62">
-        <animateTransform attributeName="transform" type="rotate" values="-20 108 62;25 108 62;-20 108 62" dur="0.6s" repeatCount="indefinite"/>
-        <!-- arm -->
-        <path d="M78 88 Q95 72 108 48" fill="none" stroke="#e8a948" stroke-width="10" stroke-linecap="round"/>
-        <!-- paw pad (big!) -->
-        <circle cx="110" cy="42" r="15" fill="#e8a948" stroke="#d4883a" stroke-width="1"/>
-        <circle cx="110" cy="42" r="11" fill="#fef3dc"/>
-        <!-- toe beans (cute & visible) -->
-        <circle cx="105" cy="36" r="3" fill="#f0b87a"/>
-        <circle cx="115" cy="36" r="3" fill="#f0b87a"/>
-        <circle cx="110" cy="31" r="2.8" fill="#f0b87a"/>
-        <circle cx="110" cy="42" r="3.5" fill="#f0b87a"/>
-      </g>
-      <!-- ears (outer) -->
-      <path d="M22 42L10 12C7 4 18 -1 24 8L36 32Z" fill="#d4883a" stroke="#b8722a" stroke-width="1"/>
-      <path d="M78 42L90 12C93 4 82 -1 76 8L64 32Z" fill="#d4883a" stroke="#b8722a" stroke-width="1"/>
-      <!-- ears (inner) -->
-      <path id="shibaEarL" d="M24 38L14 14C13 8 20 5 23 10L33 30Z" fill="#f7c77e"/>
-      <path id="shibaEarR" d="M76 38L86 14C87 8 80 5 77 10L67 30Z" fill="#f7c77e"/>
+    <span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- ears -->
+      <path d="M18 38L8 12C6 6 14 2 20 8L30 28Z" fill="#d4883a" stroke="#b8722a" stroke-width="1"/>
+      <path d="M82 38L92 12C94 6 86 2 80 8L70 28Z" fill="#d4883a" stroke="#b8722a" stroke-width="1"/>
+      <path id="shibaEarL" d="M20 34L12 14C11 10 16 7 19 11L28 28Z" fill="#f7c77e"/>
+      <path id="shibaEarR" d="M80 34L88 14C89 10 84 7 81 11L72 28Z" fill="#f7c77e"/>
       <!-- face -->
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#e8a948"/>
-      <ellipse cx="50" cy="63" rx="26" ry="24" fill="#fef3dc"/>
-      <!-- eyes (sparkly) -->
-      <ellipse id="shibaEyeL" cx="37" cy="54" rx="5" ry="5.5" fill="#2d1b0e"/>
-      <ellipse id="shibaEyeR" cx="63" cy="54" rx="5" ry="5.5" fill="#2d1b0e"/>
-      <circle cx="34.5" cy="51.5" r="2.2" fill="rgba(255,255,255,.85)"/>
-      <circle cx="60.5" cy="51.5" r="2.2" fill="rgba(255,255,255,.85)"/>
-      <circle cx="39" cy="56" r="1" fill="rgba(255,255,255,.5)"/>
-      <circle cx="65" cy="56" r="1" fill="rgba(255,255,255,.5)"/>
+      <ellipse cx="50" cy="56" rx="34" ry="32" fill="#e8a948"/>
+      <ellipse cx="50" cy="60" rx="24" ry="22" fill="#fef3dc"/>
+      <!-- eyes -->
+      <ellipse id="shibaEyeL" cx="37" cy="50" rx="4" ry="4.5" fill="#2d1b0e"/>
+      <ellipse id="shibaEyeR" cx="63" cy="50" rx="4" ry="4.5" fill="#2d1b0e"/>
+      <circle cx="35" cy="48" r="1.5" fill="rgba(255,255,255,.7)"/>
+      <circle cx="61" cy="48" r="1.5" fill="rgba(255,255,255,.7)"/>
       <!-- nose -->
-      <ellipse cx="50" cy="66" rx="5.5" ry="4" fill="#2d1b0e"/>
-      <ellipse cx="50" cy="65" rx="2.2" ry="1.2" fill="rgba(255,255,255,.35)"/>
-      <!-- mouth (happy smile) -->
-      <path id="shibaMouth" d="M42 72 Q50 80 58 72" fill="none" stroke="#2d1b0e" stroke-width="1.8" stroke-linecap="round"/>
-      <!-- cheeks (rosy) -->
-      <circle cx="26" cy="66" r="6.5" fill="rgba(255,130,130,.3)"/>
-      <circle cx="74" cy="66" r="6.5" fill="rgba(255,130,130,.3)"/>
-      <!-- tail (wagging) -->
-      <g transform-origin="82 100">
-        <animateTransform attributeName="transform" type="rotate" values="-8 82 100;8 82 100;-8 82 100" dur="0.4s" repeatCount="indefinite"/>
-        <path d="M78 98 Q92 85 88 72" fill="none" stroke="#e8a948" stroke-width="6" stroke-linecap="round"/>
-      </g>
+      <ellipse cx="50" cy="62" rx="5" ry="3.5" fill="#2d1b0e"/>
+      <ellipse cx="50" cy="61" rx="2" ry="1" fill="rgba(255,255,255,.3)"/>
+      <!-- mouth -->
+      <path id="shibaMouth" d="M50 65 Q50 65 50 65 M44 68 Q50 74 56 68" fill="none" stroke="#2d1b0e" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- cheeks -->
+      <circle cx="28" cy="62" r="5" fill="rgba(255,130,130,.25)"/>
+      <circle cx="72" cy="62" r="5" fill="rgba(255,130,130,.25)"/>
+      <!-- tail (wags) -->
+      <path id="shibaTail" d="M82 78 Q92 68 88 56" fill="none" stroke="#e8a948" stroke-width="5" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" values="-5 82 78;10 82 78;-5 82 78" dur="0.6s" repeatCount="indefinite"/>
+      </path>
     </svg></span>
   </div>
   <span class="ai-notif-badge" id="aiFabBadge"></span>
