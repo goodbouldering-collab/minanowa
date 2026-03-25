@@ -1441,6 +1441,44 @@ app.listen(PORT, async () => {
     console.log(`🔒 運用ルール: data.jsonはAIデベロッパーで編集禁止！管理画面から操作すること`);
     // 永続ディスクのディレクトリを確保
     await fs.mkdir(PERSISTENT_DIR, { recursive: true }).catch(() => {});
+    await fs.mkdir(uploadDir, { recursive: true }).catch(() => {});
+
+    // ========== FORCE RESEED (環境変数 FORCE_RESEED=true で1回だけ実行) ==========
+    if (process.env.FORCE_RESEED === 'true') {
+        console.log('🔄 FORCE_RESEED: データベースと画像をGitHubのコードから上書きします...');
+        try {
+            // 1) data.json をコピー
+            await fs.copyFile(SEED_DATA_FILE, DATA_FILE);
+            console.log('  ✅ data.json を上書きしました');
+            // 2) uploads をコピー (GitHub側 → 永続ディスク側)
+            const seedUploadsDir = path.join(__dirname, 'uploads');
+            const files = await fs.readdir(seedUploadsDir).catch(() => []);
+            let copied = 0;
+            for (const f of files) {
+                const src = path.join(seedUploadsDir, f);
+                const dst = path.join(uploadDir, f);
+                await fs.copyFile(src, dst);
+                copied++;
+            }
+            console.log(`  ✅ uploads ${copied}枚をコピーしました`);
+            // 3) 永続ディスクの不要画像を削除 (GitHub側に無いファイル)
+            const seedFiles = new Set(files);
+            const persistFiles = await fs.readdir(uploadDir).catch(() => []);
+            let removed = 0;
+            for (const f of persistFiles) {
+                if (!seedFiles.has(f)) {
+                    await fs.unlink(path.join(uploadDir, f)).catch(() => {});
+                    removed++;
+                }
+            }
+            if (removed > 0) console.log(`  🗑️ 不要画像 ${removed}枚を削除しました`);
+            console.log('🎉 FORCE_RESEED 完了！環境変数 FORCE_RESEED を削除してください');
+        } catch (e) {
+            console.error('❌ FORCE_RESEED 失敗:', e.message);
+        }
+    }
+    // ========== END FORCE RESEED ==========
+
     // 初回のみ: data.jsonが永続ディスクに無ければシードデータをコピー
     try {
         await fs.access(DATA_FILE);
