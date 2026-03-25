@@ -4379,12 +4379,9 @@ function openMypage(){
       <div class="fg"><label>紹介文</label><textarea id="mpIntro" rows="2">${currentUser.introduction||''}</textarea></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
         <div class="fg"><label>電話番号</label><input id="mpPhone" value="${currentUser.phone||''}"></div>
-        <div class="fg"><label>地域</label><input id="mpLoc" value="${currentUser.location||''}"></div>
+        <div class="fg"><label><i class="fab fa-instagram" style="color:#e1306c"></i> Instagram</label><input id="mpInsta" value="${currentUser.instagram?'@'+currentUser.instagram.replace(/^@/,''):''}" placeholder="@your_id"></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
-        <div class="fg"><label>HP</label><input id="mpWeb" value="${currentUser.website||''}" placeholder="https://"></div>
-        <div class="fg"><label>Instagram</label><input id="mpInsta" value="${currentUser.instagram||''}" placeholder="your_id"></div>
-      </div>
+      <div class="fg"><label>HP</label><input id="mpWeb" value="${currentUser.website||''}" placeholder="https://"></div>
       <div class="fg" style="background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(251,191,36,.03));border:1px solid rgba(245,158,11,.15);border-radius:8px;padding:.3rem .45rem">
         <label style="color:#b45309;font-weight:700;display:flex;align-items:center;gap:.2rem;font-size:.68rem"><i class="fas fa-gift" style="color:#f59e0b"></i> 特典</label>
         <input id="mpBenefit" value="${currentUser.memberBenefit||''}" placeholder="例: 初回10%OFF" style="border-color:rgba(245,158,11,.15)">
@@ -4428,7 +4425,7 @@ async function saveMypage(e){
     profession:document.getElementById('mpProfession').value,
     phone:document.getElementById('mpPhone').value,website:document.getElementById('mpWeb').value,
     homepage:document.getElementById('mpWeb').value,
-    instagram:document.getElementById('mpInsta').value,googleMapUrl:document.getElementById('mpGmap').value,location:document.getElementById('mpLoc').value,
+    instagram:document.getElementById('mpInsta').value.replace(/^@/,''),googleMapUrl:document.getElementById('mpGmap').value,
     memberBenefit:document.getElementById('mpBenefit').value.trim(),
     isPublic:document.getElementById('mpPublic').value==='true',avatar:currentUser.avatar};
   try{
