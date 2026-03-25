@@ -203,7 +203,7 @@ html{scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch}
 .mem-name-sub{font-size:.78rem}
 .mem-biz{font-size:.82rem}
 .mem-loc{font-size:.78rem}
-.mem-intro{font-size:.8rem;-webkit-line-clamp:3;padding:.1rem .5rem}
+.mem-intro{font-size:.8rem;-webkit-line-clamp:4;padding:.1rem .5rem}
 .mem-benefit{font-size:.78rem;padding:.15rem .5rem}
 .mem-card-foot{padding:.2rem .5rem .35rem}
 .mem-links a{width:34px !important;height:34px !important;font-size:.92rem !important}
@@ -1023,7 +1023,7 @@ html{font-size:15px}
 .mem-name{font-size:.95rem}
 .mem-name-sub{font-size:.8rem}
 .mem-biz{font-size:.85rem}
-.mem-intro{font-size:.82rem;-webkit-line-clamp:3}
+.mem-intro{font-size:.82rem;-webkit-line-clamp:4}
 .blog-card{width:75vw;max-width:270px;display:flex;flex-direction:column}
 .blog-card .card-img-wrap{aspect-ratio:3/2;height:auto;max-height:none}
 .blog-date-badge{font-size:.58rem;padding:.15rem .45rem}
@@ -1203,20 +1203,19 @@ footer{padding:2rem 1rem 1rem}
     linear-gradient(135deg,var(--c1),var(--c3)) border-box;transition:var(--spring)}
 .mem-status{position:absolute;bottom:1px;right:1px;width:10px;height:10px;
   border-radius:50%;background:var(--c1);border:2px solid #fff}
-.mem-name{font-size:1.05rem;font-weight:700;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
-.mem-name-link{text-decoration:none;color:var(--td);transition:color .3s ease;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mem-name{font-size:1.05rem;font-weight:700;color:var(--td);line-height:1.3;word-break:break-word}
+.mem-name-link{text-decoration:none;color:var(--td);transition:color .3s ease;display:block;word-break:break-word}
 .mem-name-link:hover{color:var(--c1)}
 .mem-name-sub{font-size:.88rem;font-weight:500;color:var(--tl);margin-top:.05rem}
 .mem-biz{font-size:.88rem;font-weight:600;margin:.05rem 0 0;line-height:1.3;
   background:linear-gradient(135deg,var(--c1),#0e7490);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  word-break:break-word}
 .mem-loc{color:var(--tl);font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:.2rem;margin-top:.05rem}
 .mem-loc i{font-size:.7rem;color:var(--c1);opacity:.7}
 .mem-intro{font-size:.85rem;color:var(--tl);line-height:1.45;padding:.15rem .7rem .1rem;text-align:left;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;
   text-overflow:ellipsis;white-space:pre-line;word-break:break-word}
-.mem-benefit{padding:.2rem .7rem .2rem;font-size:.82rem;font-weight:700;color:#92400e;line-height:1.4;text-align:left;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+.mem-benefit{padding:.2rem .7rem .2rem;font-size:.82rem;font-weight:700;color:#92400e;line-height:1.4;text-align:left;word-break:break-word;
   background:linear-gradient(90deg,rgba(245,158,11,.08),rgba(251,191,36,.03));border-top:1px solid rgba(245,158,11,.08)}
 .mem-benefit i{float:left;margin-right:.3rem;margin-top:.2rem;color:#f59e0b;font-size:.72rem}
 .mem-card-foot{display:flex;align-items:center;justify-content:space-between;
