@@ -388,7 +388,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   <span class="badge">ADMIN</span>
   <span class="spacer"></span>
   <a href="/" class="btn btn-ghost btn-sm"><i class="fas fa-home"></i> <span>サイト</span></a>
-  <button class="btn btn-outline btn-sm" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
 </div>
 
 <!-- 運用ルール注意バー -->
@@ -406,7 +405,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <div class="menu-item" onclick="showPanel('members',this)"><i class="fas fa-users"></i><span>メンバー</span></div>
     <div class="menu-item" onclick="showPanel('boards',this)"><i class="fas fa-comments"></i><span>掲示板</span></div>
     <div class="menu-item" onclick="showPanel('ai',this)"><i class="fas fa-robot"></i><span>AIアシスタント</span></div>
-    <div class="menu-item" onclick="showPanel('backup',this)"><i class="fas fa-database"></i><span>バックアップ</span></div>
+
   </div>
 </div>
 
@@ -619,38 +618,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 </div>
 
 
-<!-- BACKUP -->
-<div class="panel" id="panel-backup">
-  <div class="panel-head"><h2><i class="fas fa-database"></i> バックアップ</h2></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
-    <div class="admin-card">
-      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem">
-        <div style="width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 4px 12px rgba(16,185,129,.25);flex-shrink:0"><i class="fas fa-shield-alt"></i></div>
-        <div><div style="font-weight:700;font-size:.88rem">データバックアップ</div><div style="font-size:.72rem;color:var(--tl)">全データのJSONバックアップを作成</div></div>
-      </div>
-      <button class="btn btn-primary" onclick="doBackup()"><i class="fas fa-download"></i> バックアップ作成</button>
-      <div id="backupResult" style="margin-top:.4rem;font-size:.78rem;color:var(--c2)"></div>
-    </div>
-    <div class="admin-card">
-      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem">
-        <div style="width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 12px rgba(245,158,11,.25);flex-shrink:0"><i class="fas fa-upload"></i></div>
-        <div><div style="font-weight:700;font-size:.88rem">ファイルからリストア</div><div style="font-size:.72rem;color:var(--tl)">JSONファイルをアップロードして復元</div></div>
-      </div>
-      <input type="file" id="backupFileInput" accept=".json" style="display:none" onchange="doUploadRestore(this)">
-      <button class="btn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none" onclick="document.getElementById('backupFileInput').click()"><i class="fas fa-file-upload"></i> JSONファイルを選択</button>
-      <div id="uploadRestoreResult" style="margin-top:.4rem;font-size:.78rem"></div>
-    </div>
-  </div>
 
-  <!-- Backup list -->
-  <div class="admin-card" style="margin-top:.8rem">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
-      <h3 style="margin:0"><i class="fas fa-history"></i> バックアップ一覧</h3>
-      <button class="btn btn-sm" onclick="loadBackupList()" style="font-size:.72rem;padding:.3rem .8rem;border-radius:8px;background:var(--cbg2);border:1px solid rgba(0,0,0,.08)"><i class="fas fa-sync-alt"></i> 更新</button>
-    </div>
-    <div id="backupList" style="font-size:.78rem;color:var(--tl)">読み込み中...</div>
-  </div>
-</div>
 
 <!-- MODALS -->
 <div id="evModal" class="modal">
@@ -706,7 +674,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       </div>
       <!-- Text fields (お知らせ/活動レポート) -->
       <div id="blogTextFields">
-        <div class="fg"><label>概要</label><textarea id="blogExcerpt"></textarea></div>
         <div class="fg"><label>本文</label><textarea id="blogContent" style="min-height:100px"></textarea></div>
         <div class="fg"><label>画像URL</label><input id="blogImg"></div>
         <div class="fg"><label>画像アップロード</label><input type="file" id="blogImgFile" accept="image/*" onchange="uploadImg(this,'blogImg')"></div>
@@ -869,9 +836,10 @@ function updatePreview(){
 function showPanel(id,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
+  const panelEl=document.getElementById('panel-'+id);
+  if(panelEl) panelEl.classList.add('active');
   if(el) el.classList.add('active');
-  if(id==='backup') loadBackupList();
+  if(id==='backup'&&typeof loadBackupList==='function') loadBackupList();
   if(id==='ai') renderAiPanel();
 }
 
@@ -1269,8 +1237,7 @@ function openBlogForm(b,defaultCat){
   document.getElementById('blogId').value=b?b.id:'';
   document.getElementById('blogTitle').value=b?b.title:'';
   document.getElementById('blogCat').value=cat;
-  document.getElementById('blogExcerpt').value=b?b.excerpt||'':'';
-  document.getElementById('blogContent').value=b?b.content||'':'';
+  document.getElementById('blogContent').value=b?b.content||b.excerpt||'':'';
   document.getElementById('blogImg').value=b?b.imageUrl||'':'';
   document.getElementById('blogDate').value=b?b.date||'':'';
   document.getElementById('blogYtUrl').value=b?b.youtubeUrl||'':'';
@@ -1306,7 +1273,6 @@ async function saveBlog(e){
       date:document.getElementById('blogDate').value};
   }else{
     body={title:document.getElementById('blogTitle').value,category:cat,
-      excerpt:document.getElementById('blogExcerpt').value,
       content:document.getElementById('blogContent').value,
       imageUrl:document.getElementById('blogImg').value,
       author:admin.name,
