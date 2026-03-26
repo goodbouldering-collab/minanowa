@@ -3497,7 +3497,6 @@ function renderBlogs(){
         <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
         <div class="read-more">${readMoreText}<i class="fas fa-arrow-right"></i></div>
       </div>`;
-    }
     card.addEventListener('click',function(){showBlogDetail(b)});
     t.appendChild(card);
   });
