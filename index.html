@@ -3478,39 +3478,25 @@ function renderBlogs(){
     const ytId=getYoutubeId(b);
     const card=document.createElement('div');
     card.className='card blog-card';
-    if(ytId){
-      // Video card with thumbnail and play button
-      const thumbUrl=`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
-      const catCls2=getBlogCatClass(b.category||'活動ムービー');
-      const catIcon2=getBlogCatIcon(b.category||'活動ムービー');
-      card.innerHTML=`<div class="card-img-wrap" style="position:relative">
-          <img class="card-img" src="${thumbUrl}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=60'">
-          <div class="card-img-overlay"></div>
-          <span class="card-cat-badge ${catCls2}"><i class="fas ${catIcon2}"></i> ${b.category||'活動ムービー'}</span>
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);transition:background .3s"><i class="fas fa-play-circle" style="font-size:2.2rem;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));transition:transform .3s"></i></div>
-        </div>
-        <div class="card-body">
-          <div class="blog-date-badge"><i class="fas fa-clock"></i> ${b.date}</div>
-          <div class="card-title">${b.title}</div>
-          <div class="blog-excerpt">${(b.excerpt||b.content||'').replace(/<[^>]*>/g,'')}</div>
-          <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
-          <div class="read-more"><span><i class="fas fa-play" style="font-size:.6rem"></i> 動画を見る</span><i class="fas fa-arrow-right"></i></div>
-        </div>`;
-    } else {
-      const catCls=getBlogCatClass(b.category);
-      const catIcon=getBlogCatIcon(b.category);
-      card.innerHTML=`<div class="card-img-wrap">
-          <img class="card-img" src="${b.imageUrl}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
-          <div class="card-img-overlay"></div>
-          <span class="card-cat-badge ${catCls}"><i class="fas ${catIcon}"></i> ${b.category}</span>
-        </div>
-        <div class="card-body">
-          <div class="blog-date-badge"><i class="fas fa-clock"></i> ${b.date}</div>
-          <div class="card-title">${b.title}</div>
-          <div class="blog-excerpt">${(b.excerpt||b.content||'').replace(/<[^>]*>/g,'')}</div>
-          <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
-          <div class="read-more"><span>続きを読む</span><i class="fas fa-arrow-right"></i></div>
-        </div>`;
+    const catCls=getBlogCatClass(b.category||'活動レポート');
+    const catIcon=getBlogCatIcon(b.category||'活動レポート');
+    // Use uploaded image if available, else YouTube thumbnail, else fallback
+    const thumbSrc=b.imageUrl||( ytId?`https://img.youtube.com/vi/${ytId}/mqdefault.jpg`:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60');
+    const playOverlay=ytId?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);transition:background .3s"><i class="fas fa-play-circle" style="font-size:2.2rem;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));transition:transform .3s"></i></div>`:'';
+    const readMoreText=ytId?'<span><i class="fas fa-play" style="font-size:.6rem"></i> 動画を見る</span>':'<span>続きを読む</span>';
+    card.innerHTML=`<div class="card-img-wrap" style="position:relative">
+        <img class="card-img" src="${thumbSrc}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
+        <div class="card-img-overlay"></div>
+        <span class="card-cat-badge ${catCls}"><i class="fas ${catIcon}"></i> ${b.category||'活動レポート'}</span>
+        ${playOverlay}
+      </div>
+      <div class="card-body">
+        <div class="blog-date-badge"><i class="fas fa-clock"></i> ${b.date}</div>
+        <div class="card-title">${b.title}</div>
+        <div class="blog-excerpt">${(b.excerpt||b.content||'').replace(/<[^>]*>/g,'')}</div>
+        <div class="card-meta" style="margin-top:.2rem"><i class="fas fa-user"></i> ${b.author||'運営事務局'}</div>
+        <div class="read-more">${readMoreText}<i class="fas fa-arrow-right"></i></div>
+      </div>`;
     }
     card.addEventListener('click',function(){showBlogDetail(b)});
     t.appendChild(card);
@@ -3555,14 +3541,15 @@ function showBlogDetail(b){
   const base=window.location.origin;
   const blogUrl=base+'/blog/'+b.id;
   const ytId=getYoutubeId(b);
-  // Media section: YouTube embed or image
+  // Media section: YouTube embed and/or image
   let mediaHtml='';
   if(ytId){
-    mediaHtml=`<div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:10px;overflow:hidden;margin-bottom:.7rem;background:#000">
+    mediaHtml+=`<div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:10px;overflow:hidden;margin-bottom:.7rem;background:#000">
       <iframe src="https://www.youtube.com/embed/${ytId}?rel=0" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
     </div>`;
-  } else {
-    mediaHtml=`<img class="blog-detail-img" src="${b.imageUrl||''}" alt="${b.title}" onerror="this.style.display='none'">`;
+  }
+  if(b.imageUrl){
+    mediaHtml+=`<img class="blog-detail-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.style.display='none'">`;
   }
   // Share bar (same style as event)
   const shareBarHtml=`<div class="ev-share-bar">

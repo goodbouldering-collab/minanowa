@@ -664,24 +664,21 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <input type="hidden" id="blogId">
       <input type="hidden" id="blogCat" value="お知らせ">
       <div class="fg"><label>タイトル *</label><input id="blogTitle" required></div>
-      <!-- YouTube fields (活動ムービー only) -->
-      <div id="blogYtFields" style="display:none">
-        <div class="fg"><label><i class="fab fa-youtube" style="color:#f00;margin-right:.2rem"></i>YouTube URL *</label>
-          <input id="blogYtUrl" placeholder="https://www.youtube.com/watch?v=...">
+      <!-- YouTube (optional for all categories) -->
+      <div class="fg" id="blogYtWrap" style="background:linear-gradient(135deg,rgba(255,0,0,.03),rgba(255,0,0,.01));border:1px solid rgba(255,0,0,.1);border-radius:var(--r2);padding:.45rem .55rem">
+        <label style="display:flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;color:#c00"><i class="fab fa-youtube" style="color:#f00"></i> YouTube URL <span style="font-weight:400;color:var(--tl)">(任意 — 入力すると動画付き記事になります)</span></label>
+        <input id="blogYtUrl" placeholder="https://www.youtube.com/watch?v=...">
+        <div id="blogYtPreview" style="margin-top:.4rem;border-radius:var(--r2);overflow:hidden;display:none"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem;margin-top:.3rem">
+          <div class="fg" style="margin-bottom:0"><label style="font-size:.65rem">出演者 <span style="color:var(--tl);font-weight:400">(任意)</span></label><input id="blogSpeaker" placeholder="名前"></div>
+          <div class="fg" style="margin-bottom:0"><label style="font-size:.65rem">動画の説明 <span style="color:var(--tl);font-weight:400">(任意)</span></label><input id="blogMovieDesc" placeholder="動画の概要"></div>
         </div>
-        <div class="fg"><label>出演者</label><input id="blogSpeaker" placeholder="名前"></div>
-        <div id="blogYtPreview" style="margin-bottom:.5rem;border-radius:var(--r2);overflow:hidden;display:none"></div>
       </div>
-      <!-- Text fields (お知らせ/活動レポート) -->
-      <div id="blogTextFields">
-        <div class="fg"><label>本文</label><textarea id="blogContent" style="min-height:100px"></textarea></div>
-        <div class="fg"><label>画像URL</label><input id="blogImg"></div>
-        <div class="fg"><label>画像アップロード</label><input type="file" id="blogImgFile" accept="image/*" onchange="uploadImg(this,'blogImg')"></div>
-      </div>
-      <!-- Description (活動ムービー) -->
-      <div id="blogMovieDescField" style="display:none">
-        <div class="fg"><label>説明</label><textarea id="blogMovieDesc" placeholder="動画の概要を入力"></textarea></div>
-      </div>
+      <!-- Text content -->
+      <div class="fg"><label>本文</label><textarea id="blogContent" style="min-height:100px"></textarea></div>
+      <!-- Image (optional for all categories) -->
+      <div class="fg"><label>画像URL</label><input id="blogImg"></div>
+      <div class="fg"><label>画像アップロード</label><input type="file" id="blogImgFile" accept="image/*" onchange="uploadImg(this,'blogImg')"></div>
       <!-- Date (all types) -->
       <div class="fg"><label>日付</label><input type="date" id="blogDate"></div>
       <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存</button>
@@ -1186,13 +1183,15 @@ function renderBlogTbl(){
     return;
   }
   sorted.forEach(b=>{
-    const isMovie=b.category==='活動ムービー'&&b.youtubeId;
-    const thumb=isMovie?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" class="tbl-img">`
+    const hasYt=!!b.youtubeId;
+    const thumb=hasYt?`<img src="https://img.youtube.com/vi/${b.youtubeId}/default.jpg" class="tbl-img">`
       :(b.imageUrl?`<img src="${b.imageUrl}" class="tbl-img">`
       :'<span class="tbl-muted">-</span>');
+    const ytBadge=hasYt?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem" title="動画付き"></i>':'';
+    const imgBadge=(!hasYt&&b.imageUrl)?'':(!hasYt&&!b.imageUrl?' <span class="tbl-muted" style="font-size:.55rem">(テキストのみ)</span>':'');
     const tr=document.createElement('tr');
     tr.innerHTML=`<td class="tbl-col-img">${thumb}</td>
-      <td class="tbl-col-title" title="${_escAttr(b.title)}">${_escAttr(b.title)}${isMovie?' <i class="fab fa-youtube" style="color:#f00;font-size:.7rem"></i>':''}</td>
+      <td class="tbl-col-title" title="${_escAttr(b.title)}">${_escAttr(b.title)}${ytBadge}${imgBadge}</td>
       <td>${getCatBadge(b.category)}</td>
       <td class="tbl-meta">${b.date||'--'}</td>
       <td class="tbl-meta">${_escAttr(b.author||'--')}</td>
@@ -1218,10 +1217,6 @@ function switchBlogFormTab(cat,el){
   if(!el) el=document.querySelector('.blog-form-tab[data-cat="活動レポート"]');
   el.classList.add('active');
   document.getElementById('blogCat').value=cat;
-  const isMovie=cat==='活動ムービー';
-  document.getElementById('blogYtFields').style.display=isMovie?'block':'none';
-  document.getElementById('blogMovieDescField').style.display=isMovie?'block':'none';
-  document.getElementById('blogTextFields').style.display=isMovie?'none':'block';
   // Update title
   const titleEl=document.getElementById('blogFormTitle');
   const id=document.getElementById('blogId').value;
@@ -1242,7 +1237,7 @@ function openBlogForm(b,defaultCat){
   document.getElementById('blogDate').value=b?b.date||'':'';
   document.getElementById('blogYtUrl').value=b?b.youtubeUrl||'':'';
   document.getElementById('blogSpeaker').value=b?b.author||'':'';
-  document.getElementById('blogMovieDesc').value=b?(b.excerpt||b.content||''):'';
+  document.getElementById('blogMovieDesc').value=b?b.excerpt||'':'';
   // YouTube preview
   const ytPreview=document.getElementById('blogYtPreview');
   if(b&&b.youtubeId){
@@ -1262,22 +1257,19 @@ async function saveBlog(e){
   try{
   const id=document.getElementById('blogId').value;
   const cat=document.getElementById('blogCat').value;
-  const isMovie=cat==='活動ムービー';
-  let body;
-  if(isMovie){
-    const ytUrl=document.getElementById('blogYtUrl').value;
-    const desc=document.getElementById('blogMovieDesc').value;
-    body={title:document.getElementById('blogTitle').value,category:cat,
-      youtubeUrl:ytUrl,excerpt:desc,content:desc,
-      author:document.getElementById('blogSpeaker').value||admin.name,
-      date:document.getElementById('blogDate').value};
-  }else{
-    body={title:document.getElementById('blogTitle').value,category:cat,
-      content:document.getElementById('blogContent').value,
-      imageUrl:document.getElementById('blogImg').value,
-      author:admin.name,
-      date:document.getElementById('blogDate').value};
-  }
+  const ytUrl=document.getElementById('blogYtUrl').value.trim();
+  const movieDesc=document.getElementById('blogMovieDesc').value.trim();
+  const speaker=document.getElementById('blogSpeaker').value.trim();
+  const body={
+    title:document.getElementById('blogTitle').value,
+    category:cat,
+    content:document.getElementById('blogContent').value,
+    excerpt:movieDesc||'',
+    imageUrl:document.getElementById('blogImg').value,
+    youtubeUrl:ytUrl,
+    author:speaker||admin.name,
+    date:document.getElementById('blogDate').value
+  };
   const url=id?`/api/admin/blogs/${id}`:'/api/admin/blogs';
   const r=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
   if(r.success){closeM('blogModal');loadAll();showToast(id?'更新しました':'作成しました')}
