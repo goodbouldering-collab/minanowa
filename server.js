@@ -607,6 +607,25 @@ app.post('/api/events/:id/confirm-payment', async (req, res) => {
     } catch (e) { res.status(500).json({ error: 'エラー' }); }
 });
 
+// Toggle payment status (admin use)
+app.post('/api/events/:id/toggle-payment', async (req, res) => {
+    try {
+        const data = await readData();
+        const { memberId, newStatus } = req.body;
+        const ev = data.events.find(e => e.id === req.params.id);
+        if (!ev) return res.status(404).json({ error: 'not found' });
+        if (!ev.regDetails || !ev.regDetails[memberId]) return res.status(404).json({ error: 'registration not found' });
+        ev.regDetails[memberId].paymentStatus = newStatus; // 'paid' or 'pending' or 'onsite'
+        if (newStatus === 'paid') {
+            ev.regDetails[memberId].paidAt = new Date().toISOString();
+        } else {
+            delete ev.regDetails[memberId].paidAt;
+        }
+        await writeData(data);
+        res.json({ success: true, paymentStatus: newStatus });
+    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+});
+
 // ==================== BLOGS ====================
 app.get('/api/blogs', async (req, res) => {
     try { res.json((await readData()).blogs); } catch (e) { res.status(500).json({ error: 'エラー' }); }

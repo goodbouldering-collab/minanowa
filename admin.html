@@ -521,9 +521,9 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <div id="evRegFilterTabs" style="display:none;margin-bottom:.5rem;gap:.3rem;flex-wrap:wrap">
       <button class="blog-tab active" data-pay-filter="all" onclick="filterEvRegByPayment('all',this)"><i class="fas fa-users"></i> 全員 <span class="tab-count" id="payFilterAll">0</span></button>
       <button class="blog-tab" data-pay-filter="onsite" onclick="filterEvRegByPayment('onsite',this)"><i class="fas fa-money-bill-wave"></i> 現場払い <span class="tab-count" id="payFilterOnsite">0</span></button>
-      <button class="blog-tab" data-pay-filter="stripe" onclick="filterEvRegByPayment('stripe',this)"><i class="fas fa-credit-card"></i> カード決済 <span class="tab-count" id="payFilterStripe">0</span></button>
-      <button class="blog-tab" data-pay-filter="stripe-paid" onclick="filterEvRegByPayment('stripe-paid',this)"><i class="fas fa-check-circle"></i> カード済 <span class="tab-count" id="payFilterStripePaid">0</span></button>
-      <button class="blog-tab" data-pay-filter="stripe-pending" onclick="filterEvRegByPayment('stripe-pending',this)"><i class="fas fa-clock"></i> カード未 <span class="tab-count" id="payFilterStripePending">0</span></button>
+      <button class="blog-tab" data-pay-filter="stripe" onclick="filterEvRegByPayment('stripe',this)"><i class="fas fa-credit-card"></i> カード <span class="tab-count" id="payFilterStripe">0</span></button>
+      <button class="blog-tab" data-pay-filter="paid" onclick="filterEvRegByPayment('paid',this)"><i class="fas fa-check-circle" style="color:#10b981"></i> 支払完了 <span class="tab-count" id="payFilterPaid">0</span></button>
+      <button class="blog-tab" data-pay-filter="unpaid" onclick="filterEvRegByPayment('unpaid',this)"><i class="fas fa-clock" style="color:#f59e0b"></i> 支払未完 <span class="tab-count" id="payFilterUnpaid">0</span></button>
     </div>
     <div class="tbl-wrap" style="margin-bottom:0"><table><thead><tr><th>名前</th><th>店名</th><th>業種</th><th>地域</th><th>支払</th><th>操作</th></tr></thead><tbody id="evRegTbl"></tbody></table></div>
     <div id="evRegEmpty" style="display:none;text-align:center;padding:1.5rem;color:var(--tl);font-size:.8rem"><i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:.3rem;color:var(--c5)"></i><span id="evRegEmptyMsg">参加者はまだいません</span></div>
@@ -1011,7 +1011,18 @@ function togglePastEvents(){
 let _currentEvRegs=null,_currentEvRegTitle='',_currentPayFilter='all';
 function _buildEvRegRow(m,eventId,allRegs){
   const p=m.payment||{};
-  const payLabel=p.paymentMethod==='stripe'?(p.paymentStatus==='paid'?'<span style="color:#10b981;font-weight:700"><i class="fas fa-check-circle"></i> カード済</span>':'<span style="color:#f59e0b;font-weight:700"><i class="fas fa-clock"></i> カード未</span>'):'<span style="color:var(--tl)"><i class="fas fa-money-bill-wave"></i> 現場</span>';
+  const isStripe=p.paymentMethod==='stripe';
+  const isPaid=p.paymentStatus==='paid';
+  const methodIcon=isStripe?'fa-credit-card':'fa-money-bill-wave';
+  const methodLabel=isStripe?'カード':'現場';
+  const statusColor=isPaid?'#10b981':'#f59e0b';
+  const statusIcon=isPaid?'fa-toggle-on':'fa-toggle-off';
+  const statusLabel=isPaid?'完了':'未完';
+  const nextStatus=isPaid?(isStripe?'pending':'onsite'):'paid';
+  const payLabel=`<div style="display:flex;flex-direction:column;align-items:center;gap:.15rem;font-size:.65rem">
+    <span style="color:var(--tl)"><i class="fas ${methodIcon}"></i> ${methodLabel}</span>
+    <button onclick="togglePayStatus('${eventId}','${m.id}','${nextStatus}')" style="background:none;border:1px solid ${statusColor};color:${statusColor};border-radius:10px;padding:.1rem .45rem;cursor:pointer;font-size:.65rem;font-weight:700;display:flex;align-items:center;gap:.2rem;transition:all .2s" onmouseover="this.style.background='${statusColor}';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='${statusColor}'"><i class="fas ${statusIcon}"></i> ${statusLabel}</button>
+  </div>`;
   let refLabel='';
   if(m.referral&&m.referral.referrerId){
     const refMem=allRegs.find(x=>x.id===m.referral.referrerId);
@@ -1034,21 +1045,21 @@ function _matchPayFilter(m,filter){
   if(filter==='all') return true;
   if(filter==='onsite') return p.paymentMethod!=='stripe';
   if(filter==='stripe') return p.paymentMethod==='stripe';
-  if(filter==='stripe-paid') return p.paymentMethod==='stripe'&&p.paymentStatus==='paid';
-  if(filter==='stripe-pending') return p.paymentMethod==='stripe'&&p.paymentStatus!=='paid';
+  if(filter==='paid') return p.paymentStatus==='paid';
+  if(filter==='unpaid') return p.paymentStatus!=='paid';
   return true;
 }
 function _updatePayFilterCounts(regs){
   const all=regs.length;
   const onsite=regs.filter(m=>(m.payment||{}).paymentMethod!=='stripe').length;
   const stripe=regs.filter(m=>(m.payment||{}).paymentMethod==='stripe').length;
-  const stripePaid=regs.filter(m=>{const p=m.payment||{};return p.paymentMethod==='stripe'&&p.paymentStatus==='paid'}).length;
-  const stripePending=regs.filter(m=>{const p=m.payment||{};return p.paymentMethod==='stripe'&&p.paymentStatus!=='paid'}).length;
+  const paid=regs.filter(m=>(m.payment||{}).paymentStatus==='paid').length;
+  const unpaid=regs.filter(m=>(m.payment||{}).paymentStatus!=='paid').length;
   document.getElementById('payFilterAll').textContent=all;
   document.getElementById('payFilterOnsite').textContent=onsite;
   document.getElementById('payFilterStripe').textContent=stripe;
-  document.getElementById('payFilterStripePaid').textContent=stripePaid;
-  document.getElementById('payFilterStripePending').textContent=stripePending;
+  document.getElementById('payFilterPaid').textContent=paid;
+  document.getElementById('payFilterUnpaid').textContent=unpaid;
 }
 function _renderFilteredEvRegs(){
   if(!_currentEvRegs||!_currentEvRegs.data||!_currentEvRegs.data.registrations) return;
@@ -1109,6 +1120,22 @@ async function removeEvReg(eventId,memberId,name){
     if(r.success){showToast(name+'さんの参加を取り消しました');loadAll();showEvRegs(eventId,_currentEvRegTitle)}
   }catch(e){showToast('エラーが発生しました','error')}
   finally{hideSpinner()}
+}
+async function togglePayStatus(eventId,memberId,newStatus){
+  try{
+    const r=await fetch('/api/events/'+eventId+'/toggle-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({memberId,newStatus})}).then(r=>r.json());
+    if(r.success){
+      // Update local data
+      const reg=_currentEvRegs.data.registrations.find(m=>m.id===memberId);
+      if(reg){
+        if(!reg.payment) reg.payment={};
+        reg.payment.paymentStatus=newStatus;
+      }
+      _updatePayFilterCounts(_currentEvRegs.data.registrations);
+      _renderFilteredEvRegs();
+      showToast(newStatus==='paid'?'支払完了に変更しました':'支払未完に変更しました');
+    }else{showToast('変更に失敗しました','error')}
+  }catch(e){showToast('エラーが発生しました','error')}
 }
 function exportEvRegs(){
   if(!_currentEvRegs||!_currentEvRegs.data||!_currentEvRegs.data.registrations||!_currentEvRegs.data.registrations.length){showToast('出力する参加者がいません','error');return}
