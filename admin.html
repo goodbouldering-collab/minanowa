@@ -148,10 +148,10 @@ tr:hover .tbl-name-cell .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px r
 .tbl-link{font-size:.68rem;color:var(--c1);display:inline-flex;align-items:center;gap:.2rem}
 .tbl-link:hover{text-decoration:underline}
 .tbl-muted{font-size:.62rem;color:var(--tl)}
-/* Action buttons consistent */
-.tbl-actions{display:flex;gap:.25rem;align-items:center;flex-wrap:nowrap;position:relative;z-index:3}
-.tbl-actions .btn{font-size:.58rem;padding:.2rem .4rem;white-space:nowrap}
-.tbl-actions .btn i{margin-right:.15rem}
+/* Action buttons consistent — icon-only */
+.tbl-actions{display:flex;gap:.3rem;align-items:center;flex-wrap:nowrap;position:relative;z-index:3}
+.tbl-actions .btn{font-size:.7rem;padding:.3rem;white-space:nowrap;min-width:28px;min-height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px}
+.tbl-actions .btn i{margin-right:0}
 
 /* ===== EVENTS SECTION: Active vs Past split ===== */
 .ev-section-label{display:flex;align-items:center;gap:.4rem;margin:.8rem 0 .4rem;font-size:.78rem;font-weight:700;color:var(--c2)}
@@ -966,8 +966,8 @@ function renderEvTbl(){
       <td><span class="ev-reg-link">${regCount}名</span></td>
       <td><span class="status-tag ${isPast?'inactive':'active'}">${isPast?'終了':'受付中'}</span></td>
       <td><div class="tbl-actions">
-        <button class="btn btn-outline btn-sm ev-edit-btn"><i class="fas fa-edit"></i> 編集</button>
-        <button class="btn btn-danger btn-sm ev-del-btn"><i class="fas fa-trash"></i> 削除</button></div></td>`;
+        <button class="btn btn-outline btn-sm ev-edit-btn" title="編集"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger btn-sm ev-del-btn" title="削除"><i class="fas fa-trash"></i></button></div></td>`;
     tr.querySelector('.ev-title-cell').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
     tr.querySelector('.ev-reg-link').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
     tr.querySelector('.ev-edit-btn').addEventListener('click',()=>editEvent(ev.id));
@@ -992,8 +992,8 @@ function renderEvTbl(){
         <span class="ev-past-title" title="${safeTitle}">${safeTitle}</span>
         <span class="ev-past-reg">${regCount}名</span>
         <div class="ev-past-actions">
-          <button class="btn btn-outline btn-sm ev-past-reg-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-users"></i> 参加者</button>
-          <button class="btn btn-outline btn-sm ev-past-edit-btn" style="font-size:.55rem;padding:.2rem .35rem"><i class="fas fa-edit"></i> 編集</button>
+          <button class="btn btn-outline btn-sm ev-past-reg-btn" title="参加者"><i class="fas fa-users"></i></button>
+          <button class="btn btn-outline btn-sm ev-past-edit-btn" title="編集"><i class="fas fa-edit"></i></button>
         </div>`;
       item.querySelector('.ev-past-title').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
       item.querySelector('.ev-past-reg-btn').addEventListener('click',(e)=>{e.stopPropagation();showEvRegs(ev.id,ev.title)});
@@ -1037,7 +1037,7 @@ function _buildEvRegRow(m,eventId,allRegs){
     <td class="tbl-meta">${m.business||'-'}</td>
     <td class="tbl-meta">${m.location||'-'}</td>
     <td style="font-size:.7rem">${payLabel}</td>
-    <td><div class="tbl-actions"><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')"><i class="fas fa-user-minus"></i> 取消</button></div></td>
+    <td><div class="tbl-actions"><button class="btn btn-danger btn-sm" onclick="removeEvReg('${eventId}','${m.id}','${m.name}')" title="取消"><i class="fas fa-user-minus"></i></button></div></td>
   </tr>`;
 }
 function _matchPayFilter(m,filter){
@@ -1225,10 +1225,10 @@ function renderBlogTbl(){
       <td><div class="tbl-actions"></div></td>`;
     const acts=tr.querySelector('.tbl-actions');
     const editBtn=document.createElement('button');
-    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i> 編集';
+    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i>';editBtn.title='編集';
     editBtn.addEventListener('click',()=>editBlog(b.id));acts.appendChild(editBtn);
     const delBtn=document.createElement('button');
-    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i> 削除';
+    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i>';delBtn.title='削除';
     delBtn.addEventListener('click',()=>delBlog(b.id));acts.appendChild(delBtn);
     t.appendChild(tr);
   });
@@ -1340,15 +1340,14 @@ function renderMemTbl(){
     // Build action buttons via JS to avoid XSS
     const actions=tr.querySelector('.tbl-actions');
     const editBtn=document.createElement('button');
-    editBtn.className='btn btn-sm';editBtn.style.cssText='background:var(--c1);color:#fff';
-    editBtn.innerHTML='<i class="fas fa-edit"></i> 編集';
+    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i>';editBtn.title='編集';
     editBtn.addEventListener('click',()=>openMemEdit(m.id));
     actions.appendChild(editBtn);
 
     const opBtn=document.createElement('button');
     opBtn.className='btn btn-sm';
     opBtn.style.cssText=isOp?'background:var(--c1);color:#fff':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1)';
-    opBtn.innerHTML=isOp?'<i class="fas fa-user-shield"></i> 運営':'<i class="fas fa-user-shield"></i> 運営';
+    opBtn.innerHTML='<i class="fas fa-user-shield"></i>';opBtn.title='運営';
     opBtn.addEventListener('click',()=>toggleOpMember(m.id));
     actions.appendChild(opBtn);
 
@@ -1356,13 +1355,13 @@ function renderMemTbl(){
       const adminBtn=document.createElement('button');
       adminBtn.className='btn btn-sm';
       adminBtn.style.cssText=isAdmin?'background:#f59e0b;color:#fff':'background:var(--cbg2);color:var(--tl);border:1px solid rgba(0,0,0,.1)';
-      adminBtn.innerHTML=isAdmin?'<i class="fas fa-crown"></i> 管理者':'<i class="fas fa-crown"></i> 管理者';
+      adminBtn.innerHTML='<i class="fas fa-crown"></i>';adminBtn.title='管理者';
       adminBtn.addEventListener('click',()=>toggleAdmin(m.id,!isAdmin));
       actions.appendChild(adminBtn);
 
       const delBtn=document.createElement('button');
       delBtn.className='btn btn-danger btn-sm';
-      delBtn.innerHTML='<i class="fas fa-trash"></i> 削除';
+      delBtn.innerHTML='<i class="fas fa-trash"></i>';delBtn.title='削除';
       delBtn.addEventListener('click',()=>delMember(m.id));
       actions.appendChild(delBtn);
     }else{
@@ -1430,11 +1429,10 @@ function renderBoardAdmin(){
       <div class="tbl-actions"></div>`;
     const acts=item.querySelector('.tbl-actions');
     const editBtn=document.createElement('button');
-    editBtn.className='btn btn-sm';editBtn.style.cssText='background:var(--c5);color:var(--c1)';
-    editBtn.innerHTML='<i class="fas fa-edit"></i> 編集';
+    editBtn.className='btn btn-outline btn-sm';editBtn.innerHTML='<i class="fas fa-edit"></i>';editBtn.title='編集';
     editBtn.addEventListener('click',()=>openBoardEdit(b.id));acts.appendChild(editBtn);
     const delBtn=document.createElement('button');
-    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i> 削除';;
+    delBtn.className='btn btn-danger btn-sm';delBtn.innerHTML='<i class="fas fa-trash"></i>';delBtn.title='削除';
     delBtn.addEventListener('click',()=>delBoard(b.id));acts.appendChild(delBtn);
     el.appendChild(item);
   });
