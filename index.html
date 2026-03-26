@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="みんなのWA">
 <meta name="theme-color" content="#e8a948">
-<link rel="alternate" type="application/rss+xml" title="みんなのWA - お知らせ・活動レポート" href="/feed">
+<link rel="alternate" type="application/rss+xml" title="みんなのWA - お知らせ・レポート" href="/feed">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"みんなのWA","url":"https://minanowa.com","logo":"https://minanowa.com/favicon.svg","description":"彦根発 異業種交流コミュニティ","sameAs":[],"address":{"@type":"PostalAddress","addressLocality":"彦根市","addressRegion":"滋賀県","addressCountry":"JP"}}</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -2073,13 +2073,13 @@ footer{padding:1.5rem .8rem .8rem}
 .bottom-menu-list a i{width:20px;text-align:center;font-size:.95rem;color:var(--c1);opacity:.8}
 .bottom-menu-list .menu-auth-btn{margin-top:.3rem;padding:0}
 @media(min-width:769px){.bottom-menu-panel{max-width:400px}
-.mypage-panel{max-width:480px}
+.mypage-panel{max-width:560px}
 .bottom-menu-panel,.mypage-panel{border-radius:14px 14px 0 0}}
 /* === MYPAGE SLIDE-UP PANEL === */
 .mypage-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
   opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
 .mypage-overlay.open{opacity:1;pointer-events:auto}
-.mypage-panel{position:fixed;bottom:0;left:auto;right:0;z-index:9000;width:320px;
+.mypage-panel{position:fixed;bottom:0;left:auto;right:0;z-index:9000;width:min(400px,100vw);
   background:rgba(255,255,255,.55);backdrop-filter:blur(32px) saturate(220%);-webkit-backdrop-filter:blur(32px) saturate(220%);
   border-radius:16px 16px 0 0;
   box-shadow:0 -4px 30px rgba(0,0,0,.1);border-top:1px solid rgba(255,255,255,.6);
@@ -2322,7 +2322,7 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 <!-- BLOGS: full width — 活動の様子をイベント直下で見せる -->
 <div class="bento-cell bento-full reveal">
 <section class="sec" id="blogs">
-  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・活動レポート</h2><p>交流会やコラボの様子をお届けします</p></div>
+  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・レポート</h2><p>交流会やコラボの様子をお届けします</p></div>
   <div class="carousel-wrap">
     <button class="carousel-btn prev" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="blogTrack"></div>
@@ -3514,8 +3514,8 @@ function injectBlogListJsonLd(){
     "name":b.title
   }));
   const ld={"@context":"https://schema.org","@type":"Blog",
-    "name":"みんなのWA - お知らせ・活動レポート",
-    "description":"彦根発 異業種交流コミュニティ「みんなのWA」のお知らせ・活動レポート",
+    "name":"みんなのWA - お知らせ・レポート",
+    "description":"彦根発 異業種交流コミュニティ「みんなのWA」のお知らせ・レポート",
     "url":base+"/#blogs",
     "inLanguage":"ja",
     "publisher":{"@type":"Organization","name":"みんなのWA","logo":{"@type":"ImageObject","url":base+"/favicon.svg"}},
@@ -3547,7 +3547,9 @@ function showBlogDetail(b){
       <iframe src="https://www.youtube.com/embed/${ytId}?rel=0" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
     </div>`;
   }
-  if(b.imageUrl){
+  // Show image only if it's a real uploaded image (not a YouTube thumbnail)
+  const isYtThumb=b.imageUrl&&b.imageUrl.includes('img.youtube.com');
+  if(b.imageUrl && !(ytId && isYtThumb)){
     mediaHtml+=`<img class="blog-detail-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.style.display='none'">`;
   }
   // Share bar (same style as event)
@@ -5054,7 +5056,7 @@ function getTopSections(profile,limit=3){
 }
 
 const SECTION_NAMES={about:'みんなのWAとは',events:'イベント',members:'メンバー',
-  memberMap:'マップ',blogs:'お知らせ・活動レポート',board:'掲示板',faq:'FAQ',contact:'お問い合わせ',
+  memberMap:'マップ',blogs:'お知らせ・レポート',board:'掲示板',faq:'FAQ',contact:'お問い合わせ',
   opMembers:'運営メンバー'};
 
 // Section view tracking
