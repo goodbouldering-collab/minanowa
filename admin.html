@@ -78,7 +78,7 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .menu-item i{font-size:.7rem}
 
 /* PANEL */
-.panel{display:none;max-width:1100px;margin:0 auto;padding:1.2rem;
+.panel{display:none;max-width:1400px;margin:0 auto;padding:1.2rem;
   animation:panel-in .4s cubic-bezier(.175,.885,.32,1.275)}
 .panel.active{display:block}
 @keyframes panel-in{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -127,7 +127,7 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .tbl-img{width:36px;height:26px;object-fit:cover;object-position:center;border-radius:4px;border:1px solid rgba(16,185,129,.08);display:block}
 .tbl-col-img{width:42px;min-width:42px;max-width:42px;text-align:center;padding-left:.3rem;padding-right:.3rem}
 .tbl-col-img .tbl-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(16,185,129,.12)}
-.tbl-col-title{max-width:110px;min-width:70px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl-col-title{max-width:200px;min-width:100px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ev-title-cell{font-weight:600;max-width:110px;min-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
 .ev-title-cell:hover span{text-decoration-color:var(--c1)}
 .ev-reg-link{background:none;border:none;cursor:pointer;color:var(--c1);font-weight:700;font-size:.82rem;text-decoration:underline}
@@ -1247,6 +1247,7 @@ function filterBlogTab(cat,el){
 }
 function switchBlogFormTab(cat,el){
   document.querySelectorAll('.blog-form-tab').forEach(t=>t.classList.remove('active'));
+  if(!el) el=document.querySelector('.blog-form-tab[data-cat="活動レポート"]');
   el.classList.add('active');
   document.getElementById('blogCat').value=cat;
   const isMovie=cat==='活動ムービー';
@@ -1260,8 +1261,11 @@ function switchBlogFormTab(cat,el){
   else if(cat==='活動レポート') titleEl.innerHTML='<i class="fas fa-file-alt" style="margin-right:.3rem"></i> '+(id?'活動レポート編集':'活動レポート作成');
   else titleEl.innerHTML='<i class="fas fa-film" style="margin-right:.3rem"></i> '+(id?'活動ムービー編集':'活動ムービー追加');
 }
+const BLOG_CAT_MAP={'ブログ':'活動レポート','blog':'活動レポート','レポート':'活動レポート','ニュース':'お知らせ','news':'お知らせ'};
+function normBlogCat(c){return BLOG_CAT_MAP[c]||(['お知らせ','活動レポート','活動ムービー'].includes(c)?c:'活動レポート')}
 function openBlogForm(b,defaultCat){
-  const cat=b?b.category:(defaultCat||'お知らせ');
+  const rawCat=b?b.category:(defaultCat||'お知らせ');
+  const cat=normBlogCat(rawCat);
   document.getElementById('blogId').value=b?b.id:'';
   document.getElementById('blogTitle').value=b?b.title:'';
   document.getElementById('blogCat').value=cat;
