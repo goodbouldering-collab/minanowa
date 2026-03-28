@@ -193,6 +193,13 @@ td:first-child::after,th:first-child::after{content:'';position:absolute;top:0;r
   box-shadow:inset 6px 0 6px -6px rgba(0,0,0,.08);pointer-events:none}
 td:last-child::before,th:last-child::before{content:'';position:absolute;top:0;left:-6px;bottom:0;width:6px;
   box-shadow:inset -6px 0 6px -6px rgba(0,0,0,.08);pointer-events:none}
+/* Payment column sticky (participant table: 5th col) */
+#evRegPanel th:nth-child(5),#evRegPanel td:nth-child(5){position:sticky;right:32px;z-index:3;background:#fff;min-width:60px}
+#evRegPanel th:nth-child(5){background:rgba(240,253,244,1);z-index:5}
+#evRegPanel tr:hover td:nth-child(5){background:rgba(240,253,244,.95)}
+#evRegPanel td:nth-child(5)::before{content:'';position:absolute;top:0;left:-6px;bottom:0;width:6px;
+  box-shadow:inset -6px 0 6px -6px rgba(0,0,0,.05);pointer-events:none}
+#evRegPanel th:last-child,#evRegPanel td:last-child{min-width:32px;width:32px}
 .tbl-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover;
   border:1px solid rgba(16,185,129,.12);transition:var(--transition)}
 tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,.15)}
