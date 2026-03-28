@@ -155,8 +155,7 @@ tr:hover .tbl-name-cell .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px r
 
 /* ===== EVENTS SECTION: Active vs Past split ===== */
 #evTbl tr{cursor:pointer}
-#evTbl tr.ev-row-selected td{background:rgba(16,185,129,.08) !important}
-#evTbl tr.ev-row-selected td:first-child{border-left:3px solid var(--c1)}
+#evTbl tr:hover td{background:rgba(16,185,129,.04)}
 .ev-section-label{display:flex;align-items:center;gap:.4rem;margin:.8rem 0 .4rem;font-size:.78rem;font-weight:700;color:var(--c2)}
 .ev-section-label i{font-size:.7rem}
 .ev-section-label .ev-count{font-size:.62rem;font-weight:600;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2));
@@ -194,12 +193,12 @@ td:first-child::after,th:first-child::after{content:'';position:absolute;top:0;r
 td:last-child::before,th:last-child::before{content:'';position:absolute;top:0;left:-6px;bottom:0;width:6px;
   box-shadow:inset -6px 0 6px -6px rgba(0,0,0,.08);pointer-events:none}
 /* Payment column sticky (participant table: 5th col) */
-#evRegPanel th:nth-child(5),#evRegPanel td:nth-child(5){position:sticky;right:32px;z-index:3;background:#fff;min-width:60px}
+#evRegPanel th:nth-child(5),#evRegPanel td:nth-child(5){position:sticky;right:28px;z-index:3;background:#fff;min-width:56px}
 #evRegPanel th:nth-child(5){background:rgba(240,253,244,1);z-index:5}
 #evRegPanel tr:hover td:nth-child(5){background:rgba(240,253,244,.95)}
 #evRegPanel td:nth-child(5)::before{content:'';position:absolute;top:0;left:-6px;bottom:0;width:6px;
   box-shadow:inset -6px 0 6px -6px rgba(0,0,0,.05);pointer-events:none}
-#evRegPanel th:last-child,#evRegPanel td:last-child{min-width:32px;width:32px}
+#evRegPanel th:last-child,#evRegPanel td:last-child{min-width:28px;width:28px}
 .tbl-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover;
   border:1px solid rgba(16,185,129,.12);transition:var(--transition)}
 tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,.15)}
@@ -513,30 +512,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <button class="btn btn-primary" onclick="openEventForm()"><i class="fas fa-plus"></i> 新規作成</button></div>
   <!-- Active events (table, max 6 rows) -->
   <div class="ev-section-label"><i class="fas fa-bolt"></i> 受付中・直近のイベント <span class="ev-count" id="evActiveCount">0</span></div>
-  <div class="tbl-wrap" id="evTblWrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>状態</th><th style="min-width:90px">操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
-  <!-- Event detail panel (shown on row click) -->
-  <div id="evDetailPanel" style="display:none;margin-top:.5rem" class="admin-card">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;flex-wrap:wrap">
-      <div style="flex:1;min-width:200px">
-        <h3 id="evDetailTitle" style="font-size:.9rem;font-weight:800;color:var(--td);margin-bottom:.3rem"></h3>
-        <div style="display:flex;flex-wrap:wrap;gap:.4rem .8rem;font-size:.72rem;color:var(--tl);margin-bottom:.4rem">
-          <span><i class="fas fa-calendar-alt" style="color:var(--c1);margin-right:.2rem"></i><span id="evDetailDate"></span></span>
-          <span><i class="fas fa-clock" style="color:var(--c1);margin-right:.2rem"></i><span id="evDetailTime"></span></span>
-          <span><i class="fas fa-map-marker-alt" style="color:var(--c1);margin-right:.2rem"></i><span id="evDetailLoc"></span></span>
-          <span><i class="fas fa-users" style="color:var(--c1);margin-right:.2rem"></i>定員 <span id="evDetailCap"></span></span>
-          <span><i class="fas fa-yen-sign" style="color:var(--c1);margin-right:.2rem"></i><span id="evDetailFee"></span></span>
-        </div>
-        <div id="evDetailDesc" style="font-size:.75rem;color:var(--td);line-height:1.6;white-space:pre-wrap;max-height:120px;overflow-y:auto"></div>
-      </div>
-      <div id="evDetailImgWrap" style="flex-shrink:0"><img id="evDetailImg" style="width:120px;height:80px;object-fit:cover;border-radius:6px;border:1px solid rgba(0,0,0,.06)"></div>
-    </div>
-    <div style="display:flex;gap:.3rem;margin-top:.5rem;justify-content:flex-end">
-      <button class="btn btn-outline btn-sm" id="evDetailRegBtn"><i class="fas fa-users"></i> 参加者</button>
-      <button class="btn btn-outline btn-sm" id="evDetailEditBtn"><i class="fas fa-edit"></i> 編集</button>
-      <button class="btn btn-danger btn-sm" id="evDetailDelBtn"><i class="fas fa-trash"></i> 削除</button>
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('evDetailPanel').style.display='none';document.querySelectorAll('#evTbl tr').forEach(r=>r.classList.remove('ev-row-selected'))"><i class="fas fa-times"></i></button>
-    </div>
-  </div>
+  <div class="tbl-wrap" id="evTblWrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">タイトル</th><th>日時</th><th>場所</th><th>定員</th><th>申込</th><th>状態</th><th>操作</th></tr></thead><tbody id="evTbl"></tbody></table></div>
   <!-- Past events (collapsible simple list) -->
   <div class="ev-past-toggle" id="evPastToggle" onclick="togglePastEvents()"><i class="fas fa-chevron-right chevron"></i><i class="fas fa-history"></i> 過去のイベント <span class="ev-count" id="evPastCount" style="background:linear-gradient(135deg,#94a3b8,#64748b)">0</span></div>
   <div class="ev-past-list" id="evPastList"></div>
@@ -575,7 +551,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <button class="blog-tab" onclick="filterBlogTab('活動レポート',this)"><i class="fas fa-file-alt"></i> 活動レポート <span class="tab-count" id="tabCountReport">0</span></button>
     <button class="blog-tab" onclick="filterBlogTab('活動ムービー',this)"><i class="fas fa-film"></i> 活動ムービー <span class="tab-count" id="tabCountMovie">0</span></button>
   </div>
-  <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">タイトル</th><th>カテゴリ</th><th>日付</th><th>著者</th><th style="min-width:110px">操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
+  <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">タイトル</th><th>カテゴリ</th><th>日付</th><th>著者</th><th>操作</th></tr></thead><tbody id="blogTbl"></tbody></table></div>
 </div>
 
 <!-- MEMBERS -->
@@ -589,7 +565,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <span class="mem-search-count" id="memSearchCount"></span>
     </div>
   </div>
-  <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th style="min-width:160px">操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
+  <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
   <style>#memTbl .tbl-name-cell{min-width:130px}</style>
   <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,.08)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
@@ -974,7 +950,6 @@ async function saveHero(e){
 function _escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function renderEvTbl(){
   const t=document.getElementById('evTbl');t.innerHTML='';
-  document.getElementById('evDetailPanel').style.display='none';
   const sorted=[...events].sort((a,b)=>new Date(b.date)-new Date(a.date));
   const now=new Date();
   const active=sorted.filter(ev=>new Date(ev.date)>=now);
@@ -1002,11 +977,11 @@ function renderEvTbl(){
       <td><div class="tbl-actions">
         <button class="btn btn-outline btn-sm ev-edit-btn" title="編集"><i class="fas fa-edit"></i></button>
         <button class="btn btn-danger btn-sm ev-del-btn" title="削除"><i class="fas fa-trash"></i></button></div></td>`;
-    tr.querySelector('.ev-title-cell').addEventListener('click',()=>showEvDetail(ev.id));
+    tr.querySelector('.ev-title-cell').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
     tr.querySelector('.ev-reg-link').addEventListener('click',(e)=>{e.stopPropagation();showEvRegs(ev.id,ev.title)});
     tr.querySelector('.ev-edit-btn').addEventListener('click',(e)=>{e.stopPropagation();editEvent(ev.id)});
     tr.querySelector('.ev-del-btn').addEventListener('click',(e)=>{e.stopPropagation();delEvent(ev.id)});
-    tr.addEventListener('click',(e)=>{if(!e.target.closest('.tbl-actions')&&!e.target.closest('.ev-reg-link')) showEvDetail(ev.id)});
+    tr.addEventListener('click',(e)=>{if(!e.target.closest('.tbl-actions')&&!e.target.closest('.ev-reg-link')) showEvRegs(ev.id,ev.title)});
     t.appendChild(tr);
   });
 
@@ -1036,41 +1011,6 @@ function renderEvTbl(){
       pastEl.appendChild(item);
     });
   }
-}
-function showEvDetail(eventId){
-  const ev=events.find(e=>e.id===eventId);
-  if(!ev) return;
-  // Highlight selected row
-  document.querySelectorAll('#evTbl tr').forEach(r=>r.classList.remove('ev-row-selected'));
-  const rows=document.querySelectorAll('#evTbl tr');
-  rows.forEach(r=>{if(r.dataset.evId===eventId) r.classList.add('ev-row-selected')});
-  // Mark rows with data-ev-id for selection
-  // (rows are already created, let's find by index)
-  const sorted=[...events].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const now=new Date();
-  const active=sorted.filter(e=>new Date(e.date)>=now);
-  const past=sorted.filter(e=>new Date(e.date)<now);
-  const tableList=active.length>=6?active.slice(0,6):(active.length?[...active,...past.slice(0,6-active.length)]:sorted.slice(0,6));
-  const idx=tableList.findIndex(e=>e.id===eventId);
-  if(idx>=0&&rows[idx]) rows[idx].classList.add('ev-row-selected');
-  // Fill detail panel
-  document.getElementById('evDetailTitle').textContent=ev.title;
-  document.getElementById('evDetailDate').textContent=ev.date||'--';
-  document.getElementById('evDetailTime').textContent=ev.time||'--';
-  document.getElementById('evDetailLoc').textContent=ev.location||'--';
-  document.getElementById('evDetailCap').textContent=ev.participants||'--';
-  document.getElementById('evDetailFee').textContent=ev.fee?ev.fee+'円':'未定';
-  document.getElementById('evDetailDesc').textContent=ev.description||'（説明なし）';
-  const imgWrap=document.getElementById('evDetailImgWrap');
-  const img=document.getElementById('evDetailImg');
-  if(ev.imageUrl){imgWrap.style.display='block';img.src=ev.imageUrl}
-  else{imgWrap.style.display='none'}
-  // Wire buttons
-  document.getElementById('evDetailRegBtn').onclick=()=>showEvRegs(ev.id,ev.title);
-  document.getElementById('evDetailEditBtn').onclick=()=>editEvent(ev.id);
-  document.getElementById('evDetailDelBtn').onclick=()=>delEvent(ev.id);
-  document.getElementById('evDetailPanel').style.display='block';
-  document.getElementById('evDetailPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function togglePastEvents(){
   const toggle=document.getElementById('evPastToggle');
