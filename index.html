@@ -84,7 +84,7 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .reveal-scale{opacity:0;transition:opacity .5s ease}
 .reveal-scale.visible{opacity:1}
 /* ========== SECTION ========== */
-.sec{padding:3.5rem 1.5rem 3rem;max-width:1100px;margin:0 auto;position:relative;overflow:hidden}
+.sec{padding:3.5rem 1.5rem 3rem;max-width:1100px;margin:0 auto;position:relative;overflow:hidden;scroll-margin-top:6px}
 .sec-divider{height:1px;max-width:600px;margin:0 auto;position:relative;overflow:hidden}
 /* ========== BENTO GRID ========== */
 .bento-container{max-width:1200px;margin:0 auto;padding:1rem 1rem 2.5rem}
@@ -2035,8 +2035,8 @@ footer{padding:1.5rem .8rem .8rem}
   display:flex;justify-content:space-around;align-items:center;
   padding:.3rem 0 calc(.3rem + env(safe-area-inset-bottom,0px));}
 .bottom-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-decoration:none;color:#888;font-size:.62rem;font-weight:600;
-  padding:.25rem .3rem;min-width:3.2rem;position:relative;
+  text-decoration:none;color:#888;font-size:.58rem;font-weight:600;
+  padding:.25rem .15rem;min-width:2.8rem;position:relative;
   transition:color .2s;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .bottom-nav-item i{font-size:1.15rem;margin-bottom:.15rem;transition:transform .2s}
 .bottom-nav-item.active{color:var(--c1)}
@@ -2436,7 +2436,7 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 </div><!-- /lineCta -->
 
 <!-- OPERATING MEMBERS: full width -->
-<div class="bento-cell bento-full reveal">
+<div class="bento-cell bento-full reveal" style="border:none;box-shadow:none;background:none;backdrop-filter:none">
 <section class="sec" id="opMembers">
   <div class="sec-head"><h2><i class="fas fa-user-shield"></i> 運営メンバー</h2><p>運営に関わるとITスキル・企画力が身につきます</p></div>
   <div class="carousel-wrap">
@@ -2492,6 +2492,9 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
   </a>
   <a class="bottom-nav-item" onclick="closeAllPanels();document.getElementById('events').scrollIntoView({behavior:'smooth'})" data-section="events">
     <i class="fas fa-calendar-alt"></i><span>イベント</span><span class="bottom-nav-badge" id="bnBadgeEvent"></span>
+  </a>
+  <a class="bottom-nav-item" onclick="closeAllPanels();document.getElementById('blogs').scrollIntoView({behavior:'smooth'})" data-section="blogs">
+    <i class="fas fa-newspaper"></i><span>お知らせ</span>
   </a>
   <a class="bottom-nav-item" onclick="closeAllPanels();document.getElementById('members').scrollIntoView({behavior:'smooth'})" data-section="members">
     <i class="fas fa-users"></i><span>メンバー</span>
@@ -4727,7 +4730,7 @@ function updateBottomNavActive(){
   const items=document.querySelectorAll('.bottom-nav-item[data-section]');
   const scrollY=window.scrollY+window.innerHeight/3;
   let activeId='heroSection';
-  ['events','members','board'].forEach(id=>{
+  ['events','blogs','members','board'].forEach(id=>{
     const el=document.getElementById(id);
     if(el&&el.offsetTop<=scrollY) activeId=id;
   });
