@@ -55,7 +55,6 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
   box-shadow:0 2px 8px rgba(16,185,129,.3);animation:badge-glow 3s ease-in-out infinite}
 @keyframes badge-glow{0%,100%{box-shadow:0 2px 8px rgba(16,185,129,.3)}50%{box-shadow:0 2px 15px rgba(16,185,129,.5)}}
 .admin-nav .spacer{flex:1}
-.admin-nav .nav-time{font-size:.68rem;color:var(--tl);font-weight:500}
 
 /* MENU */
 .menu-wrap{background:var(--glass2);backdrop-filter:blur(18px);border-bottom:1px solid rgba(16,185,129,.04);
@@ -72,9 +71,6 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .menu-item:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-1px);box-shadow:0 2px 12px rgba(16,185,129,.1)}
 .menu-item.active{border-color:var(--c1);color:#fff;box-shadow:0 4px 18px rgba(16,185,129,.28)}
 .menu-item.active::before{opacity:1}
-.menu-item .menu-badge{position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;
-  background:var(--c3);border:2px solid var(--white);z-index:2;display:none}
-.menu-item.has-badge .menu-badge{display:block}
 .menu-item i{font-size:.7rem}
 
 /* PANEL */
@@ -214,7 +210,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   font-family:inherit;color:var(--td)}
 .mem-search-box input::placeholder{color:var(--tl);font-size:.78rem}
 .mem-search-count{font-size:.68rem;color:var(--tl);white-space:nowrap;flex-shrink:0}
-.mem-search-highlight{background:rgba(16,185,129,.2);border-radius:2px;padding:0 1px}
 
 /* ADMIN CARD */
 .admin-card{background:var(--glass2);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);
@@ -310,12 +305,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 .toast i{color:var(--c1);font-size:.9rem}
 
 /* Quick actions */
-.quick-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
-.quick-btn{display:flex;align-items:center;gap:.3rem;padding:.4rem .7rem;border-radius:var(--r2);
-  background:var(--glass2);border:1px solid rgba(16,185,129,.06);font-size:.7rem;font-weight:600;
-  color:var(--tl);cursor:pointer;transition:var(--spring)}
-.quick-btn:hover{border-color:var(--c1);color:var(--c1);transform:translateY(-2px);box-shadow:0 3px 12px rgba(16,185,129,.1)}
-.quick-btn i{font-size:.7rem;color:var(--c1)}
 
 /* Status tag */
 .status-tag{display:inline-flex;align-items:center;gap:.2rem;padding:.12rem .4rem;border-radius:6px;font-size:.6rem;font-weight:700}
@@ -370,6 +359,8 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 @supports (-webkit-touch-callout:none){
   input,textarea,select{font-size:16px !important}
 }
+#memTbl .tbl-name-cell{min-width:130px}
+@keyframes ripple{to{transform:scale(40);opacity:0}}
 </style>
 </head>
 <body>
@@ -423,7 +414,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 <!-- DASHBOARD -->
 <div class="panel active" id="panel-dash">
   <div class="panel-head"><h2><i class="fas fa-chart-pie"></i> ダッシュボード</h2></div>
-  
 
 
   <div class="stat-row">
@@ -448,7 +438,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <div class="donut-wrap" id="catDonut"></div>
     </div>
   </div>
-  
+
   <div class="dash-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.6rem">
     <div class="admin-card">
       <h3><i class="fas fa-bolt"></i> 最近のアクティビティ</h3>
@@ -566,7 +556,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     </div>
   </div>
   <div class="tbl-wrap"><table><thead><tr><th class="tbl-col-img">画像</th><th class="tbl-col-title">名前</th><th>店名</th><th>業種</th><th>メール</th><th>地域</th><th>マップ</th><th>HP</th><th>操作</th></tr></thead><tbody id="memTbl"></tbody></table></div>
-  <style>#memTbl .tbl-name-cell{min-width:130px}</style>
   <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(0,0,0,.08)">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
       <h3 style="font-size:1rem;font-weight:800;display:flex;align-items:center;gap:.4rem"><i class="fas fa-trophy" style="color:#ffd700"></i> ランクメリット編集</h3>
@@ -585,8 +574,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   <div class="panel-head"><h2><i class="fas fa-comments"></i> 掲示板</h2></div>
   <div id="boardAdminList"></div>
 </div>
-
-
 
 <!-- AI ASSISTANT -->
 <div class="panel" id="panel-ai">
@@ -625,9 +612,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     <button class="btn" style="margin-top:.4rem;background:var(--cbg2);border:1.5px solid rgba(245,158,11,.15);color:#d97706;font-size:.72rem" onclick="addAiKeywordRow()"><i class="fas fa-plus"></i> 追加</button>
   </div>
 </div>
-
-
-
 
 <!-- MODALS -->
 <div id="evModal" class="modal">
@@ -694,8 +678,6 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
     </form>
   </div>
 </div>
-
-
 
 <!-- MEMBER EDIT MODAL -->
 <div id="memEditModal" class="modal" style="display:none">
@@ -886,8 +868,8 @@ function renderDash(){
     const pct=(count/total)*100;
     const dashArr=`${pct*2.51327} ${251.327-pct*2.51327}`;
     const dashOff=-offset*2.51327;
-    svgCircles+=`<circle cx="40" cy="40" r="30" fill="none" stroke="${colors[i%colors.length]}" 
-      stroke-width="12" stroke-dasharray="${dashArr}" stroke-dashoffset="${dashOff}" 
+    svgCircles+=`<circle cx="40" cy="40" r="30" fill="none" stroke="${colors[i%colors.length]}"
+      stroke-width="12" stroke-dasharray="${dashArr}" stroke-dashoffset="${dashOff}"
       style="transition:all 1s ease ${i*100}ms"/>`;
     offset+=pct;
   });
@@ -1787,6 +1769,5 @@ document.addEventListener('click',e=>{
   btn.appendChild(r);setTimeout(()=>r.remove(),500);
 });
 </script>
-<style>@keyframes ripple{to{transform:scale(40);opacity:0}}</style>
 </body>
 </html>

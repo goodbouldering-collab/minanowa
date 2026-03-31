@@ -2132,7 +2132,6 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 <div class="bg-shape s6"></div>
 <div class="bg-shape s7"></div>
 
-
 <!-- TOAST -->
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
 
@@ -3696,9 +3695,9 @@ async function resolveGoogleMapUrl(url){
 function renderMemberMap(){
   const container=document.getElementById('memberMapContainer');
   if(!container)return;
-  
+
   const membersWithMap=allMembers.filter(m=>m.googleMapUrl&&m.isPublic!==false);
-  
+
   if(!membersWithMap.length){
     // Show default Google Map centered on Hikone even with no members
     container.style.display='block';
@@ -3721,7 +3720,7 @@ function renderMemberMap(){
     }
     return;
   }
-  
+
   // Parse coordinates and render map (use cached coords first, then API, then fallback)
   const markers=[];
   let resolvePromises=membersWithMap.map(async(m)=>{
@@ -3735,13 +3734,13 @@ function renderMemberMap(){
     // 3. Fallback: default Hikone center so pin at least shows on map
     markers.push({lat:35.276+Math.random()*0.01-0.005,lng:136.252+Math.random()*0.01-0.005,member:m});
   });
-  
+
   Promise.all(resolvePromises).then(()=>{
     if(!markers.length){
       container.style.display='none';
       return;
     }
-    
+
     // Initialize Google Map with pins
     container.style.display='block';
     initGoogleMap(markers);
@@ -3752,15 +3751,15 @@ function initGoogleMap(markers){
   const mapEl=document.getElementById('gmap');
   if(!mapEl)return;
   mapEl.innerHTML='';
-  
+
   const center=markers.length?[markers[0].lat,markers[0].lng]:[35.276,136.252];
   const map=L.map(mapEl,{scrollWheelZoom:false,zoomControl:true}).setView(center,13);
-  
+
   // Use Google Maps tiles for authentic Google Maps appearance
   L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
     attribution:'Map data &copy; Google',maxZoom:20,subdomains:['mt0','mt1','mt2','mt3']
   }).addTo(map);
-  
+
   // Google Maps style red pin SVG (small)
   const pinSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="28" viewBox="0 0 30 42">
     <defs><filter id="ds" x="-20%" y="-10%" width="140%" height="130%"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#000" flood-opacity=".3"/></filter></defs>
@@ -3768,7 +3767,7 @@ function initGoogleMap(markers){
     <circle cx="15" cy="14" r="5.5" fill="white"/>
   </svg>`;
   const pinIcon=L.divIcon({html:pinSvg,iconSize:[20,28],iconAnchor:[10,28],popupAnchor:[0,-26],className:'gmap-pin'});
-  
+
   // Highlighted (active) pin
   const pinSvgActive=`<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 36 50">
     <defs><filter id="dsa" x="-20%" y="-10%" width="140%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".35"/></filter></defs>
@@ -3776,7 +3775,7 @@ function initGoogleMap(markers){
     <circle cx="18" cy="17" r="6.5" fill="white"/>
   </svg>`;
   const pinIconActive=L.divIcon({html:pinSvgActive,iconSize:[28,40],iconAnchor:[14,40],popupAnchor:[0,-38],className:'gmap-pin active'});
-  
+
   const group=[];
   markers.forEach(mk=>{
     const m=L.marker([mk.lat,mk.lng],{icon:pinIcon}).addTo(map);
@@ -5212,7 +5211,7 @@ function initAiChat(){
   // Show greeting AFTER personal info
   const greetDiv=document.createElement('div');
   greetDiv.className='ai-greeting';
-  const greetName=name?`<span class="ai-greet-name">${name}</span>`:'';  
+  const greetName=name?`<span class="ai-greet-name">${name}</span>`:'';
   let greetSub='';
   if(isNew){
     greetSub=`彦根で事業を始めたい・伸ばしたいあなたへ。何でも気軽に質問してくださいね！`;

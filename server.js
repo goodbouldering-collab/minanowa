@@ -75,6 +75,8 @@ async function writeData(data) {
     await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
 }
 function genId(p) { return `${p}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; }
+// Common error handler for async routes
+function handleErr(res, e, msg = 'エラー') { console.error(msg, e); res.status(500).json({ error: msg }); }
 
 // YouTube ID extractor
 function extractYoutubeId(url) {
@@ -141,7 +143,7 @@ app.post('/api/register', async (req, res) => {
         await writeData(data);
         const { password: _, ...safe } = newMember;
         res.json({ success: true, member: safe });
-    } catch (e) { res.status(500).json({ error: '登録に失敗しました' }); }
+    } catch (e) { handleErr(res, e, '登録に失敗しました'); }
 });
 
 app.post('/api/login', async (req, res) => {
@@ -153,7 +155,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(401).json({ error: 'メールアドレスまたはパスワードが正しくありません' });
         const { password: _, ...safe } = member;
         res.json({ success: true, member: safe });
-    } catch (e) { res.status(500).json({ error: 'ログインに失敗しました' }); }
+    } catch (e) { handleErr(res, e, 'ログインに失敗しました'); }
 });
 
 // ==================== PASSWORD RESET ====================
@@ -298,13 +300,13 @@ app.post('/api/register/google', async (req, res) => {
         await writeData(data);
         const { password: _, ...safe } = newMember;
         res.json({ success: true, member: safe });
-    } catch (e) { res.status(500).json({ error: '登録に失敗しました' }); }
+    } catch (e) { handleErr(res, e, '登録に失敗しました'); }
 });
 app.get('/api/members', async (req, res) => {
     try {
         const data = await readData();
         res.json(data.members.map(({ password, ...m }) => m));
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 app.get('/api/members/:id', async (req, res) => {
@@ -314,7 +316,7 @@ app.get('/api/members/:id', async (req, res) => {
         if (!m) return res.status(404).json({ error: 'not found' });
         const { password, ...safe } = m;
         res.json(safe);
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 app.put('/api/members/:id', async (req, res) => {
@@ -344,7 +346,7 @@ app.put('/api/members/:id', async (req, res) => {
         await writeData(data);
         const { password, ...safe } = data.members[idx];
         res.json({ success: true, member: safe });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== RESOLVE MAP URL ====================
@@ -355,7 +357,7 @@ app.post('/api/resolve-map-url', async (req, res) => {
         const https = require('https');
         const http = require('http');
         const mod = url.startsWith('https') ? https : http;
-        
+
         // Helper: geocode an address using Nominatim (OpenStreetMap)
         const geocodeAddress = (address) => new Promise((resolve) => {
             const encoded = encodeURIComponent(address);
@@ -373,7 +375,7 @@ app.post('/api/resolve-map-url', async (req, res) => {
                 });
             }).on('error', () => resolve(null));
         });
-        
+
         const r = await new Promise((resolve, reject) => {
             // Follow up to 8 redirects to find final URL
             const follow = (url, depth) => {
@@ -446,7 +448,7 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 
 // ==================== EVENTS ====================
 app.get('/api/events', async (req, res) => {
-    try { res.json((await readData()).events); } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    try { res.json((await readData()).events); } catch (e) { handleErr(res, e); }
 });
 app.post('/api/events/:id/register', async (req, res) => {
     try {
@@ -476,7 +478,7 @@ app.post('/api/events/:id/register', async (req, res) => {
         }
         await writeData(data);
         res.json({ success: true, registrations: ev.registrations, regDetails: ev.regDetails });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.delete('/api/events/:id/register', async (req, res) => {
     try {
@@ -489,7 +491,7 @@ app.delete('/api/events/:id/register', async (req, res) => {
         ev.registrations = ev.registrations.filter(id => id !== memberId);
         await writeData(data);
         res.json({ success: true, registrations: ev.registrations });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.get('/api/events/:id/registrations', async (req, res) => {
     try {
@@ -505,7 +507,7 @@ app.get('/api/events/:id/registrations', async (req, res) => {
             return { id: m.id, name: m.name, avatar: m.avatar, profession: m.profession, business: m.business, location: m.location, payment, referral };
         });
         res.json({ registrations: members, count: regs.length, referrals: ev.referrals || {} });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== MEMBER PARTICIPATION COUNT ====================
@@ -525,7 +527,7 @@ app.get('/api/members/:id/participation', async (req, res) => {
         else if (count >= 6) rank = 'silver';
         else if (count >= 3) rank = 'bronze';
         res.json({ memberId, count, rank });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Bulk participation counts for all members
@@ -549,7 +551,7 @@ app.get('/api/members/participation/all', async (req, res) => {
             result[mid] = { count, rank };
         });
         res.json(result);
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== STRIPE PAYMENT ====================
@@ -604,7 +606,7 @@ app.post('/api/events/:id/confirm-payment', async (req, res) => {
         }
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Toggle payment status (admin use)
@@ -623,12 +625,12 @@ app.post('/api/events/:id/toggle-payment', async (req, res) => {
         }
         await writeData(data);
         res.json({ success: true, paymentStatus: newStatus });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== BLOGS ====================
 app.get('/api/blogs', async (req, res) => {
-    try { res.json((await readData()).blogs); } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    try { res.json((await readData()).blogs); } catch (e) { handleErr(res, e); }
 });
 
 // ==================== BOARDS (掲示板) ====================
@@ -648,7 +650,7 @@ app.get('/api/boards', async (req, res) => {
         }
         if (cleaned) { data.boards = filtered; await writeData(data); }
         res.json(filtered);
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.post('/api/boards', async (req, res) => {
     try {
@@ -661,7 +663,7 @@ app.post('/api/boards', async (req, res) => {
         data.boards.unshift(post);
         await writeData(data);
         res.json({ success: true, post });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.post('/api/boards/:id/reply', async (req, res) => {
     try {
@@ -675,7 +677,7 @@ app.post('/api/boards/:id/reply', async (req, res) => {
         post.replies.push(reply);
         await writeData(data);
         res.json({ success: true, reply });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 // Edit own board post
 app.put('/api/boards/:id', async (req, res) => {
@@ -690,7 +692,7 @@ app.put('/api/boards/:id', async (req, res) => {
         post.updatedAt = new Date().toISOString();
         await writeData(data);
         res.json({ success: true, post });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 // Delete own board post
 app.delete('/api/boards/:id', async (req, res) => {
@@ -702,12 +704,12 @@ app.delete('/api/boards/:id', async (req, res) => {
         data.boards.splice(idx, 1);
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== SITE SETTINGS ====================
 app.get('/api/site-settings', async (req, res) => {
-    try { res.json((await readData()).siteSettings || {}); } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    try { res.json((await readData()).siteSettings || {}); } catch (e) { handleErr(res, e); }
 });
 app.put('/api/site-settings', async (req, res) => {
     try {
@@ -715,7 +717,7 @@ app.put('/api/site-settings', async (req, res) => {
         data.siteSettings = { ...(data.siteSettings || {}), ...req.body };
         await writeData(data);
         res.json({ success: true, settings: data.siteSettings });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== MESSAGES ====================
@@ -724,7 +726,7 @@ app.get('/api/messages', async (req, res) => {
         const data = await readData();
         const { userId } = req.query;
         res.json((data.messages || []).filter(m => m.from === userId || m.to === userId));
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.post('/api/messages', async (req, res) => {
     try {
@@ -733,7 +735,7 @@ app.post('/api/messages', async (req, res) => {
         data.messages.push(msg);
         await writeData(data);
         res.json({ success: true, message: msg });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== ADMIN ====================
@@ -745,7 +747,7 @@ app.post('/api/admin/events', async (req, res) => {
         data.events.push(ev);
         await writeData(data);
         res.json({ success: true, event: ev });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.put('/api/admin/events/:id', async (req, res) => {
     try {
@@ -755,7 +757,7 @@ app.put('/api/admin/events/:id', async (req, res) => {
         data.events[idx] = { ...data.events[idx], ...req.body, id: data.events[idx].id };
         await writeData(data);
         res.json({ success: true, event: data.events[idx] });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.delete('/api/admin/events/:id', async (req, res) => {
     try {
@@ -763,7 +765,7 @@ app.delete('/api/admin/events/:id', async (req, res) => {
         data.events = data.events.filter(e => e.id !== req.params.id);
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Blogs CRUD (unified: お知らせ, 活動レポート, 活動ムービー)
@@ -783,7 +785,7 @@ app.post('/api/admin/blogs', async (req, res) => {
         data.blogs.push(blog);
         await writeData(data);
         res.json({ success: true, blog });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.put('/api/admin/blogs/:id', async (req, res) => {
     try {
@@ -800,7 +802,7 @@ app.put('/api/admin/blogs/:id', async (req, res) => {
         data.blogs[idx] = { ...data.blogs[idx], ...body, id: data.blogs[idx].id };
         await writeData(data);
         res.json({ success: true, blog: data.blogs[idx] });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.delete('/api/admin/blogs/:id', async (req, res) => {
     try {
@@ -808,7 +810,7 @@ app.delete('/api/admin/blogs/:id', async (req, res) => {
         data.blogs = data.blogs.filter(b => b.id !== req.params.id);
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Members admin
@@ -821,7 +823,7 @@ app.put('/api/admin/members/:id', async (req, res) => {
         await writeData(data);
         const { password, ...safe } = data.members[idx];
         res.json({ success: true, member: safe });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.delete('/api/admin/members/:id', async (req, res) => {
     try {
@@ -829,7 +831,7 @@ app.delete('/api/admin/members/:id', async (req, res) => {
         data.members = data.members.filter(m => m.id !== req.params.id);
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Boards admin edit
@@ -844,7 +846,7 @@ app.put('/api/admin/boards/:id', async (req, res) => {
         post.updatedAt = new Date().toISOString();
         await writeData(data);
         res.json({ success: true, post });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Boards admin delete
@@ -854,7 +856,7 @@ app.delete('/api/admin/boards/:id', async (req, res) => {
         data.boards = (data.boards || []).filter(b => b.id !== req.params.id);
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== INTERVIEWS (backward compat - reads from blogs) ====================
@@ -873,7 +875,7 @@ app.get('/api/interviews', async (req, res) => {
         const allIds = new Set(asInterviews.map(i => i.id));
         legacy.forEach(iv => { if (!allIds.has(iv.id)) asInterviews.push(iv); });
         res.json(asInterviews);
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 // Legacy interview CRUD - redirect to blogs
 app.post('/api/admin/interviews', async (req, res) => {
@@ -891,7 +893,7 @@ app.post('/api/admin/interviews', async (req, res) => {
         data.blogs.push(blog);
         await writeData(data);
         res.json({ success: true, interview: blog });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.put('/api/admin/interviews/:id', async (req, res) => {
     try {
@@ -912,7 +914,7 @@ app.put('/api/admin/interviews/:id', async (req, res) => {
         });
         await writeData(data);
         res.json({ success: true, interview: data.blogs[idx] });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.delete('/api/admin/interviews/:id', async (req, res) => {
     try {
@@ -922,7 +924,7 @@ app.delete('/api/admin/interviews/:id', async (req, res) => {
         data.interviews = (data.interviews || []).filter(i => i.id !== req.params.id);
         await writeData(data);
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // ==================== OPERATING MEMBERS ====================
@@ -934,13 +936,13 @@ app.get('/api/operating-members', async (req, res) => {
             .filter(m => opIds.includes(m.id))
             .map(({ password, ...m }) => m);
         res.json(opMembers);
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.get('/api/admin/operating-members', async (req, res) => {
     try {
         const data = await readData();
         res.json(data.operatingMembers || []);
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 app.put('/api/admin/operating-members', async (req, res) => {
     try {
@@ -948,7 +950,7 @@ app.put('/api/admin/operating-members', async (req, res) => {
         data.operatingMembers = req.body.memberIds || [];
         await writeData(data);
         res.json({ success: true, operatingMembers: data.operatingMembers });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // OG Image proxy
@@ -985,7 +987,7 @@ app.get('/api/admin/backup', async (req, res) => {
         const fn = `data-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
         await fs.writeFile(path.join(dir, fn), JSON.stringify(data, null, 2));
         res.json({ success: true, filename: fn });
-    } catch (e) { res.status(500).json({ error: 'エラー' }); }
+    } catch (e) { handleErr(res, e); }
 });
 
 // Backup list
