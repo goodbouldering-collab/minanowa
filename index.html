@@ -2604,7 +2604,7 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
       <div class="fg"><label><i class="fas fa-map-marked-alt" style="color:var(--c1)"></i> Google Maps URL</label><input id="regGmap" type="url" placeholder="https://maps.google.com/... または https://goo.gl/maps/...">
         <p style="font-size:.65rem;color:var(--tl);margin-top:.15rem"><i class="fas fa-info-circle" style="color:var(--c1);margin-right:.2rem"></i>Google Mapsでお店を検索→「共有」→リンクをコピーして貼り付け</p>
         <button type="button" class="btn btn-primary" onclick="aiGenerateFromMap('reg')" style="margin-top:.3rem;padding:.35rem .7rem;font-size:.72rem;width:100%;border-radius:8px"><i class="fas fa-magic"></i> マップURLから店名・紹介文をAI自動生成</button>
-        <p style="font-size:.6rem;color:var(--accent);margin-top:.2rem;line-height:1.4"><i class="fas fa-lightbulb" style="margin-right:.2rem"></i>マップURLを入力してボタンを押すと、店名(正式名称)と業務紹介(120文字程度)が自動入力されます。後から自由に修正できます。</p>
+        <p style="font-size:.6rem;color:var(--accent);margin-top:.2rem;line-height:1.4"><i class="fas fa-magic" style="margin-right:.2rem"></i>マップURLからお店の情報を自動入力。会員マップにも掲載されます。</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
         <div class="fg"><label>お名前 *</label><input id="regName" required></div>
@@ -4395,8 +4395,7 @@ function openMypage(){
       <div class="fg"><label><i class="fas fa-map-marked-alt" style="color:var(--c1)"></i> Maps URL</label>
         <div style="display:flex;gap:.25rem;align-items:center"><input id="mpGmap" type="url" value="${currentUser.googleMapUrl||''}" placeholder="https://maps.google.com/..." style="flex:1;min-width:0"><button type="button" class="btn btn-primary" onclick="aiGenerateFromMap('mp')" style="padding:.3rem .7rem;font-size:.72rem;border-radius:6px;white-space:nowrap;flex-shrink:0"><i class="fas fa-magic"></i> AI生成</button></div>
         <div style="margin-top:.25rem;padding:.35rem .5rem;background:linear-gradient(135deg,rgba(13,124,102,.04),rgba(52,211,153,.03));border:1px solid rgba(13,124,102,.1);border-radius:8px">
-          <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:0"><i class="fas fa-lightbulb" style="color:#f59e0b;margin-right:.2rem"></i><b>AI生成</b>：マップURLを入力してボタンを押すと、<b>店名・事業内容・紹介文</b>がおおまかに自動入力されます。後から自由に修正できます。</p>
-          <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:.2rem 0 0"><i class="fas fa-map-pin" style="color:var(--c1);margin-right:.2rem"></i>マップURLを登録すると<b>会員マップ</b>にあなたのお店が表示されます。</p>
+          <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:0"><i class="fas fa-magic" style="color:#f59e0b;margin-right:.2rem"></i>マップURLからお店の情報を自動入力。<b>会員マップ</b>にも掲載されます。</p>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
