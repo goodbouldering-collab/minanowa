@@ -2078,7 +2078,8 @@ footer{padding:1.5rem .8rem .8rem}
   transition:background .2s,color .2s;border-radius:10px}
 .bottom-menu-list a:hover,.bottom-menu-list a:active{background:rgba(13,124,102,.05);color:var(--c1)}
 .bottom-menu-list a i{width:20px;text-align:center;font-size:.95rem;color:var(--c1);opacity:.8}
-.bottom-menu-list .menu-auth-btn{margin-top:.3rem;padding:0}
+.bottom-menu-list .menu-auth-btn{margin-top:.3rem;padding:0;border-top:1px solid rgba(0,0,0,.06)}
+.bottom-menu-list .menu-auth-btn a{color:var(--c1);font-weight:700}
 @media(min-width:769px){.bottom-menu-panel{max-width:400px}
 .mypage-panel{max-width:560px}
 .bottom-menu-panel,.mypage-panel{border-radius:14px 14px 0 0}}
@@ -4330,6 +4331,17 @@ function updateNav(){
     if(lineCtaSec) lineCtaSec.style.display='';
     if(lineCtaSec&&lineCtaSec.nextElementSibling&&lineCtaSec.nextElementSibling.classList.contains('sec-divider')){
       lineCtaSec.nextElementSibling.style.display='';
+    }
+  }
+  /* Bottom menu auth button */
+  const bma=document.getElementById('bottomMenuAuth');
+  if(bma){
+    if(currentUser){
+      bma.innerHTML=`<a href="#" onclick="event.preventDefault();closeBottomMenu();openMypage()"><i class="fas fa-user-circle"></i> マイページ</a>`
+        +`<a href="#" onclick="event.preventDefault();closeBottomMenu();logout()" style="color:var(--td);opacity:.7"><i class="fas fa-sign-out-alt"></i> ログアウト</a>`;
+    }else{
+      bma.innerHTML=`<a href="#" onclick="event.preventDefault();closeBottomMenu();openModal('loginModal')"><i class="fas fa-sign-in-alt"></i> ログイン</a>`
+        +`<a href="#" onclick="event.preventDefault();closeBottomMenu();openModal('regModal')" style="color:var(--c2)"><i class="fas fa-user-plus"></i> 新規登録</a>`;
     }
   }
 }
