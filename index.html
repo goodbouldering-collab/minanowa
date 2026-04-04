@@ -4050,6 +4050,12 @@ function renderOpMembers(){
 
 /* ========== AUTH ========== */
 let _googleClientId='';
+function isInAppBrowser(){
+  const ua=navigator.userAgent||navigator.vendor||'';
+  return /Line\/|FBAN|FBAV|Instagram|Twitter|MicroMessenger|WeChat|Snapchat|TikTok/i.test(ua)
+    ||(ua.includes('wv')&&ua.includes('Android'))
+    ||(/iPhone|iPad/.test(ua)&&!ua.includes('Safari'));
+}
 async function initGoogleAuth(){
   try{
     const res=await fetch('/api/site-settings');
@@ -4057,6 +4063,19 @@ async function initGoogleAuth(){
     _googleClientId=s.googleClientId||'';
   }catch(e){console.warn('Failed to load Google Client ID',e);return}
   if(!_googleClientId) return;
+  const loginBtn=document.getElementById('googleLoginBtn');
+  const regBtn=document.getElementById('googleRegBtn');
+  // WebView detection: show "open in external browser" instead of Google button
+  if(isInAppBrowser()){
+    const webviewMsg=`<div style="text-align:center;padding:.6rem .8rem;background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(245,158,11,.05));border:1.5px solid rgba(245,158,11,.2);border-radius:12px">
+      <p style="font-size:.75rem;color:#92400e;font-weight:600;margin:0 0 .4rem"><i class="fas fa-exclamation-triangle" style="margin-right:.3rem;color:#f59e0b"></i>アプリ内ブラウザではGoogleログインが使えません</p>
+      <a href="${location.href}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .8rem;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border-radius:8px;font-size:.75rem;font-weight:700;text-decoration:none" onclick="event.preventDefault();const u=location.href;if(navigator.clipboard)navigator.clipboard.writeText(u);prompt('以下のURLをSafari/Chromeで開いてください',u)"><i class="fas fa-external-link-alt"></i> Safari / Chrome で開く</a>
+      <p style="font-size:.62rem;color:#92400e;margin:.3rem 0 0;opacity:.7">メール＆パスワードでのログインはこのままご利用いただけます</p>
+    </div>`;
+    if(loginBtn) loginBtn.innerHTML=webviewMsg;
+    if(regBtn) regBtn.innerHTML=webviewMsg;
+    return;
+  }
   // Wait for GIS library to load
   function tryInit(){
     if(typeof google==='undefined'||!google.accounts){setTimeout(tryInit,200);return}
@@ -4066,9 +4085,6 @@ async function initGoogleAuth(){
       auto_select:false,
       ux_mode:'popup'
     });
-    // Render official Google buttons into login and register modals
-    const loginBtn=document.getElementById('googleLoginBtn');
-    const regBtn=document.getElementById('googleRegBtn');
     try{
       if(loginBtn){
         google.accounts.id.renderButton(loginBtn,{theme:'outline',size:'large',text:'signin_with',locale:'ja',width:320,shape:'pill'});
@@ -4078,7 +4094,6 @@ async function initGoogleAuth(){
       }
     }catch(e){
       console.warn('Google Sign-In button render failed (origin may not be authorized):',e.message);
-      // Show fallback message
       const msg='<div style="text-align:center;padding:.5rem;font-size:.8rem;color:var(--tl)"><i class="fab fa-google" style="margin-right:.3rem"></i>Google\u30ED\u30B0\u30A4\u30F3\u306F\u3053\u306E\u30C9\u30E1\u30A4\u30F3\u3067\u306F\u5229\u7528\u3067\u304D\u307E\u305B\u3093</div>';
       if(loginBtn) loginBtn.innerHTML=msg;
       if(regBtn) regBtn.innerHTML=msg;
