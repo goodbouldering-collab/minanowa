@@ -1089,7 +1089,7 @@ footer{padding:2rem 1rem 1rem}
 .mypage-header{flex-direction:column;text-align:center;gap:.6rem}
 .mypage-avatar{width:60px;height:60px}
 .mypage-info h3{font-size:.92rem}
-.mypage-admin-btn{margin-left:auto}
+.mypage-panel-head .btn:first-of-type{margin-left:auto}
 /* === TOAST === */
 .toast{right:.7rem;left:.7rem;top:60px;font-size:.78rem;padding:.65rem .9rem}
 /* === SEARCH === */
@@ -1554,17 +1554,9 @@ footer::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
 .avatar-upload:hover .avatar-overlay{opacity:1}
 .mypage-info h3{font-size:1.15rem;font-weight:700}
 .mypage-info p{color:var(--tl);font-size:.9rem}
-.mypage-admin-btn{display:inline-flex;align-items:center;gap:.3rem;
-  padding:.3rem .7rem;font-size:.72rem;font-weight:700;color:#fff;
-  background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:6px;
-  text-decoration:none;white-space:nowrap;flex-shrink:0;margin-left:auto}
-.mypage-save-btn{display:inline-flex;align-items:center;gap:.3rem;
-  padding:.3rem .7rem;font-size:.72rem;font-weight:700;color:#fff;
-  background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:6px;
-  border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;margin-left:auto;
-  box-shadow:0 2px 8px rgba(13,124,102,.25);transition:all .3s ease}
-.mypage-save-btn:hover{box-shadow:0 4px 12px rgba(13,124,102,.35);transform:translateY(-1px)}
-.mypage-admin-btn+.mypage-save-btn{margin-left:.3rem}
+.mypage-panel-head .btn{padding:.3rem .7rem;font-size:.72rem;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.mypage-panel-head .btn:first-of-type{margin-left:auto}
+.mypage-panel-head .btn+.btn{margin-left:.25rem}
 
 /* ========== SEARCH ========== */
 .search-box{max-width:500px;margin:0 auto .8rem;position:relative}
@@ -4348,18 +4340,16 @@ function openMypage(){
   if(!currentUser) return;
   // Admin button in panel head
   const panelHead=document.querySelector('.mypage-panel-head');
-  const oldBtn=panelHead.querySelector('.mypage-admin-btn');
-  if(oldBtn) oldBtn.remove();
-  const oldSave=panelHead.querySelector('.mypage-save-btn');
-  if(oldSave) oldSave.remove();
+  panelHead.querySelectorAll('.btn').forEach(b=>b.remove());
 
   if(currentUser.isAdmin){
-    const a=document.createElement('a');a.href='/admin.html';a.className='mypage-admin-btn';
-    a.innerHTML='<i class="fas fa-cog"></i> 管理';panelHead.appendChild(a);
+    const a=document.createElement('a');a.href='/admin.html';a.className='btn btn-ghost btn-sm';
+    a.style.cssText='padding:.3rem .7rem;font-size:.72rem';a.innerHTML='<i class="fas fa-cog"></i> 管理';panelHead.appendChild(a);
   }
   const saveBtn=document.createElement('button');
   saveBtn.type='submit';saveBtn.setAttribute('form','mypageForm');
-  saveBtn.className='mypage-save-btn';
+  saveBtn.className='btn btn-primary btn-sm';
+  saveBtn.style.cssText='padding:.3rem .7rem;font-size:.72rem';
   saveBtn.innerHTML='<i class="fas fa-save"></i> 保存';
   panelHead.appendChild(saveBtn);
 
@@ -4380,15 +4370,13 @@ function openMypage(){
       </div>
     </div>
     <form id="mypageForm" onsubmit="saveMypage(event)">
-      <div style="padding:.3rem .5rem;background:linear-gradient(135deg,rgba(13,124,102,.04),rgba(52,211,153,.03));border:1px solid rgba(13,124,102,.1);border-radius:8px;margin-bottom:.4rem">
-        <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:0"><i class="fas fa-magic" style="color:#f59e0b;margin-right:.2rem"></i>マップURL・SNS・HPを登録→会員マップ掲載＆地域密着の口コミ集客に。</p>
-      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
         <div class="fg"><label>お名前 <span style="color:#ef4444;font-size:.6rem">*必須</span></label><input id="mpName" value="${currentUser.name||''}" required></div>
         <div class="fg"><label>ふりがな <span style="color:#ef4444;font-size:.6rem">*必須</span></label><input id="mpFuri" value="${currentUser.furigana||''}" required></div>
       </div>
       <div class="fg"><label><i class="fas fa-map-marked-alt" style="color:var(--c1)"></i> Maps URL</label>
-        <div style="display:flex;gap:.25rem;align-items:center"><input id="mpGmap" type="url" value="${currentUser.googleMapUrl||''}" placeholder="https://maps.google.com/..." style="flex:1;min-width:0"><button type="button" class="btn btn-primary" onclick="aiGenerateFromMap('mp')" style="padding:.3rem .7rem;font-size:.72rem;border-radius:6px;white-space:nowrap;flex-shrink:0"><i class="fas fa-magic"></i> AI生成</button></div>
+        <div style="display:flex;gap:.25rem;align-items:center"><input id="mpGmap" type="url" value="${currentUser.googleMapUrl||''}" placeholder="https://maps.google.com/..." style="flex:1;min-width:0"><button type="button" class="btn btn-outline btn-sm" onclick="aiGenerateFromMap('mp')" style="padding:.3rem .7rem;font-size:.72rem;white-space:nowrap;flex-shrink:0"><i class="fas fa-magic"></i> AI生成</button></div>
+        <p style="font-size:.58rem;color:var(--tl);line-height:1.4;margin:.2rem 0 0"><i class="fas fa-magic" style="color:#f59e0b;margin-right:.15rem"></i>マップURL・SNS・HPを登録→会員マップ掲載＆地域密着の口コミ集客に。</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
         <div class="fg"><label>店名</label><input id="mpProfession" value="${currentUser.profession||''}" placeholder="○○サロン"></div>
