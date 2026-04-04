@@ -599,7 +599,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <div><div style="font-weight:700;font-size:.85rem">プリセットQ&A（完全一致）</div><div style="font-size:.68rem;color:var(--tl)">質問テキストが完全に一致した場合に返す回答</div></div>
     </div>
     <div id="aiAnswersList"></div>
-    <button class="btn" style="margin-top:.4rem;background:var(--cbg2);border:1.5px solid rgba(16,185,129,.15);color:var(--c1);font-size:.72rem" onclick="addAiAnswerRow()"><i class="fas fa-plus"></i> 追加</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:.4rem" onclick="addAiAnswerRow()"><i class="fas fa-plus"></i> 追加</button>
   </div>
 
   <!-- Keyword Patterns -->
@@ -609,7 +609,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       <div><div style="font-weight:700;font-size:.85rem">キーワードパターン（部分一致）</div><div style="font-size:.68rem;color:var(--tl)">正規表現パターンにマッチした場合に返す回答（例: 起業|開業|独立）</div></div>
     </div>
     <div id="aiKeywordsList"></div>
-    <button class="btn" style="margin-top:.4rem;background:var(--cbg2);border:1.5px solid rgba(245,158,11,.15);color:#d97706;font-size:.72rem" onclick="addAiKeywordRow()"><i class="fas fa-plus"></i> 追加</button>
+    <button class="btn btn-outline btn-sm" style="margin-top:.4rem" onclick="addAiKeywordRow()"><i class="fas fa-plus"></i> 追加</button>
   </div>
 </div>
 
@@ -720,7 +720,7 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
       </div>
       <div class="fg"><label>Google Maps URL</label><input id="meGmap" type="url" placeholder="https://maps.google.com/..."></div>
       <div class="fg" style="background:linear-gradient(135deg,rgba(245,158,11,.04),rgba(251,191,36,.04));border:1.5px solid rgba(245,158,11,.15);border-radius:var(--r2);padding:.5rem .6rem;margin-bottom:.6rem">
-        <label style="color:#b45309;display:flex;align-items:center;gap:.3rem"><i class="fas fa-gift" style="color:#f59e0b"></i> メンバー特典 <span style="font-size:.58rem;color:var(--tl);font-weight:400">(メンバー同士で使える割引・特典)</span></label>
+        <label style="color:#b45309;display:flex;align-items:center;gap:.3rem"><i class="fas fa-gift" style="color:#f59e0b"></i> メンバー向け特典 <span style="font-size:.58rem;color:var(--tl);font-weight:400">(メンバー同士で使える割引・特典)</span></label>
         <input id="meBenefit" placeholder="例: みんなのWAメンバー初回10%OFF、ドリンク1杯無料 等" style="border-color:rgba(245,158,11,.2)">
       </div>
       <div class="fg"><label>公開設定</label><select id="mePublic"><option value="true">公開</option><option value="false">非公開</option></select></div>
@@ -1512,7 +1512,7 @@ function makeAiAnswerRow(q,a){
   row.style.cssText='display:grid;grid-template-columns:1fr 2fr auto;gap:.3rem;margin-bottom:.3rem;align-items:start';
   row.innerHTML=`<input class="ai-q-input" value="${escH(q)}" placeholder="質問" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;font-family:inherit">
     <textarea class="ai-a-input" rows="2" placeholder="回答" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;resize:vertical;font-family:inherit;line-height:1.5">${escH(a)}</textarea>
-    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:.2rem;font-size:.8rem"><i class="fas fa-trash-alt"></i></button>`;
+    <button class="btn btn-danger btn-sm" style="padding:.15rem .3rem" onclick="this.parentElement.remove()"><i class="fas fa-trash-alt"></i></button>`;
   return row;
 }
 function addAiAnswerRow(){document.getElementById('aiAnswersList').appendChild(makeAiAnswerRow('',''))}
@@ -1522,7 +1522,7 @@ function makeAiKeywordRow(p,a){
   row.style.cssText='display:grid;grid-template-columns:1fr 2fr auto;gap:.3rem;margin-bottom:.3rem;align-items:start';
   row.innerHTML=`<input class="ai-p-input" value="${escH(p)}" placeholder="パターン（例: 起業|開業）" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;font-family:inherit">
     <textarea class="ai-ka-input" rows="2" placeholder="回答" style="padding:.35rem .5rem;border:1.5px solid rgba(0,0,0,.08);border-radius:8px;font-size:.73rem;resize:vertical;font-family:inherit;line-height:1.5">${escH(a)}</textarea>
-    <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:.2rem;font-size:.8rem"><i class="fas fa-trash-alt"></i></button>`;
+    <button class="btn btn-danger btn-sm" style="padding:.15rem .3rem" onclick="this.parentElement.remove()"><i class="fas fa-trash-alt"></i></button>`;
   return row;
 }
 function addAiKeywordRow(){document.getElementById('aiKeywordsList').appendChild(makeAiKeywordRow('',''))}
@@ -1613,9 +1613,9 @@ async function loadBackupList(){
           <td style="padding:.4rem .3rem;white-space:nowrap">${sz}</td>
           <td style="padding:.4rem .3rem">${preview}</td>
           <td style="padding:.4rem .3rem;text-align:right;white-space:nowrap">
-            <button onclick="doRestore('${b.filename}')" style="background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;padding:.25rem .6rem;border-radius:6px;cursor:pointer;font-size:.68rem;margin-right:.2rem" title="リストア"><i class="fas fa-undo"></i> 復元</button>
-            <button onclick="doDownloadBackup('${b.filename}')" style="background:var(--cbg2);border:1px solid rgba(0,0,0,.08);padding:.25rem .5rem;border-radius:6px;cursor:pointer;font-size:.68rem;margin-right:.2rem" title="ダウンロード"><i class="fas fa-download"></i></button>
-            <button onclick="doDeleteBackup('${b.filename}')" style="background:transparent;border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:.25rem .5rem;border-radius:6px;cursor:pointer;font-size:.68rem" title="削除"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-primary btn-sm" onclick="doRestore('${b.filename}')" title="リストア"><i class="fas fa-undo"></i> 復元</button>
+            <button class="btn btn-ghost btn-sm" onclick="doDownloadBackup('${b.filename}')" title="ダウンロード"><i class="fas fa-download"></i></button>
+            <button class="btn btn-danger btn-sm" onclick="doDeleteBackup('${b.filename}')" title="削除"><i class="fas fa-trash"></i></button>
           </td></tr>`}).join('')}</tbody></table>`;
   }catch(e){el.innerHTML='<div style="color:#ef4444">読み込みエラー</div>'}
 }

@@ -2596,10 +2596,12 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
     <div id="googleRegBtn" style="display:flex;justify-content:center;margin-bottom:.8rem"></div>
     <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem"><div style="flex:1;height:1px;background:rgba(0,0,0,.1)"></div><span style="font-size:.75rem;color:var(--tl)">またはメールで登録</span><div style="flex:1;height:1px;background:rgba(0,0,0,.1)"></div></div>
     <form onsubmit="handleRegister(event)">
+      <div style="padding:.3rem .5rem;background:linear-gradient(135deg,rgba(13,124,102,.04),rgba(52,211,153,.03));border:1px solid rgba(13,124,102,.1);border-radius:8px;margin-bottom:.4rem">
+        <p style="font-size:.62rem;color:var(--tl);line-height:1.5;margin:0"><i class="fas fa-magic" style="color:#f59e0b;margin-right:.2rem"></i>マップURL・SNS・HPを登録→会員マップ掲載＆地域密着の口コミ集客に。</p>
+      </div>
       <div class="fg"><label><i class="fas fa-map-marked-alt" style="color:var(--c1)"></i> Google Maps URL</label><input id="regGmap" type="url" placeholder="https://maps.google.com/... または https://goo.gl/maps/...">
         <p style="font-size:.65rem;color:var(--tl);margin-top:.15rem"><i class="fas fa-info-circle" style="color:var(--c1);margin-right:.2rem"></i>Google Mapsでお店を検索→「共有」→リンクをコピーして貼り付け</p>
         <button type="button" class="btn btn-primary" onclick="aiGenerateFromMap('reg')" style="margin-top:.3rem;padding:.35rem .7rem;font-size:.72rem;width:100%;border-radius:8px"><i class="fas fa-magic"></i> マップURLから店名・紹介文をAI自動生成</button>
-        <p style="font-size:.6rem;color:var(--accent);margin-top:.2rem;line-height:1.4"><i class="fas fa-magic" style="margin-right:.2rem"></i>マップURLからお店の情報を自動入力。会員マップにも掲載されます。</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
         <div class="fg"><label>お名前 *</label><input id="regName" required></div>
@@ -4378,15 +4380,15 @@ function openMypage(){
       </div>
     </div>
     <form id="mypageForm" onsubmit="saveMypage(event)">
+      <div style="padding:.3rem .5rem;background:linear-gradient(135deg,rgba(13,124,102,.04),rgba(52,211,153,.03));border:1px solid rgba(13,124,102,.1);border-radius:8px;margin-bottom:.4rem">
+        <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:0"><i class="fas fa-magic" style="color:#f59e0b;margin-right:.2rem"></i>マップURL・SNS・HPを登録→会員マップ掲載＆地域密着の口コミ集客に。</p>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
         <div class="fg"><label>お名前 <span style="color:#ef4444;font-size:.6rem">*必須</span></label><input id="mpName" value="${currentUser.name||''}" required></div>
         <div class="fg"><label>ふりがな <span style="color:#ef4444;font-size:.6rem">*必須</span></label><input id="mpFuri" value="${currentUser.furigana||''}" required></div>
       </div>
       <div class="fg"><label><i class="fas fa-map-marked-alt" style="color:var(--c1)"></i> Maps URL</label>
         <div style="display:flex;gap:.25rem;align-items:center"><input id="mpGmap" type="url" value="${currentUser.googleMapUrl||''}" placeholder="https://maps.google.com/..." style="flex:1;min-width:0"><button type="button" class="btn btn-primary" onclick="aiGenerateFromMap('mp')" style="padding:.3rem .7rem;font-size:.72rem;border-radius:6px;white-space:nowrap;flex-shrink:0"><i class="fas fa-magic"></i> AI生成</button></div>
-        <div style="margin-top:.25rem;padding:.35rem .5rem;background:linear-gradient(135deg,rgba(13,124,102,.04),rgba(52,211,153,.03));border:1px solid rgba(13,124,102,.1);border-radius:8px">
-          <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:0"><i class="fas fa-magic" style="color:#f59e0b;margin-right:.2rem"></i>マップURLからお店の情報を自動入力。<b>会員マップ</b>にも掲載されます。</p>
-        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .4rem">
         <div class="fg"><label>店名</label><input id="mpProfession" value="${currentUser.profession||''}" placeholder="○○サロン"></div>
@@ -4398,11 +4400,8 @@ function openMypage(){
         <div class="fg"><label><i class="fab fa-instagram" style="color:#e1306c"></i> Instagram</label><input id="mpInsta" value="${currentUser.instagram?'@'+currentUser.instagram.replace(/^@/,''):''}" placeholder="@your_id"></div>
       </div>
       <div class="fg"><label>HP</label><input id="mpWeb" value="${currentUser.website||''}" placeholder="https://"></div>
-      <div style="padding:.35rem .5rem;background:linear-gradient(135deg,rgba(59,130,246,.04),rgba(147,197,253,.03));border:1px solid rgba(59,130,246,.1);border-radius:8px;margin-bottom:.3rem">
-        <p style="font-size:.62rem;color:var(--tm);line-height:1.5;margin:0"><i class="fab fa-instagram" style="color:#e1306c;margin-right:.2rem"></i><b>Instagram</b>や<b>HP</b>を登録すると、地域に顔が広いメンバーに事業を知ってもらえる<b>地域密着型の口コミ広告</b>に。</p>
-      </div>
       <div class="fg" style="background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(251,191,36,.03));border:1px solid rgba(245,158,11,.15);border-radius:8px;padding:.3rem .45rem">
-        <label style="color:#b45309;font-weight:700;display:flex;align-items:center;gap:.2rem;font-size:.68rem"><i class="fas fa-gift" style="color:#f59e0b"></i> 特典</label>
+        <label style="color:#b45309;font-weight:700;display:flex;align-items:center;gap:.2rem;font-size:.68rem"><i class="fas fa-gift" style="color:#f59e0b"></i> メンバー向け特典</label>
         <input id="mpBenefit" value="${currentUser.memberBenefit||''}" placeholder="例: 初回10%OFF" style="border-color:rgba(245,158,11,.15)">
       </div>
     </form>`;
