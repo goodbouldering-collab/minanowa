@@ -1,0 +1,34 @@
+# ============================================================
+# render.yaml - Render デプロイ設定
+# ============================================================
+# Render.com で「New > Blueprint」からこのファイルを使ってデプロイ
+# または「New > Web Service」でGitHubリポジトリを接続
+# https://render.com/docs/blueprint-spec
+#
+# 🔒 運用ルール:
+#   コード更新 → AIデベロッパー → GitHub → 自動デプロイ
+#   データ変更 → 本番の管理画面から操作（data.jsonは編集禁止）
+# ============================================================
+
+services:
+  - type: web
+    name: minanowa
+    runtime: node
+    region: singapore
+    plan: starter         # 有料プラン（永続ディスク使用のため必須）
+    buildCommand: rm -rf node_modules && npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: RENDER
+        value: "true"
+      - key: PERSISTENT_DIR
+        value: /data
+    healthCheckPath: /
+    disk:
+      name: minanowa-data
+      mountPath: /data
+      sizeGB: 1           # 1GB（data.json + uploads + backups）
