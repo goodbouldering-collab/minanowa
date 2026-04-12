@@ -6,17 +6,19 @@ export const dynamic = 'force-dynamic';
 
 async function getCounts() {
   const supabase = createClient();
-  const [members, events, blogs, boards] = await Promise.all([
+  const [members, events, blogs, boards, unreadMessages] = await Promise.all([
     supabase.from('members').select('*', { count: 'exact', head: true }),
     supabase.from('events').select('*', { count: 'exact', head: true }),
     supabase.from('blogs').select('*', { count: 'exact', head: true }),
     supabase.from('boards').select('*', { count: 'exact', head: true }),
+    supabase.from('messages').select('*', { count: 'exact', head: true }).eq('is_read', false),
   ]);
   return {
     members: members.count ?? 0,
     events: events.count ?? 0,
     blogs: blogs.count ?? 0,
     boards: boards.count ?? 0,
+    unreadMessages: unreadMessages.count ?? 0,
   };
 }
 
@@ -40,7 +42,8 @@ export default async function AdminDashboard() {
     { label: 'メンバー', value: counts.members, icon: '👥', href: '/admin/members', color: 'bg-rose-50 text-rose-700' },
     { label: 'イベント', value: counts.events, icon: '📅', href: '/admin/events', color: 'bg-amber-50 text-amber-700' },
     { label: 'お知らせ・レポート', value: counts.blogs, icon: '📰', href: '/admin/blogs', color: 'bg-emerald-50 text-emerald-700' },
-    { label: '掲示板', value: counts.boards, icon: '💬', href: '#', color: 'bg-sky-50 text-sky-700' },
+    { label: '掲示板', value: counts.boards, icon: '💬', href: '/admin/boards', color: 'bg-sky-50 text-sky-700' },
+    { label: '未読お問い合わせ', value: counts.unreadMessages, icon: '✉️', href: '/admin/messages', color: 'bg-violet-50 text-violet-700' },
   ];
 
   return (

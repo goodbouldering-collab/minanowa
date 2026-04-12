@@ -51,6 +51,14 @@ type MinanowaSchema = {
         Insert: { member_id: string; sort_order: number };
         Update: Partial<{ member_id: string; sort_order: number }>;
       };
+      messages: {
+        Row: MessageRow;
+        Insert: Omit<MessageRow, 'id' | 'created_at' | 'is_read'> & {
+          id?: string;
+          is_read?: boolean;
+        };
+        Update: Partial<MessageRow>;
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -152,6 +160,15 @@ export type BoardReplyRow = {
   author_name: string;
   author_avatar: string | null;
   content: string;
+  created_at: string;
+};
+
+export type MessageRow = {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  is_read: boolean;
   created_at: string;
 };
 

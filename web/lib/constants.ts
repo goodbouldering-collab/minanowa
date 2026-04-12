@@ -5,3 +5,9 @@ export const SITE_URL =
 
 export const INSTAGRAM_ACCOUNT = 'minanowa_hikone';
 export const ORG_LOCATION = '彦根市';
+
+export const LINE_INVITE_URL =
+  'https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default';
+
+export const INSTAGRAM_URL =
+  'https://www.instagram.com/minnano_wa.shiga?igsh=MTE0YXJwbGlqMnFlaQ==';

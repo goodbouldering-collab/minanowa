@@ -15,37 +15,62 @@ export async function HeroSection({ settings }: { settings: SiteSettings | null 
   } = await supabase.auth.getUser();
 
   return (
-    <section className="relative bg-gradient-to-br from-rose-50 via-amber-50 to-rose-100 py-20 px-6">
-      <div className="absolute top-4 right-6">
-        {user ? (
-          <Link
-            href="/me"
-            className="text-sm px-4 py-2 bg-white/80 hover:bg-white rounded-full text-slate-700 font-medium shadow-sm transition-colors"
-          >
-            マイページ
-          </Link>
-        ) : (
-          <Link
-            href="/login"
-            className="text-sm px-4 py-2 bg-white/80 hover:bg-white rounded-full text-slate-700 font-medium shadow-sm transition-colors"
-          >
-            ログイン
-          </Link>
-        )}
+    <section className="relative overflow-hidden bg-gradient-to-br from-brand-50 via-emerald-50 to-amber-50 py-24 px-6">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-brand-300/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-72 h-72 bg-accent-400/20 rounded-full blur-3xl" />
       </div>
-      <div className="max-w-4xl mx-auto text-center">
-        <p className="text-sm font-semibold tracking-widest text-brand mb-4">
+
+      <div className="relative max-w-4xl mx-auto text-center">
+        <p className="text-sm font-bold tracking-[0.25em] text-brand-600 mb-6">
           {SITE_NAME}
         </p>
-        <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+        <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-[1.15]">
           {title}
         </h1>
-        <p className="text-base md:text-lg text-slate-600 mb-8">{subtitle}</p>
-        <div className="flex flex-wrap justify-center gap-3 text-sm text-slate-700">
-          <span className="bg-white/70 px-3 py-1.5 rounded-full">🤝 仲間がお客さんに</span>
-          <span className="bg-white/70 px-3 py-1.5 rounded-full">🎁 メンバー割引</span>
-          <span className="bg-white/70 px-3 py-1.5 rounded-full">🚀 コラボがすぐ形に</span>
-          <span className="bg-white/70 px-3 py-1.5 rounded-full">📍 彦根市発・登録無料</span>
+        <p className="text-base md:text-lg text-slate-700 mb-8 leading-relaxed">
+          {subtitle}
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-2 text-sm text-slate-700 mb-10">
+          <span className="bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-sm">
+            🤝 仲間がお客さんに
+          </span>
+          <span className="bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-sm">
+            🎁 メンバー割引
+          </span>
+          <span className="bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-sm">
+            🚀 コラボがすぐ形に
+          </span>
+          <span className="bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-sm">
+            📍 彦根市発・登録無料
+          </span>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3">
+          {user ? (
+            <Link
+              href="/me"
+              className="inline-block px-6 py-3 bg-brand-600 text-white rounded-full font-semibold shadow-lifted hover:bg-brand-700 transition-colors"
+            >
+              マイページへ
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/register"
+                className="inline-block px-6 py-3 bg-brand-600 text-white rounded-full font-semibold shadow-lifted hover:bg-brand-700 transition-colors"
+              >
+                無料で会員登録
+              </Link>
+              <Link
+                href="/login"
+                className="inline-block px-6 py-3 bg-white/80 text-slate-800 rounded-full font-semibold border border-slate-200 hover:bg-white transition-colors"
+              >
+                ログイン
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </section>

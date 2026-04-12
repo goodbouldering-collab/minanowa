@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3010",
     "build": "next build",
-    "start": "next start -p 3010",
+    "start": "next start -H 0.0.0.0 -p ${PORT:-3010}",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "migrate:generate": "tsx scripts/generate-migration.ts",

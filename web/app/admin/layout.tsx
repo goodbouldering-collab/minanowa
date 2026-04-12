@@ -12,6 +12,7 @@ const navItems = [
   { href: '/admin/blogs', label: 'お知らせ・レポート', icon: '📰' },
   { href: '/admin/members', label: 'メンバー', icon: '👥' },
   { href: '/admin/boards', label: '掲示板', icon: '💬' },
+  { href: '/admin/messages', label: 'お問い合わせ', icon: '✉️' },
 ];
 
 export default async function AdminLayout({

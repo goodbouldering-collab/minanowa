@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Event } from '@/types/domain';
 
 function formatDate(d: string) {
@@ -29,9 +30,10 @@ export function EventsSection({ events }: { events: Event[] }) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((e) => (
-              <article
+              <Link
                 key={e.id}
-                className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow"
+                href={`/event/${e.id}`}
+                className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow block"
               >
                 {e.imageUrl && (
                   <div className="aspect-video bg-slate-100 overflow-hidden">
@@ -60,7 +62,7 @@ export function EventsSection({ events }: { events: Event[] }) {
                     </p>
                   )}
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         )}

@@ -1,23 +1,33 @@
+import Link from 'next/link';
 import type { Member } from '@/types/domain';
 
 export function MembersSection({ members }: { members: Member[] }) {
   return (
     <section id="members" className="py-16 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">メンバー</h2>
-          <p className="text-slate-600">
-            彦根を中心に活躍する事業者たち
-          </p>
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">メンバー</h2>
+            <p className="text-slate-600 text-sm">
+              彦根を中心に活躍する事業者たち。🎁マーク付きメンバーは相互利用で割引・特典あり！
+            </p>
+          </div>
+          <Link
+            href="/members"
+            className="text-sm text-brand-600 hover:text-brand-700 font-medium whitespace-nowrap"
+          >
+            もっと見る →
+          </Link>
         </div>
         {members.length === 0 ? (
           <p className="text-center text-slate-500">公開メンバーはまだいません</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {members.map((m) => (
-              <article
+              <Link
                 key={m.id}
-                className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 hover:shadow-md transition-shadow text-center"
+                href={`/members/${m.id}`}
+                className="bg-white rounded-2xl shadow-card border border-slate-200 p-4 hover:shadow-lifted transition-shadow text-center block"
               >
                 <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-slate-100 overflow-hidden">
                   {m.avatarUrl ? (
@@ -40,11 +50,11 @@ export function MembersSection({ members }: { members: Member[] }) {
                   </p>
                 )}
                 {m.businessCategory && (
-                  <span className="inline-block text-[10px] px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">
+                  <span className="inline-block text-[10px] px-2 py-0.5 bg-brand-50 text-brand-700 rounded-full">
                     {m.businessCategory}
                   </span>
                 )}
-              </article>
+              </Link>
             ))}
           </div>
         )}
