@@ -774,28 +774,6 @@ app.post('/api/messages', async (req, res) => {
     } catch (e) { handleErr(res, e); }
 });
 
-// ==================== ONE-SHOT: password hash export (for Supabase migration) ====================
-// 使い方: curl -s "https://minanowa.onrender.com/api/admin/export-hashes?token=XXX"
-// 本番 data.json から email+password_hash を返し、Supabase 同期に使う。
-// 終わったらこのルート自体を削除 (または EXPORT_HASHES_TOKEN 環境変数を削除)
-app.get('/api/admin/export-hashes', async (req, res) => {
-    try {
-        const token = process.env.EXPORT_HASHES_TOKEN;
-        if (!token || req.query.token !== token) {
-            return res.status(403).json({ error: 'forbidden' });
-        }
-        const raw = JSON.parse(await fs.readFile(DATA_FILE, 'utf8'));
-        const out = (raw.members || []).map((m) => ({
-            id: m.id,
-            email: m.email || null,
-            password: m.password || null,
-            googleSub: m.googleSub || null,
-            hasPassword: !!m.password,
-        }));
-        res.json({ count: out.length, members: out });
-    } catch (e) { handleErr(res, e, 'export-hashes'); }
-});
-
 // ==================== ADMIN ====================
 // Events CRUD
 app.post('/api/admin/events', async (req, res) => {
