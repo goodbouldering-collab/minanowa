@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
 const bodyParser = require('body-parser');
@@ -9,6 +10,7 @@ const path = require('path');
 const multer = require('multer');
 const Stripe = require('stripe');
 const { OAuth2Client } = require('google-auth-library');
+const supaStore = require('./lib/supabase-store');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -64,7 +66,35 @@ const upload = multer({
 app.use('/uploads', express.static(uploadDir));
 
 // Data helpers
+// Supabase が設定されていれば Supabase を single source of truth として扱い、
+// メモリにキャッシュしてリクエスト毎の読み書きを最小化する。
+// data.json は初回シード用 + フォールバックのみ。
+const USE_SUPABASE = supaStore.isEnabled();
+let _cache = null;
+let _cachePromise = null;
+
+async function _loadFromSupabase() {
+    const data = await supaStore.readAll();
+    data.members = data.members || [];
+    data.events = data.events || [];
+    data.blogs = data.blogs || [];
+    data.boards = data.boards || [];
+    data.messages = data.messages || [];
+    data.operatingMembers = data.operatingMembers || [];
+    data.siteSettings = data.siteSettings || {};
+    data.interviews = data.interviews || [];
+    data.groupChats = data.groupChats || [];
+    return data;
+}
+
 async function readData() {
+    if (USE_SUPABASE) {
+        if (_cache) return _cache;
+        if (_cachePromise) return _cachePromise;
+        _cachePromise = _loadFromSupabase().then((d) => { _cache = d; _cachePromise = null; return d; })
+            .catch((e) => { _cachePromise = null; throw e; });
+        return _cachePromise;
+    }
     try {
         return JSON.parse(await fs.readFile(DATA_FILE, 'utf8'));
     } catch {
@@ -72,6 +102,12 @@ async function readData() {
     }
 }
 async function writeData(data) {
+    if (USE_SUPABASE) {
+        await supaStore.writeAll(data);
+        _cache = data;   // write-through cache
+        fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2)).catch((e) => console.warn('[backup data.json]', e.message));
+        return;
+    }
     await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
 }
 function genId(p) { return `${p}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; }
@@ -736,6 +772,28 @@ app.post('/api/messages', async (req, res) => {
         await writeData(data);
         res.json({ success: true, message: msg });
     } catch (e) { handleErr(res, e); }
+});
+
+// ==================== ONE-SHOT: password hash export (for Supabase migration) ====================
+// 使い方: curl -s "https://minanowa.onrender.com/api/admin/export-hashes?token=XXX"
+// 本番 data.json から email+password_hash を返し、Supabase 同期に使う。
+// 終わったらこのルート自体を削除 (または EXPORT_HASHES_TOKEN 環境変数を削除)
+app.get('/api/admin/export-hashes', async (req, res) => {
+    try {
+        const token = process.env.EXPORT_HASHES_TOKEN;
+        if (!token || req.query.token !== token) {
+            return res.status(403).json({ error: 'forbidden' });
+        }
+        const raw = JSON.parse(await fs.readFile(DATA_FILE, 'utf8'));
+        const out = (raw.members || []).map((m) => ({
+            id: m.id,
+            email: m.email || null,
+            password: m.password || null,
+            googleSub: m.googleSub || null,
+            hasPassword: !!m.password,
+        }));
+        res.json({ count: out.length, members: out });
+    } catch (e) { handleErr(res, e, 'export-hashes'); }
 });
 
 // ==================== ADMIN ====================
