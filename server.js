@@ -73,16 +73,6 @@ const USE_SUPABASE = supaStore.isEnabled();
 let _cache = null;
 let _cachePromise = null;
 
-app.get('/api/healthz', (req, res) => {
-    res.json({
-        mode: USE_SUPABASE ? 'supabase' : 'data.json',
-        schema: process.env.SUPABASE_SCHEMA || null,
-        hasUrl: !!process.env.SUPABASE_URL,
-        hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-        cacheLoaded: !!_cache,
-    });
-});
-
 async function _loadFromSupabase() {
     const data = await supaStore.readAll();
     data.members = data.members || [];
