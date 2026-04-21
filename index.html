@@ -2049,14 +2049,16 @@ footer{padding:1.5rem .8rem .8rem}
 .bottom-menu-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
   opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
 .bottom-menu-overlay.open{opacity:1;pointer-events:auto}
-.bottom-menu-panel{position:fixed;bottom:calc(4.5rem + env(safe-area-inset-bottom,0px));left:.7rem;right:auto;z-index:9000;width:calc(100% - 1.4rem);max-width:320px;
+.bottom-menu-panel{position:fixed;bottom:calc(4.5rem + env(safe-area-inset-bottom,0px));
+  left:max(.7rem,calc(50% - 260px));right:auto;z-index:9000;
+  width:calc(100% - 1.4rem);max-width:320px;
   background:rgba(255,255,255,.55);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);
   border:1px solid rgba(255,255,255,.6);
   border-radius:22px;
   box-shadow:0 14px 40px rgba(10,40,60,.18),inset 0 1px 0 rgba(255,255,255,.8);
   transform:translateY(calc(100% + 5rem));transition:transform .4s cubic-bezier(.32,1,.23,1);
   padding:0 0 .75rem;max-height:80vh;overflow-y:auto;
-  will-change:transform}
+  will-change:transform;transform-origin:bottom left}
 .bottom-menu-overlay.open .bottom-menu-panel,
 .bottom-menu-panel.open{transform:translateY(0)}
 .bottom-menu-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .35rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
@@ -2079,14 +2081,16 @@ footer{padding:1.5rem .8rem .8rem}
 .mypage-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
   opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
 .mypage-overlay.open{opacity:1;pointer-events:auto}
-.mypage-panel{position:fixed;bottom:calc(4.5rem + env(safe-area-inset-bottom,0px));left:auto;right:.7rem;z-index:9000;width:calc(100% - 1.4rem);max-width:400px;
+.mypage-panel{position:fixed;bottom:calc(4.5rem + env(safe-area-inset-bottom,0px));
+  left:auto;right:max(.7rem,calc(50% - 260px));z-index:9000;
+  width:calc(100% - 1.4rem);max-width:400px;
   background:rgba(255,255,255,.55);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);
   border:1px solid rgba(255,255,255,.6);
   border-radius:22px;
   box-shadow:0 14px 40px rgba(10,40,60,.18),inset 0 1px 0 rgba(255,255,255,.8);
   transform:translateY(calc(100% + 5rem));transition:transform .4s cubic-bezier(.32,1,.23,1);
   padding:0 0 .75rem;max-height:82vh;overflow-y:auto;
-  will-change:transform}
+  will-change:transform;transform-origin:bottom right}
 .mypage-overlay.open .mypage-panel{transform:translateY(0)}
 .mypage-panel-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .3rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
 .mypage-panel-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
@@ -5012,35 +5016,44 @@ window.addEventListener('scroll',()=>{
 <button class="ai-fab ai-fab-enter" id="aiFab" onclick="handleFabClick()" title="AIアシスタント">
   <div class="ai-char">
     <span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <!-- 水面のさざ波 (shibaTail を再利用・左右に揺れる) -->
-      <path id="shibaTail" d="M14 86 Q24 82 34 86 T54 86 T74 86 T94 86" fill="none" stroke="#8dd0e8" stroke-width="2" stroke-linecap="round" opacity=".7">
+      <!-- 水面のさざ波 -->
+      <path id="shibaTail" d="M6 88 Q18 84 30 88 T54 88 T78 88 T98 88" fill="none" stroke="#8dd0e8" stroke-width="2.2" stroke-linecap="round" opacity=".75">
         <animateTransform attributeName="transform" type="translate" values="0 0;3 0;0 0;-3 0;0 0" dur="2.4s" repeatCount="indefinite"/>
       </path>
-      <!-- 体 (白い腹+茶の背) -->
-      <ellipse cx="50" cy="70" rx="30" ry="20" fill="#f4e8d8"/>
-      <path d="M22 66 Q22 50 50 50 Q78 50 78 66 Q78 78 50 78 Q22 78 22 66Z" fill="#8b5a3c"/>
-      <!-- 頭 (ずんぐり丸く) -->
-      <ellipse cx="50" cy="42" rx="26" ry="24" fill="#4a3020"/>
-      <!-- 頬の赤茶 (カイツブリ夏羽の特徴) -->
-      <ellipse cx="32" cy="48" rx="9" ry="7" fill="#b85c3a"/>
-      <ellipse cx="68" cy="48" rx="9" ry="7" fill="#b85c3a"/>
-      <!-- 冠羽 (耳の位置を再利用・ふわっと) -->
-      <path id="shibaEarL" d="M32 22 Q28 14 34 12 Q38 14 36 22Z" fill="#3a2418"/>
-      <path id="shibaEarR" d="M68 22 Q72 14 66 12 Q62 14 64 22Z" fill="#3a2418"/>
-      <!-- 目 (赤茶がかった) -->
-      <ellipse id="shibaEyeL" cx="40" cy="40" rx="3.5" ry="4" fill="#1a0a04"/>
-      <ellipse id="shibaEyeR" cx="60" cy="40" rx="3.5" ry="4" fill="#1a0a04"/>
-      <circle cx="41" cy="38.5" r="1.2" fill="rgba(255,255,255,.85)"/>
-      <circle cx="61" cy="38.5" r="1.2" fill="rgba(255,255,255,.85)"/>
-      <!-- くちばし (短く黒く先端白) -->
-      <path d="M43 52 L57 52 L50 58 Z" fill="#1a0a04"/>
-      <circle cx="50" cy="56" r="1.2" fill="#fef3dc"/>
-      <!-- 口の線 (アニメ用・くちばし開閉) -->
-      <path id="shibaMouth" d="M46 54 Q50 54 54 54" fill="none" stroke="#1a0a04" stroke-width="1" stroke-linecap="round"/>
+      <!-- 体 (左向き・背中は右肩上がり・お尻を右に) -->
+      <ellipse cx="58" cy="66" rx="32" ry="22" fill="#7a4d30"/>
+      <!-- お腹 (白くぽっちゃり) -->
+      <ellipse cx="52" cy="72" rx="26" ry="14" fill="#f7ecd8"/>
+      <!-- 背中のグラデ感 -->
+      <ellipse cx="66" cy="58" rx="22" ry="12" fill="#5a3820" opacity=".55"/>
+      <!-- 頭 (左寄り・丸くでかい) -->
+      <ellipse cx="38" cy="40" rx="26" ry="24" fill="#3a2418"/>
+      <!-- 頬の赤茶 (夏羽の栗色・左向きなので後頭部〜頬) -->
+      <path d="M50 36 Q62 38 60 52 Q52 58 42 54 Q38 48 42 42 Q46 36 50 36Z" fill="#b85c3a"/>
+      <!-- ふわふわハイライト (頭頂) -->
+      <ellipse cx="32" cy="28" rx="10" ry="5" fill="rgba(255,255,255,.12)"/>
+      <!-- 冠羽 (頭頂ツンツン 2本) -->
+      <path id="shibaEarL" d="M28 18 Q24 8 30 6 Q34 10 32 20Z" fill="#2a1810"/>
+      <path id="shibaEarR" d="M40 16 Q38 4 44 4 Q48 10 44 20Z" fill="#2a1810"/>
+      <!-- 目 (大きめ・キラキラ・左向きなので頭の左寄り) -->
+      <ellipse id="shibaEyeL" cx="28" cy="40" rx="5" ry="5.5" fill="#1a0a04"/>
+      <ellipse id="shibaEyeR" cx="28" cy="40" rx="5" ry="5.5" fill="#1a0a04" opacity="0"/>
+      <!-- キラキラハイライト (大・小) -->
+      <circle cx="29.5" cy="37.5" r="1.7" fill="rgba(255,255,255,.95)"/>
+      <circle cx="27" cy="41.5" r=".9" fill="rgba(255,255,255,.7)"/>
+      <!-- 頬の赤ポッ (ほっぺが恥ずかしい感じ) -->
+      <ellipse cx="22" cy="48" rx="4" ry="2.5" fill="rgba(232,120,80,.45)"/>
+      <!-- くちばし (左に小さく尖る・上下二枚) -->
+      <path d="M16 42 Q10 44 6 44 Q4 45 6 46 Q10 47 16 46 Z" fill="#1a0a04"/>
+      <path id="shibaMouth" d="M16 44 Q10 45 6 45" fill="none" stroke="#0a0502" stroke-width=".6" stroke-linecap="round"/>
+      <!-- くちばし先端の白斑 -->
+      <circle cx="7" cy="45" r="1" fill="#fef3dc"/>
+      <!-- 小さな翼の羽 (背中に一枚) -->
+      <path d="M58 62 Q72 58 78 66 Q70 72 58 68 Z" fill="#2a1810" opacity=".5"/>
       <!-- 水の飛沫 -->
-      <circle cx="18" cy="78" r="1.5" fill="#b8e4f0" opacity=".8"/>
-      <circle cx="84" cy="82" r="1.5" fill="#b8e4f0" opacity=".8"/>
-      <circle cx="12" cy="90" r="1" fill="#b8e4f0" opacity=".6"/>
+      <circle cx="88" cy="76" r="1.5" fill="#b8e4f0" opacity=".8"/>
+      <circle cx="94" cy="84" r="1" fill="#b8e4f0" opacity=".6"/>
+      <circle cx="6" cy="84" r="1.2" fill="#b8e4f0" opacity=".7"/>
     </svg></span>
   </div>
   <span class="ai-notif-badge" id="aiFabBadge"></span>
@@ -5052,7 +5065,7 @@ window.addEventListener('scroll',()=>{
 <!-- AI Chat Window -->
 <div class="ai-chat" id="aiChat">
   <div class="ai-chat-head">
-    <svg viewBox="0 0 100 100" style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="70" rx="30" ry="20" fill="#f4e8d8"/><path d="M22 66 Q22 50 50 50 Q78 50 78 66 Q78 78 50 78 Q22 78 22 66Z" fill="#8b5a3c"/><ellipse cx="50" cy="42" rx="26" ry="24" fill="#4a3020"/><ellipse cx="32" cy="48" rx="9" ry="7" fill="#b85c3a"/><ellipse cx="68" cy="48" rx="9" ry="7" fill="#b85c3a"/><path d="M32 22 Q28 14 34 12 Q38 14 36 22Z" fill="#3a2418"/><path d="M68 22 Q72 14 66 12 Q62 14 64 22Z" fill="#3a2418"/><ellipse cx="40" cy="40" rx="3.5" ry="4" fill="#1a0a04"/><ellipse cx="60" cy="40" rx="3.5" ry="4" fill="#1a0a04"/><path d="M43 52 L57 52 L50 58 Z" fill="#1a0a04"/></svg>
+    <svg viewBox="0 0 100 100" style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg"><ellipse cx="58" cy="66" rx="32" ry="22" fill="#7a4d30"/><ellipse cx="52" cy="72" rx="26" ry="14" fill="#f7ecd8"/><ellipse cx="38" cy="40" rx="26" ry="24" fill="#3a2418"/><path d="M50 36 Q62 38 60 52 Q52 58 42 54 Q38 48 42 42 Q46 36 50 36Z" fill="#b85c3a"/><path d="M28 18 Q24 8 30 6 Q34 10 32 20Z" fill="#2a1810"/><path d="M40 16 Q38 4 44 4 Q48 10 44 20Z" fill="#2a1810"/><ellipse cx="28" cy="40" rx="5" ry="5.5" fill="#1a0a04"/><circle cx="29.5" cy="37.5" r="1.7" fill="rgba(255,255,255,.95)"/><path d="M16 42 Q10 44 6 44 Q4 45 6 46 Q10 47 16 46 Z" fill="#1a0a04"/></svg>
     <span>AIアシスタント</span>
     <button class="ai-chat-close" onclick="event.stopPropagation();closeAiChat()" type="button">&times;</button>
   </div>
@@ -5140,7 +5153,7 @@ function closeAiChat(){
   const fab=document.getElementById('aiFab');
   if(chat){chat.classList.remove('open');chat.style.display='none';
     setTimeout(()=>{chat.style.display='';},50);}
-  if(fab) fab.innerHTML='<div class="ai-char"><span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path id="shibaTail" d="M14 86 Q24 82 34 86 T54 86 T74 86 T94 86" fill="none" stroke="#8dd0e8" stroke-width="2" stroke-linecap="round" opacity=".7"><animateTransform attributeName="transform" type="translate" values="0 0;3 0;0 0;-3 0;0 0" dur="2.4s" repeatCount="indefinite"/></path><ellipse cx="50" cy="70" rx="30" ry="20" fill="#f4e8d8"/><path d="M22 66 Q22 50 50 50 Q78 50 78 66 Q78 78 50 78 Q22 78 22 66Z" fill="#8b5a3c"/><ellipse cx="50" cy="42" rx="26" ry="24" fill="#4a3020"/><ellipse cx="32" cy="48" rx="9" ry="7" fill="#b85c3a"/><ellipse cx="68" cy="48" rx="9" ry="7" fill="#b85c3a"/><path id="shibaEarL" d="M32 22 Q28 14 34 12 Q38 14 36 22Z" fill="#3a2418"/><path id="shibaEarR" d="M68 22 Q72 14 66 12 Q62 14 64 22Z" fill="#3a2418"/><ellipse id="shibaEyeL" cx="40" cy="40" rx="3.5" ry="4" fill="#1a0a04"/><ellipse id="shibaEyeR" cx="60" cy="40" rx="3.5" ry="4" fill="#1a0a04"/><circle cx="41" cy="38.5" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="61" cy="38.5" r="1.2" fill="rgba(255,255,255,.85)"/><path d="M43 52 L57 52 L50 58 Z" fill="#1a0a04"/><circle cx="50" cy="56" r="1.2" fill="#fef3dc"/><path id="shibaMouth" d="M46 54 Q50 54 54 54" fill="none" stroke="#1a0a04" stroke-width="1" stroke-linecap="round"/><circle cx="18" cy="78" r="1.5" fill="#b8e4f0" opacity=".8"/><circle cx="84" cy="82" r="1.5" fill="#b8e4f0" opacity=".8"/><circle cx="12" cy="90" r="1" fill="#b8e4f0" opacity=".6"/></svg></span></div><span class="ai-notif-badge" id="aiFabBadge"></span>';
+  if(fab) fab.innerHTML='<div class="ai-char"><span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path id="shibaTail" d="M6 88 Q18 84 30 88 T54 88 T78 88 T98 88" fill="none" stroke="#8dd0e8" stroke-width="2.2" stroke-linecap="round" opacity=".75"><animateTransform attributeName="transform" type="translate" values="0 0;3 0;0 0;-3 0;0 0" dur="2.4s" repeatCount="indefinite"/></path><ellipse cx="58" cy="66" rx="32" ry="22" fill="#7a4d30"/><ellipse cx="52" cy="72" rx="26" ry="14" fill="#f7ecd8"/><ellipse cx="66" cy="58" rx="22" ry="12" fill="#5a3820" opacity=".55"/><ellipse cx="38" cy="40" rx="26" ry="24" fill="#3a2418"/><path d="M50 36 Q62 38 60 52 Q52 58 42 54 Q38 48 42 42 Q46 36 50 36Z" fill="#b85c3a"/><ellipse cx="32" cy="28" rx="10" ry="5" fill="rgba(255,255,255,.12)"/><path id="shibaEarL" d="M28 18 Q24 8 30 6 Q34 10 32 20Z" fill="#2a1810"/><path id="shibaEarR" d="M40 16 Q38 4 44 4 Q48 10 44 20Z" fill="#2a1810"/><ellipse id="shibaEyeL" cx="28" cy="40" rx="5" ry="5.5" fill="#1a0a04"/><ellipse id="shibaEyeR" cx="28" cy="40" rx="5" ry="5.5" fill="#1a0a04" opacity="0"/><circle cx="29.5" cy="37.5" r="1.7" fill="rgba(255,255,255,.95)"/><circle cx="27" cy="41.5" r=".9" fill="rgba(255,255,255,.7)"/><ellipse cx="22" cy="48" rx="4" ry="2.5" fill="rgba(232,120,80,.45)"/><path d="M16 42 Q10 44 6 44 Q4 45 6 46 Q10 47 16 46 Z" fill="#1a0a04"/><path id="shibaMouth" d="M16 44 Q10 45 6 45" fill="none" stroke="#0a0502" stroke-width=".6" stroke-linecap="round"/><circle cx="7" cy="45" r="1" fill="#fef3dc"/><path d="M58 62 Q72 58 78 66 Q70 72 58 68 Z" fill="#2a1810" opacity=".5"/><circle cx="88" cy="76" r="1.5" fill="#b8e4f0" opacity=".8"/><circle cx="94" cy="84" r="1" fill="#b8e4f0" opacity=".6"/><circle cx="6" cy="84" r="1.2" fill="#b8e4f0" opacity=".7"/></svg></span></div><span class="ai-notif-badge" id="aiFabBadge"></span>';
   if(fab) fab.onclick=handleFabClick;
   updateAiFabBadge();
   startAiBubbleCycle();
@@ -5179,39 +5192,38 @@ function stopAiBubbleCycle(){
   if(_aiBubbleTimer){clearInterval(_aiBubbleTimer);_aiBubbleTimer=null}
 }
 
-/* --- AI Kaitsuburi (Little Grebe) Face Animation --- */
+/* --- AI Kaitsuburi (Little Grebe, left-facing) Face Animation --- */
 let _aiShibaTimer=null;
 let _aiShibaIdx=0;
-const KAI_EAR_L='M32 22 Q28 14 34 12 Q38 14 36 22Z';
-const KAI_EAR_L_UP='M32 18 Q26 8 34 6 Q40 8 36 18Z';
-const KAI_EAR_R='M68 22 Q72 14 66 12 Q62 14 64 22Z';
-const KAI_EAR_R_UP='M68 18 Q74 8 66 6 Q60 8 64 18Z';
-const KAI_MOUTH_CLOSED='M46 54 Q50 54 54 54';
-const KAI_MOUTH_OPEN='M46 54 Q50 60 54 54';
+const KAI_EAR_L='M28 18 Q24 8 30 6 Q34 10 32 20Z';
+const KAI_EAR_L_UP='M28 14 Q20 2 30 0 Q36 6 32 18Z';
+const KAI_EAR_R='M40 16 Q38 4 44 4 Q48 10 44 20Z';
+const KAI_EAR_R_UP='M40 12 Q36 -2 44 -2 Q50 6 44 18Z';
+const KAI_MOUTH_CLOSED='M16 44 Q10 45 6 45';
+const KAI_MOUTH_OPEN='M16 44 Q11 48 6 45';
 function startShibaCycle(){
   _aiShibaTimer=setInterval(()=>{
     if(aiChatOpen) return;
     _aiShibaIdx=(_aiShibaIdx+1)%6;
-    const eyeL=document.getElementById('shibaEyeL');
-    const eyeR=document.getElementById('shibaEyeR');
+    const eye=document.getElementById('shibaEyeL');
     const mouth=document.getElementById('shibaMouth');
     const earL=document.getElementById('shibaEarL');
     const earR=document.getElementById('shibaEarR');
-    if(!eyeL) return;
+    if(!eye) return;
     switch(_aiShibaIdx){
       case 0: // normal
-        eyeL.setAttribute('ry','4');eyeR.setAttribute('ry','4');
+        eye.setAttribute('ry','5.5');
         if(mouth) mouth.setAttribute('d',KAI_MOUTH_CLOSED);
         break;
       case 1: // blink
-        eyeL.setAttribute('ry','0.6');eyeR.setAttribute('ry','0.6');
-        setTimeout(()=>{eyeL.setAttribute('ry','4');eyeR.setAttribute('ry','4')},180);
+        eye.setAttribute('ry','0.7');
+        setTimeout(()=>{eye.setAttribute('ry','5.5')},180);
         break;
       case 2: // くちばしを開いて鳴く + 目を細める
-        eyeL.setAttribute('ry','1.5');eyeR.setAttribute('ry','1.5');
+        eye.setAttribute('ry','2');
         if(mouth) mouth.setAttribute('d',KAI_MOUTH_OPEN);
         setTimeout(()=>{
-          eyeL.setAttribute('ry','4');eyeR.setAttribute('ry','4');
+          eye.setAttribute('ry','5.5');
           if(mouth) mouth.setAttribute('d',KAI_MOUTH_CLOSED);
         },700);
         break;
@@ -5219,17 +5231,17 @@ function startShibaCycle(){
         if(earL) earL.setAttribute('d',KAI_EAR_L_UP);
         setTimeout(()=>{if(earL) earL.setAttribute('d',KAI_EAR_L)},320);
         break;
-      case 4: // ウィンク (右目)
-        eyeR.setAttribute('ry','0.6');
-        setTimeout(()=>{eyeR.setAttribute('ry','4')},380);
+      case 4: // ウィンク
+        eye.setAttribute('ry','0.7');
+        setTimeout(()=>{eye.setAttribute('ry','5.5')},380);
         break;
-      case 5: // 右冠羽ピクッ + うれしい細目
+      case 5: // 右冠羽ピクッ + うれしい細目 + 口開き
         if(earR) earR.setAttribute('d',KAI_EAR_R_UP);
-        eyeL.setAttribute('ry','2');eyeR.setAttribute('ry','2');
+        eye.setAttribute('ry','2.5');
         if(mouth) mouth.setAttribute('d',KAI_MOUTH_OPEN);
         setTimeout(()=>{
           if(earR) earR.setAttribute('d',KAI_EAR_R);
-          eyeL.setAttribute('ry','4');eyeR.setAttribute('ry','4');
+          eye.setAttribute('ry','5.5');
           if(mouth) mouth.setAttribute('d',KAI_MOUTH_CLOSED);
         },650);
         break;
