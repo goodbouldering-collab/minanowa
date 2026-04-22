@@ -968,10 +968,18 @@ app.get('/api/operating-members', async (req, res) => {
     try {
         const data = await readData();
         const opIds = data.operatingMembers || [];
-        const opMembers = data.members
+        const explicit = data.members
             .filter(m => opIds.includes(m.id))
             .map(({ password, ...m }) => m);
-        res.json(opMembers);
+        // フォールバック: operatingMembers が未設定なら isAdmin:true の公開メンバーを運営扱いで返す
+        // （admin 画面で明示設定するまでの初期表示用）
+        if (explicit.length === 0) {
+            const fallback = data.members
+                .filter(m => m.isAdmin && m.isPublic !== false)
+                .map(({ password, ...m }) => m);
+            return res.json(fallback);
+        }
+        res.json(explicit);
     } catch (e) { handleErr(res, e); }
 });
 app.get('/api/admin/operating-members', async (req, res) => {
