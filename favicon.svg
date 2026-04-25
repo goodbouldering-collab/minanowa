@@ -1,47 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- background: 琵琶湖の水面グラデ -->
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#bfe8f2"/>
-      <stop offset=".55" stop-color="#7fc8dc"/>
-      <stop offset="1" stop-color="#4a9fb8"/>
+    <!-- 琥珀グラデ：ブランドカラー -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset=".55" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#d97706"/>
     </linearGradient>
-    <radialGradient id="sheen" cx=".3" cy=".25" r=".7">
-      <stop offset="0" stop-color="rgba(255,255,255,.45)"/>
+    <radialGradient id="sheen" cx=".3" cy=".25" r=".8">
+      <stop offset="0" stop-color="rgba(255,255,255,.5)"/>
       <stop offset="1" stop-color="rgba(255,255,255,0)"/>
     </radialGradient>
+    <!-- 中央の白い輪 -->
+    <radialGradient id="core" cx=".5" cy=".45" r=".55">
+      <stop offset="0" stop-color="#fff8e7"/>
+      <stop offset="1" stop-color="#fde7b8"/>
+    </radialGradient>
   </defs>
+
+  <!-- 角丸背景 -->
   <rect width="100" height="100" rx="22" ry="22" fill="url(#bg)"/>
   <rect width="100" height="100" rx="22" ry="22" fill="url(#sheen)"/>
-  <!-- 水面さざ波 -->
-  <path d="M6 82 Q18 78 30 82 T54 82 T78 82 T98 82" stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-  <path d="M4 90 Q20 86 36 90 T68 90 T98 90" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none" stroke-linecap="round"/>
-  <!-- 体 -->
-  <ellipse cx="58" cy="60" rx="32" ry="22" fill="#7a4d30"/>
-  <!-- お腹 -->
-  <ellipse cx="52" cy="66" rx="26" ry="14" fill="#f7ecd8"/>
-  <!-- 背中グラデ -->
-  <ellipse cx="66" cy="52" rx="22" ry="12" fill="#5a3820" opacity=".55"/>
-  <!-- 頭 -->
-  <ellipse cx="38" cy="34" rx="26" ry="24" fill="#3a2418"/>
-  <!-- 頬の栗色 -->
-  <path d="M50 30 Q62 32 60 46 Q52 52 42 48 Q38 42 42 36 Q46 30 50 30Z" fill="#b85c3a"/>
-  <!-- 頭頂ハイライト -->
-  <ellipse cx="32" cy="22" rx="10" ry="5" fill="rgba(255,255,255,.18)"/>
-  <!-- 目 -->
-  <ellipse cx="28" cy="34" rx="5" ry="5.5" fill="#1a0a04"/>
-  <circle cx="29.5" cy="31.5" r="1.7" fill="rgba(255,255,255,.95)"/>
-  <circle cx="27" cy="35.5" r=".9" fill="rgba(255,255,255,.7)"/>
-  <!-- ほっぺ -->
-  <ellipse cx="22" cy="42" rx="4" ry="2.5" fill="rgba(232,120,80,.45)"/>
-  <!-- くちばし -->
-  <path d="M16 36 Q10 38 6 38 Q4 39 6 40 Q10 41 16 40 Z" fill="#1a0a04"/>
-  <path d="M16 38 Q10 39 6 39" stroke="#0a0502" stroke-width=".8" fill="none" stroke-linecap="round"/>
-  <circle cx="7" cy="39" r="1" fill="#fef3dc"/>
-  <!-- 翼 -->
-  <path d="M58 56 Q72 52 78 60 Q70 66 58 62 Z" fill="#2a1810" opacity=".5"/>
-  <!-- 飛沫 -->
-  <circle cx="88" cy="70" r="1.5" fill="rgba(255,255,255,.85)"/>
-  <circle cx="94" cy="78" r="1" fill="rgba(255,255,255,.65)"/>
-  <circle cx="6" cy="78" r="1.2" fill="rgba(255,255,255,.75)"/>
+
+  <!-- 外側の輪（和=WA の象徴） -->
+  <circle cx="50" cy="50" r="36" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+
+  <!-- 周囲を囲む 6人の人型（手をつなぐ輪） -->
+  <g fill="#fff8e7">
+    <!-- 上 -->
+    <circle cx="50" cy="14" r="4.2"/>
+    <path d="M44 22 Q50 19 56 22 L55 31 Q50 33 45 31 Z"/>
+    <!-- 右上 -->
+    <circle cx="81" cy="32" r="4.2"/>
+    <path d="M76 39 Q81 36 86 40 L84 49 Q79 50 75 47 Z"/>
+    <!-- 右下 -->
+    <circle cx="81" cy="68" r="4.2"/>
+    <path d="M76 75 Q81 72 86 76 L84 85 Q79 86 75 83 Z"/>
+    <!-- 下 -->
+    <circle cx="50" cy="86" r="4.2"/>
+    <path d="M44 93 Q50 90 56 93 L55 99 Q50 100 45 99 Z"/>
+    <!-- 左下 -->
+    <circle cx="19" cy="68" r="4.2"/>
+    <path d="M14 75 Q19 72 24 76 L22 85 Q17 86 13 83 Z"/>
+    <!-- 左上 -->
+    <circle cx="19" cy="32" r="4.2"/>
+    <path d="M14 39 Q19 36 24 40 L22 49 Q17 50 13 47 Z"/>
+  </g>
+
+  <!-- 中央の白い円（WA文字の台座） -->
+  <circle cx="50" cy="50" r="22" fill="url(#core)"/>
+  <circle cx="50" cy="50" r="22" fill="none" stroke="rgba(217,119,6,.35)" stroke-width=".8"/>
+
+  <!-- WA 文字 -->
+  <text x="50" y="59"
+        text-anchor="middle"
+        font-family="'Hiragino Sans','Yu Gothic',-apple-system,'Segoe UI',sans-serif"
+        font-size="22"
+        font-weight="900"
+        fill="#b45309"
+        letter-spacing="-1">WA</text>
+
+  <!-- さざ波（彦根/琵琶湖のアクセント） -->
+  <path d="M30 78 Q40 75 50 78 T70 78" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="none" stroke-linecap="round"/>
 </svg>
