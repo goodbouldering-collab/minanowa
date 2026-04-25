@@ -1157,6 +1157,72 @@ app.post('/api/admin/backups/upload', memUpload.single('backup'), async (req, re
 // ==================== RSS FEED ====================
 function escXml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
 
+// ==================== SEO: robots.txt & sitemap.xml ====================
+app.get('/robots.txt', (req, res) => {
+    const baseUrl = (process.env.SITE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+    res.type('text/plain').send([
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /admin',
+        'Disallow: /admin.html',
+        'Disallow: /api/',
+        'Disallow: /uploads/_private/',
+        '',
+        `Sitemap: ${baseUrl}/sitemap.xml`,
+        ''
+    ].join('\n'));
+});
+
+app.get('/sitemap.xml', async (req, res) => {
+    try {
+        const baseUrl = (process.env.SITE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+        const data = await readData();
+        const now = new Date().toISOString();
+        const urls = [];
+        // top page + main anchors (single-page site)
+        urls.push({ loc: `${baseUrl}/`, lastmod: now, changefreq: 'weekly', priority: '1.0' });
+        ['#about','#events','#blogs','#members','#board','#faq','#contact'].forEach(h => {
+            urls.push({ loc: `${baseUrl}/${h}`, lastmod: now, changefreq: 'weekly', priority: '0.8' });
+        });
+        // individual blog/interview pages
+        (data.blogs || []).forEach(b => {
+            if (b && b.id) urls.push({
+                loc: `${baseUrl}/blog/${encodeURIComponent(b.id)}`,
+                lastmod: b.date || now,
+                changefreq: 'monthly',
+                priority: '0.7'
+            });
+        });
+        (data.interviews || []).forEach(iv => {
+            if (iv && iv.id) urls.push({
+                loc: `${baseUrl}/blog/${encodeURIComponent(iv.id)}`,
+                lastmod: iv.date || now,
+                changefreq: 'monthly',
+                priority: '0.7'
+            });
+        });
+        // upcoming/past events
+        (data.events || []).forEach(ev => {
+            if (ev && ev.id) urls.push({
+                loc: `${baseUrl}/event/${encodeURIComponent(ev.id)}`,
+                lastmod: ev.updatedAt || ev.date || now,
+                changefreq: 'weekly',
+                priority: '0.7'
+            });
+        });
+        const xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+            + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + urls.map(u =>
+                `  <url><loc>${escXml(u.loc)}</loc><lastmod>${escXml(u.lastmod)}</lastmod><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`
+            ).join('\n')
+            + '\n</urlset>\n';
+        res.type('application/xml').send(xml);
+    } catch (e) {
+        console.error('sitemap error', e);
+        res.status(500).type('text/plain').send('sitemap error');
+    }
+});
+
 app.get('/rss', async (req, res) => { res.redirect(301, '/feed'); });
 app.get('/feed', async (req, res) => {
     try {
@@ -1257,7 +1323,7 @@ app.get('/blog/:id', async (req, res) => {
         const blogUrl = `${baseUrl}/blog/${blog.id}`;
         const title = `${blog.title} - みんなのWA`;
         const desc = (blog.excerpt || blog.content || 'みんなのWA お知らせ・活動レポート').substring(0, 200);
-        const image = blog.imageUrl ? (blog.imageUrl.startsWith('http') ? blog.imageUrl : `${baseUrl}${blog.imageUrl}`) : `${baseUrl}/favicon.svg`;
+        const image = blog.imageUrl ? (blog.imageUrl.startsWith('http') ? blog.imageUrl : `${baseUrl}${blog.imageUrl}`) : `${baseUrl}/icon-512.png`;
         const dateISO = blog.date ? `${blog.date}T00:00:00+09:00` : new Date().toISOString();
 
         // OG + Twitter meta tags
@@ -1293,7 +1359,7 @@ app.get('/blog/:id', async (req, res) => {
             "publisher": {
                 "@type": "Organization",
                 "name": "みんなのWA",
-                "logo": { "@type": "ImageObject", "url": `${baseUrl}/favicon.svg` }
+                "logo": { "@type": "ImageObject", "url": `${baseUrl}/icon-512.png`, "width": 512, "height": 512 }
             },
             "articleSection": blog.category || "お知らせ",
             "url": blogUrl,
@@ -1312,7 +1378,7 @@ app.get('/blog/:id', async (req, res) => {
     }
 });
 
-// Event share page with OG meta injection
+// Event share page with OG meta + Event JSON-LD injection
 app.get('/event/:id', async (req, res) => {
     try {
         const data = await readData();
@@ -1326,7 +1392,24 @@ app.get('/event/:id', async (req, res) => {
         const shareUrl = `${baseUrl}/event/${ev.id}`;
         const title = `${ev.title} - みんなのWA`;
         const desc = `📅 ${ev.date} ${ev.time || ''} 📍 ${ev.location} | 💰 ${ev.fee || '未設定'} | ${ev.description || 'みんなのWA イベント'}`;
-        const image = ev.imageUrl ? (ev.imageUrl.startsWith('http') ? ev.imageUrl : `${baseUrl}${ev.imageUrl}`) : `${baseUrl}/favicon.svg`;
+        const image = ev.imageUrl ? (ev.imageUrl.startsWith('http') ? ev.imageUrl : `${baseUrl}${ev.imageUrl}`) : `${baseUrl}/icon-512.png`;
+        const isoStart = ev.date ? `${ev.date}T${(ev.time || '19:00').replace(/[^0-9:]/g,'').slice(0,5) || '19:00'}:00+09:00` : new Date().toISOString();
+        const evJsonLd = {
+            "@context": "https://schema.org",
+            "@type": "Event",
+            "name": ev.title,
+            "startDate": isoStart,
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "location": { "@type": "Place", "name": ev.location || "彦根市内", "address": { "@type": "PostalAddress", "addressLocality": "彦根市", "addressRegion": "滋賀県", "addressCountry": "JP" } },
+            "image": [image],
+            "description": ev.description || "みんなのWA 異業種交流会",
+            "organizer": { "@type": "Organization", "name": "みんなのWA", "url": baseUrl },
+            "url": shareUrl,
+            "inLanguage": "ja-JP",
+            "isAccessibleForFree": !ev.fee || /無料|free/i.test(ev.fee || ''),
+            "offers": ev.fee ? { "@type": "Offer", "price": String(ev.fee).replace(/[^0-9]/g,'') || "0", "priceCurrency": "JPY", "availability": "https://schema.org/InStock", "url": shareUrl } : undefined
+        };
         const ogTags = `
     <meta property="og:type" content="website">
     <meta property="og:url" content="${shareUrl}">
@@ -1337,7 +1420,8 @@ app.get('/event/:id', async (req, res) => {
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}">
     <meta name="twitter:description" content="${desc.replace(/"/g, '&quot;')}">
-    <meta name="twitter:image" content="${image}">`;
+    <meta name="twitter:image" content="${image}">
+    <script type="application/ld+json">${JSON.stringify(evJsonLd)}</script>`;
         html = html.replace('</head>', `${ogTags}\n</head>`);
         // Inject auto-open script
         html = html.replace('</body>', `<script>window._autoOpenEventId="${ev.id}";</script>\n</body>`);
