@@ -2210,9 +2210,9 @@ footer{padding:1.5rem .8rem .8rem}
   box-shadow:0 18px 48px rgba(10,40,60,.18),0 4px 14px rgba(10,40,60,.08),inset 0 1px 0 rgba(255,255,255,.8);
   transform:translateY(calc(-100% - 5rem));transition:transform .4s cubic-bezier(.32,1,.23,1);
   padding:.25rem 0 1rem;max-height:80vh;overflow-y:auto;
-  will-change:transform;transform-origin:top left}
+  transform-origin:top left}
 .bottom-menu-overlay.open .bottom-menu-panel,
-.bottom-menu-panel.open{transform:translateY(0)}
+.bottom-menu-panel.open{transform:translateY(0);will-change:transform}
 .bottom-menu-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .35rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
 .bottom-menu-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
 .bottom-menu-handle::after{content:'上にスワイプして閉じる';display:block;font-size:.6rem;color:rgba(60,60,67,.35);margin-top:.3rem;letter-spacing:.05em;font-weight:500;transition:opacity .3s;pointer-events:none}
@@ -2242,8 +2242,8 @@ footer{padding:1.5rem .8rem .8rem}
   box-shadow:0 18px 48px rgba(10,40,60,.18),0 4px 14px rgba(10,40,60,.08),inset 0 1px 0 rgba(255,255,255,.8);
   transform:translateY(calc(-100% - 5rem));transition:transform .4s cubic-bezier(.32,1,.23,1);
   padding:.25rem 0 1rem;max-height:82vh;overflow-y:auto;
-  will-change:transform;transform-origin:top right}
-.mypage-overlay.open .mypage-panel{transform:translateY(0)}
+  transform-origin:top right}
+.mypage-overlay.open .mypage-panel{transform:translateY(0);will-change:transform}
 .mypage-panel-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .3rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
 .mypage-panel-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
 .mypage-panel-handle::after{content:'上にスワイプして閉じる';display:block;font-size:.6rem;color:rgba(60,60,67,.35);margin-top:.3rem;letter-spacing:.05em;font-weight:500;transition:opacity .3s;pointer-events:none}
@@ -2263,6 +2263,14 @@ footer{padding:1.5rem .8rem .8rem}
 .ai-chat-input input{font-size:.82rem !important}}
 html.keyboard-open{scroll-snap-type:none !important}
 html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-stop:normal !important}
+/* respect reduced-motion: kill ambient/parallax animations & long transitions */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  .hero-glow,.hero-particles,.bg-shape,.particle{animation:none !important;display:none !important}
+  html{scroll-snap-type:none !important}
+}
+/* content-visibility for footer (off-screen paint saving). Avoid .sec to keep scroll-snap happy. */
+footer{content-visibility:auto;contain-intrinsic-size:600px}
 </style>
 </head>
 <body>
@@ -2468,9 +2476,9 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 <section class="sec" id="events">
   <div class="sec-head"><h2><i class="fas fa-calendar-check"></i> 交流会・イベント</h2><p>ここから仲間・お客さん・コラボが生まれます。参加するほどメンバー特典も充実！</p></div>
   <div class="carousel-wrap">
-    <button class="carousel-btn prev" onclick="scrollCar('evTrack',-310)"><i class="fas fa-chevron-left"></i></button>
+    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('evTrack',-310)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="evTrack"></div>
-    <button class="carousel-btn next" onclick="scrollCar('evTrack',310)"><i class="fas fa-chevron-right"></i></button>
+    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('evTrack',310)"><i class="fas fa-chevron-right"></i></button>
   </div>
 </section>
 </div><!-- /events -->
@@ -2480,9 +2488,9 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 <section class="sec" id="blogs">
   <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・レポート</h2><p>交流会やコラボの様子をお届けします</p></div>
   <div class="carousel-wrap">
-    <button class="carousel-btn prev" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
+    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="blogTrack"></div>
-    <button class="carousel-btn next" onclick="scrollCar('blogTrack',290)"><i class="fas fa-chevron-right"></i></button>
+    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('blogTrack',290)"><i class="fas fa-chevron-right"></i></button>
   </div>
 </section>
 </div><!-- /blogs -->
@@ -2498,9 +2506,9 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
   </div>
   <div class="search-box"><input type="text" id="memSearch" placeholder="店名、業種、地域、名前で検索..."><i class="fas fa-search"></i></div>
   <div class="carousel-wrap">
-    <button class="carousel-btn prev" onclick="scrollCar('memTrack',-235)"><i class="fas fa-chevron-left"></i></button>
+    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('memTrack',-235)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="memTrack"></div>
-    <button class="carousel-btn next" onclick="scrollCar('memTrack',235)"><i class="fas fa-chevron-right"></i></button>
+    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('memTrack',235)"><i class="fas fa-chevron-right"></i></button>
   </div>
 </section>
 </div><!-- /members -->
@@ -2558,9 +2566,9 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
   <div style="max-width:520px;margin:0 auto">
     <div class="contact-box">
       <form onsubmit="handleContact(event)">
-        <div class="fg"><label>お名前 *</label><input required></div>
-        <div class="fg"><label>メールアドレス *</label><input type="email" required></div>
-        <div class="fg"><label>お問い合わせ内容 *</label><textarea required></textarea></div>
+        <div class="fg"><label for="contactName">お名前 *</label><input id="contactName" name="name" autocomplete="name" required></div>
+        <div class="fg"><label for="contactEmail">メールアドレス *</label><input id="contactEmail" name="email" type="email" autocomplete="email" required></div>
+        <div class="fg"><label for="contactMsg">お問い合わせ内容 *</label><textarea id="contactMsg" name="message" required></textarea></div>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap">
           <button type="submit" class="btn btn-primary" style="flex:1;min-width:0;justify-content:center"><i class="fas fa-paper-plane"></i> 送信する</button>
           <a href="https://ig.me/m/minnano_wa.shiga" target="_blank" rel="noopener"
@@ -2596,9 +2604,9 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 <section class="sec" id="opMembers">
   <div class="sec-head"><h2><i class="fas fa-user-shield"></i> 運営メンバー</h2><p>運営に関わるとITスキル・企画力が身につきます</p></div>
   <div class="carousel-wrap">
-    <button class="carousel-btn prev" onclick="scrollCar('opTrack',-220)"><i class="fas fa-chevron-left"></i></button>
+    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('opTrack',-220)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="opTrack"></div>
-    <button class="carousel-btn next" onclick="scrollCar('opTrack',220)"><i class="fas fa-chevron-right"></i></button>
+    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('opTrack',220)"><i class="fas fa-chevron-right"></i></button>
   </div>
   <div style="margin-top:1.2rem;text-align:center;padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(217,119,6,.06),rgba(217,119,6,.06));border-radius:14px;border:1px dashed rgba(217,119,6,.2)">
     <p style="font-size:.88rem;font-weight:600;color:var(--td);margin-bottom:.15rem"><i class="fas fa-bullhorn" style="color:var(--c1);margin-right:.3rem"></i>運営メンバー募集中！</p>
@@ -2650,7 +2658,7 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
       </button>
       <a class="top-nav-brand" href="#" onclick="event.preventDefault();closeAllPanels();window.scrollTo({top:0,behavior:'smooth'})">
         <span class="top-nav-logo" aria-hidden="true">
-          <img src="/favicon.svg" alt="" width="32" height="32"/>
+          <img decoding="async" src="/favicon.svg" alt="" width="32" height="32"/>
         </span>
         <span class="top-nav-brand-text">
           <span class="top-nav-brand-eyebrow">COMMUNITY</span>
@@ -2659,16 +2667,16 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
       </a>
     </div>
     <div class="top-nav-right">
-      <a class="top-nav-pill" onclick="closeAllPanels();document.getElementById('events').scrollIntoView({behavior:'smooth'})" data-section="events" title="イベント">
+      <a class="top-nav-pill" href="#events" onclick="closeAllPanels();document.getElementById('events').scrollIntoView({behavior:'smooth'})" data-section="events" title="イベント">
         <span>イベント</span><span class="bottom-nav-badge" id="bnBadgeEvent"></span>
       </a>
-      <a class="top-nav-pill" onclick="closeAllPanels();document.getElementById('blogs').scrollIntoView({behavior:'smooth'})" data-section="blogs" title="お知らせ">
+      <a class="top-nav-pill" href="#blogs" onclick="closeAllPanels();document.getElementById('blogs').scrollIntoView({behavior:'smooth'})" data-section="blogs" title="お知らせ">
         <span>お知らせ</span>
       </a>
-      <a class="top-nav-pill" onclick="closeAllPanels();document.getElementById('members').scrollIntoView({behavior:'smooth'})" data-section="members" title="メンバー">
+      <a class="top-nav-pill" href="#members" onclick="closeAllPanels();document.getElementById('members').scrollIntoView({behavior:'smooth'})" data-section="members" title="メンバー">
         <span>メンバー</span>
       </a>
-      <a class="top-nav-pill" onclick="closeAllPanels();document.getElementById('board').scrollIntoView({behavior:'smooth'})" data-section="board" title="掲示板">
+      <a class="top-nav-pill" href="#board" onclick="closeAllPanels();document.getElementById('board').scrollIntoView({behavior:'smooth'})" data-section="board" title="掲示板">
         <span>掲示板</span><span class="bottom-nav-badge" id="bnBadgeBoard"></span>
       </a>
       <a class="top-nav-pill top-nav-pill-accent" id="bnMypage" onclick="toggleMypage()" title="マイページ">
@@ -2684,7 +2692,7 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
     <div><h4>みんなのWA</h4><p style="color:rgba(255,255,255,.4);font-size:.78rem;line-height:1.6">彦根の事業主が「お客さん・コラボ・スキル」を同時に手に入れる異業種コミュニティ。</p></div>
     <div><h4>リンク</h4><a href="#about">みんなのWAとは</a><a href="#events">交流会・イベント</a><a href="#blogs">活動レポート</a><a href="#members">メンバー</a><a href="#board">掲示板</a><a href="#opMembers">運営メンバー</a><a href="/feed" target="_blank" style="display:flex;align-items:center;gap:.3rem"><i class="fas fa-rss"></i> RSS フィード</a></div>
     <div><h4>サポート</h4><a href="#faq">よくある質問</a><a href="#contact">お問い合わせ</a><a href="#" onclick="openModal('regModal')">会員登録</a></div>
-    <div><h4>SNS</h4><div class="footer-social" style="margin-top:.3rem"><a href="#" data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" data-tooltip="X"><i class="fab fa-x-twitter"></i></a><a href="https://www.instagram.com/minnano_wa.shiga?igsh=MTE0YXJwbGlqMnFlaQ==" target="_blank" rel="noopener" data-tooltip="Instagram"><i class="fab fa-instagram"></i></a><a href="https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener" data-tooltip="LINE"><i class="fab fa-line"></i></a></div></div>
+    <div><h4>SNS</h4><div class="footer-social" style="margin-top:.3rem"><a href="#" data-tooltip="Facebook" aria-label="みんなのWA Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a><a href="#" data-tooltip="X" aria-label="みんなのWA X (旧Twitter)"><i class="fab fa-x-twitter" aria-hidden="true"></i></a><a href="https://www.instagram.com/minnano_wa.shiga?igsh=MTE0YXJwbGlqMnFlaQ==" target="_blank" rel="noopener" data-tooltip="Instagram" aria-label="みんなのWA Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a><a href="https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener" data-tooltip="LINE" aria-label="みんなのWA LINEオープンチャット"><i class="fab fa-line" aria-hidden="true"></i></a></div></div>
   </div>
   <div class="footer-bot">&copy; 2024-2026 みんなのWA. All rights reserved.</div>
 </footer>
@@ -2876,7 +2884,7 @@ html.keyboard-open .bento-cell{scroll-snap-align:none !important;scroll-snap-sto
 <div class="yt-modal" id="ytModal">
   <div class="yt-modal-inner">
     <button class="yt-modal-close" onclick="closeYtModal()">&times;</button>
-    <iframe id="ytFrame" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    <iframe id="ytFrame" title="YouTube 動画プレーヤー" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
   </div>
 </div>
 
@@ -3218,11 +3226,11 @@ function renderEvents(){
     const regBadge=(!isPast&&isRegistered)?`<span class="ev-reg-badge"><i class="fas fa-check"></i> 参加予定</span>`:'';
     // Show member avatars for registrations
     const regMembers=(ev.registrations||[]).map(mid=>allMembers.find(m=>m.id===mid)).filter(Boolean);
-    const regAvatarHtml=regMembers.slice(0,4).map(m=>`<img src="${getMemberImage(m)}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/22?img=0'">`).join('');
+    const regAvatarHtml=regMembers.slice(0,4).map(m=>`<img loading="lazy" decoding="async" src="${getMemberImage(m)}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/22?img=0'">`).join('');
     const regMoreHtml=regCount>4?`<span style="font-size:.6rem;color:var(--tl);margin-left:.2rem">+${regCount-4}</span>`:'';
     const regCountHtml=regCount>0?`<div class="ev-reg-count"><i class="fas fa-user-check"></i> ${regCount}名が参加予定<div class="ev-reg-avatars">${regAvatarHtml}${regMoreHtml}</div></div>`:'';
     const evImgHtml=ev.imageUrl
-      ?`<img class="card-img" src="${ev.imageUrl}" alt="${ev.title}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'"><div class="card-img-placeholder" style="display:none"><i class="fas fa-camera"></i><span>写真準備中</span></div>`
+      ?`<img decoding="async" class="card-img" src="${ev.imageUrl}" alt="${ev.title}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'"><div class="card-img-placeholder" style="display:none"><i class="fas fa-camera"></i><span>写真準備中</span></div>`
       :`<div class="card-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`;
     card.innerHTML=`<div class="card-img-wrap">
         ${evImgHtml}
@@ -3311,7 +3319,7 @@ function showEventDetail(ev){
     <a class="ev-share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener" title="Facebook"><i class="fab fa-facebook-f"></i></a>
   </div>`;
   document.getElementById('evDetailContent').innerHTML=`
-    ${ev.imageUrl?`<img class="ev-detail-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.outerHTML='<div class=\'ev-detail-img-placeholder\'><i class=\'fas fa-camera\'></i><span>写真準備中</span></div>'">`:`<div class="ev-detail-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`}
+    ${ev.imageUrl?`<img loading="lazy" decoding="async" class="ev-detail-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.outerHTML='<div class=\'ev-detail-img-placeholder\'><i class=\'fas fa-camera\'></i><span>写真準備中</span></div>'">`:`<div class="ev-detail-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`}
     <div class="ev-detail-title">${ev.title}</div>
     ${shareBarHtml}
     <div class="ev-detail-meta">
@@ -3336,7 +3344,7 @@ function showEventDetail(ev){
       const wrap=document.getElementById('evDetailRegAvatars');
       if(wrap&&d.registrations){
         wrap.innerHTML=d.registrations.slice(0,5).map(m=>
-          `<img src="${m.avatar||'https://i.pravatar.cc/40?img=0'}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/40?img=0'">`
+          `<img loading="lazy" decoding="async" src="${m.avatar||'https://i.pravatar.cc/40?img=0'}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/40?img=0'">`
         ).join('')+(d.count>5?`<span style="font-size:.7rem;color:var(--tl);margin-left:.3rem">+${d.count-5}</span>`:'');
       }
       // Show discount badge for current user if they have referral discount
@@ -3580,9 +3588,9 @@ function renderMembers(list){
     const introHtml=m.introduction?`<div class="mem-intro">${m.introduction}</div>`:'';
     const benefitHtml=m.memberBenefit?`<div class="mem-benefit"><i class="fas fa-gift"></i> ${m.memberBenefit}</div>`:'';
     const linksArr=[];
-    if(m.homepage) linksArr.push(`<a href="${m.homepage}" target="_blank" title="HP"><i class="fas fa-globe"></i></a>`);
-    if(m.instagram) linksArr.push(`<a href="https://instagram.com/${m.instagram}" target="_blank" title="IG"><i class="fab fa-instagram"></i></a>`);
-    if(m.googleMapUrl) linksArr.push(`<a href="javascript:void(0)" class="mem-map-btn" data-member-id="${m.id}" title="MAP"><i class="fas fa-map-marker-alt"></i></a>`);
+    if(m.homepage) linksArr.push(`<a href="${m.homepage}" target="_blank" rel="noopener" aria-label="${m.name||'メンバー'}のウェブサイト" title="HP"><i class="fas fa-globe" aria-hidden="true"></i></a>`);
+    if(m.instagram) linksArr.push(`<a href="https://instagram.com/${m.instagram}" target="_blank" rel="noopener" aria-label="${m.name||'メンバー'}のInstagram" title="IG"><i class="fab fa-instagram" aria-hidden="true"></i></a>`);
+    if(m.googleMapUrl) linksArr.push(`<button type="button" class="mem-map-btn" data-member-id="${m.id}" aria-label="${m.name||'メンバー'}の地図を表示" title="MAP"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></button>`);
     const shopNameEl = m.profession
       ? (m.homepage ? `<a href="${m.homepage}" target="_blank" class="mem-name mem-name-link">${m.profession}</a>` : `<div class="mem-name">${m.profession}</div>`)
       : '';
@@ -3595,7 +3603,7 @@ function renderMembers(list){
     card.innerHTML=`
       <div class="mem-card-hero">
         <div class="mem-avatar-wrap">
-          <img class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
+          <img decoding="async" class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
         </div>
         <div class="mem-rank-area">${rankHtml}</div>
       </div>
@@ -3671,7 +3679,7 @@ function renderBlogs(){
     const playOverlay=ytId?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);transition:background .3s"><i class="fas fa-play-circle" style="font-size:2.2rem;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));transition:transform .3s"></i></div>`:'';
     const readMoreText=ytId?'<span><i class="fas fa-play" style="font-size:.6rem"></i> 動画を見る</span>':'<span>続きを読む</span>';
     card.innerHTML=`<div class="card-img-wrap" style="position:relative">
-        <img class="card-img" src="${thumbSrc}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
+        <img decoding="async" class="card-img" src="${thumbSrc}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
         <div class="card-img-overlay"></div>
         <span class="card-cat-badge ${catCls}"><i class="fas ${catIcon}"></i> ${b.category||'活動レポート'}</span>
         ${playOverlay}
@@ -3730,13 +3738,13 @@ function showBlogDetail(b){
   let mediaHtml='';
   if(ytId){
     mediaHtml+=`<div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:10px;overflow:hidden;margin-bottom:.7rem;background:#000">
-      <iframe src="https://www.youtube.com/embed/${ytId}?rel=0" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      <iframe src="https://www.youtube.com/embed/${ytId}?rel=0" title="${(b.title||'動画').replace(/"/g,'&quot;')}" style="position:absolute;inset:0;width:100%;height:100%;border:none" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
     </div>`;
   }
   // Show image only if it's a real uploaded image (not a YouTube thumbnail)
   const isYtThumb=b.imageUrl&&b.imageUrl.includes('img.youtube.com');
   if(b.imageUrl && !(ytId && isYtThumb)){
-    mediaHtml+=`<img class="blog-detail-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.style.display='none'">`;
+    mediaHtml+=`<img loading="lazy" decoding="async" class="blog-detail-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.style.display='none'">`;
   }
   // Share bar (same style as event)
   const shareBarHtml=`<div class="ev-share-bar">
@@ -3798,7 +3806,7 @@ function renderBoards(){
   visibleBoards.forEach((b,i)=>{
     let rhtml='';
     (b.replies||[]).forEach(r=>{
-      rhtml+=`<div class="reply-item"><img src="${r.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"><div><span class="r-name">${r.authorName}</span> <span class="r-text">${r.content}</span></div></div>`;
+      rhtml+=`<div class="reply-item"><img loading="lazy" decoding="async" src="${r.authorAvatar||'https://i.pravatar.cc/40'}" alt="${r.authorName||''}のアバター" onerror="this.src='https://i.pravatar.cc/40'"><div><span class="r-name">${r.authorName}</span> <span class="r-text">${r.content}</span></div></div>`;
     });
     const isOwner=currentUser&&currentUser.id===b.authorId;
     const ownerBtns=isOwner?`<div class="board-owner-actions"><button class="board-owner-btn" onclick="openBoardEdit('${b.id}')"><i class="fas fa-edit"></i> 編集</button><button class="board-owner-btn del" onclick="deleteBoardPost('${b.id}')"><i class="fas fa-trash-alt"></i> 削除</button></div>`:'';
@@ -3808,7 +3816,7 @@ function renderBoards(){
     const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-long-arrow-alt-right bm-arrow"></i><span class="bm-icon"><i class="fas fa-user"></i></span><span class="bm-name">${b.mentionToName}</span></span>`:'';
     post.innerHTML=`<div class="board-title">${b.title}</div>
       <div class="board-header">
-        <img src="${b.authorAvatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'">
+        <img loading="lazy" decoding="async" src="${b.authorAvatar||'https://i.pravatar.cc/40'}" alt="${b.authorName||''}のアバター" onerror="this.src='https://i.pravatar.cc/40'">
         <div class="bh-info">
           <div class="bh-name"><span>${b.authorName}</span>${mentionHtml}<span class="board-cat">${b.category||''}</span></div>
           <div class="bh-sub"><span class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</span>${ownerBtns}</div>
@@ -3984,7 +3992,7 @@ function initGoogleMap(markers){
     m.bindPopup(`<div class="gmap-popup">
       ${mk.member.profession?'<div class="gmap-popup-shop"><i class="fas fa-store"></i> '+mk.member.profession+'</div>':''}
       <div class="gmap-popup-header">
-        <img class="gmap-popup-avatar" src="${getMemberImage(mk.member)}" onerror="this.src='https://i.pravatar.cc/40'" alt="${mk.member.name}">
+        <img loading="lazy" decoding="async" class="gmap-popup-avatar" src="${getMemberImage(mk.member)}" onerror="this.src='https://i.pravatar.cc/40'" alt="${mk.member.name}">
         <div>
           <div class="gmap-popup-name">${mk.member.name}</div>
           ${mk.member.business?'<div class="gmap-popup-biz">'+mk.member.business+'</div>':''}
@@ -4059,7 +4067,7 @@ function renderInstaFeed(settings){
     item.target='_blank';
     item.rel='noopener';
     item.title=img.title;
-    item.innerHTML=`<img src="${img.src}" alt="${img.title}" loading="lazy" onerror="this.parentElement.style.display='none'"><i class="fab fa-instagram insta-feed-icon"></i>`;
+    item.innerHTML=`<img decoding="async" src="${img.src}" alt="${img.title}" loading="lazy" onerror="this.parentElement.style.display='none'"><i class="fab fa-instagram insta-feed-icon"></i>`;
     track.appendChild(item);
   });
 }
@@ -4075,7 +4083,7 @@ function renderInterviews(){
     card.className='interview-card reveal-scale';
     card.style.transitionDelay=(i*100)+'ms';
     card.innerHTML=`<div class="interview-thumb" onclick="openYtModal('${iv.youtubeId||''}')">
-        <img src="${thumbUrl}" alt="${iv.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=60'">
+        <img decoding="async" src="${thumbUrl}" alt="${iv.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=60'">
         <div class="interview-play"><i class="fas fa-play-circle"></i></div>
       </div>
       <div class="interview-body">
@@ -4200,7 +4208,7 @@ function playHeroVid(){
   if(old){old.classList.add('vid-out');setTimeout(()=>{if(old.parentNode)old.remove()},500)}
   var nf=document.createElement('iframe');
   nf.src='https://www.youtube.com/embed/'+heroVidCurrentId+'?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&start='+startSec+'&loop=0&playsinline=1&enablejsapi=0';
-  nf.allow='autoplay';nf.allowFullscreen=true;nf.style.opacity='0';
+  nf.title='ヒーロー紹介動画';nf.allow='autoplay';nf.allowFullscreen=true;nf.style.opacity='0';
   // Insert before swipe layer
   var swipeEl=frame.querySelector('.hero-vid-swipe');
   if(swipeEl)frame.insertBefore(nf,swipeEl);else frame.appendChild(nf);
@@ -4237,11 +4245,11 @@ function renderOpMembers(){
     card.className='op-card reveal-scale';
     card.style.transitionDelay=(i*80)+'ms';
     const social=[];
-    if(m.instagram) social.push(`<a href="https://instagram.com/${m.instagram}" target="_blank" rel="noopener" data-tooltip="Instagram"><i class="fab fa-instagram"></i></a>`);
-    if(m.website) social.push(`<a href="${m.website}" target="_blank" rel="noopener" data-tooltip="Website"><i class="fas fa-globe"></i></a>`);
+    if(m.instagram) social.push(`<a href="https://instagram.com/${m.instagram}" target="_blank" rel="noopener" data-tooltip="Instagram" aria-label="${m.name||'メンバー'}のInstagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>`);
+    if(m.website) social.push(`<a href="${m.website}" target="_blank" rel="noopener" data-tooltip="Website" aria-label="${m.name||'メンバー'}のウェブサイト"><i class="fas fa-globe" aria-hidden="true"></i></a>`);
     card.innerHTML=`<span class="op-badge"><i class="fas fa-star" style="font-size:.68rem"></i> 運営</span>
       <div class="op-avatar-wrap">
-        <img class="op-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
+        <img decoding="async" class="op-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
       </div>
       <div class="op-name">${m.name}</div>
       <div class="op-role">${m.businessCategory||'運営'}</div>
@@ -4513,7 +4521,7 @@ function updateNav(){
   const heroChatBtn=document.getElementById('heroChatBtn');
   if(currentUser){
     el.innerHTML=`<div class="user-bar">
-      <img src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
+      <img loading="lazy" decoding="async" src="${getMemberImage(currentUser)}" alt="${currentUser.name||'マイページ'}" onerror="this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
       <span class="uname" onclick="openMypage()">${currentUser.name}</span>
       ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-ghost btn-sm"><i class="fas fa-cog"></i> 管理</a>':''}
       <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
@@ -4576,7 +4584,7 @@ function openMypage(){
   c.innerHTML=`
     <div class="mypage-header" style="flex-direction:row;align-items:center;gap:.6rem;margin-bottom:.3rem;padding-bottom:.35rem">
       <div class="avatar-upload" style="flex-shrink:0">
-        <img class="mypage-avatar" id="mpAvatar" src="${getMemberImage(currentUser)}" onerror="this.src='https://i.pravatar.cc/80'" style="width:56px;height:56px">
+        <img loading="lazy" decoding="async" class="mypage-avatar" id="mpAvatar" src="${getMemberImage(currentUser)}" alt="${currentUser.name||'マイページ'}" onerror="this.src='https://i.pravatar.cc/80'" style="width:56px;height:56px">
         <input type="file" accept="image/*" onchange="uploadMyAvatar(this)">
         <div class="avatar-overlay"><i class="fas fa-camera"></i></div>
       </div>
