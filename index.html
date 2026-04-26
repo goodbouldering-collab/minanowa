@@ -2180,19 +2180,21 @@ footer{padding:1.5rem .8rem .8rem}
   .top-nav-pill{padding:.42rem .75rem;font-size:.78rem}
   .top-nav-right{gap:.3rem}
 }
-/* small mobile: drop secondary pills, keep core label-pills */
+/* small mobile: drop blogs (お知らせ) first; keep events/members/board/mypage */
 @media(max-width:640px){
   .top-nav{padding:.4rem .4rem 0;padding-top:calc(.4rem + env(safe-area-inset-top,0px))}
   .top-nav-inner{padding:.4rem .5rem;min-height:48px;gap:.35rem}
   .top-nav-pill{padding:.4rem .7rem;font-size:.74rem}
-  .top-nav-pill[data-section="blogs"],
-  .top-nav-pill[data-section="members"]{display:none}
+  .top-nav-pill[data-section="blogs"]{display:none}
   .top-nav-brand-eyebrow{display:none}
   .top-nav-brand-name{font-size:13px;margin-top:0}
 }
-@media(max-width:430px){
+@media(max-width:520px){
+  .top-nav-pill{padding:.38rem .55rem;font-size:.72rem}
   .top-nav-pill[data-section="board"]{display:none}
-  .top-nav-pill{padding:.38rem .6rem;font-size:.72rem}
+}
+@media(max-width:420px){
+  .top-nav-pill[data-section="members"]{display:none}
 }
 @media(max-width:360px){
   .top-nav-pill[data-section="events"]{display:none}
@@ -4748,48 +4750,75 @@ function renderHeroBoardNotif(){
   let container=document.getElementById('heroBoardNotif');
   if(!container) return;
   container.innerHTML='';
-  if(!currentUser) return;
-  const notif=getMyBoardNotifications();
-  const total=notif.posts.length+notif.replies.length;
-  if(total===0) return;
-  // Build items
-  const items=[];
-  notif.posts.forEach(b=>{
-    items.push({icon:'fa-at',label:'メンション',text:b.title,sub:`${b.authorName}さんから`,boardId:b.id});
+
+  // 1) ログイン中はあなた宛のメッセージを優先表示
+  if(currentUser){
+    const notif=getMyBoardNotifications();
+    const total=notif.posts.length+notif.replies.length;
+    if(total>0){
+      const items=[];
+      notif.posts.forEach(b=>items.push({icon:'fa-at',text:b.title,sub:`${b.authorName}さんから`,boardId:b.id}));
+      notif.replies.forEach(({board,reply})=>items.push({icon:'fa-reply',text:board.title,sub:`${reply.authorName}さんが返信`,boardId:board.id}));
+      const panel=document.createElement('div');
+      panel.className='hero-my-panel';
+      const heading=document.createElement('div');
+      heading.className='hero-my-heading';
+      heading.innerHTML=`<i class="fas fa-envelope" aria-hidden="true"></i> あなた宛のメッセージ <span class="hero-my-count hero-my-count-board">${total}件</span>`;
+      panel.appendChild(heading);
+      items.slice(0,3).forEach(item=>{
+        const card=document.createElement('div');
+        card.className='hero-ev-card hero-ev-mine hero-board-card';
+        card.innerHTML=`<div class="hero-ev-icon hero-ev-icon-board"><i class="fas ${item.icon}" style="font-size:.75rem;color:#fff" aria-hidden="true"></i></div>
+          <div class="hero-ev-body"><div class="hero-ev-title">${item.text}</div></div>
+          <span class="hero-ev-status-text hero-ev-status-board">${item.sub}</span>`;
+        card.addEventListener('click',()=>document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'}));
+        panel.appendChild(card);
+      });
+      if(total>3){
+        const more=document.createElement('div');
+        more.className='hero-ev-card hero-ev-mine hero-board-card';
+        more.innerHTML=`<div class="hero-ev-icon hero-ev-icon-board"><i class="fas fa-ellipsis-h" style="font-size:.75rem;color:rgba(147,197,253,.7)" aria-hidden="true"></i></div>
+          <div class="hero-ev-body"><div class="hero-ev-title">他 ${total-3} 件</div></div>`;
+        more.addEventListener('click',()=>document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'}));
+        panel.appendChild(more);
+      }
+      container.appendChild(panel);
+      updateBottomNavBadges();
+      return;
+    }
+  }
+
+  // 2) フォールバック: 全員に最新の掲示板トピック/コメントを最大3件表示
+  if(!Array.isArray(allBoards)||!allBoards.length) return;
+  // 最新コメント（reply）優先 → 無ければ投稿そのもの
+  const recent=[];
+  allBoards.forEach(b=>{
+    (b.replies||[]).forEach(r=>{
+      recent.push({type:'reply',title:b.title,text:r.content,who:r.authorName||'匿名',ts:new Date(r.createdAt||b.createdAt||0).getTime(),boardId:b.id});
+    });
+    recent.push({type:'post',title:b.title,text:b.content||b.title,who:b.authorName||'匿名',ts:new Date(b.createdAt||0).getTime(),boardId:b.id});
   });
-  notif.replies.forEach(({board,reply})=>{
-    items.push({icon:'fa-reply',label:'返信',text:board.title,sub:`${reply.authorName}さんが返信`,boardId:board.id});
-  });
-  // Panel wrapper (same structure as events)
+  recent.sort((a,b)=>b.ts-a.ts);
+  const top=recent.slice(0,3);
+  if(!top.length) return;
   const panel=document.createElement('div');
   panel.className='hero-my-panel';
-  // Heading (same structure as events)
   const heading=document.createElement('div');
   heading.className='hero-my-heading';
-  heading.innerHTML=`<i class="fas fa-envelope"></i> あなた宛のメッセージ <span class="hero-my-count hero-my-count-board">${total}件</span>`;
+  heading.innerHTML=`<i class="fas fa-comments" aria-hidden="true"></i> 掲示板の最新コメント <span class="hero-my-count hero-my-count-board">${recent.length}件</span>`;
   panel.appendChild(heading);
-  // Show max 3 as event-style cards (same format as event cards)
-  items.slice(0,3).forEach((item,i)=>{
+  top.forEach(item=>{
     const card=document.createElement('div');
-    card.className='hero-ev-card hero-ev-mine hero-board-card';
-    card.innerHTML=`<div class="hero-ev-icon hero-ev-icon-board"><i class="fas ${item.icon}" style="font-size:.75rem;color:#fff"></i></div>
-      <div class="hero-ev-body"><div class="hero-ev-title">${item.text}</div></div>
-      <span class="hero-ev-status-text hero-ev-status-board">${item.sub}</span>`;
-    card.addEventListener('click',()=>{
-      document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'});
-    });
+    card.className='hero-ev-card hero-board-card';
+    const icon=item.type==='reply'?'fa-reply':'fa-comment-dots';
+    const text=(item.text||'').replace(/[<>]/g,'').slice(0,60);
+    card.innerHTML=`<div class="hero-ev-icon hero-ev-icon-board"><i class="fas ${icon}" style="font-size:.75rem;color:#fff" aria-hidden="true"></i></div>
+      <div class="hero-ev-body"><div class="hero-ev-title">${text||item.title}</div></div>
+      <span class="hero-ev-status-text hero-ev-status-board">${item.who}さん</span>`;
+    card.addEventListener('click',()=>document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'}));
     panel.appendChild(card);
   });
-  if(total>3){
-    const more=document.createElement('div');
-    more.className='hero-ev-card hero-ev-mine hero-board-card';
-    more.innerHTML=`<div class="hero-ev-icon hero-ev-icon-board"><i class="fas fa-ellipsis-h" style="font-size:.75rem;color:rgba(147,197,253,.7)"></i></div>
-      <div class="hero-ev-body"><div class="hero-ev-title">他 ${total-3} 件</div></div>`;
-    more.addEventListener('click',()=>{document.getElementById('board').scrollIntoView({behavior:'smooth',block:'center'})});
-    panel.appendChild(more);
-  }
   container.appendChild(panel);
-  // Update bottom nav badge
   updateBottomNavBadges();
 }
 
