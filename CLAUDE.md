@@ -37,9 +37,26 @@ npm start                # node server.js
 - URL: [minanowa.onrender.com](https://minanowa.onrender.com)
 - Render サービス: `minanowa` (srv-d6vv6cp4tr6s73ds7ip0)
 - リージョン: **Oregon**（`render.yaml` の `region: singapore` は記述ミスで実際は Oregon。変更する場合は Render ダッシュボードから）
-- プラン: Starter（永続ディスク `/data` 1GB 使用）
+- プラン: **Starter ($7/月) + 永続ディスク `/data` 1GB**（このプロジェクトは例外的に Starter 維持）
 - 監視ブランチ: `main`（旧 `genspark_ai_developer`）
 - 自動デプロイ: commit push で発火
+
+### Render プラン運用（例外: Starter 維持中）
+
+全プロジェクト共通方針は「新規は Free + keepalive で開始、本番化で Starter 昇格」だが、**このプロジェクトは例外的に最初から Starter を維持**している。
+
+**理由**: `data.json`（会員・投稿）と `uploads/`（画像）を Render の永続ディスク `/data` に保存しているが、**Free プランでは永続ディスクが使えない**ため、Free 化するとデータが全消失する。
+
+[.github/workflows/keepalive.yml.disabled](.github/workflows/keepalive.yml.disabled) に keepalive テンプレートを **無効化状態で配置済み**（`.disabled` 拡張子で GitHub Actions が無視する）。将来 Free 化する場合の手順:
+
+1. **データ層を Supabase に完全移行**（`lib/supabase-store.js` は実装済み・本番未使用）
+   - 環境変数 `USE_SUPABASE=true` で切替可能
+   - 本番 `data.json` と `uploads/` の Supabase Storage への移行スクリプト作成・実行
+2. Render Dashboard で **Disk を切り離す**
+3. Render Dashboard で **Instance Type を Free に変更**
+4. **`keepalive.yml.disabled` を `keepalive.yml` にリネーム**してコミット
+
+詳細・全プロジェクト共通ルールは親 CLAUDE.md「Render プラン運用ルール」参照。
 
 ## データ層
 

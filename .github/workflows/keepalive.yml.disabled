@@ -1,0 +1,31 @@
+name: Keepalive (Render Free Plan) [DISABLED]
+
+# ⚠️ このファイルは "keepalive.yml.disabled" で無効化されている
+#
+# 現状: Render Starter プラン稼働中（永続ディスク /data 使用のため）
+#   - 永続ディスク (data.json + uploads/ 画像) が Free では使えないため Starter 維持
+#
+# Free 化する場合の手順（重要・順序厳守）:
+#   1. 永続データ (data.json, uploads/) を Supabase に完全移行
+#      - lib/supabase-store.js は実装済み
+#      - 環境変数 USE_SUPABASE=true で Supabase モードに切替可能
+#      - 本番データの移行スクリプトを scripts/ 以下に用意して実行
+#   2. Render Dashboard で Disk を切り離し
+#   3. Render Dashboard で Instance Type を Free に変更
+#   4. このファイルを keepalive.yml にリネーム（.disabled を外す）してコミット
+#
+# 詳細は親 CLAUDE.md「Render プラン運用ルール」参照
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping minanowa.onrender.com
+        run: |
+          curl -fsS -o /dev/null -w "minanowa: HTTP %{http_code} / %{time_total}s\n" \
+            https://minanowa.onrender.com/
