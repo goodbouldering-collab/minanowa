@@ -1369,6 +1369,17 @@ footer{padding:2rem 1rem 1rem}
 .mem-rank-guide-item:hover{background:rgba(0,0,0,.04)}
 .mem-rank-guide-item .mem-rank{margin:0;font-size:.68rem;padding:.12rem .45rem}
 .mem-rank-guide-item .rg-cond{font-weight:600;color:var(--td);font-size:.68rem}
+/* Event calendar (.ics) button on card */
+.ev-cal-btn{position:absolute;top:.5rem;right:.5rem;z-index:3;
+  width:32px;height:32px;border-radius:10px;
+  background:rgba(255,255,255,.92);color:var(--c1);
+  display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:.85rem;
+  box-shadow:0 4px 12px rgba(10,40,60,.12);
+  border:1px solid rgba(180,83,9,.15);
+  transition:transform .2s,background .2s,color .2s}
+.ev-cal-btn:hover{background:var(--c1);color:#fff;transform:scale(1.06)}
+.ev-cal-btn:active{transform:scale(.94)}
 /* Event capacity bar */
 .ev-capacity-bar{margin-top:.35rem;width:100%}
 .ev-capacity-track{height:6px;border-radius:3px;background:rgba(0,0,0,.06);overflow:hidden;position:relative}
@@ -1619,6 +1630,7 @@ footer::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
 .ev-share-btn.share-x{background:#000;color:#fff}
 .ev-share-btn.share-fb{background:#1877F2;color:#fff}
 .ev-share-btn.share-native{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff}
+.ev-share-btn.share-cal{background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff}
 .ev-share-copied{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
   background:rgba(217,119,6,.95);color:#fff;padding:.6rem 1.5rem;border-radius:10px;
   font-size:.85rem;font-weight:700;z-index:9999;pointer-events:none;
@@ -3291,11 +3303,15 @@ function renderEvents(){
     const evImgHtml=ev.imageUrl
       ?`<img decoding="async" class="card-img" src="${ev.imageUrl}" alt="${ev.title}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'"><div class="card-img-placeholder" style="display:none"><i class="fas fa-camera"></i><span>写真準備中</span></div>`
       :`<div class="card-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`;
+    // Capacity visualisation (re-use shared helper)
+    const capBarHtml=(!isPast)?getCapacityBarHtml(ev,regCount):'';
+    const calBtn=isPast?'':`<a class="ev-cal-btn" href="/event/${ev.id}/ics" download onclick="event.stopPropagation()" title="カレンダーに追加" aria-label="${ev.title} をカレンダーに追加"><i class="fas fa-calendar-plus" aria-hidden="true"></i></a>`;
     card.innerHTML=`<div class="card-img-wrap">
         ${evImgHtml}
         <div class="card-img-overlay"></div>
         <span class="ev-badge ${isPast?'past':'upcoming'}">${isPast?'終了':'受付中'}</span>
         ${regBadge}
+        ${calBtn}
       </div>
       <div class="card-body">
         <div class="ev-date"><i class="fas fa-calendar"></i> ${ev.date} ${ev.time}</div>
@@ -3306,7 +3322,8 @@ function renderEvents(){
           <span class="ev-fee"><i class="fas fa-yen-sign"></i> ${ev.fee}</span>
           ${ev.participants?`<span class="ev-cap"><i class="fas fa-users"></i> 定員${ev.participants}名</span>`:''}
         </div>
-        ${regCount>0?`<div class="ev-reg-count"><i class="fas fa-user-check"></i> ${regCount}名参加予定</div>`:''}
+        ${capBarHtml}
+        ${regCountHtml}
         ${appBtn}
       </div>`;
     card.addEventListener('click',function(e){
@@ -3370,12 +3387,13 @@ function showEventDetail(ev){
   const shareTitle=ev.title+' - みんなのWA';
   const shareDesc=`📅 ${ev.date} ${ev.time||''} 📍 ${ev.location}`;
   const shareBarHtml=`<div class="ev-share-bar">
-    <span class="ev-share-label"><i class="fas fa-share-alt"></i> シェア</span>
-    ${navigator.share?`<button class="ev-share-btn share-native" onclick="shareEventNative('${ev.id}')" title="シェア"><i class="fas fa-share"></i></button>`:''}
-    <button class="ev-share-btn share-copy" onclick="copyEventUrl('${ev.id}')" title="URLコピー"><i class="fas fa-link"></i></button>
-    <a class="ev-share-btn share-line" href="https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener" title="LINE"><i class="fab fa-line"></i></a>
-    <a class="ev-share-btn share-x" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle+'\n'+shareDesc)}" target="_blank" rel="noopener" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-    <a class="ev-share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <span class="ev-share-label"><i class="fas fa-share-alt" aria-hidden="true"></i> シェア</span>
+    ${navigator.share?`<button class="ev-share-btn share-native" onclick="shareEventNative('${ev.id}')" title="シェア" aria-label="シェア"><i class="fas fa-share" aria-hidden="true"></i></button>`:''}
+    <button class="ev-share-btn share-copy" onclick="copyEventUrl('${ev.id}')" title="URLコピー" aria-label="URLをコピー"><i class="fas fa-link" aria-hidden="true"></i></button>
+    ${isPast?'':`<a class="ev-share-btn share-cal" href="/event/${ev.id}/ics" download title="カレンダーに追加" aria-label="カレンダーに追加"><i class="fas fa-calendar-plus" aria-hidden="true"></i></a>`}
+    <a class="ev-share-btn share-line" href="https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener" title="LINE" aria-label="LINEでシェア"><i class="fab fa-line" aria-hidden="true"></i></a>
+    <a class="ev-share-btn share-x" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle+'\n'+shareDesc)}" target="_blank" rel="noopener" title="X (Twitter)" aria-label="Xでシェア"><i class="fab fa-x-twitter" aria-hidden="true"></i></a>
+    <a class="ev-share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener" title="Facebook" aria-label="Facebookでシェア"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
   </div>`;
   document.getElementById('evDetailContent').innerHTML=`
     ${ev.imageUrl?`<img loading="lazy" decoding="async" class="ev-detail-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.onerror=null;this.outerHTML='<div class=\'ev-detail-img-placeholder\'><i class=\'fas fa-camera\'></i><span>写真準備中</span></div>'">`:`<div class="ev-detail-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`}

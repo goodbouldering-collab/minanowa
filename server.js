@@ -1416,6 +1416,58 @@ app.get('/blog/:id', async (req, res) => {
     }
 });
 
+// Event ICS export — open in Apple/Google/Outlook Calendar
+app.get('/event/:id/ics', async (req, res) => {
+    try {
+        const data = await readData();
+        const ev = data.events.find(e => e.id === req.params.id);
+        if (!ev) return res.status(404).type('text/plain').send('event not found');
+        // Helper: ISO local → UTC stamp YYYYMMDDTHHMMSSZ
+        const pad = n => String(n).padStart(2, '0');
+        const toUtc = (iso) => {
+            const d = new Date(iso);
+            return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate())
+                + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
+        };
+        // 開始時刻を組み立て：date + time(HH:MM) → JST
+        const timeRaw = (ev.time || '19:00').replace(/[^0-9:]/g, '').slice(0, 5) || '19:00';
+        const startJst = `${ev.date}T${timeRaw}:00+09:00`;
+        const startDt = new Date(startJst);
+        const endDt = new Date(startDt.getTime() + 2 * 60 * 60 * 1000); // default 2h
+        const dtstart = toUtc(startDt);
+        const dtend = toUtc(endDt);
+        const dtstamp = toUtc(new Date());
+        const esc = (s) => String(s || '').replace(/[\\,;]/g, m => '\\' + m).replace(/\r?\n/g, '\\n');
+        const baseUrl = pickBaseUrl(req);
+        const url = `${baseUrl}/event/${ev.id}`;
+        const ics = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//minanowa//event//JP',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            'BEGIN:VEVENT',
+            `UID:${ev.id}@minanowa`,
+            `DTSTAMP:${dtstamp}`,
+            `DTSTART:${dtstart}`,
+            `DTEND:${dtend}`,
+            `SUMMARY:${esc(ev.title || 'みんなのWA イベント')}`,
+            `DESCRIPTION:${esc((ev.description || '') + '\n参加申込: ' + url)}`,
+            `LOCATION:${esc(ev.location || '彦根市内')}`,
+            `URL:${url}`,
+            'END:VEVENT',
+            'END:VCALENDAR',
+            ''
+        ].join('\r\n');
+        res.set('Content-Type', 'text/calendar; charset=utf-8');
+        res.set('Content-Disposition', `attachment; filename="event-${encodeURIComponent(ev.id)}.ics"`);
+        res.send(ics);
+    } catch (e) {
+        console.error('ics error', e);
+        res.status(500).type('text/plain').send('ics generation error');
+    }
+});
+
 // Event share page with OG meta + Event JSON-LD injection
 app.get('/event/:id', async (req, res) => {
     try {
