@@ -25,7 +25,8 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      # -f は付けない（404 等でも失敗扱いにせず、ping が届くこと自体を成功と見なす）
       - name: Ping minanowa.onrender.com
         run: |
-          curl -fsS -o /dev/null -w "minanowa: HTTP %{http_code} / %{time_total}s\n" \
+          curl -sS -o /dev/null -w "minanowa: HTTP %{http_code} / %{time_total}s\n" \
             https://minanowa.onrender.com/
