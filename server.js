@@ -41,7 +41,21 @@ app.use(compression());
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-app.use(express.static(__dirname, { maxAge: '1h', etag: true }));
+app.use(express.static(__dirname, {
+    etag: true,
+    maxAge: '1h',
+    setHeaders(res, filePath) {
+        // index.html は常に最新を取りに行く
+        if (filePath.endsWith('index.html') || filePath.endsWith('admin.html')) {
+            res.setHeader('Cache-Control', 'no-cache');
+            return;
+        }
+        // 画像/フォント/PWA アイコンはハッシュなしでも安全な長期キャッシュ
+        if (/\.(png|jpg|jpeg|gif|webp|avif|ico|svg|woff2?|ttf|otf)$/i.test(filePath)) {
+            res.setHeader('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');
+        }
+    }
+}));
 
 // Upload directory (永続ディスク)
 const uploadDir = path.join(PERSISTENT_DIR, 'uploads');

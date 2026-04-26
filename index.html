@@ -66,8 +66,9 @@
 {"@type":"Question","name":"友人・知人を紹介するにはどうすればいいですか？","acceptedAnswer":{"@type":"Answer","text":"イベント申し込み時に「紹介者あり」を選択し、紹介する方のお名前をご記入ください。当日は紹介者ご本人が一緒にお越しいただき、初参加の方を他のメンバーにご紹介していただけると助かります。"}}
 ]}</script>
 
-<!-- Fonts: keep blocking to avoid FOUT for Japanese text -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<!-- Fonts: 必要な weight のみ。非ブロッキング preload + onload で initial paint をブロックしない（FOUT 許容） -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap"></noscript>
 <!-- Font Awesome: load asynchronously (icons appear right after first paint) -->
 <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
