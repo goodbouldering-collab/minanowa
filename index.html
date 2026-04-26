@@ -104,6 +104,10 @@
   --sh3:0 12px 32px rgba(40,60,55,.09);
   --sh-glow:0 0 24px rgba(217,119,6,.10);
   --sh-glow2:0 0 32px rgba(217,119,6,.06);
+  /* Top fixed nav height (incl. outer padding) — single source of truth.
+     値はメディアクエリで上書き。--nav-anchor は scroll-margin-top と min-height 両方で使用。 */
+  --nav-h:66px;
+  --nav-anchor:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 8px);
   /* Shape & spacing scale */
   --r:22px;--r2:16px;--r3:30px;
   --space-xs:.5rem;--space-sm:.85rem;--space-md:1.25rem;--space-lg:1.75rem;--space-xl:2.5rem;
@@ -167,7 +171,7 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .reveal-scale{opacity:0;transition:opacity .5s ease}
 .reveal-scale.visible{opacity:1}
 /* ========== SECTION ========== */
-.sec{padding:4rem 1.75rem 3.5rem;max-width:1100px;margin:0 auto;position:relative;overflow:hidden;scroll-margin-top:calc(4.8rem + env(safe-area-inset-top,0px))}
+.sec{padding:4rem 1.75rem 3.5rem;max-width:1100px;margin:0 auto;position:relative;overflow:hidden;scroll-margin-top:var(--nav-anchor)}
 .sec-divider{height:1px;max-width:600px;margin:0 auto;position:relative;overflow:hidden}
 /* ========== BENTO GRID ========== */
 .bento-container{max-width:1200px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
@@ -204,11 +208,13 @@ button,input,select,textarea{font-family:inherit;font-size:inherit}
 .bento-cell .sec-head h2{font-size:1.65rem;gap:.4rem;margin-bottom:.3rem;letter-spacing:.03em;padding-bottom:.5rem;line-height:1.2;font-weight:900;color:var(--td)}
 .bento-cell .sec-head p{font-size:.85rem;margin-top:.4rem;line-height:1.5;color:var(--tl);opacity:1}
 /* ---- snap-scroll: mandatory page-flip ---- */
-html{scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch}
+/* scroll-padding-top で snap 位置を上部固定ナビぶん下げて、見出しがナビに隠れないように */
+html{scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scroll-padding-top:var(--nav-anchor)}
 .hero{scroll-snap-align:start;scroll-snap-stop:always;min-height:100svh}
 /* ---- global: bento cells fill viewport ---- */
-.bento-cell{border-radius:var(--r);min-height:calc(100svh - 70px);display:flex;flex-direction:column;
+.bento-cell{border-radius:var(--r);min-height:calc(100svh - var(--nav-anchor));display:flex;flex-direction:column;
     content-visibility:visible;contain-intrinsic-size:none;scroll-snap-align:start;scroll-snap-stop:always;
+    scroll-margin-top:var(--nav-anchor);
     border:1px solid var(--glass-border);box-shadow:var(--sh2),inset 0 1px 0 rgba(255,255,255,.6);
     background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur)}
 .bento-cell::before{content:none}
@@ -304,7 +310,7 @@ html{scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch}
 /* ---- MEMBER MAP: fill screen ---- */
 #memberMap .sec-head p{font-size:.88rem}
 .member-map-wrap{flex:1;display:flex;flex-direction:column}
-.member-map-container{height:calc(100svh - 210px) !important;min-height:280px;border-radius:12px;flex:none}
+.member-map-container{height:calc(100svh - var(--nav-anchor) - 140px) !important;min-height:280px;border-radius:12px;flex:none}
 #memberMap .member-map-wrap{flex:1;display:flex;flex-direction:column}
 /* ---- BOARD: fill screen fully ---- */
 #board .sec-head p{font-size:.88rem}
@@ -358,7 +364,8 @@ html{scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch}
 .op-card .op-social{margin-top:auto}
 /* ---- footer: compact ---- */
 footer{padding:1.5rem 1rem .8rem;scroll-snap-align:start;scroll-snap-stop:always;
-    min-height:calc(100svh - 130px);display:flex;flex-direction:column;justify-content:center}
+    min-height:calc(100svh - var(--nav-anchor) - 60px);display:flex;flex-direction:column;justify-content:center;
+    scroll-margin-top:var(--nav-anchor)}
 .footer-grid{grid-template-columns:1fr 1fr;gap:.8rem}
 .footer-grid h4{font-size:.85rem}
 .footer-grid a{font-size:.8rem}
@@ -2182,6 +2189,7 @@ footer{padding:1.5rem .8rem .8rem}
 }
 /* small mobile: drop blogs (お知らせ) first; keep events/members/board/mypage */
 @media(max-width:640px){
+  :root{--nav-h:56px}
   .top-nav{padding:.4rem .4rem 0;padding-top:calc(.4rem + env(safe-area-inset-top,0px))}
   .top-nav-inner{padding:.4rem .5rem;min-height:48px;gap:.35rem}
   .top-nav-pill{padding:.4rem .7rem;font-size:.74rem}
