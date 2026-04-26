@@ -370,10 +370,11 @@ footer{padding:1.5rem 1rem .8rem;scroll-snap-align:start;scroll-snap-stop:always
 .footer-grid h4{font-size:.85rem}
 .footer-grid a{font-size:.8rem}
 .footer-bot{font-size:.75rem;padding-top:.8rem;margin-top:auto}
-.ai-fab{bottom:calc(5.2rem + env(safe-area-inset-bottom,0px));right:-4px;width:44px;height:44px}
-.ai-fab .ai-char-face svg{width:36px;height:36px}
-.ai-telop{bottom:calc(6rem + env(safe-area-inset-bottom,0px));right:42px}
-.ai-chat{right:8px;left:8px;width:auto;bottom:calc(6.4rem + env(safe-area-inset-bottom,0px));max-height:calc(100vh - 10rem);
+.ai-fab{bottom:calc(1.1rem + env(safe-area-inset-bottom,0px));right:.8rem;width:52px;height:52px;border-radius:16px}
+.ai-fab::before{inset:-5px;border-radius:21px}
+.ai-telop{bottom:calc(2.1rem + env(safe-area-inset-bottom,0px));right:66px}
+.ai-telop-text{font-size:.7rem;padding:.4rem .65rem}
+.ai-chat{right:8px;left:8px;width:auto;bottom:calc(4.6rem + env(safe-area-inset-bottom,0px));max-height:calc(100vh - 8rem);
   max-width:100vw;overflow:hidden}}
 .sec-divider::before{content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent 5%,rgba(180,83,9,.08) 25%,rgba(245,158,11,.12) 50%,rgba(180,83,9,.08) 75%,transparent 95%)}
@@ -1949,35 +1950,51 @@ footer{padding:1.5rem .8rem .8rem}
 .hero-scroll{display:none}
 .hero-glow{display:none}}
 /* ========== AI ASSISTANT (Chat) ========== */
-.ai-fab{position:fixed;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));right:.6rem;z-index:9500;width:48px;height:48px;
-  border-radius:0;background:none;color:var(--c1);
-  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;box-shadow:none;
-  transition:transform .3s ease,opacity .3s ease;
-  overflow:visible;opacity:.92;padding:0}
-.ai-fab:hover{opacity:1;box-shadow:none}
+/* FAB: 56px の角丸バッジ。リング状ハロー + 軽い hover lift。 */
+.ai-fab{position:fixed;bottom:calc(1.4rem + env(safe-area-inset-bottom,0px));right:1rem;z-index:9500;
+  width:56px;height:56px;border-radius:18px;
+  background:none;color:var(--c1);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;overflow:visible;opacity:1;
+  filter:drop-shadow(0 8px 18px rgba(180,83,9,.32)) drop-shadow(0 2px 6px rgba(0,0,0,.12));
+  transition:transform .25s cubic-bezier(.16,1,.3,1),filter .25s ease}
+.ai-fab::before{
+  content:'';position:absolute;inset:-6px;border-radius:24px;
+  background:radial-gradient(circle at 50% 50%,rgba(251,191,36,.35),rgba(251,191,36,0) 70%);
+  z-index:-1;pointer-events:none;
+  animation:ai-halo-pulse 2.6s ease-in-out infinite}
+@keyframes ai-halo-pulse{
+  0%,100%{transform:scale(.92);opacity:.55}
+  50%{transform:scale(1.08);opacity:.95}}
+.ai-fab:hover{transform:translateY(-2px) scale(1.04);
+  filter:drop-shadow(0 12px 22px rgba(180,83,9,.42)) drop-shadow(0 3px 8px rgba(0,0,0,.15))}
+.ai-fab:active{transform:translateY(0) scale(.96)}
 .ai-fab .ai-char{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
 .ai-fab .ai-char-face{line-height:1;position:relative;
   transition:transform .25s ease;display:flex;align-items:center;justify-content:center}
-.ai-fab .ai-char-face svg{width:40px;height:40px;filter:drop-shadow(0 2px 8px rgba(180,83,9,.3))}
+.ai-fab .ai-char-face svg{width:100%;height:100%;display:block}
 .ai-fab .ai-char-eye{display:none}
 .ai-fab .ai-pulse{display:none}
-.ai-fab .ai-notif-badge{display:none !important;position:absolute;top:-2px;left:-2px;min-width:18px;height:18px;
-  background:#ef4444;color:#fff;font-size:.72rem;font-weight:700;
+.ai-fab .ai-notif-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;
+  background:#ef4444;color:#fff;font-size:.68rem;font-weight:800;
   border-radius:10px;display:flex;align-items:center;justify-content:center;
-  padding:0 4px;line-height:1;box-shadow:0 2px 6px rgba(239,68,68,.4)}
+  padding:0 5px;line-height:1;box-shadow:0 2px 6px rgba(239,68,68,.4),0 0 0 2px #fff;
+  z-index:1}
 .ai-fab .ai-notif-badge:empty{display:none}
-/* AI Telop (text next to icon) */
-.ai-telop{position:fixed;bottom:calc(2rem + env(safe-area-inset-bottom,0px));right:54px;z-index:9501;
-  pointer-events:none;opacity:0;transform:translateX(6px);
-  transition:opacity .4s ease,transform .4s ease;
+/* AI Telop (text next to icon) — bubble-style with tail */
+.ai-telop{position:fixed;bottom:calc(2.6rem + env(safe-area-inset-bottom,0px));right:74px;z-index:9501;
+  pointer-events:none;opacity:0;transform:translateX(8px);
+  transition:opacity .35s ease,transform .35s ease;
   white-space:nowrap}
 .ai-telop.visible{opacity:1;transform:translateX(0)}
-.ai-telop-text{font-size:.7rem;font-weight:700;color:#fff;
-  background:linear-gradient(135deg,rgba(180,83,9,.85),rgba(245,158,11,.85));
-  padding:.3rem .6rem;border-radius:8px;
-  box-shadow:0 2px 10px rgba(180,83,9,.2);
-  letter-spacing:.02em}
+.ai-telop-text{display:inline-block;font-size:.74rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,#f59e0b,#d97706);
+  padding:.45rem .75rem;border-radius:12px;
+  box-shadow:0 6px 16px rgba(180,83,9,.28),inset 0 1px 0 rgba(255,255,255,.25);
+  letter-spacing:.02em;position:relative}
+.ai-telop-text::after{
+  content:'';position:absolute;right:-6px;bottom:10px;
+  width:0;height:0;border:6px solid transparent;border-left-color:#d97706;border-right:0}
 @keyframes ai-pulse{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.8);opacity:0}}
 .ai-fab-enter{animation:ai-fab-fade-in .6s ease forwards}
 @keyframes ai-fab-fade-in{
@@ -5257,42 +5274,47 @@ window.addEventListener('scroll',()=>{
       <defs>
         <linearGradient id="aiBubbleGrad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#fbbf24"/>
-          <stop offset=".55" stop-color="#f59e0b"/>
-          <stop offset="1" stop-color="#d97706"/>
+          <stop offset=".5" stop-color="#f59e0b"/>
+          <stop offset="1" stop-color="#b45309"/>
         </linearGradient>
-        <radialGradient id="aiBulb" cx=".5" cy=".4" r=".55">
-          <stop offset="0" stop-color="#fff7e0"/>
-          <stop offset="1" stop-color="#fde68a"/>
+        <radialGradient id="aiHalo" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="rgba(255,247,220,.9)"/>
+          <stop offset=".7" stop-color="rgba(253,230,138,.0)"/>
+          <stop offset="1" stop-color="rgba(253,230,138,0)"/>
         </radialGradient>
       </defs>
-      <!-- chat bubble (rounded square + tail) -->
-      <path d="M18 14 H78 a14 14 0 0 1 14 14 v36 a14 14 0 0 1 -14 14 H44 L26 92 V78 H18 a14 14 0 0 1 -14 -14 V28 a14 14 0 0 1 14 -14 Z" fill="url(#aiBubbleGrad)"/>
-      <path d="M18 14 H78 a14 14 0 0 1 14 14 v36 a14 14 0 0 1 -14 14 H44 L26 92 V78 H18 a14 14 0 0 1 -14 -14 V28 a14 14 0 0 1 14 -14 Z" fill="rgba(255,255,255,.0)" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
-      <!-- light bulb (idea) inside bubble -->
-      <path d="M48 24 a16 16 0 0 1 12 28 c-1.5 1.4 -2.4 3.4 -2.4 5.5 v2.5 H42.4 v-2.5 c0 -2.1 -.9 -4.1 -2.4 -5.5 a16 16 0 0 1 8 -28 z" fill="url(#aiBulb)"/>
-      <!-- bulb base -->
-      <rect x="42" y="62" width="16" height="3" rx="1" fill="#7c2d12"/>
-      <rect x="44" y="66" width="12" height="2.5" rx="1" fill="#7c2d12" opacity=".75"/>
-      <!-- filament glint -->
-      <path d="M46 34 q4 -4 8 0" fill="none" stroke="#b45309" stroke-width="1.4" stroke-linecap="round"/>
-      <circle cx="46" cy="34" r="1.2" fill="#b45309"/>
-      <circle cx="54" cy="34" r="1.2" fill="#b45309"/>
-      <!-- inner highlight -->
-      <ellipse cx="44" cy="30" rx="3" ry="2" fill="rgba(255,255,255,.7)"/>
-      <!-- AI sparkles around bubble -->
+      <!-- soft halo (idea/aura) -->
+      <circle cx="50" cy="50" r="48" fill="url(#aiHalo)"/>
+      <!-- main rounded-square badge -->
+      <rect x="10" y="10" width="80" height="80" rx="22" fill="url(#aiBubbleGrad)"/>
+      <!-- inner highlight ring -->
+      <rect x="10" y="10" width="80" height="80" rx="22" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
+      <!-- top sheen -->
+      <path d="M28 18 Q50 12 72 18 Q72 28 50 28 Q28 28 28 18 Z" fill="rgba(255,255,255,.28)"/>
+      <!-- AI text — bold, condensed, instantly readable -->
+      <text x="50" y="60"
+            text-anchor="middle"
+            font-family="'Hiragino Sans','Yu Gothic',-apple-system,'Segoe UI',sans-serif"
+            font-size="38"
+            font-weight="900"
+            fill="#fff"
+            letter-spacing="-1"
+            style="paint-order:stroke fill;stroke:rgba(120,53,15,.35);stroke-width:.8">AI</text>
+      <!-- bottom: tiny lightbulb + spark = idea-helper signature -->
+      <g transform="translate(50 76)">
+        <path d="M-3.6 -2 a3.6 3.6 0 0 1 7.2 0 c0 1.2 -.6 2.2 -1.4 2.9 V2 h-4.4 V0.9 c-.8 -.7 -1.4 -1.7 -1.4 -2.9 z" fill="#fff7d6"/>
+        <rect x="-2" y="2" width="4" height="1.2" rx=".4" fill="#7c2d12"/>
+        <rect x="-1.4" y="3.6" width="2.8" height=".9" rx=".3" fill="#7c2d12" opacity=".7"/>
+      </g>
+      <!-- corner sparkles -->
       <g fill="#fff8e7">
-        <path d="M88 18 L90 22 L94 24 L90 26 L88 30 L86 26 L82 24 L86 22 Z" opacity=".95">
-          <animate attributeName="opacity" values=".4;1;.4" dur="2s" repeatCount="indefinite"/>
+        <path d="M86 18 L87.4 21 L90.4 22.4 L87.4 23.8 L86 26.8 L84.6 23.8 L81.6 22.4 L84.6 21 Z" opacity=".95">
+          <animate attributeName="opacity" values=".4;1;.4" dur="2.2s" repeatCount="indefinite"/>
         </path>
-        <path d="M10 70 L11 72.5 L13.5 73.5 L11 74.5 L10 77 L9 74.5 L6.5 73.5 L9 72.5 Z" opacity=".75">
-          <animate attributeName="opacity" values=".3;.9;.3" dur="2.4s" begin=".3s" repeatCount="indefinite"/>
-        </path>
-        <path d="M82 80 L83 82 L85 82.8 L83 83.6 L82 86 L81 83.6 L79 82.8 L81 82 Z" opacity=".7">
-          <animate attributeName="opacity" values=".25;.85;.25" dur="2.7s" begin=".7s" repeatCount="indefinite"/>
+        <path d="M14 80 L15 82 L17 82.7 L15 83.4 L14 85.4 L13 83.4 L11 82.7 L13 82 Z" opacity=".7">
+          <animate attributeName="opacity" values=".25;.85;.25" dur="2.6s" begin=".4s" repeatCount="indefinite"/>
         </path>
       </g>
-      <!-- subtle bubble outer shadow -->
-      <path d="M18 14 H78 a14 14 0 0 1 14 14 v36 a14 14 0 0 1 -14 14 H44 L26 92 V78 H18 a14 14 0 0 1 -14 -14 V28 a14 14 0 0 1 14 -14 Z" fill="none" stroke="rgba(120,53,15,.18)" stroke-width=".7"/>
     </svg></span>
   </div>
   <span class="ai-notif-badge" id="aiFabBadge"></span>
@@ -5304,7 +5326,7 @@ window.addEventListener('scroll',()=>{
 <!-- AI Chat Window -->
 <div class="ai-chat" id="aiChat">
   <div class="ai-chat-head">
-    <svg viewBox="0 0 100 100" style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="aiBubbleGradS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset=".55" stop-color="#f59e0b"/><stop offset="1" stop-color="#d97706"/></linearGradient><radialGradient id="aiBulbS" cx=".5" cy=".4" r=".55"><stop offset="0" stop-color="#fff7e0"/><stop offset="1" stop-color="#fde68a"/></radialGradient></defs><path d="M18 14 H78 a14 14 0 0 1 14 14 v36 a14 14 0 0 1 -14 14 H44 L26 92 V78 H18 a14 14 0 0 1 -14 -14 V28 a14 14 0 0 1 14 -14 Z" fill="url(#aiBubbleGradS)"/><path d="M48 24 a16 16 0 0 1 12 28 c-1.5 1.4 -2.4 3.4 -2.4 5.5 v2.5 H42.4 v-2.5 c0 -2.1 -.9 -4.1 -2.4 -5.5 a16 16 0 0 1 8 -28 z" fill="url(#aiBulbS)"/><rect x="42" y="62" width="16" height="3" rx="1" fill="#7c2d12"/><rect x="44" y="66" width="12" height="2.5" rx="1" fill="#7c2d12" opacity=".75"/></svg>
+    <svg viewBox="0 0 100 100" style="width:24px;height:24px" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="aiBubbleGradS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset=".5" stop-color="#f59e0b"/><stop offset="1" stop-color="#b45309"/></linearGradient></defs><rect x="10" y="10" width="80" height="80" rx="22" fill="url(#aiBubbleGradS)"/><rect x="10" y="10" width="80" height="80" rx="22" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/><text x="50" y="64" text-anchor="middle" font-family="'Hiragino Sans','Yu Gothic',-apple-system,'Segoe UI',sans-serif" font-size="42" font-weight="900" fill="#fff" letter-spacing="-1">AI</text></svg>
     <span>AI起業アシスタント</span>
     <button class="ai-chat-close" onclick="event.stopPropagation();closeAiChat()" type="button">&times;</button>
   </div>
@@ -5392,7 +5414,7 @@ function closeAiChat(){
   const fab=document.getElementById('aiFab');
   if(chat){chat.classList.remove('open');chat.style.display='none';
     setTimeout(()=>{chat.style.display='';},50);}
-  if(fab) fab.innerHTML='<div class="ai-char"><span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="AI起業アシスタント"><defs><linearGradient id="aiBubbleGradJ" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset=".55" stop-color="#f59e0b"/><stop offset="1" stop-color="#d97706"/></linearGradient><radialGradient id="aiBulbJ" cx=".5" cy=".4" r=".55"><stop offset="0" stop-color="#fff7e0"/><stop offset="1" stop-color="#fde68a"/></radialGradient></defs><path d="M18 14 H78 a14 14 0 0 1 14 14 v36 a14 14 0 0 1 -14 14 H44 L26 92 V78 H18 a14 14 0 0 1 -14 -14 V28 a14 14 0 0 1 14 -14 Z" fill="url(#aiBubbleGradJ)"/><path d="M48 24 a16 16 0 0 1 12 28 c-1.5 1.4 -2.4 3.4 -2.4 5.5 v2.5 H42.4 v-2.5 c0 -2.1 -.9 -4.1 -2.4 -5.5 a16 16 0 0 1 8 -28 z" fill="url(#aiBulbJ)"/><rect x="42" y="62" width="16" height="3" rx="1" fill="#7c2d12"/><rect x="44" y="66" width="12" height="2.5" rx="1" fill="#7c2d12" opacity=".75"/><path d="M46 34 q4 -4 8 0" fill="none" stroke="#b45309" stroke-width="1.4" stroke-linecap="round"/><circle cx="46" cy="34" r="1.2" fill="#b45309"/><circle cx="54" cy="34" r="1.2" fill="#b45309"/></svg></span></div><span class="ai-notif-badge" id="aiFabBadge"></span>';
+  if(fab) fab.innerHTML='<div class="ai-char"><span class="ai-char-face" id="aiShibaIcon"><svg id="shibaSvg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="AI起業アシスタント"><defs><linearGradient id="aiBubbleGradJ" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset=".5" stop-color="#f59e0b"/><stop offset="1" stop-color="#b45309"/></linearGradient></defs><rect x="10" y="10" width="80" height="80" rx="22" fill="url(#aiBubbleGradJ)"/><rect x="10" y="10" width="80" height="80" rx="22" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/><text x="50" y="60" text-anchor="middle" font-family="\'Hiragino Sans\',\'Yu Gothic\',-apple-system,\'Segoe UI\',sans-serif" font-size="38" font-weight="900" fill="#fff" letter-spacing="-1">AI</text><g transform="translate(50 76)"><path d="M-3.6 -2 a3.6 3.6 0 0 1 7.2 0 c0 1.2 -.6 2.2 -1.4 2.9 V2 h-4.4 V0.9 c-.8 -.7 -1.4 -1.7 -1.4 -2.9 z" fill="#fff7d6"/><rect x="-2" y="2" width="4" height="1.2" rx=".4" fill="#7c2d12"/></g></svg></span></div><span class="ai-notif-badge" id="aiFabBadge"></span>';
   if(fab) fab.onclick=handleFabClick;
   updateAiFabBadge();
   startAiBubbleCycle();
