@@ -162,14 +162,24 @@ app.post('/api/register', async (req, res) => {
     try {
         const data = await readData();
         const { email, password, name, furigana, phone, business, businessCategory, location, website, instagram, profession, homepage } = req.body;
-        if (data.members.find(m => m.email === email))
-            return res.status(400).json({ error: 'このメールアドレスは既に登録されています' });
+        if (!name || !furigana) return res.status(400).json({ error: 'お名前とふりがなは必須です' });
+        const normalizedEmail = (email || '').trim().toLowerCase();
+        if (normalizedEmail) {
+            if (data.members.find(m => (m.email || '').toLowerCase() === normalizedEmail))
+                return res.status(400).json({ error: 'このメールアドレスは既に登録されています' });
+        }
         const newMember = {
-            id: genId('member'), email,
-            password: await bcrypt.hash(password, 10),
-            name, furigana, phone, business, businessCategory,
+            id: genId('member'),
+            email: normalizedEmail,
+            // password は提供されたときだけハッシュ化。なければ空文字（後でマイページで設定可能）。
+            password: password ? await bcrypt.hash(password, 10) : '',
+            name, furigana,
+            phone: phone || '',
+            business: business || '',
+            businessCategory: businessCategory || '',
             introduction: '', avatar: '',
-            location, website: website || '', instagram: instagram || '', googleMapUrl: req.body.googleMapUrl || '',
+            location: location || '', website: website || '', instagram: instagram || '',
+            googleMapUrl: req.body.googleMapUrl || '',
             profession: profession || '', homepage: homepage || '',
             sns: {}, skills: [],
             joinDate: new Date().toISOString().split('T')[0],

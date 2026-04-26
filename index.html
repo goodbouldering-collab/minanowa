@@ -105,9 +105,10 @@
   --sh-glow:0 0 24px rgba(217,119,6,.10);
   --sh-glow2:0 0 32px rgba(217,119,6,.06);
   /* Top fixed nav height (incl. outer padding) — single source of truth.
-     値はメディアクエリで上書き。--nav-anchor は scroll-margin-top と min-height 両方で使用。 */
+     値はメディアクエリで上書き。--nav-anchor は scroll-margin-top と min-height 両方で使用。
+     +4px は影/枠のフェードと完全密着の中間にする微調整。 */
   --nav-h:66px;
-  --nav-anchor:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 8px);
+  --nav-anchor:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 4px);
   /* Shape & spacing scale */
   --r:22px;--r2:16px;--r3:30px;
   --space-xs:.5rem;--space-sm:.85rem;--space-md:1.25rem;--space-lg:1.75rem;--space-xl:2.5rem;
@@ -2222,57 +2223,58 @@ footer{padding:1.5rem .8rem .8rem}
   /* events と members を最後まで残す。マイページ次点で残す */
   .top-nav-pill{padding:.36rem .5rem;font-size:.68rem}
 }
-/* Bottom slide-up menu panel */
-.bottom-menu-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
-  opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
-.bottom-menu-overlay.open{opacity:1;pointer-events:auto}
-.bottom-menu-panel{position:fixed;top:calc(4.4rem + env(safe-area-inset-top,0px));
-  left:max(.8rem,calc(50% - 370px));right:auto;bottom:auto;z-index:9000;
-  width:calc(100% - 1.6rem);max-width:340px;
-  background:var(--glass-bg-soft);backdrop-filter:var(--glass-blur-strong);-webkit-backdrop-filter:var(--glass-blur-strong);
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:24px;
-  box-shadow:0 18px 48px rgba(10,40,60,.18),0 4px 14px rgba(10,40,60,.08),inset 0 1px 0 rgba(255,255,255,.8);
-  transform:translateY(calc(-100% - 5rem));transition:transform .4s cubic-bezier(.32,1,.23,1);
-  padding:.25rem 0 1rem;max-height:80vh;overflow-y:auto;
-  transform-origin:top left}
+/* === Side drawers (standard pattern: slide-in from edge, click outside to close) === */
+.bottom-menu-overlay,.mypage-overlay{position:fixed;inset:0;z-index:8999;background:rgba(15,15,15,.45);
+  opacity:0;pointer-events:none;transition:opacity .25s ease;-webkit-tap-highlight-color:transparent}
+.bottom-menu-overlay.open,.mypage-overlay.open{opacity:1;pointer-events:auto}
+/* Hamburger drawer: slide in from LEFT */
+.bottom-menu-panel{position:fixed;top:0;left:0;bottom:0;right:auto;z-index:9000;
+  width:min(86vw,320px);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);
+  border-right:1px solid rgba(0,0,0,.06);
+  border-radius:0 18px 18px 0;
+  box-shadow:18px 0 40px -8px rgba(10,15,25,.22);
+  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  padding:0;display:flex;flex-direction:column;overflow:hidden}
 .bottom-menu-overlay.open .bottom-menu-panel,
-.bottom-menu-panel.open{transform:translateY(0);will-change:transform}
-.bottom-menu-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .35rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
-.bottom-menu-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
-.bottom-menu-handle::after{content:'上にスワイプして閉じる';display:block;font-size:.6rem;color:rgba(60,60,67,.35);margin-top:.3rem;letter-spacing:.05em;font-weight:500;transition:opacity .3s;pointer-events:none}
-.bottom-menu-list{list-style:none;padding:.4rem 1.1rem .7rem;margin:0}
+.bottom-menu-panel.open{transform:translateX(0);will-change:transform}
+.bottom-menu-handle{display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 1rem .7rem;border-bottom:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.6)}
+.bottom-menu-handle::before{content:'メニュー';font-size:.9rem;font-weight:800;color:var(--td);letter-spacing:.04em}
+.bottom-menu-handle::after{content:'\00d7';font-size:1.4rem;line-height:1;color:#666;cursor:pointer;
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:8px;
+  transition:background .2s}
+.bottom-menu-handle:hover::after{background:rgba(0,0,0,.06)}
+.bottom-menu-list{list-style:none;padding:.6rem .8rem 1rem;margin:0;flex:1;overflow-y:auto}
 .bottom-menu-list li{border-bottom:1px solid rgba(0,0,0,.05)}
 .bottom-menu-list li:last-child{border-bottom:none}
-.bottom-menu-list a{display:flex;align-items:center;gap:.7rem;padding:.95rem .55rem;
-  color:var(--td);font-size:.98rem;font-weight:600;text-decoration:none;
-  transition:background .2s,color .2s;border-radius:12px}
-.bottom-menu-list a:hover,.bottom-menu-list a:active{background:rgba(180,83,9,.05);color:var(--c1)}
+.bottom-menu-list a{display:flex;align-items:center;gap:.7rem;padding:.85rem .6rem;
+  color:var(--td);font-size:.95rem;font-weight:600;text-decoration:none;
+  transition:background .2s,color .2s;border-radius:10px}
+.bottom-menu-list a:hover,.bottom-menu-list a:active{background:rgba(180,83,9,.06);color:var(--c1)}
 .bottom-menu-list a i{width:20px;text-align:center;font-size:.95rem;color:var(--c1);opacity:.8}
-.bottom-menu-list .menu-auth-btn{margin-top:.3rem;padding:0;border-top:1px solid rgba(0,0,0,.06)}
+.bottom-menu-list .menu-auth-btn{margin-top:.4rem;padding:0;border-top:1px solid rgba(0,0,0,.08)}
 .bottom-menu-list .menu-auth-btn a{color:var(--c1);font-weight:700}
-@media(min-width:769px){.bottom-menu-panel{max-width:380px}
-.mypage-panel{max-width:520px}
-.bottom-menu-panel,.mypage-panel{border-radius:22px}}
-/* === MYPAGE SLIDE-UP PANEL === */
-.mypage-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
-  opacity:0;pointer-events:none;transition:opacity .35s ease;-webkit-tap-highlight-color:transparent}
-.mypage-overlay.open{opacity:1;pointer-events:auto}
-.mypage-panel{position:fixed;top:calc(4.4rem + env(safe-area-inset-top,0px));
-  left:auto;right:max(.8rem,calc(50% - 370px));bottom:auto;z-index:9000;
-  width:calc(100% - 1.6rem);max-width:420px;
-  background:var(--glass-bg-soft);backdrop-filter:var(--glass-blur-strong);-webkit-backdrop-filter:var(--glass-blur-strong);
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:24px;
-  box-shadow:0 18px 48px rgba(10,40,60,.18),0 4px 14px rgba(10,40,60,.08),inset 0 1px 0 rgba(255,255,255,.8);
-  transform:translateY(calc(-100% - 5rem));transition:transform .4s cubic-bezier(.32,1,.23,1);
-  padding:.25rem 0 1rem;max-height:82vh;overflow-y:auto;
-  transform-origin:top right}
-.mypage-overlay.open .mypage-panel{transform:translateY(0);will-change:transform}
-.mypage-panel-handle{width:100%;display:flex;flex-direction:column;align-items:center;padding:.6rem 0 .3rem;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
-.mypage-panel-handle::before{content:'';display:block;width:40px;height:5px;border-radius:3px;background:rgba(60,60,67,.35)}
-.mypage-panel-handle::after{content:'上にスワイプして閉じる';display:block;font-size:.6rem;color:rgba(60,60,67,.35);margin-top:.3rem;letter-spacing:.05em;font-weight:500;transition:opacity .3s;pointer-events:none}
-.mypage-panel-head{display:flex;align-items:center;justify-content:space-between;padding:.3rem 1rem .5rem;
+/* Mypage drawer: slide in from RIGHT */
+.mypage-panel{position:fixed;top:0;right:0;bottom:0;left:auto;z-index:9000;
+  width:min(94vw,440px);
+  background:rgba(255,255,255,.97);
+  backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);
+  border-left:1px solid rgba(0,0,0,.06);
+  border-radius:18px 0 0 18px;
+  box-shadow:-18px 0 40px -8px rgba(10,15,25,.22);
+  transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  padding:0;display:flex;flex-direction:column;overflow:hidden}
+.mypage-overlay.open .mypage-panel{transform:translateX(0);will-change:transform}
+.mypage-panel-handle{display:none}
+.mypage-close{appearance:none;border:none;background:rgba(0,0,0,.04);width:32px;height:32px;border-radius:10px;
+  font-size:1.4rem;line-height:1;color:#666;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:background .2s,color .2s;-webkit-tap-highlight-color:transparent}
+.mypage-close:hover{background:rgba(180,83,9,.1);color:var(--c1)}
+.mypage-close:active{transform:scale(.94)}
+.mypage-panel-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1rem;border-bottom:1px solid rgba(0,0,0,.06);
   border-bottom:1px solid rgba(0,0,0,.06)}
 .mypage-panel-head h3{font-size:1rem;font-weight:800;color:var(--td);display:flex;align-items:center;gap:.4rem;margin:0}
 .mypage-panel-head h3 i{color:var(--c1)}
@@ -2659,7 +2661,7 @@ footer{content-visibility:auto;contain-intrinsic-size:600px}
 <!-- BOTTOM SLIDE-UP MENU -->
 <div class="bottom-menu-overlay" id="bottomMenuOverlay" onclick="closeBottomMenu()">
   <div class="bottom-menu-panel" onclick="event.stopPropagation()">
-    <div class="bottom-menu-handle"></div>
+    <div class="bottom-menu-handle" onclick="closeBottomMenu()"></div>
     <ul class="bottom-menu-list">
       <li><a href="#about" onclick="closeBottomMenu()"><i class="fas fa-heart"></i> みんなのWAとは</a></li>
       <li><a href="#events" onclick="closeBottomMenu()"><i class="fas fa-calendar-alt"></i> 交流会・イベント</a></li>
@@ -2692,16 +2694,16 @@ footer{content-visibility:auto;contain-intrinsic-size:600px}
       </a>
     </div>
     <div class="top-nav-right">
-      <a class="top-nav-pill" href="#events" onclick="closeAllPanels();document.getElementById('events').scrollIntoView({behavior:'smooth'})" data-section="events" title="イベント">
+      <a class="top-nav-pill" href="#events" onclick="closeAllPanels()" data-section="events" title="イベント">
         <span>イベント</span><span class="bottom-nav-badge" id="bnBadgeEvent"></span>
       </a>
-      <a class="top-nav-pill" href="#members" onclick="closeAllPanels();document.getElementById('members').scrollIntoView({behavior:'smooth'})" data-section="members" title="メンバー">
+      <a class="top-nav-pill" href="#members" onclick="closeAllPanels()" data-section="members" title="メンバー">
         <span>メンバー</span>
       </a>
-      <a class="top-nav-pill" href="#blogs" onclick="closeAllPanels();document.getElementById('blogs').scrollIntoView({behavior:'smooth'})" data-section="blogs" title="お知らせ">
+      <a class="top-nav-pill" href="#blogs" onclick="closeAllPanels()" data-section="blogs" title="お知らせ">
         <span>お知らせ</span>
       </a>
-      <a class="top-nav-pill" href="#board" onclick="closeAllPanels();document.getElementById('board').scrollIntoView({behavior:'smooth'})" data-section="board" title="掲示板">
+      <a class="top-nav-pill" href="#board" onclick="closeAllPanels()" data-section="board" title="掲示板">
         <span>掲示板</span><span class="bottom-nav-badge" id="bnBadgeBoard"></span>
       </a>
       <a class="top-nav-pill top-nav-pill-accent" id="bnMypage" onclick="toggleMypage()" title="マイページ">
@@ -2806,20 +2808,21 @@ footer{content-visibility:auto;contain-intrinsic-size:600px}
         <button type="button" class="btn btn-primary" onclick="aiGenerateFromMap('reg')" style="margin-top:.3rem;padding:.35rem .7rem;font-size:.72rem;width:100%;border-radius:8px"><i class="fas fa-magic"></i> マップURLから店名・紹介文をAI自動生成</button>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
-        <div class="fg"><label>お名前 *</label><input id="regName" required></div>
-        <div class="fg"><label>ふりがな *</label><input id="regFuri" required></div>
+        <div class="fg"><label>お名前 <span style="color:#ef4444">*</span></label><input id="regName" required autocomplete="name"></div>
+        <div class="fg"><label>ふりがな <span style="color:#ef4444">*</span></label><input id="regFuri" required autocomplete="name"></div>
       </div>
-      <div class="fg"><label>メールアドレス *</label><input type="email" id="regEmail" required></div>
-      <div class="fg"><label>パスワード *</label><input type="password" id="regPass" required minlength="6"></div>
+      <p style="font-size:.78rem;color:var(--tl);margin:.3rem .1rem .6rem;line-height:1.55"><i class="fas fa-info-circle" style="color:var(--c1);margin-right:.2rem"></i>必須は<strong>お名前</strong>と<strong>ふりがな</strong>のみ。他は後からマイページで追加できます。</p>
+      <div class="fg"><label>メールアドレス</label><input type="email" id="regEmail" autocomplete="email" placeholder="任意（ログインに使えます）"></div>
+      <div class="fg"><label>パスワード</label><input type="password" id="regPass" minlength="6" placeholder="任意（6文字以上）"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
-        <div class="fg"><label>電話番号 *</label><input type="tel" id="regPhone" required></div>
-        <div class="fg"><label>地域 *</label><input id="regLoc" placeholder="例: 彦根市" required></div>
+        <div class="fg"><label>電話番号</label><input type="tel" id="regPhone" autocomplete="tel"></div>
+        <div class="fg"><label>地域</label><input id="regLoc" placeholder="例: 彦根市"></div>
       </div>
       <div class="fg"><label>店名</label><input id="regProfession" placeholder="例: ○○サロン、○○カフェ"></div>
-      <div class="fg"><label>事業内容 *</label><input id="regBiz" required></div>
+      <div class="fg"><label>事業内容</label><input id="regBiz"></div>
       <div class="fg"><label>自己紹介・事業紹介</label><textarea id="regIntro" rows="3" placeholder="お店やサービスの紹介文（AI自動生成も可）"></textarea></div>
-      <div class="fg"><label>業種 *</label>
-        <select id="regCat" required><option value="">選択してください</option>
+      <div class="fg"><label>業種</label>
+        <select id="regCat"><option value="">選択してください</option>
           <option>IT・Web</option><option>飲食</option><option>教育・研修</option>
           <option>建設・不動産</option><option>サービス</option><option>農業・食品</option>
           <option>製造</option><option>小売</option><option>その他</option></select>
@@ -2838,9 +2841,9 @@ footer{content-visibility:auto;contain-intrinsic-size:600px}
 <!-- MYPAGE SLIDE-UP PANEL -->
 <div class="mypage-overlay" id="mypageOverlay" onclick="closeMypagePanel()">
   <div class="mypage-panel" onclick="event.stopPropagation()">
-    <div class="mypage-panel-handle"></div>
     <div class="mypage-panel-head">
-      <h3><i class="fas fa-user-cog"></i> マイページ</h3>
+      <h3><i class="fas fa-user-cog" aria-hidden="true"></i> マイページ</h3>
+      <button type="button" class="mypage-close" onclick="closeMypagePanel()" aria-label="マイページを閉じる">&times;</button>
     </div>
     <div class="mypage-panel-body" id="mypageContent"></div>
   </div>
@@ -5006,8 +5009,7 @@ function closeBottomMenu(){
     document.addEventListener('DOMContentLoaded',init);
   }else{ init(); }
   function init(){
-    setupSwipeDismiss('.bottom-menu-panel', closeBottomMenu, false);
-    setupSwipeDismiss('.mypage-panel', closeMypagePanel, true);
+    /* swipe-dismiss は標準ドロワー化により廃止 */
   }
 })();
 
