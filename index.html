@@ -72,7 +72,7 @@
 <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <!-- Leaflet: lazy-loaded by JS only when the map section becomes visible -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- Google Sign-In (gsi/client) も loginModal/regModal を開いた時に動的挿入する。head には置かない。 -->
 <style>
 /* ========== CSS VARIABLES ========== */
 /*
@@ -2934,7 +2934,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   initScrollProgress();
   initCounterSection();
   loadAll();
-  initGoogleAuth();
+  // GSI は loginModal/regModal を開いたタイミングで初期化（openModal 経由で動的ロード）
   const saved=localStorage.getItem('wa_user');
   if(saved){currentUser=JSON.parse(saved);updateNav()}
   checkResetToken();
@@ -4214,7 +4214,33 @@ function initHeroVideoDigest(){
   });
   showcase.style.display='block';
   heroVidIdx=0;
-  playHeroVid();
+  // 即時 iframe 挿入は LCP/TBT を悪化させるため、サムネ画像のみ先に表示し、
+  // ユーザ操作（スクロール / タップ）または 3 秒経過後に初回再生を開始する。
+  heroVidCurrentId=heroVids[0];
+  showHeroVidPoster();
+  let started=false;
+  const start=()=>{ if(started)return; started=true;
+    window.removeEventListener('scroll',start,{passive:true});
+    swipe.removeEventListener('touchstart',start);
+    swipe.removeEventListener('mousedown',start);
+    playHeroVid();
+  };
+  window.addEventListener('scroll',start,{passive:true,once:true});
+  swipe.addEventListener('touchstart',start,{passive:true,once:true});
+  swipe.addEventListener('mousedown',start,{once:true});
+  setTimeout(start,3000);
+}
+function showHeroVidPoster(){
+  if(!heroVidCurrentId) return;
+  const frame=document.getElementById('heroVidFrame');
+  if(!frame||frame.querySelector('img.hero-vid-poster')) return;
+  const img=document.createElement('img');
+  img.className='hero-vid-poster';
+  img.loading='lazy';img.decoding='async';img.alt='';
+  img.src='https://i.ytimg.com/vi/'+heroVidCurrentId+'/hqdefault.jpg';
+  Object.assign(img.style,{position:'absolute',inset:'0',width:'100%',height:'100%',objectFit:'cover',zIndex:'1'});
+  const swipeEl=frame.querySelector('.hero-vid-swipe');
+  if(swipeEl) frame.insertBefore(img,swipeEl); else frame.appendChild(img);
 }
 function scheduleNext(){
   clearTimeout(heroVidTimer);
@@ -4234,6 +4260,9 @@ function playHeroVid(){
   // Crossfade: fade out old iframe
   var old=frame.querySelector('iframe');
   if(old){old.classList.add('vid-out');setTimeout(()=>{if(old.parentNode)old.remove()},500)}
+  // poster はもう不要なので除去
+  var poster=frame.querySelector('img.hero-vid-poster');
+  if(poster){poster.style.transition='opacity .4s ease';poster.style.opacity='0';setTimeout(()=>poster.remove(),500)}
   var nf=document.createElement('iframe');
   nf.src='https://www.youtube.com/embed/'+heroVidCurrentId+'?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&start='+startSec+'&loop=0&playsinline=1&enablejsapi=0';
   nf.title='ヒーロー紹介動画';nf.allow='autoplay';nf.allowFullscreen=true;nf.style.opacity='0';
@@ -4296,6 +4325,19 @@ function isInAppBrowser(){
     ||(ua.includes('wv')&&ua.includes('Android'))
     ||(/iPhone|iPad/.test(ua)&&!ua.includes('Safari'));
 }
+function _ensureGsiScript(){
+  if(window._gsiScriptPromise) return window._gsiScriptPromise;
+  window._gsiScriptPromise=new Promise((resolve,reject)=>{
+    if(window.google&&window.google.accounts){resolve();return}
+    const s=document.createElement('script');
+    s.src='https://accounts.google.com/gsi/client';
+    s.async=true;s.defer=true;
+    s.onload=()=>resolve();
+    s.onerror=()=>reject(new Error('GSI script load failed'));
+    document.head.appendChild(s);
+  });
+  return window._gsiScriptPromise;
+}
 async function initGoogleAuth(){
   try{
     const res=await fetch('/api/site-settings');
@@ -4303,6 +4345,8 @@ async function initGoogleAuth(){
     _googleClientId=s.googleClientId||'';
   }catch(e){console.warn('Failed to load Google Client ID',e);return}
   if(!_googleClientId) return;
+  // クライアントIDがあるときだけ GSI script を遅延ロード
+  try{ await _ensureGsiScript(); }catch(e){console.warn('GSI script load failed',e);return}
   const loginBtn=document.getElementById('googleLoginBtn');
   const regBtn=document.getElementById('googleRegBtn');
   // WebView detection: show "open in external browser" instead of Google button
@@ -4892,7 +4936,13 @@ async function deleteBoardPost(id){
 }
 
 /* ========== UTILS ========== */
-function openModal(id){document.getElementById(id).classList.add('active')}
+function openModal(id){
+  document.getElementById(id).classList.add('active');
+  // GSI を必要なときだけ遅延ロード（loginModal / regModal を開いた瞬間）
+  if(id==='loginModal'||id==='regModal'){
+    if(!window._gsiInited){window._gsiInited=true; initGoogleAuth();}
+  }
+}
 function closeModal(id){
   document.getElementById(id).classList.remove('active');
   // If closing event detail modal, restore original URL
