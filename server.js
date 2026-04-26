@@ -1168,8 +1168,16 @@ app.post('/api/admin/backups/upload', memUpload.single('backup'), async (req, re
 function escXml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
 
 // ==================== SEO: robots.txt & sitemap.xml ====================
+// proxy 越しでも https を正しく検出するヘルパ
+function pickBaseUrl(req) {
+    if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/$/, '');
+    const proto = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+    const host = req.headers['x-forwarded-host'] || req.get('host');
+    return `${proto}://${host}`.replace(/\/$/, '');
+}
+
 app.get('/robots.txt', (req, res) => {
-    const baseUrl = (process.env.SITE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+    const baseUrl = pickBaseUrl(req);
     res.type('text/plain').send([
         'User-agent: *',
         'Allow: /',
@@ -1185,7 +1193,7 @@ app.get('/robots.txt', (req, res) => {
 
 app.get('/sitemap.xml', async (req, res) => {
     try {
-        const baseUrl = (process.env.SITE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+        const baseUrl = pickBaseUrl(req);
         const data = await readData();
         const now = new Date().toISOString();
         const urls = [];
