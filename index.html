@@ -2201,11 +2201,9 @@ footer{padding:1.5rem .8rem .8rem}
   .top-nav-pill{padding:.38rem .55rem;font-size:.72rem}
   .top-nav-pill[data-section="board"]{display:none}
 }
-@media(max-width:420px){
-  .top-nav-pill[data-section="members"]{display:none}
-}
-@media(max-width:360px){
-  .top-nav-pill[data-section="events"]{display:none}
+@media(max-width:380px){
+  /* events と members を最後まで残す。マイページ次点で残す */
+  .top-nav-pill{padding:.36rem .5rem;font-size:.68rem}
 }
 /* Bottom slide-up menu panel */
 .bottom-menu-overlay{position:fixed;inset:0;z-index:8999;background:rgba(0,0,0,.4);
@@ -2680,11 +2678,11 @@ footer{content-visibility:auto;contain-intrinsic-size:600px}
       <a class="top-nav-pill" href="#events" onclick="closeAllPanels();document.getElementById('events').scrollIntoView({behavior:'smooth'})" data-section="events" title="イベント">
         <span>イベント</span><span class="bottom-nav-badge" id="bnBadgeEvent"></span>
       </a>
-      <a class="top-nav-pill" href="#blogs" onclick="closeAllPanels();document.getElementById('blogs').scrollIntoView({behavior:'smooth'})" data-section="blogs" title="お知らせ">
-        <span>お知らせ</span>
-      </a>
       <a class="top-nav-pill" href="#members" onclick="closeAllPanels();document.getElementById('members').scrollIntoView({behavior:'smooth'})" data-section="members" title="メンバー">
         <span>メンバー</span>
+      </a>
+      <a class="top-nav-pill" href="#blogs" onclick="closeAllPanels();document.getElementById('blogs').scrollIntoView({behavior:'smooth'})" data-section="blogs" title="お知らせ">
+        <span>お知らせ</span>
       </a>
       <a class="top-nav-pill" href="#board" onclick="closeAllPanels();document.getElementById('board').scrollIntoView({behavior:'smooth'})" data-section="board" title="掲示板">
         <span>掲示板</span><span class="bottom-nav-badge" id="bnBadgeBoard"></span>
