@@ -178,6 +178,22 @@ async function migrateInterviewsToBlogs() {
 }
 
 // ==================== AUTH ====================
+/* === 名前×お店 重複チェック共通ヘルパ === */
+function _normForDup(s) { return String(s || '').trim().replace(/\s+/g, '').toLowerCase(); }
+function findNameShopDuplicate(members, { name, business, profession }) {
+    const nName = _normForDup(name);
+    const nBiz = _normForDup(business);
+    const nProf = _normForDup(profession);
+    if (!nName || (!nBiz && !nProf)) return null;
+    return members.find(m => {
+        if (_normForDup(m.name) !== nName) return false;
+        const sameBiz = nBiz && _normForDup(m.business) === nBiz;
+        const sameProf = nProf && _normForDup(m.profession) === nProf;
+        return sameBiz || sameProf;
+    }) || null;
+}
+const NAME_SHOP_DUP_MSG = '同じお名前と店舗・事業内容で既に登録されています。お心当たりがある場合はログインまたはパスワード再設定をお試しください。';
+
 app.post('/api/register', async (req, res) => {
     try {
         const data = await readData();
@@ -187,6 +203,10 @@ app.post('/api/register', async (req, res) => {
         if (normalizedEmail) {
             if (data.members.find(m => (m.email || '').toLowerCase() === normalizedEmail))
                 return res.status(400).json({ error: 'このメールアドレスは既に登録されています' });
+        }
+        // 名前×お店の重複チェック（空文字同士は重複扱いしない）
+        if (findNameShopDuplicate(data.members, { name, business, profession })) {
+            return res.status(409).json({ error: NAME_SHOP_DUP_MSG });
         }
         const newMember = {
             id: genId('member'),
@@ -350,6 +370,10 @@ app.post('/api/register/google', async (req, res) => {
         if (!googleId || !email) return res.status(400).json({ error: '必須情報が不足しています' });
         if (data.members.find(m => m.email === email))
             return res.status(400).json({ error: 'このメールアドレスは既に登録されています' });
+        // 名前×お店の重複チェック
+        if (findNameShopDuplicate(data.members, { name, business, profession })) {
+            return res.status(409).json({ error: NAME_SHOP_DUP_MSG });
+        }
 
         const newMember = {
             id: genId('member'), email, googleId,
@@ -392,6 +416,12 @@ app.put('/api/members/:id', async (req, res) => {
         if (idx === -1) return res.status(404).json({ error: 'not found' });
         const updates = { ...req.body };
         if (updates.password) updates.password = await bcrypt.hash(updates.password, 10);
+        // 名前×お店の重複チェック（自分自身は除外）
+        const merged = { ...data.members[idx], ...updates };
+        const others = data.members.filter(m => m.id !== data.members[idx].id);
+        if (findNameShopDuplicate(others, { name: merged.name, business: merged.business, profession: merged.profession })) {
+            return res.status(409).json({ error: NAME_SHOP_DUP_MSG });
+        }
         // Auto-cache map coordinates when googleMapUrl changes
         if (updates.googleMapUrl && updates.googleMapUrl !== data.members[idx].googleMapUrl) {
             try {

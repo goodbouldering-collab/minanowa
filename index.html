@@ -1723,6 +1723,9 @@ footer::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
   visibility:hidden}
 .toast.show{transform:translateX(0);visibility:visible}
 .toast i{color:var(--c1);font-size:1rem}
+.toast.toast-error{border-left-color:#ef4444;max-width:420px}
+.toast.toast-error i{color:#ef4444}
+.toast.toast-error i::before{content:"\f06a"} /* fa-circle-exclamation */
 /* ========== SKELETON LOADING ========== */
 .skeleton{background:linear-gradient(110deg,rgba(0,0,0,.03) 30%,rgba(0,0,0,.06) 50%,rgba(0,0,0,.03) 70%);
   background-size:200% 100%;animation:skeleton-shimmer 1.5s ease infinite;border-radius:var(--r2)}
@@ -3185,11 +3188,17 @@ function toggleFaq(el){
 }
 
 /* ========== TOAST ========== */
-function showToast(msg){
+function showToast(msg, kind){
   const t=document.getElementById('toast');
   document.getElementById('toastMsg').textContent=msg;
+  // エラー判定：明示指定 'error' か、msg に「失敗」「既に」「エラー」を含むとき
+  const isErr=kind==='error' || /失敗|既に|エラー|登録されています/.test(msg||'');
+  t.classList.toggle('toast-error',isErr);
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
+  // 長文 or エラーは長めに、通常は 3秒
+  const dur = isErr ? 5500 : ((msg||'').length > 50 ? 5000 : 3000);
+  clearTimeout(t._toastTimer);
+  t._toastTimer=setTimeout(()=>t.classList.remove('show'),dur);
 }
 
 /* ========== CONTACT ========== */
