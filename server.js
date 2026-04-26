@@ -1053,13 +1053,41 @@ app.post('/api/contact', async (req, res) => {
 });
 
 // Backup
+/* 共通: snapshot を作成。prefix は 'data-' (手動) / 'auto-' (自動) などに切替可能 */
+async function makeBackupSnapshot(prefix = 'data-') {
+    const data = await readData();
+    const dir = path.join(PERSISTENT_DIR, 'backups');
+    await fs.mkdir(dir, { recursive: true });
+    const fn = `${prefix}${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+    await fs.writeFile(path.join(dir, fn), JSON.stringify(data, null, 2));
+    return fn;
+}
+
+/* 24時間ごとの自動バックアップ：直近30日ぶんのみ保持 */
+async function autoBackupAndRotate() {
+    try {
+        const fn = await makeBackupSnapshot('auto-');
+        // ローテート：auto- 30 ファイル超は古い順に削除
+        const dir = path.join(PERSISTENT_DIR, 'backups');
+        const files = (await fs.readdir(dir)).filter(f => f.startsWith('auto-') && f.endsWith('.json')).sort();
+        const overflow = files.length - 30;
+        if (overflow > 0) {
+            for (const f of files.slice(0, overflow)) {
+                try { await fs.unlink(path.join(dir, f)); } catch {}
+            }
+        }
+        console.log(`[backup] auto snapshot: ${fn} (rotate=${Math.max(0,overflow)})`);
+    } catch (e) {
+        console.warn('[backup] auto snapshot failed:', e.message);
+    }
+}
+// 起動の少し後に1回 + 24時間毎
+setTimeout(autoBackupAndRotate, 60 * 1000);
+setInterval(autoBackupAndRotate, 24 * 60 * 60 * 1000);
+
 app.get('/api/admin/backup', async (req, res) => {
     try {
-        const data = await readData();
-        const dir = path.join(PERSISTENT_DIR, 'backups');
-        await fs.mkdir(dir, { recursive: true });
-        const fn = `data-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
-        await fs.writeFile(path.join(dir, fn), JSON.stringify(data, null, 2));
+        const fn = await makeBackupSnapshot('data-');
         res.json({ success: true, filename: fn });
     } catch (e) { handleErr(res, e); }
 });
@@ -1070,7 +1098,7 @@ app.get('/api/admin/backups', async (req, res) => {
         const dir = path.join(PERSISTENT_DIR, 'backups');
         try { await fs.access(dir); } catch { return res.json({ backups: [] }); }
         const files = await fs.readdir(dir);
-        const jsonFiles = files.filter(f => f.startsWith('data-') && f.endsWith('.json'));
+        const jsonFiles = files.filter(f => (f.startsWith('data-') || f.startsWith('auto-')) && f.endsWith('.json'));
         const backups = [];
         for (const f of jsonFiles) {
             const stat = await fs.stat(path.join(dir, f));

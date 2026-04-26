@@ -1369,6 +1369,31 @@ footer{padding:2rem 1rem 1rem}
 .mem-rank-guide-item:hover{background:rgba(0,0,0,.04)}
 .mem-rank-guide-item .mem-rank{margin:0;font-size:.68rem;padding:.12rem .45rem}
 .mem-rank-guide-item .rg-cond{font-weight:600;color:var(--td);font-size:.68rem}
+/* Board NEW badge (LocalStorage 既読管理) */
+.board-new-badge{display:inline-flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:900;letter-spacing:.06em;
+  background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;
+  padding:.18rem .45rem;border-radius:6px;margin-right:.45rem;
+  box-shadow:0 2px 6px rgba(239,68,68,.4);vertical-align:middle;
+  animation:wa-blink 2.4s ease-in-out infinite}
+@keyframes wa-blink{0%,100%{opacity:1}50%{opacity:.6}}
+.board-post-new{position:relative}
+.board-post-new::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,#ef4444,#f59e0b);border-radius:3px 0 0 3px}
+/* Member filter chips */
+.mem-filter-bar{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 .8rem;align-items:center}
+.mem-filter-chip{display:inline-flex;align-items:center;gap:.25rem;
+  padding:.32rem .7rem;border-radius:999px;font-size:.74rem;font-weight:700;
+  border:1px solid rgba(180,83,9,.22);background:rgba(255,255,255,.6);
+  color:var(--td);cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .15s;
+  -webkit-tap-highlight-color:transparent;line-height:1;white-space:nowrap}
+.mem-filter-chip:hover{background:rgba(255,247,225,.92);border-color:rgba(217,119,6,.5);color:#92400e}
+.mem-filter-chip.active{background:linear-gradient(135deg,#fbbf24,#d97706);border-color:rgba(120,53,15,.35);color:#fff;
+  box-shadow:0 4px 10px -3px rgba(217,119,6,.45),inset 0 1px 0 rgba(255,255,255,.35)}
+.mem-filter-chip:active{transform:scale(.96)}
+.mem-filter-chip i{font-size:.7rem;opacity:.85}
+.mem-filter-clear{font-size:.7rem;color:var(--tl);text-decoration:underline;cursor:pointer;background:none;border:none;padding:.3rem .4rem}
+.mem-filter-clear:hover{color:var(--c1)}
 /* Event calendar (.ics) button on card */
 .ev-cal-btn{position:absolute;top:.5rem;right:.5rem;z-index:3;
   width:32px;height:32px;border-radius:10px;
@@ -2001,7 +2026,7 @@ footer{padding:1.5rem .8rem .8rem}
   flex-direction:column;overflow:hidden;backdrop-filter:blur(24px)}
 .ai-chat.open{display:flex;animation:ai-chat-open .35s cubic-bezier(.175,.885,.32,1.275)}
 @keyframes ai-chat-open{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-.ai-chat-head{padding:.75rem 1rem;background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);
+.ai-chat-head{padding:.75rem 1rem;background:linear-gradient(135deg,#fbbf24,#f59e0b,#d97706);
   color:#fff;display:flex;align-items:center;gap:.5rem;position:relative;overflow:hidden}
 .ai-chat-head::before{content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
@@ -2022,25 +2047,26 @@ footer{padding:1.5rem .8rem .8rem}
 .ai-msg.bot{background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(139,92,246,.04));
   color:var(--td);align-self:flex-start;border-bottom-left-radius:4px;
   border:1px solid rgba(99,102,241,.08)}
-.ai-msg.user{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
+.ai-msg.user{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;
   align-self:flex-end;border-bottom-right-radius:4px;
   box-shadow:0 2px 12px rgba(99,102,241,.2)}
 @keyframes ai-msg-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .ai-quick-actions{padding:.5rem .8rem;display:flex;flex-wrap:wrap;gap:.35rem;border-top:1px solid rgba(0,0,0,.06)}
-.ai-quick-btn{font-size:.7rem;padding:.35rem .75rem;border-radius:20px;border:1.5px solid rgba(99,102,241,.18);
-  background:linear-gradient(135deg,rgba(99,102,241,.04),rgba(168,85,247,.04));
-  color:#6366f1;cursor:pointer;font-weight:600;transition:all .25s;font-family:inherit}
-.ai-quick-btn:hover{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;
-  border-color:#6366f1;box-shadow:0 2px 10px rgba(99,102,241,.2);transform:translateY(-1px)}
+.ai-quick-btn{font-size:.72rem;padding:.36rem .8rem;border-radius:20px;border:1.5px solid rgba(217,119,6,.22);
+  background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(217,119,6,.04));
+  color:#92400e;cursor:pointer;font-weight:700;transition:background .2s,border-color .2s,color .2s,transform .15s;font-family:inherit}
+.ai-quick-btn:hover{background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff;
+  border-color:rgba(120,53,15,.4);box-shadow:0 4px 10px -3px rgba(217,119,6,.4);transform:translateY(-1px)}
+.ai-quick-btn:active{transform:scale(.96)}
 .ai-chat-input{display:flex;align-items:center;gap:.4rem;padding:.5rem .6rem;
   border-top:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.5);min-width:0}
 .ai-chat-input input{flex:1;min-width:0;border:1.5px solid rgba(99,102,241,.15);border-radius:20px;
   padding:.4rem .8rem;font-size:.82rem;font-family:inherit;outline:none;
   background:rgba(255,255,255,.85);transition:all .2s;color:var(--td)}
-.ai-chat-input input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.08)}
+.ai-chat-input input:focus{border-color:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.12)}
 .ai-chat-input input::placeholder{color:var(--tl);font-size:.78rem}
 .ai-chat-input button{width:34px;height:34px;min-width:34px;border-radius:50%;border:none;
-  background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;cursor:pointer;
+  background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;cursor:pointer;
   display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .2s;
   flex-shrink:0;box-shadow:0 2px 8px rgba(99,102,241,.25)}
 .ai-chat-input button:hover{}
@@ -2078,14 +2104,14 @@ footer{padding:1.5rem .8rem .8rem}
 .ai-notif-card .ai-notif-meta{font-size:.76rem;color:var(--tl);margin-top:.2rem;
   display:flex;align-items:center;gap:.2rem;flex-wrap:wrap}
 .ai-notif-divider{border:none;border-top:1.5px solid rgba(99,102,241,.08);margin:.25rem .3rem}
-.ai-notif-more{justify-content:center;color:#6366f1;font-weight:700;font-size:.82rem;
+.ai-notif-more{justify-content:center;color:#d97706;font-weight:700;font-size:.82rem;
   gap:.3rem;padding:.25rem;border-radius:8px;opacity:.85}
 .ai-notif-more:hover{opacity:1;background:rgba(99,102,241,.06)}
 .ai-greeting{padding:.5rem .6rem;border-radius:12px;
   background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(168,85,247,.04),rgba(236,72,153,.03));
   border:1px solid rgba(99,102,241,.08);font-size:.82rem;line-height:1.65;
   color:var(--td);animation:ai-msg-in .4s ease .1s both}
-.ai-greeting .ai-greet-name{font-weight:800;color:#6366f1}
+.ai-greeting .ai-greet-name{font-weight:800;color:#d97706}
 .ai-greeting .ai-greet-sub{font-size:.72rem;color:var(--tl);margin-top:.15rem}
 /* ========== MAGNETIC TILT INTERACTION ========== */
 .tilt-hover{transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;will-change:transform}
@@ -2574,7 +2600,8 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
     <div class="mem-rank-guide-item" onclick="showRankModal('silver')"><span class="mem-rank mem-rank-silver"><i class="fas fa-medal"></i> シルバー</span><span class="rg-cond">6回〜</span></div>
     <div class="mem-rank-guide-item" onclick="showRankModal('gold')"><span class="mem-rank mem-rank-gold"><i class="fas fa-crown"></i> ゴールド</span><span class="rg-cond">12回〜</span></div>
   </div>
-  <div class="search-box"><input type="text" id="memSearch" placeholder="店名、業種、地域、名前で検索..."><i class="fas fa-search"></i></div>
+  <div class="search-box"><input type="text" id="memSearch" placeholder="店名、業種、地域、名前で検索..." aria-label="メンバー検索"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <div class="mem-filter-bar" id="memFilterBar" role="group" aria-label="メンバーフィルター"></div>
   <div class="carousel-wrap">
     <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('memTrack',-235)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="memTrack"></div>
@@ -3229,12 +3256,7 @@ async function loadAll(){
     handleStripeCallback();
     handleDeepLink();
     handleBlogDeepLink();
-    document.getElementById('memSearch').addEventListener('input',e=>{
-      const q=e.target.value.toLowerCase();
-      renderMembers(allMembers.filter(m=>m.name.toLowerCase().includes(q)||m.business.toLowerCase().includes(q)||
-        m.businessCategory.toLowerCase().includes(q)||m.location.toLowerCase().includes(q)||
-        (m.profession||'').toLowerCase().includes(q)||(m.homepage||'').toLowerCase().includes(q)));
-    });
+    setupMemberFilters();
   }catch(e){console.error(e)}
 }
 
@@ -3656,6 +3678,76 @@ function showRankModal(rank){
   document.body.appendChild(el);
 }
 
+/* === Member filter (search + category chip + perk-only) === */
+let _memFilters={ q:'', cat:'', perksOnly:false };
+function setupMemberFilters(){
+  const bar=document.getElementById('memFilterBar');
+  const search=document.getElementById('memSearch');
+  if(!bar||!search) return;
+  // Build chip list dynamically from allMembers categories
+  const cats=Array.from(new Set(allMembers.map(m=>m.businessCategory).filter(Boolean))).sort();
+  bar.innerHTML='';
+  // 「特典あり」チップ
+  const perkChip=document.createElement('button');
+  perkChip.type='button';perkChip.className='mem-filter-chip';
+  perkChip.dataset.kind='perk';
+  perkChip.innerHTML='<i class="fas fa-gift" aria-hidden="true"></i> 特典あり';
+  perkChip.addEventListener('click',()=>{
+    _memFilters.perksOnly=!_memFilters.perksOnly;
+    perkChip.classList.toggle('active',_memFilters.perksOnly);
+    applyMemFilters();
+  });
+  bar.appendChild(perkChip);
+  // 業種チップ
+  cats.forEach(c=>{
+    const chip=document.createElement('button');
+    chip.type='button';chip.className='mem-filter-chip';chip.dataset.cat=c;
+    chip.textContent=c;
+    chip.addEventListener('click',()=>{
+      _memFilters.cat = (_memFilters.cat===c) ? '' : c;
+      bar.querySelectorAll('.mem-filter-chip[data-cat]').forEach(el=>{
+        el.classList.toggle('active', el.dataset.cat===_memFilters.cat);
+      });
+      applyMemFilters();
+    });
+    bar.appendChild(chip);
+  });
+  // クリアボタン
+  const clear=document.createElement('button');
+  clear.type='button';clear.className='mem-filter-clear';
+  clear.textContent='クリア';
+  clear.addEventListener('click',()=>{
+    _memFilters={q:'',cat:'',perksOnly:false};
+    if(search) search.value='';
+    bar.querySelectorAll('.mem-filter-chip').forEach(el=>el.classList.remove('active'));
+    applyMemFilters();
+  });
+  bar.appendChild(clear);
+  // 検索入力
+  search.addEventListener('input',e=>{
+    _memFilters.q=e.target.value.toLowerCase();
+    applyMemFilters();
+  });
+}
+function applyMemFilters(){
+  const {q,cat,perksOnly}=_memFilters;
+  const list=allMembers.filter(m=>{
+    if(perksOnly){
+      const hasPerk=Array.isArray(m.perks)?m.perks.length>0
+        :(typeof m.perks==='string' && m.perks.trim().length>0)
+        || !!m.perk || !!m.discount;
+      if(!hasPerk) return false;
+    }
+    if(cat && (m.businessCategory||'')!==cat) return false;
+    if(q){
+      const hay=`${m.name||''} ${m.business||''} ${m.businessCategory||''} ${m.location||''} ${m.profession||''} ${m.homepage||''} ${m.introduction||''}`.toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  renderMembers(list);
+}
+
 function renderMembers(list){
   const t=document.getElementById('memTrack');t.innerHTML='';
   (list||allMembers).forEach((m,i)=>{
@@ -3875,11 +3967,39 @@ function handleBlogDeepLink(){
 }
 
 /* ========== RENDER BOARDS ========== */
+/* 掲示板 既読管理 (LocalStorage)：最終訪問タイムスタンプより新しい投稿/返信に NEW バッジ */
+function getBoardLastSeen(){
+  const v=parseInt(localStorage.getItem('wa_board_last_seen')||'0',10);
+  return isNaN(v)?0:v;
+}
+function markBoardSeen(){
+  localStorage.setItem('wa_board_last_seen',String(Date.now()));
+}
+/* 掲示板セクションがビューポートに入ったら既読化 */
+function setupBoardSeenObserver(){
+  const sec=document.getElementById('board');
+  if(!sec||window._boardSeenObs) return;
+  window._boardSeenObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        // 0.4秒見続けたら既読
+        setTimeout(()=>{ if(e.target.getBoundingClientRect().top<window.innerHeight) markBoardSeen(); },400);
+      }
+    });
+  },{threshold:0.25});
+  window._boardSeenObs.observe(sec);
+}
+function isBoardItemNew(ts){
+  if(!ts) return false;
+  return new Date(ts).getTime() > getBoardLastSeen();
+}
+
 function renderBoards(){
   const el=document.getElementById('boardList');el.innerHTML='';
   const BOARD_LIMIT=3;
   const showAll=el.dataset.showAll==='true';
   const visibleBoards=showAll?allBoards:allBoards.slice(0,BOARD_LIMIT);
+  setupBoardSeenObserver();
   visibleBoards.forEach((b,i)=>{
     let rhtml='';
     (b.replies||[]).forEach(r=>{
@@ -3891,7 +4011,10 @@ function renderBoards(){
     post.className='board-post reveal';
     post.style.transitionDelay=(i*100)+'ms';
     const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-long-arrow-alt-right bm-arrow"></i><span class="bm-icon"><i class="fas fa-user"></i></span><span class="bm-name">${b.mentionToName}</span></span>`:'';
-    post.innerHTML=`<div class="board-title">${b.title}</div>
+    const isNew=isBoardItemNew(b.createdAt) || (b.replies||[]).some(r=>isBoardItemNew(r.createdAt));
+    if(isNew) post.classList.add('board-post-new');
+    const newBadge=isNew?`<span class="board-new-badge" aria-label="新着">NEW</span>`:'';
+    post.innerHTML=`<div class="board-title">${newBadge}${b.title}</div>
       <div class="board-header">
         <img loading="lazy" decoding="async" src="${b.authorAvatar||'https://i.pravatar.cc/40'}" alt="${b.authorName||''}のアバター" onerror="this.onerror=null;this.src='https://i.pravatar.cc/40'">
         <div class="bh-info">
