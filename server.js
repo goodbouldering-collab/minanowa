@@ -50,6 +50,12 @@ app.use(express.static(__dirname, {
             res.setHeader('Cache-Control', 'no-cache');
             return;
         }
+        // sw.js は更新を確実に取りに行きたいので no-cache + Service-Worker-Allowed
+        if (filePath.endsWith('sw.js')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Service-Worker-Allowed', '/');
+            return;
+        }
         // 画像/フォント/PWA アイコンはハッシュなしでも安全な長期キャッシュ
         if (/\.(png|jpg|jpeg|gif|webp|avif|ico|svg|woff2?|ttf|otf)$/i.test(filePath)) {
             res.setHeader('Cache-Control', 'public, max-age=2592000, stale-while-revalidate=86400');

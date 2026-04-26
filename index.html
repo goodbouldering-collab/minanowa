@@ -755,12 +755,14 @@ footer{padding:2.5rem 1.2rem 1.2rem}
   display:flex;flex-direction:column;align-items:center}
 @keyframes hero-enter{from{opacity:0;transform:translateY(40px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .hero h1{font-size:3.5rem;font-weight:900;margin-bottom:.6rem;
-  text-shadow:0 4px 40px rgba(0,0,0,.15),0 0 80px rgba(180,83,9,.08);letter-spacing:-.025em;line-height:1.15}
+  text-shadow:0 4px 40px rgba(0,0,0,.15),0 0 80px rgba(180,83,9,.08);letter-spacing:-.025em;line-height:1.15;
+  word-break:keep-all;overflow-wrap:break-word;line-break:strict;hanging-punctuation:allow-end}
 .hero-typed{display:inline}
 .hero-typed .cursor{display:inline-block;width:2px;height:1em;background:#fff;margin-left:2px;
   animation:blink .8s step-end infinite;vertical-align:text-bottom}
 @keyframes blink{50%{opacity:0}}
-.hero p{font-size:1.2rem;opacity:.92;margin-bottom:.8rem;font-weight:400;line-height:1.6;letter-spacing:.025em}
+.hero p{font-size:1.2rem;opacity:.92;margin-bottom:.8rem;font-weight:400;line-height:1.6;letter-spacing:.025em;
+  word-break:keep-all;overflow-wrap:break-word;line-break:strict;text-wrap:pretty}
 .hero-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:.2rem .4rem;margin-bottom:.8rem}
 .hero-trust span{font-size:.95rem;opacity:.9;font-weight:500;display:flex;align-items:center;gap:.3rem;
   background:rgba(255,255,255,.12);padding:.28rem .65rem;border-radius:20px;
@@ -2292,6 +2294,41 @@ footer{content-visibility:auto;contain-intrinsic-size:600px}
   border-color:#ef4444 !important;
   box-shadow:0 0 0 3px rgba(239,68,68,.12) !important
 }
+/* === Keyboard a11y: visible focus ring on focus-visible only === */
+:focus{outline:none}
+:focus-visible{outline:2.5px solid var(--c2);outline-offset:2px;border-radius:8px}
+button:focus-visible,
+.btn:focus-visible,
+.top-nav-pill:focus-visible,
+.top-nav-burger:focus-visible,
+.bottom-nav-item:focus-visible,
+.ai-fab:focus-visible,
+a:focus-visible{outline:2.5px solid var(--c2);outline-offset:3px}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rgba(217,119,6,.18)}
+/* === Tap targets: ensure 44px on coarse pointers === */
+@media (pointer:coarse){
+  button,.btn,a.top-nav-pill,a.btn,.bottom-menu-list a,.faq-q,.board-action,.mem-name-link{min-height:44px}
+}
+/* active feedback for any interactive element on touch */
+@media (pointer:coarse){
+  button:active,.btn:active,a:active{transform:scale(.97);transition:transform .1s}
+}
+/* === Print styles === */
+@media print{
+  .top-nav,.ai-fab,.ai-telop,.ai-chat,.bottom-nav,.bottom-menu-overlay,.mypage-overlay,
+  .scroll-progress,.hero-particles,.hero-glow,.hero-grid-overlay,.hero-mesh,
+  #loadingScreen,.modal-overlay,.yt-modal{display:none !important}
+  body{background:#fff !important;color:#000 !important;font-size:11pt;line-height:1.55}
+  .hero{min-height:auto !important;page-break-after:always}
+  .hero h1,.sec-head h2{color:#000 !important}
+  a{color:#000 !important;text-decoration:underline}
+  .bento-cell,.glass-bento,.glass-surface{background:#fff !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
+    box-shadow:none !important;border:1px solid #ddd !important;break-inside:avoid;page-break-inside:avoid}
+  img{max-width:100%;height:auto !important}
+  .sec{padding:1.5em 1em !important;break-inside:avoid;page-break-inside:avoid}
+}
 </style>
 </head>
 <body>
@@ -3248,11 +3285,11 @@ function renderEvents(){
     const regBadge=(!isPast&&isRegistered)?`<span class="ev-reg-badge"><i class="fas fa-check"></i> 参加予定</span>`:'';
     // Show member avatars for registrations
     const regMembers=(ev.registrations||[]).map(mid=>allMembers.find(m=>m.id===mid)).filter(Boolean);
-    const regAvatarHtml=regMembers.slice(0,4).map(m=>`<img loading="lazy" decoding="async" src="${getMemberImage(m)}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/22?img=0'">`).join('');
+    const regAvatarHtml=regMembers.slice(0,4).map(m=>`<img loading="lazy" decoding="async" src="${getMemberImage(m)}" alt="${m.name}" title="${m.name}" onerror="this.onerror=null;this.src='https://i.pravatar.cc/22?img=0'">`).join('');
     const regMoreHtml=regCount>4?`<span style="font-size:.6rem;color:var(--tl);margin-left:.2rem">+${regCount-4}</span>`:'';
     const regCountHtml=regCount>0?`<div class="ev-reg-count"><i class="fas fa-user-check"></i> ${regCount}名が参加予定<div class="ev-reg-avatars">${regAvatarHtml}${regMoreHtml}</div></div>`:'';
     const evImgHtml=ev.imageUrl
-      ?`<img decoding="async" class="card-img" src="${ev.imageUrl}" alt="${ev.title}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'"><div class="card-img-placeholder" style="display:none"><i class="fas fa-camera"></i><span>写真準備中</span></div>`
+      ?`<img decoding="async" class="card-img" src="${ev.imageUrl}" alt="${ev.title}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'"><div class="card-img-placeholder" style="display:none"><i class="fas fa-camera"></i><span>写真準備中</span></div>`
       :`<div class="card-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`;
     card.innerHTML=`<div class="card-img-wrap">
         ${evImgHtml}
@@ -3341,7 +3378,7 @@ function showEventDetail(ev){
     <a class="ev-share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener" title="Facebook"><i class="fab fa-facebook-f"></i></a>
   </div>`;
   document.getElementById('evDetailContent').innerHTML=`
-    ${ev.imageUrl?`<img loading="lazy" decoding="async" class="ev-detail-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.outerHTML='<div class=\'ev-detail-img-placeholder\'><i class=\'fas fa-camera\'></i><span>写真準備中</span></div>'">`:`<div class="ev-detail-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`}
+    ${ev.imageUrl?`<img loading="lazy" decoding="async" class="ev-detail-img" src="${ev.imageUrl}" alt="${ev.title}" onerror="this.onerror=null;this.outerHTML='<div class=\'ev-detail-img-placeholder\'><i class=\'fas fa-camera\'></i><span>写真準備中</span></div>'">`:`<div class="ev-detail-img-placeholder"><i class="fas fa-camera"></i><span>写真準備中</span></div>`}
     <div class="ev-detail-title">${ev.title}</div>
     ${shareBarHtml}
     <div class="ev-detail-meta">
@@ -3366,7 +3403,7 @@ function showEventDetail(ev){
       const wrap=document.getElementById('evDetailRegAvatars');
       if(wrap&&d.registrations){
         wrap.innerHTML=d.registrations.slice(0,5).map(m=>
-          `<img loading="lazy" decoding="async" src="${m.avatar||'https://i.pravatar.cc/40?img=0'}" alt="${m.name}" title="${m.name}" onerror="this.src='https://i.pravatar.cc/40?img=0'">`
+          `<img loading="lazy" decoding="async" src="${m.avatar||'https://i.pravatar.cc/40?img=0'}" alt="${m.name}" title="${m.name}" onerror="this.onerror=null;this.src='https://i.pravatar.cc/40?img=0'">`
         ).join('')+(d.count>5?`<span style="font-size:.7rem;color:var(--tl);margin-left:.3rem">+${d.count-5}</span>`:'');
       }
       // Show discount badge for current user if they have referral discount
@@ -3625,7 +3662,7 @@ function renderMembers(list){
     card.innerHTML=`
       <div class="mem-card-hero">
         <div class="mem-avatar-wrap">
-          <img decoding="async" class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
+          <img decoding="async" class="mem-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.onerror=null;this.src='https://i.pravatar.cc/200?img=0'">
         </div>
         <div class="mem-rank-area">${rankHtml}</div>
       </div>
@@ -3701,7 +3738,7 @@ function renderBlogs(){
     const playOverlay=ytId?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);transition:background .3s"><i class="fas fa-play-circle" style="font-size:2.2rem;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));transition:transform .3s"></i></div>`:'';
     const readMoreText=ytId?'<span><i class="fas fa-play" style="font-size:.6rem"></i> 動画を見る</span>':'<span>続きを読む</span>';
     card.innerHTML=`<div class="card-img-wrap" style="position:relative">
-        <img decoding="async" class="card-img" src="${thumbSrc}" alt="${b.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
+        <img decoding="async" class="card-img" src="${thumbSrc}" alt="${b.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=60'">
         <div class="card-img-overlay"></div>
         <span class="card-cat-badge ${catCls}"><i class="fas ${catIcon}"></i> ${b.category||'活動レポート'}</span>
         ${playOverlay}
@@ -3766,7 +3803,7 @@ function showBlogDetail(b){
   // Show image only if it's a real uploaded image (not a YouTube thumbnail)
   const isYtThumb=b.imageUrl&&b.imageUrl.includes('img.youtube.com');
   if(b.imageUrl && !(ytId && isYtThumb)){
-    mediaHtml+=`<img loading="lazy" decoding="async" class="blog-detail-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.style.display='none'">`;
+    mediaHtml+=`<img loading="lazy" decoding="async" class="blog-detail-img" src="${b.imageUrl}" alt="${b.title}" onerror="this.onerror=null;this.style.display='none'">`;
   }
   // Share bar (same style as event)
   const shareBarHtml=`<div class="ev-share-bar">
@@ -3828,7 +3865,7 @@ function renderBoards(){
   visibleBoards.forEach((b,i)=>{
     let rhtml='';
     (b.replies||[]).forEach(r=>{
-      rhtml+=`<div class="reply-item"><img loading="lazy" decoding="async" src="${r.authorAvatar||'https://i.pravatar.cc/40'}" alt="${r.authorName||''}のアバター" onerror="this.src='https://i.pravatar.cc/40'"><div><span class="r-name">${r.authorName}</span> <span class="r-text">${r.content}</span></div></div>`;
+      rhtml+=`<div class="reply-item"><img loading="lazy" decoding="async" src="${r.authorAvatar||'https://i.pravatar.cc/40'}" alt="${r.authorName||''}のアバター" onerror="this.onerror=null;this.src='https://i.pravatar.cc/40'"><div><span class="r-name">${r.authorName}</span> <span class="r-text">${r.content}</span></div></div>`;
     });
     const isOwner=currentUser&&currentUser.id===b.authorId;
     const ownerBtns=isOwner?`<div class="board-owner-actions"><button class="board-owner-btn" onclick="openBoardEdit('${b.id}')"><i class="fas fa-edit"></i> 編集</button><button class="board-owner-btn del" onclick="deleteBoardPost('${b.id}')"><i class="fas fa-trash-alt"></i> 削除</button></div>`:'';
@@ -3838,7 +3875,7 @@ function renderBoards(){
     const mentionHtml=b.mentionToName?`<span class="board-mention-badge"><i class="fas fa-long-arrow-alt-right bm-arrow"></i><span class="bm-icon"><i class="fas fa-user"></i></span><span class="bm-name">${b.mentionToName}</span></span>`:'';
     post.innerHTML=`<div class="board-title">${b.title}</div>
       <div class="board-header">
-        <img loading="lazy" decoding="async" src="${b.authorAvatar||'https://i.pravatar.cc/40'}" alt="${b.authorName||''}のアバター" onerror="this.src='https://i.pravatar.cc/40'">
+        <img loading="lazy" decoding="async" src="${b.authorAvatar||'https://i.pravatar.cc/40'}" alt="${b.authorName||''}のアバター" onerror="this.onerror=null;this.src='https://i.pravatar.cc/40'">
         <div class="bh-info">
           <div class="bh-name"><span>${b.authorName}</span>${mentionHtml}<span class="board-cat">${b.category||''}</span></div>
           <div class="bh-sub"><span class="bh-time">${new Date(b.createdAt).toLocaleDateString('ja-JP')}${b.updatedAt?' (編集済み)':''}</span>${ownerBtns}</div>
@@ -4014,7 +4051,7 @@ function initGoogleMap(markers){
     m.bindPopup(`<div class="gmap-popup">
       ${mk.member.profession?'<div class="gmap-popup-shop"><i class="fas fa-store"></i> '+mk.member.profession+'</div>':''}
       <div class="gmap-popup-header">
-        <img loading="lazy" decoding="async" class="gmap-popup-avatar" src="${getMemberImage(mk.member)}" onerror="this.src='https://i.pravatar.cc/40'" alt="${mk.member.name}">
+        <img loading="lazy" decoding="async" class="gmap-popup-avatar" src="${getMemberImage(mk.member)}" onerror="this.onerror=null;this.src='https://i.pravatar.cc/40'" alt="${mk.member.name}">
         <div>
           <div class="gmap-popup-name">${mk.member.name}</div>
           ${mk.member.business?'<div class="gmap-popup-biz">'+mk.member.business+'</div>':''}
@@ -4089,7 +4126,7 @@ function renderInstaFeed(settings){
     item.target='_blank';
     item.rel='noopener';
     item.title=img.title;
-    item.innerHTML=`<img decoding="async" src="${img.src}" alt="${img.title}" loading="lazy" onerror="this.parentElement.style.display='none'"><i class="fab fa-instagram insta-feed-icon"></i>`;
+    item.innerHTML=`<img decoding="async" src="${img.src}" alt="${img.title}" loading="lazy" onerror="this.onerror=null;this.parentElement.style.display='none'"><i class="fab fa-instagram insta-feed-icon"></i>`;
     track.appendChild(item);
   });
 }
@@ -4105,7 +4142,7 @@ function renderInterviews(){
     card.className='interview-card reveal-scale';
     card.style.transitionDelay=(i*100)+'ms';
     card.innerHTML=`<div class="interview-thumb" onclick="openYtModal('${iv.youtubeId||''}')">
-        <img decoding="async" src="${thumbUrl}" alt="${iv.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=60'">
+        <img decoding="async" src="${thumbUrl}" alt="${iv.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=60'">
         <div class="interview-play"><i class="fas fa-play-circle"></i></div>
       </div>
       <div class="interview-body">
@@ -4300,7 +4337,7 @@ function renderOpMembers(){
     if(m.website) social.push(`<a href="${m.website}" target="_blank" rel="noopener" data-tooltip="Website" aria-label="${m.name||'メンバー'}のウェブサイト"><i class="fas fa-globe" aria-hidden="true"></i></a>`);
     card.innerHTML=`<span class="op-badge"><i class="fas fa-star" style="font-size:.68rem"></i> 運営</span>
       <div class="op-avatar-wrap">
-        <img decoding="async" class="op-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.src='https://i.pravatar.cc/200?img=0'">
+        <img decoding="async" class="op-avatar" src="${getMemberImage(m)}" alt="${m.name}" loading="lazy" onerror="this.onerror=null;this.src='https://i.pravatar.cc/200?img=0'">
       </div>
       <div class="op-name">${m.name}</div>
       <div class="op-role">${m.businessCategory||'運営'}</div>
@@ -4587,7 +4624,7 @@ function updateNav(){
   const heroChatBtn=document.getElementById('heroChatBtn');
   if(currentUser){
     el.innerHTML=`<div class="user-bar">
-      <img loading="lazy" decoding="async" src="${getMemberImage(currentUser)}" alt="${currentUser.name||'マイページ'}" onerror="this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
+      <img loading="lazy" decoding="async" src="${getMemberImage(currentUser)}" alt="${currentUser.name||'マイページ'}" onerror="this.onerror=null;this.src='https://i.pravatar.cc/40'" onclick="openMypage()">
       <span class="uname" onclick="openMypage()">${currentUser.name}</span>
       ${currentUser.isAdmin?'<a href="/admin.html" class="btn btn-ghost btn-sm"><i class="fas fa-cog"></i> 管理</a>':''}
       <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
@@ -4650,7 +4687,7 @@ function openMypage(){
   c.innerHTML=`
     <div class="mypage-header" style="flex-direction:row;align-items:center;gap:.6rem;margin-bottom:.3rem;padding-bottom:.35rem">
       <div class="avatar-upload" style="flex-shrink:0">
-        <img loading="lazy" decoding="async" class="mypage-avatar" id="mpAvatar" src="${getMemberImage(currentUser)}" alt="${currentUser.name||'マイページ'}" onerror="this.src='https://i.pravatar.cc/80'" style="width:56px;height:56px">
+        <img loading="lazy" decoding="async" class="mypage-avatar" id="mpAvatar" src="${getMemberImage(currentUser)}" alt="${currentUser.name||'マイページ'}" onerror="this.onerror=null;this.src='https://i.pravatar.cc/80'" style="width:56px;height:56px">
         <input type="file" accept="image/*" onchange="uploadMyAvatar(this)">
         <div class="avatar-overlay"><i class="fas fa-camera"></i></div>
       </div>
@@ -5756,6 +5793,12 @@ if(document.readyState==='loading'){
     }
   });
 })();
+/* Service Worker registration (best-effort; HTTPS only) */
+if('serviceWorker' in navigator && location.protocol==='https:'){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js').catch(function(e){console.warn('SW register failed',e)});
+  });
+}
 </script>
 </body>
 </html>
