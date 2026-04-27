@@ -2228,6 +2228,7 @@ footer{padding:1.5rem .8rem .8rem}
   -webkit-tap-highlight-color:transparent}
 .top-nav-burger:hover{background:rgba(255,255,255,.85);border-color:rgba(180,120,40,.4)}
 .top-nav-burger:active{transform:scale(.94)}
+.top-nav-burger.is-open{background:linear-gradient(135deg,#fbbf24,#f59e0b);border-color:rgba(180,90,10,.45);color:#fff;box-shadow:0 4px 10px -3px rgba(217,119,6,.5),inset 0 1px 0 rgba(255,255,255,.35)}
 .top-nav-brand{display:flex;align-items:center;gap:.5rem;min-width:0;text-decoration:none;
   flex-shrink:1;-webkit-tap-highlight-color:transparent}
 .top-nav-logo{position:relative;width:36px;height:36px;border-radius:11px;flex-shrink:0;
@@ -2259,6 +2260,7 @@ footer{padding:1.5rem .8rem .8rem}
   border-color:rgba(180,90,10,.35);color:#fff;
   box-shadow:0 4px 10px -3px rgba(217,119,6,.5),inset 0 1px 0 rgba(255,255,255,.35)}
 .top-nav-pill-accent:hover{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border-color:rgba(120,60,5,.4)}
+.top-nav-pill-accent.is-open{background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border-color:rgba(120,60,5,.5);box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}
 .bottom-nav-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;
   background:#ef4444;color:#fff;font-size:.62rem;font-weight:800;
   border-radius:10px;display:flex;align-items:center;justify-content:center;
@@ -2289,51 +2291,76 @@ footer{padding:1.5rem .8rem .8rem}
   /* events と members を最後まで残す。マイページ次点で残す */
   .top-nav-pill{padding:.36rem .5rem;font-size:.68rem}
 }
-/* === Side drawers (standard pattern: slide-in from edge, click outside to close) === */
-.bottom-menu-overlay,.mypage-overlay{position:fixed;inset:0;z-index:8999;background:rgba(15,15,15,.45);
-  opacity:0;pointer-events:none;transition:opacity .25s ease;-webkit-tap-highlight-color:transparent}
+/* === Header dropdowns (anchored to hamburger / mypage buttons) === */
+/* オーバーレイは透明。外側クリック検出のみに使う（背景は暗くしない） */
+.bottom-menu-overlay,.mypage-overlay{position:fixed;inset:0;z-index:8999;background:transparent;
+  opacity:0;pointer-events:none;transition:opacity .15s ease;-webkit-tap-highlight-color:transparent}
 .bottom-menu-overlay.open,.mypage-overlay.open{opacity:1;pointer-events:auto}
-/* Hamburger drawer: slide in from LEFT */
-.bottom-menu-panel{position:fixed;top:0;left:0;bottom:0;right:auto;z-index:9000;
-  width:min(86vw,320px);
-  background:rgba(255,255,255,.96);
-  backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);
-  border-right:1px solid rgba(0,0,0,.06);
-  border-radius:0 18px 18px 0;
-  box-shadow:18px 0 40px -8px rgba(10,15,25,.22);
-  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+/* Hamburger dropdown: anchored under the burger button (left side of header) */
+.bottom-menu-panel{position:fixed;
+  top:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 2px);
+  left:max(.75rem,calc(50vw - 600px + .75rem));
+  right:auto;bottom:auto;z-index:9000;
+  width:min(92vw,320px);max-height:calc(100vh - var(--nav-h) - 2rem);
+  background:rgba(255,255,255,.98);
+  backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:16px;
+  box-shadow:0 18px 48px -8px rgba(10,15,25,.22),0 4px 14px -4px rgba(10,15,25,.12);
+  transform:translateY(-8px) scale(.96);transform-origin:top left;
+  opacity:0;pointer-events:none;
+  transition:transform .2s cubic-bezier(.16,1,.3,1),opacity .18s ease;
   padding:0;display:flex;flex-direction:column;overflow:hidden}
 .bottom-menu-overlay.open .bottom-menu-panel,
-.bottom-menu-panel.open{transform:translateX(0);will-change:transform}
+.bottom-menu-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;will-change:transform,opacity}
+/* Tail (small triangle pointing up to the burger button) */
+.bottom-menu-panel::before{content:'';position:absolute;top:-7px;left:18px;
+  width:14px;height:14px;background:inherit;
+  border-top:1px solid rgba(0,0,0,.06);border-left:1px solid rgba(0,0,0,.06);
+  transform:rotate(45deg);border-radius:3px 0 0 0}
 .bottom-menu-handle{display:flex;align-items:center;justify-content:space-between;
-  padding:.9rem 1rem .7rem;border-bottom:1px solid rgba(0,0,0,.06);background:rgba(255,255,255,.6)}
-.bottom-menu-handle::before{content:'メニュー';font-size:.9rem;font-weight:800;color:var(--td);letter-spacing:.04em}
-.bottom-menu-handle::after{content:'\00d7';font-size:1.4rem;line-height:1;color:#666;cursor:pointer;
-  width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:8px;
+  padding:.7rem .9rem;border-bottom:1px solid rgba(0,0,0,.06);background:rgba(255,247,225,.5)}
+.bottom-menu-handle::before{content:'メニュー';font-size:.82rem;font-weight:800;color:var(--td);letter-spacing:.04em}
+.bottom-menu-handle::after{content:'\00d7';font-size:1.25rem;line-height:1;color:#666;cursor:pointer;
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;
   transition:background .2s}
 .bottom-menu-handle:hover::after{background:rgba(0,0,0,.06)}
-.bottom-menu-list{list-style:none;padding:.6rem .8rem 1rem;margin:0;flex:1;overflow-y:auto}
-.bottom-menu-list li{border-bottom:1px solid rgba(0,0,0,.05)}
+.bottom-menu-list{list-style:none;padding:.45rem .55rem .7rem;margin:0;flex:1;overflow-y:auto}
+.bottom-menu-list li{border-bottom:1px solid rgba(0,0,0,.04)}
 .bottom-menu-list li:last-child{border-bottom:none}
-.bottom-menu-list a{display:flex;align-items:center;gap:.7rem;padding:.85rem .6rem;
-  color:var(--td);font-size:.95rem;font-weight:600;text-decoration:none;
+.bottom-menu-list a{display:flex;align-items:center;gap:.65rem;padding:.7rem .6rem;
+  color:var(--td);font-size:.92rem;font-weight:600;text-decoration:none;
   transition:background .2s,color .2s;border-radius:10px}
 .bottom-menu-list a:hover,.bottom-menu-list a:active{background:rgba(180,83,9,.06);color:var(--c1)}
-.bottom-menu-list a i{width:20px;text-align:center;font-size:.95rem;color:var(--c1);opacity:.8}
+.bottom-menu-list a i{width:18px;text-align:center;font-size:.9rem;color:var(--c1);opacity:.8}
 .bottom-menu-list .menu-auth-btn{margin-top:.4rem;padding:0;border-top:1px solid rgba(0,0,0,.08)}
 .bottom-menu-list .menu-auth-btn a{color:var(--c1);font-weight:700}
-/* Mypage drawer: slide in from RIGHT */
-.mypage-panel{position:fixed;top:0;right:0;bottom:0;left:auto;z-index:9000;
-  width:min(94vw,440px);
-  background:rgba(255,255,255,.97);
-  backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);
-  border-left:1px solid rgba(0,0,0,.06);
-  border-radius:18px 0 0 18px;
-  box-shadow:-18px 0 40px -8px rgba(10,15,25,.22);
-  transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+/* Mypage dropdown: anchored under the mypage pill (right side of header) */
+.mypage-panel{position:fixed;
+  top:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 2px);
+  right:max(.75rem,calc(50vw - 600px + .75rem));
+  left:auto;bottom:auto;z-index:9000;
+  width:min(96vw,420px);max-height:calc(100vh - var(--nav-h) - 2rem);
+  background:rgba(255,255,255,.98);
+  backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:16px;
+  box-shadow:0 18px 48px -8px rgba(10,15,25,.22),0 4px 14px -4px rgba(10,15,25,.12);
+  transform:translateY(-8px) scale(.96);transform-origin:top right;
+  opacity:0;pointer-events:none;
+  transition:transform .2s cubic-bezier(.16,1,.3,1),opacity .18s ease;
   padding:0;display:flex;flex-direction:column;overflow:hidden}
-.mypage-overlay.open .mypage-panel{transform:translateX(0);will-change:transform}
+.mypage-overlay.open .mypage-panel{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;will-change:transform,opacity}
+.mypage-panel::before{content:'';position:absolute;top:-7px;right:18px;
+  width:14px;height:14px;background:inherit;
+  border-top:1px solid rgba(0,0,0,.06);border-left:1px solid rgba(0,0,0,.06);
+  transform:rotate(45deg);border-radius:3px 0 0 0}
 .mypage-panel-handle{display:none}
+/* Mobile fine-tune: stick to viewport edge with small inset */
+@media(max-width:640px){
+  .bottom-menu-panel{left:.5rem;right:auto;width:calc(100vw - 1rem);max-width:340px}
+  .mypage-panel{right:.5rem;left:auto;width:calc(100vw - 1rem);max-width:none}
+}
 .mypage-close{appearance:none;border:none;background:rgba(0,0,0,.04);width:32px;height:32px;border-radius:10px;
   font-size:1.4rem;line-height:1;color:#666;cursor:pointer;
   display:inline-flex;align-items:center;justify-content:center;
@@ -2345,7 +2372,7 @@ footer{padding:1.5rem .8rem .8rem}
 .mypage-panel-head h3{font-size:1rem;font-weight:800;color:var(--td);display:flex;align-items:center;gap:.4rem;margin:0}
 .mypage-panel-head h3 i{color:var(--c1)}
 /* close button removed */
-.mypage-panel-body{padding:.3rem .7rem calc(.6rem + 60px)}
+.mypage-panel-body{padding:.3rem .7rem calc(.6rem + 60px);flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .mypage-panel-body .mypage-header{margin-bottom:.3rem}
 .mypage-panel-body .fg{margin-bottom:.25rem}
 .mypage-panel-body label{font-size:.85rem;margin-bottom:.25rem;display:block}
@@ -2796,8 +2823,8 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
 <nav class="top-nav" id="bottomNav">
   <div class="top-nav-inner glass-bento">
     <div class="top-nav-left">
-      <button type="button" class="top-nav-burger" id="bnMenu" onclick="toggleBottomMenu()" aria-label="メニュー">
-        <i class="fas fa-bars"></i>
+      <button type="button" class="top-nav-burger" id="bnMenu" onclick="toggleBottomMenu()" aria-label="メニュー" aria-haspopup="menu" aria-expanded="false" aria-controls="bottomMenuOverlay">
+        <i class="fas fa-bars" aria-hidden="true"></i>
       </button>
       <a class="top-nav-brand" href="#" onclick="event.preventDefault();closeAllPanels();window.scrollTo({top:0,behavior:'smooth'})">
         <span class="top-nav-logo" aria-hidden="true">
@@ -2822,7 +2849,7 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
       <a class="top-nav-pill" href="#board" onclick="closeAllPanels()" data-section="board" title="掲示板">
         <span>掲示板</span><span class="bottom-nav-badge" id="bnBadgeBoard"></span>
       </a>
-      <a class="top-nav-pill top-nav-pill-accent" id="bnMypage" onclick="toggleMypage()" title="マイページ">
+      <a class="top-nav-pill top-nav-pill-accent" id="bnMypage" href="#" onclick="event.preventDefault();toggleMypage()" title="マイページ" aria-haspopup="dialog" aria-expanded="false" aria-controls="mypageOverlay">
         <span>マイページ</span>
       </a>
     </div>
@@ -4977,19 +5004,17 @@ function openMypage(){
 }
 function openMypagePanel(){
   const ov=document.getElementById('mypageOverlay');
-  const panel=ov.querySelector('.mypage-panel');
-  panel.style.transition='transform .4s cubic-bezier(.32,1,.23,1)';
   ov.classList.add('open');
-  document.body.style.overflow='hidden';
+  const btn=document.getElementById('bnMypage');
+  if(btn){btn.setAttribute('aria-expanded','true');btn.classList.add('is-open')}
+  // body スクロール固定はしない（プルダウンでは背景操作を許容）
 }
 function closeMypagePanel(){
   const ov=document.getElementById('mypageOverlay');
-  const panel=ov.querySelector('.mypage-panel');
   if(!ov.classList.contains('open')) return;
-  panel.style.transition='transform .35s cubic-bezier(.4,0,1,1)';
   ov.classList.remove('open');
-  document.body.style.overflow='';
-  setTimeout(()=>{panel.style.transition='';},400);
+  const btn=document.getElementById('bnMypage');
+  if(btn){btn.setAttribute('aria-expanded','false');btn.classList.remove('is-open')}
 }
 function toggleMypage(){
   if(!currentUser){openModal('loginModal');return}
@@ -5284,9 +5309,9 @@ function toggleBottomMenu(){
 }
 function openBottomMenu(){
   const overlay=document.getElementById('bottomMenuOverlay');
-  const panel=overlay.querySelector('.bottom-menu-panel');
-  panel.style.transition='transform .4s cubic-bezier(.32,1,.23,1)';
   overlay.classList.add('open');
+  const btn=document.getElementById('bnMenu');
+  if(btn){btn.setAttribute('aria-expanded','true');btn.classList.add('is-open')}
   // Update auth button
   const auth=document.getElementById('bottomMenuAuth');
   if(auth){
@@ -5297,16 +5322,14 @@ function openBottomMenu(){
       auth.innerHTML=`<a href="javascript:void(0)" onclick="closeBottomMenu();openModal('loginModal')"><i class="fas fa-sign-in-alt"></i> ログイン / 無料登録</a>`;
     }
   }
-  document.body.style.overflow='hidden';
+  // body スクロール固定はしない（プルダウンでは背景操作を許容）
 }
 function closeBottomMenu(){
   const overlay=document.getElementById('bottomMenuOverlay');
-  const panel=overlay.querySelector('.bottom-menu-panel');
   if(!overlay.classList.contains('open')) return;
-  panel.style.transition='transform .35s cubic-bezier(.4,0,1,1)';
   overlay.classList.remove('open');
-  document.body.style.overflow='';
-  setTimeout(()=>{panel.style.transition='';},400);
+  const btn=document.getElementById('bnMenu');
+  if(btn){btn.setAttribute('aria-expanded','false');btn.classList.remove('is-open')}
 }
 
 /* ========== SWIPE-DOWN-TO-DISMISS (iOS sheet style) ========== */
