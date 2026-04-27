@@ -1669,15 +1669,19 @@ footer::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
 .footer-bot{text-align:center;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.05);
   color:rgba(255,255,255,.25);font-size:.88rem;position:relative;z-index:1;letter-spacing:.03em}
 /* ========== MODAL ========== */
-/* モーダル open 時、top-nav と FAB を非表示にして、close ボタン等が確実に見えるようにする */
-body:has(.modal-overlay.active) .top-nav,
-body:has(.yt-modal[style*="display: block"]) .top-nav,
-body:has(.modal-overlay.active) .ai-fab,
-body:has(.modal-overlay.active) .ai-telop,
+/* モーダル open 時、top-nav と FAB を非表示にして、close ボタン等が確実に見えるようにする
+   :has() は古いブラウザで未対応のため、JS による body.modal-open クラスを主、:has() を補助に。 */
 body.modal-open .top-nav,
 body.modal-open .ai-fab,
 body.modal-open .ai-telop{
   visibility:hidden;pointer-events:none}
+/* :has() フォールバック（モダンブラウザのみ。グループ化せず個別 @supports で囲む） */
+@supports selector(:has(*)){
+  body:has(.modal-overlay.active) .top-nav,
+  body:has(.modal-overlay.active) .ai-fab,
+  body:has(.modal-overlay.active) .ai-telop{
+    visibility:hidden;pointer-events:none}
+}
 /* モーダル open 時は背景スクロールを止める（モーダル内コンテンツだけスクロール可） */
 body.modal-open{overflow:hidden}
 .modal-overlay{display:none;position:fixed;inset:0;z-index:9300;background:rgba(15,23,42,.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
@@ -2222,7 +2226,8 @@ footer{padding:1.5rem .8rem .8rem}
 .top-nav{position:fixed;top:0;left:0;right:0;z-index:9000;
   padding:.75rem .75rem 0;
   padding-top:calc(.75rem + env(safe-area-inset-top,0px));
-  pointer-events:none}
+  pointer-events:none;
+  visibility:visible}
 .top-nav-inner{pointer-events:auto;
   margin:0 auto;max-width:1200px;
   display:flex;align-items:center;justify-content:space-between;gap:.6rem;
@@ -2316,11 +2321,12 @@ footer{padding:1.5rem .8rem .8rem}
 .bottom-menu-overlay,.mypage-overlay{position:fixed;inset:0;z-index:8999;background:transparent;
   opacity:0;pointer-events:none;transition:opacity .15s ease;-webkit-tap-highlight-color:transparent}
 .bottom-menu-overlay.open,.mypage-overlay.open{opacity:1;pointer-events:auto}
-/* Hamburger dropdown: anchored under the burger button (left side of header) */
+/* Hamburger dropdown: anchored under the burger button (left side of header)
+   z-index は top-nav (9000) より上に。これがないと DOM 順序で panel がヘッダーに隠れる。 */
 .bottom-menu-panel{position:fixed;
   top:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 2px);
   left:max(.75rem,calc(50vw - 600px + .75rem));
-  right:auto;bottom:auto;z-index:9000;
+  right:auto;bottom:auto;z-index:9050;
   width:min(92vw,320px);max-height:calc(100svh - var(--nav-h) - 2rem);
   background:rgba(255,255,255,.98);
   backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);
@@ -2355,11 +2361,12 @@ footer{padding:1.5rem .8rem .8rem}
 .bottom-menu-list a i{width:18px;text-align:center;font-size:.9rem;color:var(--c1);opacity:.8}
 .bottom-menu-list .menu-auth-btn{margin-top:.4rem;padding:0;border-top:1px solid rgba(0,0,0,.08)}
 .bottom-menu-list .menu-auth-btn a{color:var(--c1);font-weight:700}
-/* Mypage dropdown: anchored under the mypage pill (right side of header) */
+/* Mypage dropdown: anchored under the mypage pill (right side of header)
+   z-index は top-nav (9000) より上に。 */
 .mypage-panel{position:fixed;
   top:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 2px);
   right:max(.75rem,calc(50vw - 600px + .75rem));
-  left:auto;bottom:auto;z-index:9000;
+  left:auto;bottom:auto;z-index:9050;
   width:min(96vw,420px);max-height:calc(100svh - var(--nav-h) - 2rem);
   background:rgba(255,255,255,.98);
   backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);
@@ -3091,6 +3098,10 @@ window.addEventListener('load',()=>{
 
 /* ========== INIT ========== */
 document.addEventListener('DOMContentLoaded',()=>{
+  // 初期化時に残っている可能性のあるクラスをクリーンアップ
+  document.body.classList.remove('modal-open');
+  document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active'));
+  document.querySelectorAll('.bottom-menu-overlay.open,.mypage-overlay.open').forEach(o=>o.classList.remove('open'));
   initHero();
   initScrollReveal();
   initNavScroll();
