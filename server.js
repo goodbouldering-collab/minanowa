@@ -537,9 +537,38 @@ app.post('/api/resolve-map-url', async (req, res) => {
 });
 
 // ==================== IMAGE UPLOAD ====================
-app.post('/api/upload', upload.single('image'), (req, res) => {
+// Vercel/Supabase Storage モードでは memoryStorage を使い Storage に直接アップロード
+const memUploadSingle = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+app.post('/api/upload', memUploadSingle.single('image'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'ファイルなし' });
-    res.json({ success: true, url: `/uploads/${req.file.filename}` });
+    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    // Supabase Storage が使える場合は Storage に直送
+    if (SUPABASE_URL && SERVICE_KEY) {
+        try {
+            const { createClient } = require('@supabase/supabase-js');
+            const sbStorage = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } }).storage;
+            const ext = require('path').extname(req.file.originalname) || '.jpeg';
+            const filename = `img-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+            const key = `legacy_minanowa/${filename}`;
+            const { error } = await sbStorage.from('media').upload(key, req.file.buffer, {
+                contentType: req.file.mimetype,
+                upsert: false,
+            });
+            if (error) throw error;
+            const url = `${SUPABASE_URL}/storage/v1/object/public/media/${key}`;
+            return res.json({ success: true, url });
+        } catch (e) {
+            console.error('Storage upload error:', e.message);
+            return res.status(500).json({ error: e.message });
+        }
+    }
+    // フォールバック: ローカルディスク（Render 等）
+    const tmpDir = require('os').tmpdir();
+    const filename = `img-${Date.now()}-${Math.round(Math.random() * 1e9)}${require('path').extname(req.file.originalname) || '.jpeg'}`;
+    const filepath = require('path').join(uploadDir, filename);
+    await require('fs').promises.writeFile(filepath, req.file.buffer);
+    res.json({ success: true, url: `/uploads/${filename}` });
 });
 
 // ==================== EVENTS ====================
@@ -1938,3 +1967,5 @@ app.listen(PORT, async () => {
     // Auto-migrate interviews into blogs on startup
     await migrateInterviewsToBlogs();
 });
+
+module.exports = app;
