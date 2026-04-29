@@ -1,5 +1,6 @@
 // Vercel Serverless Function エントリポイント
-// Express app を server.js からインポートして Vercel に渡す
+// Express app を serverless-http でラップして Vercel に渡す
+const serverless = require('serverless-http');
 const app = require('../server');
 
-module.exports = app;
+module.exports = serverless(app);
