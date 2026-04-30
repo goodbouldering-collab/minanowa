@@ -1,0 +1,26 @@
+{
+  "name": "みんなのWA",
+  "short_name": "みんなのWA",
+  "description": "彦根発 異業種交流コミュニティ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fef3dc",
+  "theme_color": "#e8a948",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
