@@ -4,93 +4,119 @@
 
 ## 構成（本番実態）
 
-ルート直下に全てがある単層構造。サブディレクトリに `legacy/` や `web/` は存在しない。
+**2026-04-30 より Vercel Serverless Functions（`api/*`）+ Supabase に集約**。Render Starter は同日 suspend 済み。`server.js` は手元のローカル開発・将来的な復旧用に残しているが、本番では一切使われていない。
 
 ```
 みんなのWA/
-├── server.js          # Express サーバー (port 3000 開発 / 10000 本番)
-├── index.html         # フロント (約5,400行 / 単一HTMLにJS埋め込み)
-├── admin.html         # 管理画面
-├── data.json          # ファイルベース永続化（Render /data ディスクに配置）
+├── api/                    # Vercel Serverless Functions（本番ハンドラ・全 52 ファイル）
+│   ├── auth/               # 認証系（register/login/google/password-reset）
+│   ├── members/            # 会員 CRUD + participation
+│   ├── events/             # イベント + Stripe 決済
+│   ├── blogs/              # ブログ
+│   ├── boards/             # 掲示板
+│   ├── interviews/         # インタビュー
+│   ├── operating-members/  # 運営メンバー
+│   ├── admin/              # 管理 API（backups / sync-map-coords / events 等）
+│   ├── ssr/                # OG タグ用 SSR HTML（blog/event/feed/sitemap/robots）
+│   ├── ai/generate-shop-info.js
+│   ├── upload.js           # multipart → Supabase Storage 直送
+│   ├── og-image.js, resolve-map-url.js, contact.js, messages.js, site-settings.js
+│   └── health.js
 ├── lib/
-│   └── supabase-store.js   # Supabase 永続層（env 切替で opt-in）
-├── supabase/migrations/    # Supabase スキーマ（opt-in 用）
-├── uploads/                # アップロード画像（/data 配下）
+│   ├── supabase-store.js   # Supabase 永続層（本番で常時 ON）
+│   ├── vercel-utils.js     # CORS / method 振り分け / readJson / readMultipart / ok / fail
+│   ├── auth.js             # bcrypt + Google OAuth + admin token check
+│   └── data-cache.js       # singleton キャッシュ（コールドスタート対策）
+├── public/                 # Vercel 静的配信（index.html / admin.html / favicon / sw.js / manifest.json / icon-*）
+├── supabase/migrations/    # legacy_minanowa スキーマ（本番運用中）
 ├── scripts/
-│   └── seed-from-production.js
+│   ├── seed-from-production.js    # 旧 Render → ローカル（参考、もう使わない）
+│   ├── pull-from-prod.js          # Supabase 本番 → ローカル dev スキーマへ
+│   ├── migrate-uploads-to-storage.js   # uploads/ → Supabase Storage（実行済）
+│   └── fix-storage-urls.js        # DB 内 /uploads/xxx URL を Storage URL に書換（実行済）
+├── server.js               # 旧 Express サーバー（ローカル開発・復旧用にのみ残置）
+├── data.json               # 旧 Render /data 由来の最終スナップショット（参考）
 ├── package.json
-├── render.yaml             # Render Blueprint
-└── Dockerfile
+├── vercel.json             # rewrites（SSR 用）+ functions maxDuration 60s + headers
+├── render.yaml             # 旧 Blueprint（参考に保持・本番未使用）
+└── Dockerfile              # 同上
 ```
 
 ## 起動
 
+### ローカル（Vercel CLI 経由・推奨）
+
 ```bash
 npm install
-npm run dev              # http://localhost:3000 (nodemon)
-# or
-npm start                # node server.js
+npx vercel dev --listen 3000   # api/* + public/ を Vercel と同等の挙動で起動
 ```
+
+### ローカル（旧 Express でサクッと触りたいとき）
+
+```bash
+npm start                  # node server.js（Supabase 接続 + 旧 data.json）
+```
+
+`server.js` は本番では動いていない。`api/*` のロジックを手早く確認したいだけの参考用。
 
 ## 本番
 
-- URL: [minanowa.onrender.com](https://minanowa.onrender.com)
-- Render サービス: `minanowa` (srv-d6vv6cp4tr6s73ds7ip0)
-- リージョン: **Oregon**（`render.yaml` の `region: singapore` は記述ミスで実際は Oregon。変更する場合は Render ダッシュボードから）
-- プラン: **Starter ($7/月) + 永続ディスク `/data` 1GB**（このプロジェクトは例外的に Starter 維持）
-- 監視ブランチ: `main`（旧 `genspark_ai_developer`）
-- 自動デプロイ: commit push で発火
+- URL: [minanowa.com](https://minanowa.com)（Cloudflare DNS proxy → Vercel）
+- Vercel プロジェクト: `minanowa` (`prj_zVxZrMg0XkvuRqoWi9tr3iBXJNZm`)
+- Vercel 既定ドメイン: `minanowa.vercel.app`
+- カスタムドメイン: `minanowa.com`, `www.minanowa.com`（両方 Vercel に紐付け済み・SSL 自動）
+- リージョン: `iad1`（Vercel デフォルト・米東）
+- 監視ブランチ: `main`
+- 自動デプロイ: `main` push で Vercel が即時ビルド & 本番反映
+- PR ごとに Preview URL 自動発行（SSO 認証あり）
 
-### Render プラン運用（例外: Starter 維持中）
+### 旧 Render（参考・suspend 済み）
 
-全プロジェクト共通方針は「新規は Free + 親リポ統合 keepalive で開始、本番化で Starter 昇格」だが、**このプロジェクトは例外的に最初から Starter を維持**している。keepalive 対象外（親リポ `render-keepalive.yml` の matrix にも入れていない）。
-
-**理由**: `data.json`（会員・投稿）と `uploads/`（画像）を Render の永続ディスク `/data` に保存しているが、**Free プランでは永続ディスクが使えない**ため、Free 化するとデータが全消失する。
-
-将来 Free 化する場合の手順:
-
-1. **データ層を Supabase に完全移行**（`lib/supabase-store.js` は実装済み・本番未使用）
-   - 環境変数 `USE_SUPABASE=true` で切替可能
-   - 本番 `data.json` と `uploads/` の Supabase Storage への移行スクリプト作成・実行
-2. Render Dashboard で **Disk を切り離す**
-3. Render Dashboard で **Instance Type を Free に変更**
-4. **親リポ `claude-workspace/.github/workflows/render-keepalive.yml` の matrix に `minanowa` を追加**してコミット
-5. このセクションを「Free 稼働中」記載に更新
-
-詳細・全プロジェクト共通ルールは親 CLAUDE.md「Render プラン運用ルール」参照。
+- Render サービス: `minanowa` (`srv-d6vv6cp4tr6s73ds7ip0`)
+- 状態: **2026-04-30 09:06 ユーザー手動 suspend**（課金停止）
+- Disk: 旧 `/data` (1GB) は保留中（中身は Supabase Storage に移行済）
+- 完全削除は 1〜2 週間 Vercel 安定運用を確認してから手動で実施予定
 
 ## データ層
 
-**デフォルトはファイルベース** (`data.json` を `/data` ディスクに保存)。
-
-Supabase 永続層が `lib/supabase-store.js` に実装済みで、環境変数で opt-in 可能：
+### 永続層（本番で常時 ON）
 
 ```
 SUPABASE_URL=...
 SUPABASE_SERVICE_ROLE_KEY=...
-USE_SUPABASE=true   # これで Supabase モードに切り替わる
+SUPABASE_SCHEMA=legacy_minanowa
+USE_SUPABASE=true
 ```
 
-スキーマは `supabase/migrations/` に配置。現状は **使っていない**（ファイルベース単独で運用中）。
-data.json 破損など問題が起きたら Supabase モードに切り替える想定。
+- スキーマ: `legacy_minanowa`（テーブル: `members`, `events`, `blogs`, `boards`, `interviews`, `operating_members`, `messages`, `site_settings`, `password_reset_tokens` 等）
+- 画像: Supabase Storage `media` バケット `legacy_minanowa/` プレフィックス（旧 uploads/ から 22 ファイル移行済み）
+- ローカル開発時は dev スキーマ運用（`.env.example` 参照）
+
+### キャッシュ
+
+`lib/data-cache.js` がハンドラ間で Supabase クライアントと読み取り結果を singleton 化。Lambda コンテナが温まっている間は Supabase fetch が発生しない。書き込み系ハンドラは `Cache-Control: no-store` で stale 防止。
 
 ## 運用ルール
 
-- **data.json をコードから編集禁止**。データ変更は必ず管理画面 (`/admin`) から
-- `uploads/` 配下は永続ディスク。コミット対象外（`.gitignore`）
-- バックアップ: `node scripts/seed-from-production.js` で本番からシード取得可能
+- **データ変更は必ず管理画面 (`/admin`) から**。`data.json` は本番では使われていないが、ローカルでも触らない
+- 画像アップロードは Vercel multipart 経由 → Supabase Storage に直送（`api/upload.js`）
+- バックアップ: `api/admin/backup.js` が Supabase Storage に JSON ダンプを保存（管理画面の「バックアップ」から取得・リストア可能）
+- 本番 → ローカル dev スキーマへのデータ取り込みは `node scripts/pull-from-prod.js`
 
-## リファクタ履歴（参考）
+## 移行履歴
 
-過去に Next.js + Supabase 版 (`web/` ディレクトリ) への全面移行を試みたが、2026-04-21 に撤回してルート直下型の本番構造に戻した。
-
-- 復元用 git タグ: `pre-refactor-nextjs-20260411`（commit `f0dc908`）
-- 復元用バックアップ: `../_backups/minanowa-pre-refactor-20260411.tar.gz`
-- 削除済み refactor ブランチ（残っていれば `refactor/nextjs-supabase`）
+| 日付 | 出来事 |
+|---|---|
+| 2026-03-22 | Render Starter で初回デプロイ |
+| 2026-04-11 | Next.js + Supabase 版 (`web/`) への全面移行を試行 |
+| 2026-04-21 | 上記を撤回しルート直下 Express 構造に戻す（git tag `pre-refactor-nextjs-20260411`、commit `f0dc908`、`../_backups/minanowa-pre-refactor-20260411.tar.gz`） |
+| 2026-04-29 | Vercel 移行プラン策定（[VERCEL_MIGRATION_PLAN.md](VERCEL_MIGRATION_PLAN.md)）。Express → `api/*` 個別関数化、Supabase Storage への画像移行 |
+| 2026-04-29〜30 | Week 1〜2 完了：基盤 + 全 52 ハンドラ移植 + `public/` 切替 + Supabase Storage 移行（22 ファイル） |
+| 2026-04-30 | DNS（Cloudflare proxy）を Render → Vercel に切替、本番疎通確認、Render を suspend |
 
 ## 共通規約（親 CLAUDE.md より継承）
 
-- HTTPS 強制：`index.html` に `<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">` 設置済み
+- HTTPS 強制：`public/index.html` に `<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">` 設置済み
 - 外部画像は HTTPS 限定（HTTP 画像はミックスコンテンツでブロックされる）
 - EUC-JP 変換が必要な外部取り込み（グッぼる本店）は `iconv-lite` 経由で
 
@@ -98,7 +124,9 @@ data.json 破損など問題が起きたら Supabase モードに切り替える
 
 | 症状 | 対処 |
 |---|---|
-| 本番の画像が消えた | Render ダッシュボードで `/data` ディスクのマウント確認 |
-| data.json が壊れた | Render ディスクスナップショットから復元、または Supabase モードに切り替え |
-| デプロイが走らない | `main` ブランチに push しているか確認。Render 監視ブランチは `main` |
-| ローカルで `data.json` が空 | 本番から `scripts/seed-from-production.js` でシード |
+| 本番が落ちた | Vercel Dashboard `Deployments` で前バージョンに 1 クリック Rollback |
+| デプロイがエラー | `vercel logs <deployment-url>` または Dashboard で詳細確認。`api/*` のシンタックスエラーは `vercel build` ローカル実行で再現可 |
+| 画像が表示されない | Supabase Storage `media/legacy_minanowa/` の存在確認。URL は `https://<project>.supabase.co/storage/v1/object/public/media/legacy_minanowa/<filename>` 形式 |
+| `/api/*` が 500 | `vercel logs` で `runtime: nodejs` 確認、Supabase 接続エラーなら `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` を Vercel Project Settings で確認 |
+| カスタムドメインが繋がらない | Cloudflare DNS で `minanowa.com` の CNAME（または A レコード proxy）が Vercel を指しているか確認 |
+| 緊急時の Render 復活 | Render Dashboard で resume → DNS を Cloudflare proxy → Render に戻す（最終スナップショットの data.json は disk 内に残存） |

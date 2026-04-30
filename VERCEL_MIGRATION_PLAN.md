@@ -1,13 +1,24 @@
 # みんなのWA Vercel 移行プラン (server.js → api/* 個別関数化)
 
 **作成日**: 2026-04-29
-**背景**: Express 1940行をそのまま Vercel に乗せたら `@vercel/node` の ncc バンドルが Express 動的 require を tree-shake する問題で複数回失敗。**Express を捨て、Vercel ネイティブの `(req, res) => {}` ハンドラに分割**するのが現実解。
+**完了日**: 2026-04-30
+**ステータス**: ✅ **移行完了**（本番トラフィックは Vercel・Render は同日 suspend）
 
-## 現状（並行稼働）
+> 本ドキュメントは移行プラン兼実施記録。以降のメンテで参照しやすいよう履歴として保持する。
+
+## 結果サマリー（2026-04-30）
+
+- 本番ドメイン `https://minanowa.com` は Cloudflare DNS proxy 経由で **Vercel** が応答（`x-vercel-id` 確認済）
+- `/api/health` 応答: `runtime: nodejs / region: iad1 / supabase: true / supabaseSchema: legacy_minanowa`
+- 全 52 Serverless Functions（`api/**/*.js`）デプロイ済・公開エンドポイント 12 本 + SSR 動的ルート（`/blog/:id`, `/event/:id`, `/event/:id/ics`）疎通 200 確認
+- 旧 Render サービス `srv-d6vv6cp4tr6s73ds7ip0` は 2026-04-30 09:06 にユーザー手動 suspend（課金停止・Disk は保留中）
+- 完全削除は 1〜2 週間 Vercel 安定運用を見てから手動実施予定
+
+## 当時の現状（着手時点・並行稼働）
 
 - **本番**: Render Starter `minanowa.onrender.com` ($7/月) で稼働中
 - **DNS 切替先**: minanowa.com（Cloudflare 経由 → Render）
-- **Vercel プロジェクト**: `prj_zVxZrMg0XkvuRqoWi9tr3iBXJNZm` 作成済（移行用、現在500エラー）
+- **Vercel プロジェクト**: `prj_zVxZrMg0XkvuRqoWi9tr3iBXJNZm` 作成済（移行用、当初500エラー）
 - **データ層**: Supabase `legacy_minanowa` スキーマに既に同期済み（USE_SUPABASE=true で Render が運用中）
 - **画像ストレージ**: Supabase Storage `media/legacy_minanowa/` に移行済み（22ファイル / DB内 URL 書き換え済み）
 
