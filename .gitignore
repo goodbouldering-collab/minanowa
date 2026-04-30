@@ -40,3 +40,6 @@ backups/20260219_backup_pre_ai_personalization.tar.gz
 
 # Claude Code local settings
 .claude/
+
+# Backup snapshots (個人情報含む可能性)
+_backups/
