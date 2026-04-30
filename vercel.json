@@ -5,7 +5,9 @@
     { "source": "/event/:id", "destination": "/api/ssr/event/[id]" },
     { "source": "/event/:id/ics", "destination": "/api/ssr/event/[id]/ics" },
     { "source": "/feed", "destination": "/api/ssr/feed" },
-    { "source": "/rss", "destination": "/api/ssr/feed" }
+    { "source": "/rss", "destination": "/api/ssr/feed" },
+    { "source": "/sitemap.xml", "destination": "/api/ssr/sitemap" },
+    { "source": "/robots.txt", "destination": "/api/ssr/robots" }
   ],
   "functions": {
     "api/**/*.js": {
