@@ -109,7 +109,7 @@
      値はメディアクエリで上書き。--nav-anchor は scroll-margin-top と min-height 両方で使用。
      +4px は影/枠のフェードと完全密着の中間にする微調整。 */
   --nav-h:66px;
-  --nav-anchor:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 28px);
+  --nav-anchor:calc(var(--nav-h) + env(safe-area-inset-top,0px));
   /* Shape & spacing scale */
   --r:22px;--r2:16px;--r3:30px;
   --space-xs:.5rem;--space-sm:.85rem;--space-md:1.25rem;--space-lg:1.75rem;--space-xl:2.5rem;
@@ -277,7 +277,7 @@ html{scroll-snap-type:y proximity;-webkit-overflow-scrolling:touch;scroll-paddin
 .ev-card .card-body .ev-desc{flex:1;font-size:.88rem;line-height:1.6;overflow:hidden;
     display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
 .ev-card .ev-footer{margin-top:auto;flex-shrink:0}
-.ev-card .ev-date{flex-shrink:0;font-size:.9rem}
+.ev-card .ev-date{flex-shrink:0;font-size:.78rem}
 .ev-card .ev-loc{flex-shrink:0;font-size:.85rem;margin-bottom:.3rem}
 .ev-card .ev-reg-count{font-size:.78rem;padding:.28rem .6rem;flex-shrink:0}
 .ev-card .ev-apply-btn{font-size:.88rem;padding:.55rem 1rem;flex-shrink:0}
@@ -1217,7 +1217,7 @@ footer{padding:2rem 1rem 1rem}
 .ev-card{width:280px;min-height:auto;display:flex;flex-direction:column;cursor:pointer}
 .ev-card:hover{}
 .ev-card .card-body{flex:1;display:flex;flex-direction:column}
-.ev-date{color:var(--c1);font-weight:600;font-size:1rem;margin-bottom:.25rem;display:flex;align-items:center;gap:.3rem}
+.ev-date{color:var(--c1);font-weight:600;font-size:.82rem;margin-bottom:.25rem;display:flex;align-items:center;gap:.3rem}
 .ev-loc{color:var(--tl);font-size:.98rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
 .ev-desc{font-size:.9rem;color:var(--td);line-height:1.5;margin-bottom:.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ev-footer{margin-top:auto;padding-top:.4rem;display:flex;justify-content:space-between;align-items:center;
@@ -1396,6 +1396,7 @@ footer{padding:2rem 1rem 1rem}
 .ev-detail-reg-avatars img:first-child{margin-left:0}
 .ev-detail-reg-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.55rem;
   padding-top:.55rem;border-top:1px dashed rgba(0,0,0,.08)}
+.ev-detail-reg-list[hidden]{display:none}
 .ev-reg-pill{display:inline-flex;align-items:center;gap:.4rem;
   padding:.28rem .55rem .28rem .3rem;border-radius:999px;
   background:#fff;border:1px solid rgba(180,83,9,.18);
@@ -1717,11 +1718,13 @@ body.modal-open{overflow:hidden}
   border-radius:50%;border:none;cursor:pointer;font-size:.78rem;transition:all .3s ease;flex-shrink:0}
 .ev-share-btn:hover{box-shadow:0 4px 12px rgba(0,0,0,.12)}
 .ev-share-btn:active{}
-.ev-share-btn.share-copy{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff}
+.ev-share-btn.share-copy{background:#fff;color:var(--c1);border:1.5px solid var(--c1)}
+.ev-share-btn.share-copy:hover{background:var(--c1);color:#fff}
 .ev-share-btn.share-line{background:#06C755;color:#fff}
 .ev-share-btn.share-x{background:#000;color:#fff}
 .ev-share-btn.share-fb{background:#1877F2;color:#fff}
-.ev-share-btn.share-native{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff}
+.ev-share-btn.share-native{background:#374151;color:#fff}
+.ev-share-btn.share-native:hover{background:#1f2937}
 .ev-share-btn.share-cal{background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff}
 .ev-share-copied{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
   background:rgba(217,119,6,.95);color:#fff;padding:.6rem 1.5rem;border-radius:10px;
@@ -3446,8 +3449,8 @@ function renderEvents(){
         ${calBtn}
       </div>
       <div class="card-body">
-        <div class="ev-date"><i class="fas fa-calendar"></i> ${ev.date} ${ev.time}</div>
         <div class="card-title">${ev.title}</div>
+        <div class="ev-date"><i class="fas fa-calendar"></i> ${ev.date} ${ev.time}</div>
         <div class="ev-loc"><i class="fas fa-map-marker-alt"></i> ${ev.location}</div>
         ${descText?`<div class="ev-desc">${descText}</div>`:''}
         <div class="ev-footer">
