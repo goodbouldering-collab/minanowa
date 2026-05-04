@@ -3361,7 +3361,14 @@ function scrollCar(id,dx){
 /* ========== RENDER EVENTS ========== */
 function renderEvents(){
   const t=document.getElementById('evTrack');t.innerHTML='';
-  allEvents.forEach((ev,i)=>{
+  const today=new Date();today.setHours(0,0,0,0);
+  const sorted=[...allEvents].sort((a,b)=>{
+    const da=new Date(a.date),db=new Date(b.date);
+    const aPast=da<today,bPast=db<today;
+    if(aPast!==bPast) return aPast?1:-1;        // 開催前を先頭に
+    return aPast ? db-da : da-db;                 // 開催前は近い順、終了は新しい順
+  });
+  sorted.forEach((ev,i)=>{
     const isPast=new Date(ev.date)<new Date();
     const card=document.createElement('div');
     card.className='card ev-card';
