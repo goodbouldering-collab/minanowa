@@ -4707,21 +4707,47 @@ async function aiGenerateFromMap(prefix){
   }finally{btn.disabled=false;btn.innerHTML=origText;}
 }
 
-async function compressImage(file, maxDim = 1920, quality = 0.85){
-  if (!file.type.startsWith('image/') || file.type === 'image/svg+xml' || file.type === 'image/gif') return file;
-  const bitmap = await createImageBitmap(file).catch(() => null);
-  if (!bitmap) return file;
-  const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
-  const w = Math.round(bitmap.width * scale);
-  const h = Math.round(bitmap.height * scale);
-  const canvas = document.createElement('canvas');
-  canvas.width = w; canvas.height = h;
-  canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
-  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
-  bitmap.close?.();
-  if (!blob || blob.size >= file.size) return file;
+const VERCEL_BODY_LIMIT = 4 * 1024 * 1024;
+async function _loadImageSource(file){
+  const bm = await createImageBitmap(file).catch(() => null);
+  if (bm) return { source: bm, width: bm.width, height: bm.height, close: () => bm.close?.() };
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = () => reject(new Error('画像をデコードできません (対応形式: JPEG/PNG/WebP/HEIC)'));
+      i.src = url;
+    });
+    return { source: img, width: img.naturalWidth, height: img.naturalHeight, close: () => URL.revokeObjectURL(url) };
+  } catch (e) { URL.revokeObjectURL(url); throw e; }
+}
+async function compressImage(file){
+  if (!file.type.startsWith('image/') || file.type === 'image/svg+xml' || file.type === 'image/gif') {
+    if (file.size > VERCEL_BODY_LIMIT) throw new Error('SVG/GIF はサイズが大きすぎます (' + (file.size/1048576).toFixed(1) + 'MB > 4MB)');
+    return file;
+  }
+  const src = await _loadImageSource(file);
   const baseName = (file.name || 'image').replace(/\.[^.]+$/, '');
-  return new File([blob], baseName + '.jpg', { type: 'image/jpeg' });
+  let result = null;
+  const passes = [[1920, 0.85], [1600, 0.78], [1280, 0.7], [960, 0.6]];
+  for (const [maxDim, quality] of passes) {
+    const scale = Math.min(1, maxDim / Math.max(src.width, src.height));
+    const w = Math.max(1, Math.round(src.width * scale));
+    const h = Math.max(1, Math.round(src.height * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(src.source, 0, 0, w, h);
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality));
+    if (!blob) continue;
+    result = blob;
+    if (blob.size <= VERCEL_BODY_LIMIT) break;
+  }
+  src.close();
+  if (!result) throw new Error('画像の圧縮に失敗しました');
+  if (result.size > VERCEL_BODY_LIMIT) throw new Error('圧縮後も 4MB を超えています (' + (result.size/1048576).toFixed(1) + 'MB)。より小さい画像を使用してください');
+  if (result.size >= file.size && file.size <= VERCEL_BODY_LIMIT && file.type === 'image/jpeg') return file;
+  return new File([result], baseName + '.jpg', { type: 'image/jpeg' });
 }
 async function handleRegister(e){
   e.preventDefault();
