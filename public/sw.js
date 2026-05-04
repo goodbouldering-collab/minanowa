@@ -2,9 +2,11 @@
  * - HTML / API は network-first（常に最新）
  * - 画像 / アイコン / フォント / svg は cache-first（オフライン時の見栄え担保）
  */
-const CACHE = 'wa-v3';
+const CACHE = 'wa-v5';
 const STATIC = [
     '/favicon.svg',
+    '/favicon-16.png',
+    '/favicon-32.png',
     '/icon-192.png',
     '/icon-512.png',
     '/apple-touch-icon.png',
