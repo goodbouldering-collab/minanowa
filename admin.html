@@ -1670,16 +1670,35 @@ async function doUploadRestore(input){
   input.value='';
 }
 
-// Upload helper
+// Upload helper — Vercel の 4.5MB body 上限を回避するため長辺 1920px / JPEG 85% に圧縮してから送信
+async function compressImage(file, maxDim = 1920, quality = 0.85){
+  if (!file.type.startsWith('image/') || file.type === 'image/svg+xml' || file.type === 'image/gif') return file;
+  const bitmap = await createImageBitmap(file).catch(() => null);
+  if (!bitmap) return file;
+  const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
+  const w = Math.round(bitmap.width * scale);
+  const h = Math.round(bitmap.height * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+  bitmap.close?.();
+  if (!blob || blob.size >= file.size) return file;
+  const baseName = (file.name || 'image').replace(/\.[^.]+$/, '');
+  return new File([blob], baseName + '.jpg', { type: 'image/jpeg' });
+}
 async function uploadImg(input,targetId){
-  const file=input.files[0];if(!file) return;
+  const original=input.files[0];if(!original) return;
   showSpinner('画像アップロード中...');
   try{
+    const file = await compressImage(original);
     const fd=new FormData();fd.append('image',file);
-    const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+    const res=await fetch('/api/upload',{method:'POST',body:fd});
+    const r=await res.json().catch(()=>({success:false,error:'サーバ応答が不正です ('+res.status+')'}));
     if(r.success){document.getElementById(targetId).value=r.url;showToast('画像をアップロードしました')}
-  }catch(e){showToast('アップロードに失敗しました','error')}
-  finally{hideSpinner()}
+    else{showToast('アップロード失敗: '+(r.error||res.status),'error')}
+  }catch(e){showToast('アップロードに失敗しました: '+(e.message||e),'error')}
+  finally{hideSpinner();input.value=''}
 }
 
 // Modal
@@ -1722,9 +1741,11 @@ async function saveMemEdit(e){
   const avatarFile=document.getElementById('meAvatarFile').files[0];
   let avatar=modal._avatar;
   if(avatarFile){
-    const fd=new FormData();fd.append('image',avatarFile);
-    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+    const compressed=await compressImage(avatarFile);
+    const fd=new FormData();fd.append('image',compressed);
+    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json()).catch(()=>({success:false}));
     if(up.success) avatar=up.url;
+    else showToast('アバター画像のアップロードに失敗: '+(up.error||''),'error');
   }
   const body={
     name:document.getElementById('meName').value,

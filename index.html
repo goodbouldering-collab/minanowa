@@ -530,9 +530,6 @@ nav#navbar{display:none !important}
 .hero-vid-dot{width:7px;height:7px}
 .hero-cta{margin-top:1rem;gap:.5rem}
 .hero-cta .btn{padding:.65rem 1.2rem;font-size:.88rem;border-radius:12px;width:auto}
-.hero-photos-container{gap:3px !important}
-.hero-photos-row{gap:3px !important;animation-duration:25s !important}
-.hero-photo{width:75px !important;height:75px !important;border-radius:10px !important}
 .hero-scroll{bottom:1rem;font-size:.72rem}
 .hero-scroll-line{height:22px}
 .hero-glow.g1{width:350px;height:350px}
@@ -731,16 +728,6 @@ footer{padding:2.5rem 1.2rem 1.2rem}
   box-shadow:0 0 8px rgba(245,158,11,.3);transform:scale(1.2)}
 .hero-vid-dot.active::after{transform:scale(1);animation:dot-fill 10s linear}
 @keyframes dot-fill{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
-/* ========== HERO PHOTO GALLERY ========== */
-.hero-photos-container{position:absolute;inset:0;z-index:1;overflow:hidden;opacity:.12;
-  display:flex;flex-direction:column;justify-content:center;gap:4px;pointer-events:none}
-.hero-photos-row{display:flex;gap:4px;animation:hero-scroll-photos 35s linear infinite}
-.hero-photos-row.reverse{animation-direction:reverse}
-.hero-photo{width:120px;height:120px;border-radius:12px;object-fit:cover;flex-shrink:0;
-  filter:grayscale(.3);transition:filter .5s}
-@keyframes hero-scroll-photos{
-  0%{transform:translateX(0)}
-  100%{transform:translateX(-50%)}}
 .hero-bg{position:absolute;inset:0;z-index:-2;
   background:linear-gradient(165deg,#b45309 0%,#d97706 55%,#f59e0b 100%)}
 .hero-mesh{position:absolute;inset:0;z-index:-1;opacity:.18;
@@ -1091,7 +1078,6 @@ html{font-size:15px}
 .hm-card b{font-size:1.2rem}
 .hm-card span{font-size:.65rem}
 .hero-cta .btn{padding:.55rem 1rem;font-size:.82rem}
-.hero-photo{width:60px !important;height:60px !important;border-radius:8px !important}
 /* === SECTIONS === */
 .sec{padding:2.8rem 1rem 2.2rem}
 .sec-head{margin-bottom:1.8rem}
@@ -2042,7 +2028,6 @@ footer{padding:1.5rem .8rem .8rem}
 /* === LANDSCAPE MODE FIX === */
 @media(max-height:500px) and (orientation:landscape){.hero{min-height:auto;padding:3rem 1rem 2rem}
 .hero h1{font-size:1.4rem !important}
-.hero-photos-container{display:none}
 .hero-scroll{display:none}
 .hero-glow{display:none}}
 /* ========== AI ASSISTANT (Chat) ========== */
@@ -2537,8 +2522,6 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
       <i class="fas fa-play-circle"></i><span>タップで再生</span>
     </div>
   </div>
-  <!-- HERO PHOTO GALLERY (fallback) -->
-  <div class="hero-photos-container" id="heroPhotos"></div>
   <div class="hero-content">
     <div class="hero-logo">みんなのWA</div>
     <h1><span class="hero-typed" id="heroTitle">彦根発・異業種交流コミュニティ</span><span class="cursor" id="typedCursor"></span></h1>
@@ -3154,45 +3137,6 @@ function initHero(){
       --dur:${20+Math.random()*15}s;--dy:${-20-Math.random()*40}px;--dx:${-10+Math.random()*20}px;
       animation-delay:${-Math.random()*15}s;transform:rotate(${Math.random()*30-15}deg)`;
     c.appendChild(l);
-  }
-  /* Hero photo gallery */
-  initHeroPhotos();
-}
-
-function initHeroPhotos(){
-  const container=document.getElementById('heroPhotos');
-  /* Community/event/business photos for the hero background */
-  const photos=[
-    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=300&q=60',
-    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=300&q=60',
-    'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=300&q=60',
-    'https://images.unsplash.com/photo-1556742111-a301076d9d18?w=300&q=60',
-    'https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&q=60',
-    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=300&q=60',
-    'https://images.unsplash.com/photo-1519167758481-83f29da8fd94?w=300&q=60',
-    'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=300&q=60',
-    'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=300&q=60',
-    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=300&q=60',
-    'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=300&q=60',
-    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&q=60'
-  ];
-  /* Create 2 rows of scrolling photos */
-  for(let r=0;r<2;r++){
-    const row=document.createElement('div');
-    row.className='hero-photos-row'+(r%2===1?' reverse':'');
-    /* Duplicate photos for seamless loop */
-    const shuffled=[...photos].sort(()=>Math.random()-.5).slice(0,6);
-    const combined=[...shuffled,...shuffled];
-    combined.forEach(url=>{
-      const img=document.createElement('img');
-      img.className='hero-photo';
-      img.src=url;
-      img.alt='community';
-      img.loading='lazy';
-      img.onerror=function(){this.style.display='none'};
-      row.appendChild(img);
-    });
-    container.appendChild(row);
   }
 }
 
@@ -4449,7 +4393,6 @@ let heroVids=[],heroVidIdx=0,heroVidTimer=null,heroVidCurrentId='',heroVidBarTim
 function initHeroVideoDigest(){
   heroVids=allInterviews.filter(iv=>iv.youtubeId).map(iv=>iv.youtubeId);
   const bgContainer=document.getElementById('heroVideoBg');
-  const photosFallback=document.getElementById('heroPhotos');
   const showcase=document.getElementById('heroVidShowcase');
   if(!heroVids.length){
     bgContainer.style.display='none';
@@ -4457,7 +4400,6 @@ function initHeroVideoDigest(){
     return;
   }
   bgContainer.style.display='none';
-  photosFallback.style.display='none';
   const dotsEl=document.getElementById('heroVidDots');
   if(dotsEl){
     dotsEl.innerHTML='';
@@ -4765,14 +4707,32 @@ async function aiGenerateFromMap(prefix){
   }finally{btn.disabled=false;btn.innerHTML=origText;}
 }
 
+async function compressImage(file, maxDim = 1920, quality = 0.85){
+  if (!file.type.startsWith('image/') || file.type === 'image/svg+xml' || file.type === 'image/gif') return file;
+  const bitmap = await createImageBitmap(file).catch(() => null);
+  if (!bitmap) return file;
+  const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
+  const w = Math.round(bitmap.width * scale);
+  const h = Math.round(bitmap.height * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+  bitmap.close?.();
+  if (!blob || blob.size >= file.size) return file;
+  const baseName = (file.name || 'image').replace(/\.[^.]+$/, '');
+  return new File([blob], baseName + '.jpg', { type: 'image/jpeg' });
+}
 async function handleRegister(e){
   e.preventDefault();
   let avatarUrl='';
   const file=document.getElementById('regAvatar').files[0];
   if(file){
-    const fd=new FormData();fd.append('image',file);
-    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+    const compressed=await compressImage(file);
+    const fd=new FormData();fd.append('image',compressed);
+    const up=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json()).catch(()=>({success:false}));
     if(up.success) avatarUrl=up.url;
+    else{showToast('アバター画像のアップロードに失敗: '+(up.error||''),'error');return}
   }
   try{
     const body={name:document.getElementById('regName').value,furigana:document.getElementById('regFuri').value,
@@ -5059,10 +5019,13 @@ function toggleMypage(){
   else{closeBottomMenu();openMypage()}
 }
 async function uploadMyAvatar(input){
-  const file=input.files[0];if(!file) return;
+  const original=input.files[0];if(!original) return;
+  const file=await compressImage(original);
   const fd=new FormData();fd.append('image',file);
-  const r=await fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json());
+  const res=await fetch('/api/upload',{method:'POST',body:fd});
+  const r=await res.json().catch(()=>({success:false,error:'サーバ応答が不正です ('+res.status+')'}));
   if(r.success){document.getElementById('mpAvatar').src=r.url;currentUser.avatar=r.url;showToast('アバターを更新しました')}
+  else showToast('アップロード失敗: '+(r.error||res.status),'error');
 }
 
 async function saveMypage(e){
