@@ -2585,6 +2585,18 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
 <div class="bento-container">
 <div class="bento-grid">
 
+<!-- EVENTS: full width — 来訪者が一番見たい「次のイベント」を先頭に出す -->
+<div class="bento-cell bento-full reveal">
+<section class="sec" id="events">
+  <div class="sec-head"><h2><i class="fas fa-calendar-check"></i> 交流会・イベント</h2><p>ここから仲間・お客さん・コラボが生まれます。参加するほどメンバー特典も充実！</p></div>
+  <div class="carousel-wrap">
+    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('evTrack',-310)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="evTrack"></div>
+    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('evTrack',310)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+</div><!-- /events -->
+
 <!-- ABOUT: full width -->
 <div class="bento-cell bento-full reveal">
 <section class="sec" id="about">
@@ -2668,18 +2680,6 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
   </div>
 </section>
 </div><!-- /about -->
-
-<!-- EVENTS: full width -->
-<div class="bento-cell bento-full reveal">
-<section class="sec" id="events">
-  <div class="sec-head"><h2><i class="fas fa-calendar-check"></i> 交流会・イベント</h2><p>ここから仲間・お客さん・コラボが生まれます。参加するほどメンバー特典も充実！</p></div>
-  <div class="carousel-wrap">
-    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('evTrack',-310)"><i class="fas fa-chevron-left"></i></button>
-    <div class="carousel-track" id="evTrack"></div>
-    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('evTrack',310)"><i class="fas fa-chevron-right"></i></button>
-  </div>
-</section>
-</div><!-- /events -->
 
 <!-- BLOGS: full width — 活動の様子をイベント直下で見せる -->
 <div class="bento-cell bento-full reveal">
