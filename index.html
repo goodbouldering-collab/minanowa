@@ -314,7 +314,7 @@ html{scroll-snap-type:y proximity;-webkit-overflow-scrolling:touch;scroll-paddin
 .mem-intro{font-size:.88rem;-webkit-line-clamp:4;padding:.3rem .8rem;line-height:1.65}
 .mem-benefit{font-size:.84rem;padding:.3rem .7rem}
 .mem-card-foot{padding:.45rem .8rem .7rem}
-.mem-links a{width:38px !important;height:38px !important;font-size:1rem !important}
+.mem-links a,.mem-links button{width:38px !important;height:38px !important;font-size:1rem !important;padding:0 !important}
 .mem-board-btn{font-size:.85rem !important;padding:.45rem .85rem !important}
 .mem-board-btn i{font-size:.78rem !important}
 .mem-rank{font-size:.75rem !important;padding:.22rem .58rem !important}
@@ -1317,12 +1317,14 @@ footer{padding:2rem 1rem 1rem}
 .mem-card-foot{display:flex;align-items:center;justify-content:space-between;
   padding:.3rem .7rem .4rem;margin-top:auto;border-top:1px solid rgba(255,255,255,.5);
   background:rgba(255,255,255,.25);gap:.3rem}
-.mem-links{display:flex;gap:.4rem}
-.mem-links a{display:inline-flex;align-items:center;justify-content:center;
-  width:36px;height:36px;border-radius:50%;background:rgba(180,83,9,.08);
-  color:var(--c1);font-size:1rem;transition:all .3s ease;border:1px solid rgba(180,83,9,.12);
+.mem-links{display:flex;gap:.4rem;align-items:center}
+.mem-links a,.mem-links button{display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;padding:0;border-radius:50%;background:rgba(180,83,9,.08);
+  color:var(--c1);font-size:1rem;line-height:1;transition:all .3s ease;
+  border:1px solid rgba(180,83,9,.12);
+  -webkit-appearance:none;appearance:none;cursor:pointer;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.mem-links a:hover{background:var(--c1);color:#fff}
+.mem-links a:hover,.mem-links button:hover{background:var(--c1);color:#fff}
 .mem-board-btn{display:inline-flex;align-items:center;gap:.3rem;
   font-size:.82rem;font-weight:700;color:#fff;
   background:linear-gradient(135deg,var(--c1),var(--c2));
@@ -1348,8 +1350,8 @@ footer{padding:2rem 1rem 1rem}
 .benefit-banner-text h3{font-size:1.05rem;font-weight:800;color:#92400e;margin-bottom:.3rem}
 .benefit-banner-text p{font-size:.85rem;color:#a16207;line-height:1.5;font-weight:500}
 .benefit-banner-arrow{color:#d97706;font-size:1.2rem;flex-shrink:0}
-.mem-links a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(180,83,9,.08);color:var(--c1);font-size:1rem;transition:all .3s ease;border:1px solid rgba(180,83,9,.12)}
-.mem-links a:hover{background:var(--c1);color:#fff}
+.mem-links a,.mem-links button{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border-radius:50%;background:rgba(180,83,9,.08);color:var(--c1);font-size:1rem;line-height:1;transition:all .3s ease;border:1px solid rgba(180,83,9,.12);-webkit-appearance:none;appearance:none;cursor:pointer}
+.mem-links a:hover,.mem-links button:hover{background:var(--c1);color:#fff}
 /* Member Rank Badge */
 .mem-rank{display:inline-flex;align-items:center;gap:.25rem;margin-top:0;padding:.18rem .6rem;
   border-radius:20px;font-size:.78rem;font-weight:700;letter-spacing:.02em}
@@ -1697,15 +1699,14 @@ body.modal-open{overflow:hidden}
   margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem;letter-spacing:.01em;
   padding-right:2.5rem;word-break:break-word;line-height:1.4}
 /* Event Share Bar */
-.ev-share-bar{display:flex;align-items:center;gap:.4rem;margin-bottom:.6rem;padding:.4rem .6rem;
-  background:linear-gradient(135deg,rgba(240,253,244,.6),rgba(204,251,241,.3));
-  border-radius:8px;border:1px solid rgba(217,119,6,.1)}
-.ev-share-label{font-size:.78rem;font-weight:700;color:var(--td);margin-right:auto;display:flex;align-items:center;gap:.25rem}
+.ev-share-bar{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;margin-bottom:.6rem;padding:0;background:none;border:none}
+.ev-share-label{font-size:.78rem;font-weight:700;color:var(--td);margin-right:auto;display:inline-flex;align-items:center;gap:.25rem;line-height:1}
 .ev-share-label i{color:var(--c1)}
-.ev-share-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;
-  border-radius:50%;border:none;cursor:pointer;font-size:.78rem;transition:all .3s ease;flex-shrink:0}
-.ev-share-btn:hover{box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.ev-share-btn:active{}
+.ev-share-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;
+  border-radius:50%;border:none;cursor:pointer;font-size:.85rem;line-height:1;transition:transform .2s ease, box-shadow .2s ease;flex-shrink:0;
+  -webkit-appearance:none;appearance:none;text-decoration:none}
+.ev-share-btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.ev-share-btn:active{transform:translateY(0)}
 .ev-share-btn.share-copy{background:#fff;color:var(--c1);border:1.5px solid var(--c1)}
 .ev-share-btn.share-copy:hover{background:var(--c1);color:#fff}
 .ev-share-btn.share-line{background:#06C755;color:#fff}
