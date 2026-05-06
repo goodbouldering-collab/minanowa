@@ -1166,17 +1166,48 @@ function editEvent(id){openEventForm(events.find(e=>e.id===id))}
 async function saveEvent(e){
   e.preventDefault();showSpinner('保存中...');
   try{
-  const id=document.getElementById('evId').value;
-  const body={title:document.getElementById('evTitle').value,date:document.getElementById('evDate').value,
-    time:document.getElementById('evTime').value,location:document.getElementById('evLoc').value,
-    description:document.getElementById('evDesc').value,detailedInfo:document.getElementById('evDetail').value,
-    participants:parseInt(document.getElementById('evCap').value),fee:document.getElementById('evFee').value,
-    applicationUrl:document.getElementById('evAppUrl').value,
-    imageUrl:document.getElementById('evImg').value};
-  const url=id?`/api/admin/events/${id}`:'/api/admin/events';
-  const r=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
-  if(r.success){closeM('evModal');loadAll();showToast(id?'更新しました':'作成しました')}
-  }finally{hideSpinner()}
+    const id=document.getElementById('evId').value;
+    const body={title:document.getElementById('evTitle').value,date:document.getElementById('evDate').value,
+      time:document.getElementById('evTime').value,location:document.getElementById('evLoc').value,
+      description:document.getElementById('evDesc').value,detailedInfo:document.getElementById('evDetail').value,
+      participants:parseInt(document.getElementById('evCap').value),fee:document.getElementById('evFee').value,
+      applicationUrl:document.getElementById('evAppUrl').value,
+      imageUrl:document.getElementById('evImg').value,
+      published:document.getElementById('evPublished')?document.getElementById('evPublished').checked:true};
+    const url=id?`/api/admin/events/${id}`:'/api/admin/events';
+    const res=await fetch(url,{method:id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const r=await res.json().catch(()=>({success:false,error:'サーバ応答が不正です ('+res.status+')'}));
+    if(r.success){closeM('evModal');loadAll();showToast(id?'更新しました':'作成しました')}
+    else showToast('保存失敗: '+(r.error||res.status),'error');
+  }catch(err){showToast('保存失敗: '+(err.message||err),'error')}
+  finally{hideSpinner()}
+}
+// 既存イベントを複製して新規作成画面を開く
+function duplicateEvent(id){
+  const ev=events.find(e=>e.id===id);if(!ev) return;
+  openEvModal();
+  document.getElementById('evId').value='';
+  document.getElementById('evTitle').value=(ev.title||'')+' (コピー)';
+  document.getElementById('evDate').value=ev.date||'';
+  document.getElementById('evTime').value=ev.time||'';
+  document.getElementById('evLoc').value=ev.location||'';
+  document.getElementById('evDesc').value=ev.description||'';
+  document.getElementById('evDetail').value=ev.detailedInfo||'';
+  document.getElementById('evCap').value=ev.participants||'';
+  document.getElementById('evFee').value=ev.fee||'';
+  document.getElementById('evAppUrl').value=ev.applicationUrl||'';
+  document.getElementById('evImg').value=ev.imageUrl||'';
+  if(document.getElementById('evPublished')) document.getElementById('evPublished').checked=ev.published!==false;
+  updateImgPreview('evImg','evImgPreview');
+  showToast('コピーを作成しました');
+}
+// 画像 URL 変更時にサムネを表示
+function updateImgPreview(srcInputId,previewId){
+  const src=document.getElementById(srcInputId);
+  const prev=document.getElementById(previewId);
+  if(!src||!prev) return;
+  if(src.value){prev.innerHTML=`<img src="${src.value}" alt="" style="max-width:100%;max-height:140px;border-radius:8px;border:1px solid rgba(0,0,0,.08);object-fit:cover" onerror="this.parentNode.innerHTML='<span style=color:#ef4444;font-size:.78rem>画像URLの読み込みに失敗</span>'">`}
+  else prev.innerHTML='';
 }
 async function delEvent(id){if(confirm('削除しますか？')){showSpinner('削除中...');try{await fetch(`/api/admin/events/${id}`,{method:'DELETE'});loadAll();showToast('削除しました')}finally{hideSpinner()}}}
 
