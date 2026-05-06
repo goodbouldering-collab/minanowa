@@ -2,7 +2,8 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 
-const root = path.resolve(process.cwd(), 'public');
+// Vercel は outputDirectory='.' でリポルートを配信するため、ファビコン類はリポルート直下に置く。
+const root = process.cwd();
 const svgPath = path.join(root, 'favicon.svg');
 const svg = fs.readFileSync(svgPath);
 

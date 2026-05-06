@@ -26,14 +26,18 @@
 │   ├── supabase-store.js   # Supabase 永続層（本番で常時 ON）
 │   ├── vercel-utils.js     # CORS / method 振り分け / readJson / readMultipart / ok / fail
 │   ├── auth.js             # bcrypt + Google OAuth + admin token check
-│   └── data-cache.js       # singleton キャッシュ（コールドスタート対策）
-├── public/                 # Vercel 静的配信（index.html / admin.html / favicon / sw.js / manifest.json / icon-*）
-├── supabase/migrations/    # legacy_minanowa スキーマ（本番運用中）
+│   ├── data-cache.js       # singleton キャッシュ（コールドスタート対策）
+│   ├── reset-tokens.js     # パスワードリセット用 in-memory トークン
+│   └── mailer.js           # Resend 経由のメール送信（RESEND_API_KEY / MAIL_FROM）
+├── index.html              # トップページ（リポルート直下が Vercel に配信される）
+├── admin.html              # 管理画面（同上）
+├── favicon.svg / icon-*.png / apple-touch-icon.png / manifest.json / sw.js
+├── supabase/migrations/    # legacy_minanowa スキーマ（本番運用中・0001〜0004）
 ├── scripts/
-│   ├── seed-from-production.js    # 旧 Render → ローカル（参考、もう使わない）
 │   ├── pull-from-prod.js          # Supabase 本番 → ローカル dev スキーマへ
 │   ├── migrate-uploads-to-storage.js   # uploads/ → Supabase Storage（実行済）
-│   └── fix-storage-urls.js        # DB 内 /uploads/xxx URL を Storage URL に書換（実行済）
+│   ├── fix-storage-urls.js        # DB 内 /uploads/xxx URL を Storage URL に書換（実行済）
+│   └── gen-favicons.mjs           # favicon.svg → PNG 各サイズを sharp で生成
 ├── server.js               # 旧 Express サーバー（ローカル開発・復旧用にのみ残置）
 ├── data.json               # 旧 Render /data 由来の最終スナップショット（参考）
 ├── package.json
@@ -42,13 +46,18 @@
 └── Dockerfile              # 同上
 ```
 
+**注意: `public/` ディレクトリは存在しない**。Vercel の `outputDirectory: '.'` 設定で
+リポルート直下が静的配信されるため、index.html / admin.html / favicon 等は **必ずルート
+直下に置く**。以前 `public/` に同期コピーがあったが完全な死コードだったので 2026-05-07
+に撤去済み (commit で確認可)。
+
 ## 起動
 
 ### ローカル（Vercel CLI 経由・推奨）
 
 ```bash
 npm install
-npx vercel dev --listen 3000   # api/* + public/ を Vercel と同等の挙動で起動
+npx vercel dev --listen 3000   # api/* + ルート直下静的ファイルを Vercel と同等の挙動で起動
 ```
 
 ### ローカル（旧 Express でサクッと触りたいとき）
