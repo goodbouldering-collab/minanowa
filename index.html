@@ -1953,11 +1953,54 @@ body.modal-open{overflow:hidden}
   font-size:.6rem;color:var(--tl);background:rgba(0,0,0,.04);border:none;
   transition:var(--transition)}
 .op-social a:hover{background:var(--c1);color:#fff}
+/* ========== JOIN 3-STEP FLOW ========== */
+.join-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:0 0 1.2rem;list-style:none;padding:0;counter-reset:js}
+.join-step{display:flex;gap:.6rem;background:#fff;border:1px solid rgba(217,119,6,.15);border-radius:14px;padding:.8rem .8rem;align-items:flex-start;
+  box-shadow:0 4px 14px rgba(217,119,6,.06);position:relative;overflow:hidden}
+.join-step::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+.join-step-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;
+  box-shadow:0 3px 8px rgba(217,119,6,.3)}
+.join-step-body h3{font-size:.95rem;font-weight:800;color:var(--td);margin-bottom:.2rem}
+.join-step-body p{font-size:.8rem;color:var(--tl);line-height:1.5}
+@media(max-width:768px){
+  .join-steps{grid-template-columns:1fr;gap:.5rem;margin-bottom:.9rem}
+  .join-step{padding:.6rem .7rem;gap:.55rem}
+  .join-step-num{width:28px;height:28px;font-size:.92rem}
+  .join-step-body h3{font-size:.92rem}
+  .join-step-body p{font-size:.78rem;line-height:1.45}
+}
+/* ========== TODAY WA SUMMARY ========== */
+.today-wa-wrap{max-width:1100px;margin:0 auto;padding:.9rem 1rem 0}
+.today-wa-card{background:linear-gradient(135deg,#fffbeb,#ffedd5);border:1px solid rgba(217,119,6,.18);border-radius:18px;padding:.9rem 1rem;
+  box-shadow:0 6px 24px rgba(217,119,6,.08)}
+.today-wa-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;gap:.5rem}
+.today-wa-tag{display:inline-flex;align-items:center;gap:.35rem;font-weight:800;font-size:.78rem;letter-spacing:.04em;color:#b45309;
+  background:rgba(255,255,255,.7);padding:.25rem .6rem;border-radius:999px;border:1px solid rgba(217,119,6,.25)}
+.today-wa-date{font-size:.72rem;color:#92400e;font-weight:600}
+.today-wa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
+.today-wa-cell{display:block;background:#fff;border:1px solid rgba(217,119,6,.12);border-radius:12px;padding:.6rem .7rem;color:var(--td);
+  text-decoration:none;transition:transform .25s ease,box-shadow .25s ease;min-height:0;overflow:hidden}
+.today-wa-cell:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(217,119,6,.15)}
+.today-wa-cell-label{font-size:.7rem;font-weight:700;color:#b45309;display:flex;align-items:center;gap:.3rem;margin-bottom:.25rem;letter-spacing:.04em}
+.today-wa-cell-body{font-size:.85rem;font-weight:600;color:var(--td);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.today-wa-cell-meta{font-size:.7rem;color:var(--tl);margin-top:.2rem}
+@media(max-width:768px){
+  .today-wa-wrap{padding:.6rem .7rem 0}
+  .today-wa-card{padding:.7rem .7rem;border-radius:14px}
+  .today-wa-grid{grid-template-columns:1fr;gap:.4rem}
+  .today-wa-cell{padding:.5rem .65rem}
+  .today-wa-cell-label{font-size:.68rem;margin-bottom:.15rem}
+  .today-wa-cell-body{font-size:.84rem;-webkit-line-clamp:1}
+}
 /* ========== LINE CTA BANNER ========== */
 .line-cta{background:linear-gradient(135deg,#06c755 0%,#00b900 100%);
   border-radius:20px;padding:1.3rem 2rem;display:flex;align-items:center;justify-content:center;
   gap:1.4rem;margin-top:.5rem;color:#fff;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.16,1,.3,1);cursor:pointer;
   max-width:100%}
+.line-cta.line-cta-compact{padding:.85rem 1.1rem !important;flex-direction:row !important;text-align:left !important;gap:.8rem;border-radius:14px;margin-top:0}
+.line-cta-text-compact{flex:1;font-size:1rem;font-weight:700;letter-spacing:.02em}
 .line-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent 60%);pointer-events:none}
 .line-cta:hover{}
 .line-cta-icon{font-size:2rem;flex-shrink:0}
@@ -2570,15 +2613,27 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
   <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
 </section>
 
-<!-- IMPACT COUNTER STRIP -->
-<div class="counter-strip reveal" id="counterStrip">
-  <div class="counter-strip-grid">
-    <div class="cs-item"><div class="cs-num" data-count="25">0</div><div class="cs-label">交流会の開催回数</div></div>
-    <div class="cs-item"><div class="cs-num" data-count="500" data-suffix="+">0</div><div class="cs-label">延べ参加者数</div></div>
-    <div class="cs-item"><div class="cs-num" data-count="40" data-suffix="+">0</div><div class="cs-label">登録メンバー</div></div>
-    <div class="cs-item"><div class="cs-num" data-count="150" data-suffix="+">0</div><div class="cs-label">ビジネス取引</div></div>
-    <div class="cs-item"><div class="cs-num" data-count="30" data-suffix="+">0</div><div class="cs-label">コラボ実績</div></div>
-    <div class="cs-item"><div class="cs-num" data-count="98" data-suffix="%">0</div><div class="cs-label">満足度</div></div>
+<!-- 今日のWA: 次のイベント / 最新ブログ / 最新掲示板 を1カードに集約 -->
+<div class="today-wa-wrap">
+  <div class="today-wa-card" id="todayWaCard">
+    <div class="today-wa-head">
+      <span class="today-wa-tag"><i class="fas fa-bolt"></i> 今日のWA</span>
+      <span class="today-wa-date" id="todayWaDate"></span>
+    </div>
+    <div class="today-wa-grid" id="todayWaGrid">
+      <a class="today-wa-cell today-wa-event" id="todayWaEvent" href="#events">
+        <div class="today-wa-cell-label"><i class="fas fa-calendar-check"></i> 次の交流会</div>
+        <div class="today-wa-cell-body">読み込み中…</div>
+      </a>
+      <a class="today-wa-cell today-wa-blog" id="todayWaBlog" href="#blogs">
+        <div class="today-wa-cell-label"><i class="fas fa-newspaper"></i> 最新レポート</div>
+        <div class="today-wa-cell-body">読み込み中…</div>
+      </a>
+      <a class="today-wa-cell today-wa-board" id="todayWaBoard" href="#board">
+        <div class="today-wa-cell-label"><i class="fas fa-comments"></i> 最新の投稿</div>
+        <div class="today-wa-cell-body">読み込み中…</div>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -2598,10 +2653,47 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
 </section>
 </div><!-- /events -->
 
+<!-- BLOGS: full width — events の直下で「実際の活動」を見せて温度感を伝える -->
+<div class="bento-cell bento-full reveal">
+<section class="sec" id="blogs">
+  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・レポート</h2><p>交流会やコラボの様子をお届けします</p></div>
+  <div class="carousel-wrap">
+    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
+    <div class="carousel-track" id="blogTrack"></div>
+    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('blogTrack',290)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+</div><!-- /blogs -->
+
 <!-- ABOUT: full width -->
 <div class="bento-cell bento-full reveal">
 <section class="sec" id="about">
-  <div class="sec-head" style="margin-bottom:1.8rem"><h2><i class="fas fa-heart"></i> みんなのWAとは</h2><p id="aboutSubtitle">彦根発・琵琶湖のほとりで事業者がつながり、成長し合うコミュニティ</p></div>
+  <div class="sec-head" style="margin-bottom:1.2rem"><h2><i class="fas fa-heart"></i> みんなのWAとは</h2><p id="aboutSubtitle">彦根発・琵琶湖のほとりで事業者がつながり、成長し合うコミュニティ</p></div>
+
+  <!-- 3 STEP 参加フロー -->
+  <ol class="join-steps">
+    <li class="join-step">
+      <div class="join-step-num">1</div>
+      <div class="join-step-body">
+        <h3>無料で会員登録</h3>
+        <p>30秒で完了。彦根の事業者・フリーランスならどなたでも登録できます。</p>
+      </div>
+    </li>
+    <li class="join-step">
+      <div class="join-step-num">2</div>
+      <div class="join-step-body">
+        <h3>交流会に参加</h3>
+        <p>毎月1回の定期交流会で名刺交換・自己紹介・お悩み相談。1回参加すれば一気に顔見知りに。</p>
+      </div>
+    </li>
+    <li class="join-step">
+      <div class="join-step-num">3</div>
+      <div class="join-step-body">
+        <h3>仲間とつながり続ける</h3>
+        <p>掲示板・LINEで日常的にやり取り。お客さん紹介・コラボ企画が自然に生まれます。</p>
+      </div>
+    </li>
+  </ol>
 
   <!-- Interactive accordion cards -->
   <div class="about-acc-list">
@@ -2681,18 +2773,6 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
   </div>
 </section>
 </div><!-- /about -->
-
-<!-- BLOGS: full width — 活動の様子をイベント直下で見せる -->
-<div class="bento-cell bento-full reveal">
-<section class="sec" id="blogs">
-  <div class="sec-head"><h2><i class="fas fa-newspaper"></i> お知らせ・レポート</h2><p>交流会やコラボの様子をお届けします</p></div>
-  <div class="carousel-wrap">
-    <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('blogTrack',-290)"><i class="fas fa-chevron-left"></i></button>
-    <div class="carousel-track" id="blogTrack"></div>
-    <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('blogTrack',290)"><i class="fas fa-chevron-right"></i></button>
-  </div>
-</section>
-</div><!-- /blogs -->
 
 <!-- MEMBERS: full width -->
 <div class="bento-cell bento-full reveal">
@@ -2785,33 +2865,25 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
 </section>
 </div><!-- /contact -->
 
-<!-- LINE CTA: full width accent -->
+<!-- LINE CTA: コンパクトな1行バー -->
 <div class="bento-cell bento-full bento-accent reveal">
-<section class="sec" id="lineCta">
-  <a class="line-cta" href="https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener">
+<section class="sec" id="lineCta" style="padding-top:.6rem;padding-bottom:.6rem">
+  <a class="line-cta line-cta-compact" href="https://line.me/ti/g2/1nCmTIs5yqojoEbwVg9d0-CCO5kKqlyA8ESi8Q?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener">
     <i class="fab fa-line line-cta-icon"></i>
-    <div class="line-cta-text">
-      <h3>LINEオープンチャットで今すぐつながろう！</h3>
-      <p>メンバー限定の割引特典・コラボ相談・イベント告知がリアルタイムで。参加するだけで彦根の事業者ネットワークとお得な特典が手に入ります。</p>
-    </div>
-    <span class="line-cta-btn"><i class="fas fa-arrow-right" style="margin-right:.2rem"></i>参加する</span>
+    <span class="line-cta-text-compact">LINEオープンチャットで参加する</span>
+    <span class="line-cta-btn"><i class="fas fa-arrow-right"></i></span>
   </a>
 </section>
 </div><!-- /lineCta -->
 
-<!-- OPERATING MEMBERS: full width -->
+<!-- OPERATING MEMBERS: コンパクト版 -->
 <div class="bento-cell bento-full reveal" style="border:none;box-shadow:none;background:none;backdrop-filter:none">
 <section class="sec" id="opMembers">
-  <div class="sec-head"><h2><i class="fas fa-user-shield"></i> 運営メンバー</h2><p>運営に関わるとITスキル・企画力が身につきます</p></div>
+  <div class="sec-head" style="margin-bottom:.6rem"><h2 style="font-size:1.4rem"><i class="fas fa-user-shield"></i> 運営メンバー</h2><p style="font-size:.85rem">運営に関わるとITスキル・企画力が身につきます。<a href="#contact" style="color:var(--c1);font-weight:700">運営応募はこちら →</a></p></div>
   <div class="carousel-wrap">
     <button type="button" class="carousel-btn prev" aria-label="前へ" onclick="scrollCar('opTrack',-220)"><i class="fas fa-chevron-left"></i></button>
     <div class="carousel-track" id="opTrack"></div>
     <button type="button" class="carousel-btn next" aria-label="次へ" onclick="scrollCar('opTrack',220)"><i class="fas fa-chevron-right"></i></button>
-  </div>
-  <div style="margin-top:1.2rem;text-align:center;padding:1rem 1.2rem;background:linear-gradient(135deg,rgba(217,119,6,.06),rgba(217,119,6,.06));border-radius:14px;border:1px dashed rgba(217,119,6,.2)">
-    <p style="font-size:.88rem;font-weight:600;color:var(--td);margin-bottom:.15rem"><i class="fas fa-bullhorn" style="color:var(--c1);margin-right:.3rem"></i>運営メンバー募集中！</p>
-    <p style="font-size:.78rem;color:var(--tl);margin-bottom:.6rem">サイト制作・SNS運用・イベント企画など、一緒に活動しませんか？<br>経験不問 ── やる気があればOKです。</p>
-    <a href="#contact" class="btn btn-primary btn-sm" style="font-size:.75rem"><i class="fas fa-envelope"></i> お問い合わせから応募する</a>
   </div>
 </section>
 </div><!-- /opMembers -->
@@ -3316,7 +3388,7 @@ async function loadAll(){
     animHeroStats();
     allEvents.sort((a,b)=>new Date(b.date)-new Date(a.date));
     await loadMemberRanks();
-    renderEvents();renderMembers();renderBlogs();renderBoards();renderOpMembers();renderInstaFeed(settings);initHeroVideoDigest();renderHeroNextEvent();renderHeroBoardNotif();updateHeroNotifBar();updateBottomNavBadges();
+    renderEvents();renderMembers();renderBlogs();renderBoards();renderOpMembers();renderInstaFeed(settings);initHeroVideoDigest();renderHeroNextEvent();renderHeroBoardNotif();updateHeroNotifBar();updateBottomNavBadges();renderTodayWA();
     // Defer map render until #memberMap section approaches viewport
     {const mapSec=document.getElementById('memberMap');
      if(mapSec){
@@ -3374,6 +3446,56 @@ function scrollCar(id,dx){
 }
 
 /* ========== RENDER EVENTS ========== */
+function renderTodayWA(){
+  const wd=['日','月','火','水','木','金','土'];
+  const now=new Date();
+  const d=document.getElementById('todayWaDate');
+  if(d) d.textContent=`${now.getMonth()+1}/${now.getDate()}(${wd[now.getDay()]}) 更新`;
+  // 次のイベント
+  const evCell=document.getElementById('todayWaEvent');
+  if(evCell){
+    const today=new Date();today.setHours(0,0,0,0);
+    const upcoming=allEvents.filter(e=>new Date(e.date)>=today).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
+    const body=evCell.querySelector('.today-wa-cell-body');
+    const meta=document.createElement('div');meta.className='today-wa-cell-meta';
+    if(upcoming){
+      body.textContent=upcoming.title;
+      const m=new Date(upcoming.date);
+      meta.textContent=`${m.getMonth()+1}/${m.getDate()}(${wd[m.getDay()]}) ${upcoming.time||''} ${upcoming.location||''}`.trim();
+    }else{
+      body.textContent='次回開催を準備中です';
+      meta.textContent='お知らせは LINE で配信します';
+    }
+    if(!evCell.querySelector('.today-wa-cell-meta')) evCell.appendChild(meta);
+  }
+  // 最新ブログ
+  const blogCell=document.getElementById('todayWaBlog');
+  if(blogCell){
+    const sorted=[...allBlogs].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    const latest=sorted[0];
+    const body=blogCell.querySelector('.today-wa-cell-body');
+    const meta=document.createElement('div');meta.className='today-wa-cell-meta';
+    if(latest){
+      body.textContent=latest.title;
+      meta.textContent=(latest.category||'お知らせ')+' / '+(latest.date||'');
+    }else{ body.textContent='まだ投稿はありません'; meta.textContent=''; }
+    if(!blogCell.querySelector('.today-wa-cell-meta')) blogCell.appendChild(meta);
+  }
+  // 最新掲示板
+  const boardCell=document.getElementById('todayWaBoard');
+  if(boardCell){
+    const sorted=[...allBoards].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const latest=sorted[0];
+    const body=boardCell.querySelector('.today-wa-cell-body');
+    const meta=document.createElement('div');meta.className='today-wa-cell-meta';
+    if(latest){
+      body.textContent=(latest.title||latest.text||'').slice(0,60);
+      const m=allMembers.find(x=>x.id===latest.memberId);
+      meta.textContent=(m&&m.name?m.name:'メンバー')+' さん';
+    }else{ body.textContent='まだ投稿はありません'; meta.textContent=''; }
+    if(!boardCell.querySelector('.today-wa-cell-meta')) boardCell.appendChild(meta);
+  }
+}
 function renderEvents(){
   const t=document.getElementById('evTrack');t.innerHTML='';
   const today=new Date();today.setHours(0,0,0,0);
