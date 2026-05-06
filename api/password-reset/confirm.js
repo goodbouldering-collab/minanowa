@@ -6,7 +6,7 @@
 const { withCors, withMethods, readJson, ok, fail, handleErr } = require('../../lib/vercel-utils');
 const { readData, writeData } = require('../../lib/data-cache');
 const { hashPassword } = require('../../lib/auth');
-const { getToken, deleteToken } = require('../../lib/reset-tokens');
+const { getToken, consumeToken } = require('../../lib/db-tokens');
 
 async function POST(req, res) {
   try {
@@ -15,17 +15,17 @@ async function POST(req, res) {
     if (!token || !password) return fail(res, 400, 'トークンとパスワードが必要です');
     if (String(password).length < 6) return fail(res, 400, 'パスワードは6文字以上にしてください');
 
-    const entry = getToken(token);
+    const entry = await getToken(token);
     if (!entry) return fail(res, 400, 'リセットリンクが無効または期限切れです');
 
     const data = await readData();
-    const member = data.members.find((m) => m.email === entry.email);
+    const member = data.members.find((m) => m.id === entry.memberId);
     if (!member) return fail(res, 404, 'ユーザーが見つかりません');
 
     member.password = await hashPassword(password);
     await writeData(data);
 
-    deleteToken(token);
+    await consumeToken(token);
 
     return ok(res, { success: true, message: 'パスワードを更新しました' });
   } catch (e) {

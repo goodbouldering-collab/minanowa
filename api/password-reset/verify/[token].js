@@ -7,13 +7,13 @@
 'use strict';
 
 const { withCors, withMethods, ok, fail, handleErr } = require('../../../lib/vercel-utils');
-const { getToken } = require('../../../lib/reset-tokens');
+const { getToken } = require('../../../lib/db-tokens');
 
 async function GET(req, res) {
   try {
     const token = (req.query && req.query.token) || '';
-    const entry = getToken(token);
-    if (!entry) {
+    const entry = await getToken(token);
+    if (!entry || !entry.email) {
       return fail(res, 400, 'リセットリンクが無効または期限切れです');
     }
     const masked = entry.email.replace(/(.{2}).*(@.*)/, '$1***$2');

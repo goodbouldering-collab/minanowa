@@ -8,6 +8,7 @@
 const bcrypt = require('bcryptjs');
 const { withCors, withMethods, readJson, ok, fail, handleErr } = require('../../lib/vercel-utils');
 const { readData, writeData } = require('../../lib/data-cache');
+const { getToken, consumeToken } = require('../../lib/db-tokens');
 
 async function POST(req, res) {
   try {
@@ -17,13 +18,11 @@ async function POST(req, res) {
     if (!token) return fail(res, 400, 'トークンが必要です');
     if (!password || password.length < 6) return fail(res, 400, 'パスワードは 6 文字以上で入力してください');
 
-    const data = await readData();
-    const tokens = data.passwordResets || [];
-    const t = tokens.find(x => x.token === token && !x.used);
-    if (!t) return fail(res, 400, 'トークンが無効か既に使用済みです');
-    if (new Date(t.expiresAt) < new Date()) return fail(res, 400, 'トークンの有効期限が切れています');
+    const entry = await getToken(token);
+    if (!entry) return fail(res, 400, 'トークンが無効か既に使用済みです');
 
-    const member = (data.members || []).find(m => m.id === t.memberId);
+    const data = await readData();
+    const member = (data.members || []).find(m => m.id === entry.memberId);
     if (!member) return fail(res, 404, 'アカウントが見つかりません');
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -44,10 +43,8 @@ async function POST(req, res) {
     if (body.googleMapUrl) member.googleMapUrl = body.googleMapUrl;
     if (body.avatar) member.avatar = body.avatar;
 
-    t.used = true;
-    t.usedAt = new Date().toISOString();
-
     await writeData(data);
+    await consumeToken(token);
     res.setHeader('Cache-Control', 'no-store');
     return ok(res, {
       success: true,

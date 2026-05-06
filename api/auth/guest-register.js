@@ -9,9 +9,9 @@
 //  5. 戻り値で memberId / token / reRegisterUrl を返す
 'use strict';
 
-const crypto = require('crypto');
 const { withCors, withMethods, readJson, ok, fail, handleErr } = require('../../lib/vercel-utils');
 const { readData, writeData } = require('../../lib/data-cache');
+const { createTokenForMember } = require('../../lib/db-tokens');
 const { sendMail, buildGuestWelcomeMail } = require('../../lib/mailer');
 
 function isValidEmail(s){return typeof s==='string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)}
@@ -50,18 +50,6 @@ async function POST(req, res) {
     };
     data.members.push(newMember);
 
-    // 再登録トークン
-    const token = crypto.randomBytes(32).toString('hex');
-    if (!data.passwordResets) data.passwordResets = [];
-    data.passwordResets.push({
-      token,
-      memberId: id,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-      used: false,
-      createdAt: new Date().toISOString(),
-      kind: 'complete-signup',
-    });
-
     // イベント参加処理
     let eventRegistered = false;
     if (eventId) {
@@ -93,6 +81,13 @@ async function POST(req, res) {
     }
 
     await writeData(data);
+
+    // 再登録トークン (DB 永続化・7 日有効)
+    const { token } = await createTokenForMember({
+      memberId: id,
+      ttlMs: 7 * 24 * 60 * 60 * 1000,
+      kind: 'complete-signup',
+    });
 
     const origin = (req.headers['x-forwarded-proto'] || 'https') + '://' + (req.headers['x-forwarded-host'] || req.headers.host || 'minanowa.com');
     const reRegisterUrl = origin + '/?complete=' + encodeURIComponent(token);
