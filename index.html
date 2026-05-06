@@ -3418,7 +3418,8 @@ async function loadAll(){
       fetch('/api/operating-members').then(r=>r.json())
     ]);
     allMembers=members.filter(m=>m.isPublic);
-    allEvents=events; allBlogs=blogs; allBoards=boards;
+    // 下書き(published===false)のイベントは公開ページで非表示
+    allEvents=(events||[]).filter(e=>e.published!==false); allBlogs=blogs; allBoards=boards;
     allInterviews=interviews; allOpMembers=opMembers;
     // Merge interviews into blogs as video posts
     interviews.forEach(iv=>{
@@ -3564,8 +3565,11 @@ function renderEvents(){
   const sorted=[...allEvents].sort((a,b)=>{
     const da=new Date(a.date),db=new Date(b.date);
     const aPast=da<today,bPast=db<today;
-    if(aPast!==bPast) return aPast?1:-1;        // 開催前を先頭に
-    return aPast ? db-da : da-db;                 // 開催前は近い順、終了は新しい順
+    if(aPast!==bPast) return aPast?1:-1;
+    // 同グループ内では sortOrder が 0 でないものが優先 (drag で並び替えたもの)
+    const sa=a.sortOrder||0, sb=b.sortOrder||0;
+    if (sa || sb) return sa - sb;
+    return aPast ? db-da : da-db;
   });
   sorted.forEach((ev,i)=>{
     const isPast=new Date(ev.date)<new Date();
@@ -4122,7 +4126,8 @@ function applyMemFilters(){
 
 function renderMembers(list){
   const t=document.getElementById('memTrack');t.innerHTML='';
-  (list||allMembers).forEach((m,i)=>{
+  const src=(list||allMembers).slice().sort((a,b)=>(a.sortOrder||0)-(b.sortOrder||0));
+  src.forEach((m,i)=>{
     const card=document.createElement('div');
     card.className='card mem-card';
     const rankHtml=getRankHtml(m.id);

@@ -11,6 +11,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" defer></script>
 <style>
 :root{--c1:#10b981;--c2:#059669;--c3:#34d399;--c4:#6ee7b7;--c5:#a7f3d0;
   --accent:#0d9488;--cbg:#f0fdf4;--cbg2:#f8fafc;--td:#1e293b;--tl:#64748b;--white:#fff;
@@ -336,6 +337,19 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
   box-shadow:0 2px 8px rgba(16,185,129,.2)}
 .blog-form-tab i{font-size:.65rem}
 
+/* DRAG SORT */
+.row-drag-handle{display:inline-flex;align-items:center;justify-content:center;width:18px;height:24px;border-radius:4px;transition:background .15s ease}
+.row-drag-handle:hover{background:rgba(0,0,0,.05);color:var(--c1) !important}
+.row-ghost{opacity:.4;background:#fef3c7 !important}
+.row-chosen{background:#fff7ed !important;cursor:grabbing}
+/* EVENT FORM TABS */
+.ev-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:.3rem;padding:.4rem .5rem;
+  border-radius:var(--r2);font-size:.72rem;font-weight:600;cursor:pointer;border:none;
+  background:transparent;color:var(--tl);transition:var(--transition);-webkit-appearance:none;appearance:none}
+.ev-tab:hover{background:rgba(16,185,129,.06);color:var(--c1)}
+.ev-tab.active{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.2)}
+.ev-tab i{font-size:.65rem}
+
 /* Category badges */
 .cat-badge{display:inline-flex;align-items:center;gap:.2rem;padding:.12rem .4rem;border-radius:6px;
   font-size:.6rem;font-weight:700}
@@ -619,27 +633,53 @@ tr:hover .tbl-avatar{transform:scale(1.08);box-shadow:0 2px 8px rgba(16,185,129,
 
 <!-- MODALS -->
 <div id="evModal" class="modal">
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:600px">
     <button class="modal-close" onclick="closeM('evModal')">&times;</button>
-    <div class="modal-title"><i class="fas fa-calendar-plus"></i> <span id="evFormTitle">イベント作成</span></div>
+    <div class="modal-title" style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+      <i class="fas fa-calendar-plus"></i> <span id="evFormTitle">イベント作成</span>
+      <button type="button" id="evDuplicateBtn" onclick="duplicateCurrentEvent()" style="margin-left:auto;background:rgba(16,185,129,.1);color:var(--c2);border:1px solid var(--c5);padding:.25rem .55rem;border-radius:6px;font-size:.7rem;cursor:pointer;display:none"><i class="fas fa-copy"></i> 複製</button>
+    </div>
+    <div class="ev-tabs" style="display:flex;gap:.2rem;background:rgba(16,185,129,.05);padding:.25rem;border-radius:var(--r2);margin-bottom:.7rem">
+      <button type="button" class="ev-tab active" data-tab="basic" onclick="switchEvTab('basic',this)"><i class="fas fa-info-circle"></i> 基本</button>
+      <button type="button" class="ev-tab" data-tab="detail" onclick="switchEvTab('detail',this)"><i class="fas fa-align-left"></i> 詳細</button>
+      <button type="button" class="ev-tab" data-tab="media" onclick="switchEvTab('media',this)"><i class="fas fa-image"></i> メディア</button>
+      <button type="button" class="ev-tab" data-tab="publish" onclick="switchEvTab('publish',this)"><i class="fas fa-paper-plane"></i> 公開</button>
+    </div>
     <form onsubmit="saveEvent(event)">
       <input type="hidden" id="evId">
-      <div class="fg"><label>タイトル *</label><input id="evTitle" required></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
-        <div class="fg"><label>日付 *</label><input type="date" id="evDate" required></div>
-        <div class="fg"><label>時間 *</label><input id="evTime" required placeholder="19:00-21:00"></div>
+      <!-- 基本 -->
+      <div class="ev-tab-pane" data-pane="basic">
+        <div class="fg"><label>タイトル *</label><input id="evTitle" required></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+          <div class="fg"><label>日付 *</label><input type="date" id="evDate" required></div>
+          <div class="fg"><label>時間 *</label><input id="evTime" required placeholder="19:00-21:00"></div>
+        </div>
+        <div class="fg"><label>場所 *</label><input id="evLoc" required></div>
       </div>
-      <div class="fg"><label>場所 *</label><input id="evLoc" required></div>
-      <div class="fg"><label>説明</label><textarea id="evDesc"></textarea></div>
-      <div class="fg"><label>詳細情報</label><textarea id="evDetail"></textarea></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
-        <div class="fg"><label>定員</label><input type="number" id="evCap" value="30"></div>
-        <div class="fg"><label>参加費</label><input id="evFee" placeholder="2,000円"></div>
+      <!-- 詳細 -->
+      <div class="ev-tab-pane" data-pane="detail" style="display:none">
+        <div class="fg"><label>説明（一覧で表示される短文）</label><textarea id="evDesc" rows="3"></textarea></div>
+        <div class="fg"><label>詳細情報（詳細モーダルで表示）</label><textarea id="evDetail" rows="6"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 .5rem">
+          <div class="fg"><label>定員</label><input type="number" id="evCap" value="30"></div>
+          <div class="fg"><label>参加費</label><input id="evFee" placeholder="2,000円"></div>
+        </div>
       </div>
-      <div class="fg"><label>申し込みフォームURL</label><input id="evAppUrl" placeholder="https://forms.gle/..."></div>
-      <div class="fg"><label>画像URL</label><input id="evImg"></div>
-      <div class="fg"><label>画像アップロード</label><input type="file" id="evImgFile" accept="image/*" onchange="uploadImg(this,'evImg')"></div>
-      <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-save"></i> 保存</button>
+      <!-- メディア -->
+      <div class="ev-tab-pane" data-pane="media" style="display:none">
+        <div class="fg"><label>画像URL</label><input id="evImg" oninput="updateImgPreview('evImg','evImgPreview')"></div>
+        <div class="fg"><label>画像アップロード（自動圧縮）</label><input type="file" id="evImgFile" accept="image/*" onchange="uploadImg(this,'evImg').then(()=>updateImgPreview('evImg','evImgPreview'))"></div>
+        <div id="evImgPreview" style="margin-top:.4rem;text-align:center"></div>
+      </div>
+      <!-- 公開 -->
+      <div class="ev-tab-pane" data-pane="publish" style="display:none">
+        <div class="fg" style="display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(16,185,129,.02));border:1px solid rgba(16,185,129,.2);padding:.55rem .7rem;border-radius:8px">
+          <input type="checkbox" id="evPublished" checked style="width:18px;height:18px">
+          <label for="evPublished" style="margin:0;cursor:pointer;font-weight:700;color:var(--c2)"><i class="fas fa-eye"></i> 公開する（チェック外すと下書き保存）</label>
+        </div>
+        <div class="fg"><label>申し込みフォームURL（外部リンクが必要な場合）</label><input id="evAppUrl" placeholder="https://forms.gle/..."></div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:.6rem"><i class="fas fa-save"></i> 保存</button>
     </form>
   </div>
 </div>
@@ -953,23 +993,27 @@ function renderEvTbl(){
     const tr=document.createElement('tr');
     if(isPast) tr.style.opacity='.6';
     const thumb=ev.imageUrl?`<img src="${ev.imageUrl}" class="tbl-img">`:'<span class="tbl-muted">-</span>';
-    tr.innerHTML=`<td class="tbl-col-img">${thumb}</td>
+    tr.dataset.id=ev.id;
+    tr.innerHTML=`<td class="tbl-col-img"><span class="row-drag-handle" title="ドラッグで並び替え" style="cursor:grab;color:var(--tl);margin-right:.3rem"><i class="fas fa-grip-vertical"></i></span>${thumb}</td>
       <td class="ev-title-cell" title="${safeTitle}"><span style="color:var(--c1);text-decoration:underline">${safeTitle}</span></td>
       <td class="tbl-meta">${_escAttr(ev.date)} ${_escAttr(ev.time)}</td>
       <td class="tbl-meta">${_escAttr(ev.location)}</td>
       <td class="tbl-meta">${ev.participants||'-'}</td>
       <td><span class="ev-reg-link">${regCount}名</span></td>
-      <td><span class="status-tag ${isPast?'inactive':'active'}">${isPast?'終了':'受付中'}</span></td>
+      <td><span class="status-tag ${isPast?'inactive':'active'}">${isPast?'終了':'受付中'}</span>${ev.published===false?' <span class="status-tag" style="background:#fbbf24;color:#7c2d12;margin-left:.2rem">下書き</span>':''}</td>
       <td><div class="tbl-actions">
         <button class="btn btn-outline btn-sm ev-edit-btn" title="編集"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-outline btn-sm ev-dup-btn" title="複製"><i class="fas fa-copy"></i></button>
         <button class="btn btn-danger btn-sm ev-del-btn" title="削除"><i class="fas fa-trash"></i></button></div></td>`;
     tr.querySelector('.ev-title-cell').addEventListener('click',()=>showEvRegs(ev.id,ev.title));
     tr.querySelector('.ev-reg-link').addEventListener('click',(e)=>{e.stopPropagation();showEvRegs(ev.id,ev.title)});
     tr.querySelector('.ev-edit-btn').addEventListener('click',(e)=>{e.stopPropagation();editEvent(ev.id)});
+    tr.querySelector('.ev-dup-btn').addEventListener('click',(e)=>{e.stopPropagation();duplicateEvent(ev.id)});
     tr.querySelector('.ev-del-btn').addEventListener('click',(e)=>{e.stopPropagation();delEvent(ev.id)});
-    tr.addEventListener('click',(e)=>{if(!e.target.closest('.tbl-actions')&&!e.target.closest('.ev-reg-link')) showEvRegs(ev.id,ev.title)});
+    tr.addEventListener('click',(e)=>{if(!e.target.closest('.tbl-actions')&&!e.target.closest('.ev-reg-link')&&!e.target.closest('.row-drag-handle')) showEvRegs(ev.id,ev.title)});
     t.appendChild(tr);
   });
+  initRowSortable(t,'events');
 
   // Past events simple list
   const pastForList=past.filter(ev=>!tableList.includes(ev));
@@ -1160,7 +1204,9 @@ function openEventForm(ev){
   document.getElementById('evFee').value=ev?ev.fee:'';
   document.getElementById('evAppUrl').value=ev?ev.applicationUrl||'':'';
   document.getElementById('evImg').value=ev?ev.imageUrl:'';
-  openM('evModal');
+  const pub=document.getElementById('evPublished');
+  if(pub) pub.checked = ev ? (ev.published!==false) : true;
+  openEvModal(ev?ev.id:'');
 }
 function editEvent(id){openEventForm(events.find(e=>e.id===id))}
 async function saveEvent(e){
@@ -1182,13 +1228,34 @@ async function saveEvent(e){
   }catch(err){showToast('保存失敗: '+(err.message||err),'error')}
   finally{hideSpinner()}
 }
+function switchEvTab(tab,btn){
+  document.querySelectorAll('#evModal .ev-tab').forEach(b=>b.classList.toggle('active',b===btn));
+  document.querySelectorAll('#evModal .ev-tab-pane').forEach(p=>{
+    p.style.display=(p.dataset.pane===tab)?'':'none';
+  });
+}
+// モーダル開く時のラッパ。新規/編集どちらでもタブ初期化＋複製ボタン制御
+function openEvModal(id){
+  const dup=document.getElementById('evDuplicateBtn');
+  if(dup) dup.style.display = id ? 'inline-flex' : 'none';
+  const t=document.querySelector('#evModal .ev-tab[data-tab="basic"]');
+  if(t) switchEvTab('basic',t);
+  document.getElementById('evImg').dispatchEvent(new Event('input'));
+  openM('evModal');
+}
+// 編集中のイベントをそのまま複製
+function duplicateCurrentEvent(){
+  const id=document.getElementById('evId').value;
+  if(!id){showToast('保存済みのイベントから複製してください','error');return}
+  duplicateEvent(id);
+}
 // 既存イベントを複製して新規作成画面を開く
 function duplicateEvent(id){
   const ev=events.find(e=>e.id===id);if(!ev) return;
-  openEvModal();
+  document.getElementById('evFormTitle').textContent='イベント作成 (複製)';
   document.getElementById('evId').value='';
   document.getElementById('evTitle').value=(ev.title||'')+' (コピー)';
-  document.getElementById('evDate').value=ev.date||'';
+  document.getElementById('evDate').value='';
   document.getElementById('evTime').value=ev.time||'';
   document.getElementById('evLoc').value=ev.location||'';
   document.getElementById('evDesc').value=ev.description||'';
@@ -1197,9 +1264,9 @@ function duplicateEvent(id){
   document.getElementById('evFee').value=ev.fee||'';
   document.getElementById('evAppUrl').value=ev.applicationUrl||'';
   document.getElementById('evImg').value=ev.imageUrl||'';
-  if(document.getElementById('evPublished')) document.getElementById('evPublished').checked=ev.published!==false;
-  updateImgPreview('evImg','evImgPreview');
-  showToast('コピーを作成しました');
+  if(document.getElementById('evPublished')) document.getElementById('evPublished').checked=true;
+  openEvModal(''); // 新規扱いで開く
+  showToast('コピーを作成しました（日付を再設定してください）');
 }
 // 画像 URL 変更時にサムネを表示
 function updateImgPreview(srcInputId,previewId){
@@ -1356,7 +1423,8 @@ function renderMemTbl(){
 
     const benefitBadge=m.memberBenefit?`<span style="font-size:.55rem;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;padding:.08rem .3rem;border-radius:6px;font-weight:700;margin-left:.3rem" title="${_escAttr(m.memberBenefit)}"><i class="fas fa-gift"></i> 特典</span>`:'';
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="tbl-col-img"><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"></td>
+    tr.dataset.id=m.id;
+    tr.innerHTML=`<td class="tbl-col-img"><span class="row-drag-handle" title="ドラッグで並び替え" style="cursor:grab;color:var(--tl);margin-right:.3rem"><i class="fas fa-grip-vertical"></i></span><img class="tbl-avatar" src="${m.avatar||'https://i.pravatar.cc/40'}" onerror="this.src='https://i.pravatar.cc/40'"></td>
       <td class="tbl-col-title" title="${_escAttr(m.name)}"><div class="name">${_escAttr(m.name)}${benefitBadge}</div>${m.location?'<div class="sub"><i class="fas fa-map-pin" style="margin-right:.15rem"></i>'+_escAttr(m.location)+'</div>':''}</td>
       <td class="tbl-meta">${_escAttr(m.profession||'')}</td>
       <td class="tbl-meta">${_escAttr(m.businessCategory||'')}</td>
@@ -1398,6 +1466,26 @@ function renderMemTbl(){
       actions.appendChild(ownerTag);
     }
     t.appendChild(tr);
+  });
+  initRowSortable(t,'members');
+}
+// Sortable.js を tbody に当てる
+function initRowSortable(tbody, table){
+  if(!window.Sortable||!tbody||tbody._sortableBound) return;
+  tbody._sortableBound=true;
+  Sortable.create(tbody,{
+    handle:'.row-drag-handle',
+    animation:160,
+    ghostClass:'row-ghost',
+    chosenClass:'row-chosen',
+    onEnd: async ()=>{
+      const ids=[...tbody.querySelectorAll('tr')].map(tr=>tr.dataset.id).filter(Boolean);
+      try{
+        const r=await fetch('/api/admin/reorder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({table,ids})}).then(r=>r.json());
+        if(r.success) showToast('並び替えを保存しました');
+        else showToast('並び替え保存失敗: '+(r.error||''),'error');
+      }catch(e){showToast('通信エラー: '+(e.message||e),'error')}
+    }
   });
 }
 async function toggleAdmin(id,val){
