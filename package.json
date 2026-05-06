@@ -1,32 +1,24 @@
 {
   "name": "minanowa",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "みんなのWA - 彦根発 異業種交流コミュニティ",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "vercel dev --listen 3000",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
     "bcryptjs": "^3.0.3",
-    "body-parser": "^1.20.2",
     "busboy": "^1.6.0",
-    "compression": "^1.8.1",
-    "cors": "^2.8.5",
-    "debug": "^4.4.3",
     "dotenv": "^16.4.5",
-    "express": "^4.21.2",
-    "finalhandler": "^2.1.1",
     "google-auth-library": "^10.5.0",
     "js-yaml": "^4.1.1",
-    "multer": "^1.4.5-lts.1",
     "openai": "^6.29.0",
     "stripe": "^20.3.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "vercel": "^51.6.1"
   },
   "engines": {
     "node": ">=18.0.0"
