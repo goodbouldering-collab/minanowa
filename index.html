@@ -3083,6 +3083,67 @@ select:focus-visible{outline:none;border-color:var(--c1);box-shadow:0 0 0 3px rg
   </div>
 </div>
 
+<!-- COMPLETE SIGNUP MODAL（ゲスト→本登録） -->
+<div id="completeSignupModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('completeSignupModal')">&times;</button>
+    <div class="modal-box-inner">
+      <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:.4rem"><i class="fas fa-key" style="color:var(--c1)"></i> 本登録（パスワード設定）</h3>
+      <p style="font-size:.85rem;color:var(--tl);margin-bottom:.9rem">パスワードを設定すれば、メンバー機能（マイページ・特典・掲示板書込みなど）が使えるようになります。</p>
+      <form onsubmit="handleCompleteSignup(event)">
+        <input type="hidden" id="completeToken">
+        <div class="fg"><label for="completePass">パスワード（6文字以上） <span style="color:#ef4444">*</span></label><input id="completePass" type="password" minlength="6" required autocomplete="new-password"></div>
+        <div class="fg"><label for="completeFuri">ふりがな（任意）</label><input id="completeFuri" placeholder="やまだ たろう"></div>
+        <div class="fg"><label for="completeBiz">業種 / お店（任意）</label><input id="completeBiz" placeholder="例: アロマサロン みかん"></div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:.5rem"><i class="fas fa-check"></i> 本登録を完了</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- GUEST EVENT JOIN MODAL -->
+<div id="guestJoinModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('guestJoinModal')">&times;</button>
+    <div class="modal-box-inner">
+      <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:.4rem"><i class="fas fa-user-plus" style="color:var(--c1)"></i> ゲスト参加</h3>
+      <p style="font-size:.85rem;color:var(--tl);margin-bottom:.9rem">アカウント登録なしで今すぐ参加申し込みできます。<br>あとで本登録するためにメールが必要です。</p>
+      <form onsubmit="handleGuestJoin(event)">
+        <input type="hidden" id="guestEventId">
+        <div class="fg"><label for="guestName">お名前 <span style="color:#ef4444">*</span></label><input id="guestName" required autocomplete="name" placeholder="山田 太郎"></div>
+        <div class="fg"><label for="guestEmail">メールアドレス <span style="color:#ef4444">*</span></label><input id="guestEmail" type="email" required autocomplete="email" placeholder="example@email.com"></div>
+        <div class="fg"><label for="guestReferrer">紹介してくれた方（任意）</label>
+          <select id="guestReferrer">
+            <option value="">-- 紹介者を選択（なしでもOK）--</option>
+          </select>
+          <small style="color:var(--tl);font-size:.72rem;display:block;margin-top:.2rem">紹介者を選ぶと、紹介者のイベント参加費が 500 円割引になります</small>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top:.5rem"><i class="fas fa-paper-plane"></i> ゲスト参加を確定</button>
+      </form>
+      <p style="font-size:.72rem;color:var(--tl);margin-top:.7rem;line-height:1.5">後ほどパスワード設定して本登録すれば、メンバー特典・マイページ機能が全て使えるようになります。</p>
+    </div>
+  </div>
+</div>
+
+<!-- GUEST JOIN SUCCESS MODAL -->
+<div id="guestJoinDoneModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('guestJoinDoneModal')">&times;</button>
+    <div class="modal-box-inner" style="text-align:center">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto .8rem"><i class="fas fa-check"></i></div>
+      <h3 style="font-size:1.25rem;font-weight:800;margin-bottom:.5rem">参加申し込み完了！</h3>
+      <p style="font-size:.9rem;color:var(--tl);margin-bottom:.9rem">当日お会いできるのを楽しみにしています</p>
+      <div style="background:#fffbeb;border:1px dashed rgba(217,119,6,.3);border-radius:12px;padding:.8rem .9rem;text-align:left;margin-bottom:.8rem">
+        <p style="font-size:.78rem;font-weight:700;color:#b45309;margin-bottom:.3rem"><i class="fas fa-bookmark"></i> 本登録 URL（重要・必ず保存してください）</p>
+        <p style="font-size:.78rem;color:var(--td);word-break:break-all" id="guestJoinUrl"></p>
+        <p style="font-size:.7rem;color:var(--tl);margin-top:.4rem">この URL からパスワード設定すれば、メンバー特典が使えるようになります。</p>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="copyGuestUrl()"><i class="fas fa-copy"></i> URL をコピー</button>
+      <button class="btn btn-glass btn-full" style="margin-top:.4rem" onclick="closeModal('guestJoinDoneModal')">閉じる</button>
+    </div>
+  </div>
+</div>
+
 <!-- MYPAGE SLIDE-UP PANEL -->
 <div class="mypage-overlay" id="mypageOverlay" onclick="closeMypagePanel()">
   <div class="mypage-panel" onclick="event.stopPropagation()">
@@ -3187,6 +3248,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const saved=localStorage.getItem('wa_user');
   if(saved){currentUser=JSON.parse(saved);updateNav()}
   checkResetToken();
+  checkCompleteSignupUrl();
 });
 
 /* ========== TYPED HERO ========== */
@@ -3740,8 +3802,92 @@ function toggleReferral(checked){
   const body=document.getElementById('evReferralBody');
   if(body) body.classList.toggle('open',checked);
 }
+function checkCompleteSignupUrl(){
+  const params=new URLSearchParams(window.location.search);
+  const token=params.get('complete');
+  if(!token) return;
+  document.getElementById('completeToken').value=token;
+  openModal('completeSignupModal');
+  // URL から query を消してリロードしても再オープンしないように
+  const u=new URL(window.location.href);u.searchParams.delete('complete');
+  window.history.replaceState({},'',u.toString());
+}
+async function handleCompleteSignup(e){
+  e.preventDefault();
+  const token=document.getElementById('completeToken').value;
+  const password=document.getElementById('completePass').value;
+  const furigana=document.getElementById('completeFuri').value.trim();
+  const business=document.getElementById('completeBiz').value.trim();
+  showSpinner('本登録中...');
+  try{
+    const res=await fetch('/api/auth/complete-signup',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token,password,furigana,business})
+    });
+    const r=await res.json().catch(()=>({success:false,error:'サーバ応答が不正です ('+res.status+')'}));
+    if(!r.success){showToast(r.error||'本登録に失敗しました','error');return}
+    currentUser=r.member;
+    localStorage.setItem('wa_user',JSON.stringify(currentUser));
+    closeModal('completeSignupModal');
+    showToast('本登録が完了しました！');
+    await loadAll();updateNav();
+  }catch(err){showToast('通信エラー: '+(err.message||err),'error')}
+  finally{hideSpinner()}
+}
+function openGuestJoin(eventId){
+  document.getElementById('guestEventId').value=eventId||'';
+  const sel=document.getElementById('guestReferrer');
+  if(sel){
+    const cur=sel.value;
+    sel.innerHTML='<option value="">-- 紹介者を選択（なしでもOK）--</option>';
+    (allMembers||[]).filter(m=>!m.isGuest).forEach(m=>{
+      const o=document.createElement('option');o.value=m.id;
+      o.textContent=m.name+(m.business?' ('+m.business+')':'');
+      sel.appendChild(o);
+    });
+    sel.value=cur;
+  }
+  closeModal('evDetailModal');
+  openModal('guestJoinModal');
+}
+async function handleGuestJoin(e){
+  e.preventDefault();
+  const name=document.getElementById('guestName').value.trim();
+  const email=document.getElementById('guestEmail').value.trim();
+  const referrerId=document.getElementById('guestReferrer').value||null;
+  const eventId=document.getElementById('guestEventId').value||null;
+  if(!name||!email){showToast('お名前とメールを入力してください','error');return}
+  showSpinner('参加申し込み中...');
+  try{
+    const res=await fetch('/api/auth/guest-register',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,email,referrerId,eventId})
+    });
+    const r=await res.json().catch(()=>({success:false,error:'サーバ応答が不正です ('+res.status+')'}));
+    if(!r.success){showToast(r.error||'登録に失敗しました','error');return}
+    // ゲストとしてログイン状態にする
+    currentUser={...r.member,name,email,isGuest:true};
+    localStorage.setItem('wa_user',JSON.stringify(currentUser));
+    closeModal('guestJoinModal');
+    document.getElementById('guestJoinUrl').textContent=r.reRegisterUrl;
+    window._guestReRegisterUrl=r.reRegisterUrl;
+    openModal('guestJoinDoneModal');
+    // データ再取得
+    await loadAll();
+    updateNav();
+  }catch(err){showToast('通信エラー: '+(err.message||err),'error')}
+  finally{hideSpinner()}
+}
+function copyGuestUrl(){
+  const url=window._guestReRegisterUrl||document.getElementById('guestJoinUrl').textContent;
+  if(!url) return;
+  navigator.clipboard.writeText(url).then(()=>showToast('URLをコピーしました')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
+    showToast('URLをコピーしました');
+  });
+}
 async function registerEventWithPayment(eventId){
-  if(!currentUser){openModal('loginModal');return}
+  if(!currentUser){openGuestJoin(eventId);return}
   const sel=document.getElementById('evPaymentSelect');
   const method=sel?sel.dataset.method||'onsite':'onsite';
   // Get referral info
