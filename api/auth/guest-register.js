@@ -12,6 +12,7 @@
 const crypto = require('crypto');
 const { withCors, withMethods, readJson, ok, fail, handleErr } = require('../../lib/vercel-utils');
 const { readData, writeData } = require('../../lib/data-cache');
+const { sendMail, buildGuestWelcomeMail } = require('../../lib/mailer');
 
 function isValidEmail(s){return typeof s==='string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)}
 
@@ -96,6 +97,21 @@ async function POST(req, res) {
     const origin = (req.headers['x-forwarded-proto'] || 'https') + '://' + (req.headers['x-forwarded-host'] || req.headers.host || 'minanowa.com');
     const reRegisterUrl = origin + '/?complete=' + encodeURIComponent(token);
 
+    // メール送信 (best-effort: 失敗しても登録自体は成功扱い)
+    let mailSent = false;
+    let mailError = null;
+    try {
+      const eventTitle = eventId
+        ? ((data.events || []).find(e => e.id === eventId) || {}).title || ''
+        : '';
+      const { subject, html, text } = buildGuestWelcomeMail({ name, eventTitle, reRegisterUrl });
+      const mailRes = await sendMail({ to: email, subject, html, text });
+      mailSent = !!mailRes.success;
+      if (!mailRes.success) mailError = mailRes.error || 'mail_failed';
+    } catch (e) {
+      mailError = e && e.message;
+    }
+
     res.setHeader('Cache-Control', 'no-store');
     return ok(res, {
       success: true,
@@ -104,6 +120,8 @@ async function POST(req, res) {
       token,
       reRegisterUrl,
       eventRegistered,
+      mailSent,
+      mailError,
       message: 'ゲスト参加を受け付けました',
     });
   } catch (e) {
